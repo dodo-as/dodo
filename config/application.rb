@@ -28,7 +28,7 @@ module Lodo
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    config.i18n.default_locale = :nb
+    config.i18n.default_locale = :en
 
     # Configure generators values. Many other options are available, be sure to check the documentation.
     # config.generators do |g|
@@ -49,7 +49,7 @@ module Lodo
     # All files from config/locales/*.rb,yml are added automatically.
     # config.i18n.load_path << Dir[File.join(RAILS_ROOT, 'my', 'locales', '*.{rb,yml}')]
     # config.i18n.default_locale = :de
-    config.i18n.default_locale = :nb
+    config.i18n.default_locale = :en
     
     # Your secret key for verifying cookie session data integrity.
     # If you change this key, all old sessions will become invalid!

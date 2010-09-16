@@ -15,7 +15,8 @@ gem "machinist"
 gem "faker"
 gem "devise", "1.1.rc2"
 gem "warden"
-gem "declarative_authorization", :git => "http://github.com/stffn/declarative_authorization.git" 
+# gem "declarative_authorization", :git => "http://github.com/stffn/declarative_authorization.git" 
+gem "declarative_authorization"
 
 # Use unicorn as the web server
 # gem 'unicorn'

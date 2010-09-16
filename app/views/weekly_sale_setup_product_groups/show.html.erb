@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b><%= t(:name, :scope => :weekly_sale_setup_product_groups) -%>:</b>
+  <%= @weekly_sale_setup_product_group.name %>
+</p>
+
+<p>
+  <b><%= t(:project, :scope => :weekly_sale_setup_product_groups) -%>:</b>
+  <%= @weekly_sale_setup_product_group.project %>
+</p>
+
+<p>
+  <b><%= t(:account, :scope => :weekly_sale_setup_product_groups) -%>:</b>
+  <%= @weekly_sale_setup_product_group.account %>
+</p>
+
+<p>
+  <b><%= t(:weekly_sale_setup, :scope => :weekly_sale_setup_product_groups) -%>:</b>
+  <%= @weekly_sale_setup_product_group.weekly_sale_setup %>
+</p>
+
+
+<%= link_to t(:edit, :scope => :global), edit_weekly_sale_setup_product_group_path(@weekly_sale_setup) %> |
+<%= link_to t(:back, :scope => :global), weekly_sale_setup_product_groups_path %>

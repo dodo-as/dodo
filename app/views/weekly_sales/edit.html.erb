@@ -1,0 +1,7 @@
+<h1><%= t(:editing, :scope => :global) %> <%= t(:title_singular, :scope => :weekly_sales) %></h1>
+
+<%= render 'form' %>
+
+<%= link_to t(:show, :scope => :global),{:controller=>'weekly_sales', :action=>'show', :id=>@weekly_sale.id} %> |
+<%= link_to t(:back, :scope => :global), {:controller=>'weekly_sales', :action=>'index'} %>
+

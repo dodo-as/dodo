@@ -1,0 +1,33 @@
+<h1><%= t(:listing, :scope => :global) %> <%= t(:title_plural, :scope => :weekly_sale_setups) %></h1>
+
+<table>
+  <tr>
+    <th><%= t(:name, :scope => :weekly_sale_setups) -%></th>
+    <th><%= t(:voucher_type, :scope => :weekly_sale_setups) -%></th>
+    <th><%= t(:permanent_cash, :scope => :weekly_sale_setups) -%></th>
+    <th><%= t(:cash_account, :scope => :weekly_sale_setups) -%></th>
+    <th><%= t(:locked, :scope => :weekly_sale_setups) -%></th>
+    <th><%= t(:unit, :scope => :weekly_sale_setups) -%></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @weekly_sale_setups.each do |weekly_sale_setup| %>
+  <tr>
+    <td><%= weekly_sale_setup.name %></td>
+    <td><%= weekly_sale_setup.voucher_type %></td>
+    <td><%= number_to_currency(weekly_sale_setup.permanent_cash, :locale =>I18n.locale, :precision => 2) %></td>
+    <td><%= weekly_sale_setup.cash_account.description %></td>
+    <td><%= weekly_sale_setup.locked %></td>
+    <td><%= weekly_sale_setup.unit.name %></td>
+    <td><%= link_to t(:show, :scope => :global), weekly_sale_setup %></td>
+    <td><%= link_to t(:edit, :scope => :global), edit_weekly_sale_setup_path(weekly_sale_setup) %></td>
+    <td><%= link_to t(:destroy, :scope => :global), weekly_sale_setup, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to (t(:new, :scope => :global) + " " + t(:title_singular, :scope => :weekly_sale_setups)), new_weekly_sale_setup_path %>

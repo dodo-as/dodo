@@ -1,5 +1,4 @@
 class JournalsController < ApplicationController
-  before_filter :find_units_all, :only => [:new, :edit]
   before_filter :find_projects_all, :only => [:new, :edit]
   before_filter :find_accounts_all, :only => [:new, :edit]
   filter_resource_access
@@ -7,7 +6,7 @@ class JournalsController < ApplicationController
   # GET /journals
   # GET /journals.xml
   def index
-    @journals = Journal.with_permissions_to(:index).order("number, journal_date desc, journal_type")
+    @journals = Journal.with_permissions_to(:index).order("number, journal_date desc, journal_type").limit(10)
     
     respond_to do |format|
       format.html # index.html.erb

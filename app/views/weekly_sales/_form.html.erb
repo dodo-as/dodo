@@ -1,0 +1,374 @@
+<script>          
+  function calcTotal(element, product_id) {
+    // calculation product groups
+    var total_product_group = 0.0; 
+    var regex_total_product_group = new RegExp('column_weekly_sale_shift_product_group_\\d+_\\d+');
+    jQuery(element).parent("td").parent("tr").children("td").each( function(i, td) {
+      if (td.id.match(regex_total_product_group)) {
+        var amount = parseFloat(jQuery(td).children('input')[2].value);
+        total_product_group = total_product_group + amount;
+      }
+    });
+    jQuery(element).parent("td").parent("tr").children("#total_product_groups").html(total_product_group);
+
+    var sum_total_product_group = 0.0; 
+    jQuery("#shifts").children("table").children("tbody").children("tr").each(function(i,tr) {
+      var amount = jQuery(tr).children("#total_product_groups").html()!=null ? parseFloat(jQuery(tr).children("#total_product_groups").html()) : 0.0;
+      sum_total_product_group = sum_total_product_group + amount;
+    });
+    jQuery("#shifts").children("table").children("tbody").children("tr").children("#sum_total_product_groups").html(sum_total_product_group);
+
+
+    // calculation liquids accounts
+    var total_liquid = 0.0;
+    jQuery(element).parent("td").parent("tr").children("#column_weekly_sale_shift_liquid").each( function(i, td) {
+      var amount = parseFloat(jQuery(td).children('input')[2].value);
+      total_liquid = total_liquid + amount;
+    });    
+    var total_cash = total_product_group-total_liquid;
+    jQuery(element).parent("td").parent("tr").children("#total_cash").html(total_cash);
+    jQuery(element).parent("td").parent("tr").children("#total_liquids").html(total_product_group);
+
+    // calculation cash
+    var actual_cash = parseFloat(jQuery(element).parent("td").parent("tr").children("#weekly_sale_shift_actual_cash_amount").children('input')[0].value);
+    var inserted_cash = parseFloat(jQuery(element).parent("td").parent("tr").children("#weekly_sale_shift_inserted_cash_amount").children('input')[0].value);
+    var extracted_cash = parseFloat(jQuery(element).parent("td").parent("tr").children("#weekly_sale_shift_extracted_cash_amount").children('input')[0].value);
+    var difference_cash = actual_cash-(total_cash + inserted_cash - extracted_cash);
+    jQuery(element).parent("td").parent("tr").children("#difference_cash").html(difference_cash);
+
+    var sum_total_cash = 0.0; 
+    jQuery("#shifts").children("table").children("tbody").children("tr").each(function(i,tr) {
+      if (jQuery(tr).children("#total_cash").html()!=null){
+        var amount = parseFloat(jQuery(tr).children("#total_cash").html());  
+        sum_total_cash = sum_total_cash + amount;
+      }
+    });
+    jQuery("#shifts").children("table").children("tbody").children("tr").children("#sum_total_cash").html(sum_total_cash);
+
+    var sum_total_liquids = 0.0; 
+    jQuery("#shifts").children("table").children("tbody").children("tr").each(function(i,tr) {
+      if (jQuery(tr).children("#total_liquids").html()!=null){
+        var amount = parseFloat(jQuery(tr).children("#total_liquids").html());  
+        sum_total_liquids = sum_total_liquids + amount;
+      }
+    });
+    jQuery("#shifts").children("table").children("tbody").children("tr").children("#sum_total_liquids").html(sum_total_liquids);
+
+
+    var sum_inserted_cash = 0.0; 
+    jQuery("#shifts").children("table").children("tbody").children("tr").each(function(i,tr) {
+      if (jQuery(tr).children("#weekly_sale_shift_inserted_cash_amount").is(":has(input)")){
+        var amount = parseFloat(jQuery(tr).children("#weekly_sale_shift_inserted_cash_amount").children("input")[0].value);  
+        sum_inserted_cash = sum_inserted_cash + amount;
+      }
+    });
+
+    jQuery("#bottom_weekly_sale").children("table").children("tbody").children("tr").children("#sum_weekly_sale_shift_inserted_cash_amount").html(sum_inserted_cash);
+    jQuery("#shifts").children("table").children("tbody").children("tr").children("#sum_weekly_sale_shift_inserted_cash_amount").html(sum_inserted_cash);
+
+    var sum_extracted_cash = 0.0; 
+    jQuery("#shifts").children("table").children("tbody").children("tr").each(function(i,tr) {
+      if (jQuery(tr).children("#weekly_sale_shift_extracted_cash_amount").is(":has(input)")){
+        var amount = parseFloat(jQuery(tr).children("#weekly_sale_shift_extracted_cash_amount").children("input")[0].value);  
+        sum_extracted_cash = sum_extracted_cash + amount;
+      }
+    });
+    jQuery("#bottom_weekly_sale").children("table").children("tbody").children("tr").children("#sum_weekly_sale_shift_extracted_cash_amount").html(sum_extracted_cash);
+    jQuery("#shifts").children("table").children("tbody").children("tr").children("#sum_weekly_sale_shift_extracted_cash_amount").html(sum_extracted_cash);
+
+    var sum_actual_cash = 0.0; 
+    jQuery("#shifts").children("table").children("tbody").children("tr").each(function(i,tr) {
+      if (jQuery(tr).children("#weekly_sale_shift_actual_cash_amount").is(":has(input)")){
+        var amount = parseFloat(jQuery(tr).children("#weekly_sale_shift_actual_cash_amount").children("input")[0].value);  
+        sum_actual_cash = sum_actual_cash + amount;
+      }
+    });    
+    jQuery("#shifts").children("table").children("tbody").children("tr").children("#sum_weekly_sale_shift_actual_cash_amount").html(sum_actual_cash);
+
+    var sum_difference_cash = 0.0; 
+    jQuery("#shifts").children("table").children("tbody").children("tr").each(function(i,tr) {
+      var amount = parseFloat(jQuery(tr).children("#difference_cash").html()!=null ? parseFloat(jQuery(tr).children("#difference_cash").html()) : 0.0);
+      sum_difference_cash = sum_difference_cash + amount;
+    });    
+    jQuery("#shifts").children("table").children("tbody").children("tr").children("#sum_difference_cash").html(sum_difference_cash);
+
+  
+    // calculation total net cash  
+    var private_amount = jQuery("#bottom_weekly_sale").children("table").children("tbody").children("tr").children("#private_amount").children("input")[0].value;
+    var cash_net = parseFloat(difference_cash) + parseFloat(private_amount);
+    jQuery("#bottom_weekly_sale").children("table").children("tbody").children("tr").children("#total_cash_net").html(cash_net);  
+
+
+
+    // calculation product group
+    var sum_total_product_group = 0.0; 
+    var regex_sum_total_product_group = new RegExp('column_weekly_sale_shift_product_group_\\d+_'+product_id);
+    jQuery("#rows_weekly_sale_shifts").children("tr").each(function(i,tr) {
+      jQuery(tr).children("td").each( function(i,td) {
+        if (td.id.match(regex_sum_total_product_group)) {
+          var amount = parseFloat(jQuery(td).children("input")[2].value);
+          sum_total_product_group += amount;
+        }
+      });
+    });
+    jQuery('#sum_product_group_' + product_id).html(sum_total_product_group);
+
+  }
+
+  function calcTotalNet(element){
+
+    var total_cash = parseFloat(jQuery("#shifts").children("table").children("tbody").children("tr").children("#total_cash").html);
+    var actual_cash = parseFloat(jQuery("#shifts").children("table").children("tbody").children("tr").children("#sum_weekly_sale_shift_actual_cash_amount").html);
+    var inserted_cash = parseFloat(jQuery("#shifts").children("table").children("tbody").children("tr").children("#sum_weekly_sale_shift_inserted_cash_amount").html);
+    var extracted_cash = parseFloat(jQuery("#shifts").children("table").children("tbody").children("tr").children("#sum_weekly_sale_shift_extracted_cash_amount").html);
+    var difference_cash = parseFloat(actual_cash)-(parseFloat(total_cash) + parseFloat(inserted_cash) - parseFloat(extracted_cash));
+    var private_amount = jQuery("#bottom_weekly_sale").children("table").children("tbody").children("tr").children("#private_amount").children("input")[0].value;
+    var cash_net = parseFloat(difference_cash) + parseFloat(private_amount);
+
+    jQuery("#bottom_weekly_sale").children("table").children("tbody").children("tr").children("#total_cash_net").html(cash_net);  
+    
+  }
+  
+
+  function validateFields(){
+    return true;
+  }
+</script>
+<%
+  if params[:action] == 'new' || params[:action] == 'create'
+    action = 'create' 
+    method = 'post'
+  else
+    action = 'update' 
+    method = 'put'
+  end
+%>
+<% form_tag({:action=>"update", :id=>@weekly_sale.id}, :method =>"put", :style=>"border-width: 0px") do %>
+
+  <% if @weekly_sale.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@weekly_sale.errors.count, "error") %> prohibited this weekly_sale from being saved:</h2>
+    <ul>
+    <% @weekly_sale.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <div id="top_weekly_sale" style="width:100%; background-color:#bed6ea; color:grey;">
+    <table style="width:100%;">
+      <thead>
+        <tr>
+          <td class="weekly_columns_1"><%= t(:weekly_sale_setup, :scope => :weekly_sales) %></td>
+          <td class="weekly_columns_1"><%= t(:period, :scope => :weekly_sales) %></td>
+          <td class="weekly_columns_1"><%= t(:journal_date, :scope => :weekly_sales) %></td>
+          <td class="weekly_columns_1"><%= t(:journal, :scope => :weekly_sales) %></td>
+          <td class="weekly_columns_1"><%= t(:year, :scope => :weekly_sales) %></td>
+          <td class="weekly_columns_1"><%= t(:week, :scope => :weekly_sales) %></td>
+          <td class="weekly_columns_1"><%= t(:permanent_cash, :scope => :weekly_sales) %></td>
+          <td class="weekly_columns_1"><%= t(:unit, :scope => :weekly_sales) %></td>
+        </tr>
+        <tr>
+          <% if params[:action] == 'new' || params[:action] == 'create' %>
+          <td class="weekly_columns_1"><%= select :weekly_sale, :weekly_sale_setup_id, @weekly_sale_setups.map {|r| [ r, r.id ] } %></td>     
+          <% else %>
+          <td class="weekly_columns_1"><%= @weekly_sale.weekly_sale_setup %>
+          <% end %>
+          <td class="weekly_columns_1"><%= current_user.assignments.where("roles.name = 'admin'").size>0 ? (select :weekly_sale, :period_id, @periods.map {|r| [ r, r.id ] }) : @weekly_sale.period.to_s %></td>          
+          <td class="weekly_columns_1"><%= current_user.assignments.where("roles.name = 'admin'").size>0 ? (date_select :weekly_sale, :journal_date) : @weekly_sale.journal_date.to_s %></td>
+          <td class="weekly_columns_1"><%= @weekly_sale.journal if @weekly_sale && @weekly_sale.journal %>
+          <td class="weekly_columns_1"><%= @weekly_sale.weekly_sale_setup.permanent_cash if @weekly_sale && @weekly_sale.weekly_sale_setup %></td>
+          <td class="weekly_columns_1"><%= current_user.assignments.where("roles.name = 'admin'").size>0 ? (text_field :weekly_sale, :week, :maxlength=>5) : @weekly_sale.week.to_s %></td>
+          <td class="weekly_columns_1"><%= @weekly_sale.weekly_sale_setup.permanent_cash if @weekly_sale && @weekly_sale.weekly_sale_setup %>
+          <td class="weekly_columns_1"><%= @weekly_sale.weekly_sale_setup.unit if @weekly_sale && @weekly_sale.weekly_sale_setup %>
+        </tr>            
+      </thead>
+    </table>
+  </div> 
+
+  <div id="shifts">
+    <table>          
+      <thead>
+        <tr> 
+          <th style="background-color:white"></th>       
+          <th style="background-color:#9a7292;"><%= t(:date_shift, :scope => :weekly_sales) %></th>                
+          <th style="background-color:#9a7292;"><%= t(:z_number, :scope => :weekly_sales) %></th>                
+          <th style="background-color:#9a7292;"><%= t(:z_amount, :scope => :weekly_sales) %></th>    
+          <% if @weekly_sale.weekly_sale_setup  %>          
+            <% @weekly_sale.weekly_sale_setup.weekly_sale_setup_product_groups.each do |product| %>
+              <th style="background-color:#a0b1f1;"><%= product.name %> </th>
+              <% if product.account.has_quantity %>
+                <th  style="background-color:#a0b1f1; font-size: x-small;">Units</th>                
+              <% end %>
+            <% end %>
+          <% end %>
+          <th style="background-color:#a0b1f1;" ><%= t(:total_product_groups, :scope => :weekly_sales) %></th>          
+          <% if @weekly_sale.weekly_sale_setup  %>          
+            <% @weekly_sale.weekly_sale_setup.weekly_sale_setup_liquids.each do |liquid| %>
+              <th style="background-color:#84d472;"><%= liquid.name %> </th>
+            <% end %>
+          <% end %>
+          <th style="background-color:#84d472;"><%= t(:received_cash, :scope => :weekly_sales) %></th>
+          <th style="background-color:#84d472;"><%= t(:total_product_groups, :scope => :weekly_sales) %></th>
+          <th style="background-color:#84d472;"><%= t(:inserted_cash, :scope => :weekly_sales) %></th>
+          <th style="background-color:#84d472;"><%= t(:extracted_cash, :scope => :weekly_sales) %></th>                                                        
+          <th style="background-color:#84d472;"><%= t(:actual_cash, :scope => :weekly_sales) %></th>                            
+          <th style="background-color:#84d472;"><%= t(:difference_cash, :scope => :weekly_sales) %></th>
+          <th style="background-color:#84d472;"><%= t(:explanation_different_cash, :scope => :weekly_sales) %></th>
+          <th style="background-color:#9a7292"><%= t(:sign_by, :scope => :weekly_sales) %></th>
+          <th style="background-color:#9a7292"><%= t(:closed_by, :scope => :weekly_sales) %></th>                                                                                                                
+        </tr>     
+      </thead>         
+      <tbody id="rows_weekly_sale_shifts">
+        <% @weekly_sale.weekly_sale_shifts.order('id').each do |shift| %>
+          <%= render :partial=>"shift", :locals=>{:date_shift=>nil, :shift_id=>shift.id, :weekly_sale_setup_id=>@weekly_sale.weekly_sale_setup_id  } %>
+        <% end %>        
+        <tr>
+          <td style="background-color:white; color:grey;"><%= t(:sum, :scope => :weekly_sales) %></td>
+          <td style="background-color:#9a7292;"></td>
+          <td style="background-colorfunction(i,tr) {:#9a7292;"></td>
+          <td style="background-color:#9a7292;"></td>
+          <% if @weekly_sale.weekly_sale_setup %>
+            <% @weekly_sale.weekly_sale_setup.weekly_sale_setup_product_groups.each do |product| %>
+              <td id="sum_product_group_<%= product.id %>" style="background-color:#a0b1f1; font-size: x-small; text-align:right;"><%= number_with_precision(@weekly_sale.sum_a_product_group(product.id), :locale=>I18n.locale) %></td>
+              <% if product.account.has_quantity %>
+                <td id="sum_product_group_quantity" style="background-color:#a0b1f1; font-size: x-small;"></td>                
+              <% end %>
+            <% end %>
+          <% end %>
+          <td id="sum_total_product_groups" style="background-color:#a0b1f1;"><%= number_with_precision(@weekly_sale.weekly_sale_shift_product_groups.sum("amount"), :locale=>I18n.locale) %></td>
+          <% if @weekly_sale.weekly_sale_setup %>
+            <% @weekly_sale.weekly_sale_setup.weekly_sale_setup_liquids.each do |liquid| %>
+              <td id="sum_liquid" style="background-color:#84d472; font-size: x-small; text-align:right;"><%= number_with_precision(@weekly_sale.sum_a_liquid(liquid.id), :locale =>I18n.locale) %></td>        
+            <% end %>
+          <% end %>
+          <td id="sum_total_cash" style="background-color:#84d472;"><%= @weekly_sale.sum_received_cash_amount %></td>
+          <td id="sum_total_liquids" style="background-color:#84d472;"><%= @weekly_sale.sum_product_group %></td>        
+          <td id="sum_weekly_sale_shift_inserted_cash_amount" style="background-color:#84d472; text-align:right;"><%= @weekly_sale.sum_inserted_cash_amount %></td>        
+          <td id="sum_weekly_sale_shift_extracted_cash_amount" style="background-color:#84d472 text-align:right;;"><%= @weekly_sale.sum_extracted_cash_amount %></td>        
+          <td id="sum_weekly_sale_shift_actual_cash_amount" style="background-color:#84d472; text-align:right;"><%= @weekly_sale.sum_actual_cash_amount %></td>        
+          <td id="sum_difference_cash" style="background-color:#84d472;"><%= @weekly_sale.sum_difference_cash_amount %></td>        
+          <td style="background-color:#84d472;"></td>
+          <td style="background-color:#9a7292"></td>
+          <td style="background-color:#9a7292"></td>                
+        </tr>
+        <tr>
+          <td style="background-color:white; color:grey;"><%= t(:accounts, :scope => :weekly_sales) %></td>
+          <td style="background-color:#9a7292;"></td>
+          <td style="background-color:#9a7292;"></td>
+          <td style="background-color:#9a7292;"></td>
+          <% if @weekly_sale.weekly_sale_setup %>
+            <% @weekly_sale.weekly_sale_setup.weekly_sale_setup_product_groups.each do |product| %>
+              <td style="background-color:#a0b1f1; font-size: x-small;"><%=product.account%></td> 
+              <% if product.account.has_quantity %>       
+                <td style="background-color:#a0b1f1; font-size: x-small;"></td> 
+              <% end %>
+            <% end %>
+          <% end %>
+          <td style="background-color:#a0b1f1;"></td>
+          <% if @weekly_sale.weekly_sale_setup %>
+            <% @weekly_sale.weekly_sale_setup.weekly_sale_setup_liquids.each do |liquid| %>
+              <td style="background-color:#84d472; font-size: x-small;"><%=liquid.account%></td>        
+            <% end %>
+          <% end %>
+          <td style="background-color:#84d472;"></td>
+          <td style="background-color:#84d472;"></td>        
+          <td style="background-color:#84d472;"></td>        
+          <td style="background-color:#84d472;"></td>        
+          <td style="background-color:#84d472;"></td>        
+          <td style="background-color:#84d472;"></td>        
+          <td style="background-color:#84d472;"></td>
+          <td style="background-color:#9a7292"></td>
+          <td style="background-color:#9a7292"></td>                
+        </tr>
+        <tr>
+          <td style="background-color:white; color:grey;"><%= t(:units, :scope => :weekly_sales) %></td>
+          <td style="background-color:#9a7292;"></td>
+          <td style="background-color:#9a7292;"></td>
+          <td style="background-color:#9a7292;"></td>
+          <% if @weekly_sale.weekly_sale_setup %>
+            <% @weekly_sale.weekly_sale_setup.weekly_sale_setup_product_groups.each do |product| %>
+              <td style="background-color:#a0b1f1;"></td>        
+              <% if product.account.has_quantity %>
+                <td style="background-color:#a0b1f1;"></td>        
+              <% end %>
+            <% end %>
+          <td style="background-color:#a0b1f1;"></td>
+           <% end %>
+          <% if @weekly_sale.weekly_sale_setup %>
+            <% @weekly_sale.weekly_sale_setup.weekly_sale_setup_liquids.each do |liquid| %>
+              <td style="background-color:#84d472;"></td>        
+            <% end %>
+          <% end %>
+          <td style="background-color:#84d472;"></td>
+          <td style="background-color:#84d472;"></td>        
+          <td style="background-color:#84d472;"></td>        
+          <td style="background-color:#84d472;"></td>        
+          <td style="background-color:#84d472;"></td>        
+          <td style="background-color:#84d472;"></td>        
+          <td style="background-color:#84d472;"></td>   
+          <td style="background-color:#9a7292"></td>
+          <td style="background-color:#9a7292"></td>             
+        </tr>
+        <tr>
+          <td style="background-color:white; color:grey;"><%= t(:projects, :scope => :weekly_sales) %></td>
+          <td style="background-color:#9a7292;"></td>
+          <td style="background-color:#9a7292;"></td>
+          <td style="background-color:#9a7292;"></td>
+          <% if @weekly_sale.weekly_sale_setup %>
+            <% @weekly_sale.weekly_sale_setup.weekly_sale_setup_product_groups.each do |product| %>
+              <td style="background-color:#a0b1f1; font-size: x-small;"><%=product.project%></td>        
+              <% if product.account.has_quantity %>
+                <td style="background-color:#a0b1f1; font-size: x-small;"></td>        
+              <% end %>
+            <% end %>
+          <% end %>
+          <td style="background-color:#a0b1f1;"></td>
+          <% if @weekly_sale.weekly_sale_setup %>
+            <% @weekly_sale.weekly_sale_setup.weekly_sale_setup_liquids.each do |liquid| %>
+              <td style="background-color:#84d472;"></td>        
+            <% end %>
+          <% end %>
+          <td style="background-color:#84d472;"></td>
+          <td style="background-color:#84d472;"></td>        
+          <td style="background-color:#84d472;"></td>        
+          <td style="background-color:#84d472;"></td>        
+          <td style="background-color:#84d472;"></td>        
+          <td style="background-color:#84d472;"></td>        
+          <td style="background-color:#84d472;"></td>                
+          <td style="background-color:#9a7292"></td>
+          <td style="background-color:#9a7292"></td>
+        </tr>
+      </tbody>                        
+    </table>
+  </div>
+
+  <div id="bottom_weekly_sale">
+    <table>
+      <tbody>
+       <tr> 
+          <td style="background-color:white; color:grey;"><%= t(:inserted_cash, :scope => :weekly_sales) %></td>       
+          <td id="sum_weekly_sale_shift_inserted_cash_amount" style="background-color:#84d472; text-align:right;"><%= number_with_precision(@weekly_sale.total_inserted_cash_amount, :locale=>I18n.locale) %></td>
+        </tr>
+       <tr> 
+          <td style="background-color:white; color:grey;"><%= t(:extracted_cash, :scope => :weekly_sales) %></td>       
+          <td id="sum_weekly_sale_shift_extracted_cash_amount" style="background-color:#84d472; text-align:right;"><%= number_with_precision(@weekly_sale.total_extracted_cash_amount, :locale=>I18n.locale) %></td>
+        </tr>
+       <tr> 
+          <td style="background-color:white; color:grey;"><%= t(:private_amount, :scope => :weekly_sales) %></td>       
+          <td id="private_amount" style="background-color:#84d472;"><%= text_field :weekly_sale, :private_amount, :maxlength=>10, :onchange => "calcTotalNet(this)" %></td>
+          <td style="background-color:white; color:grey;"><%= t(:explanation_private_amount, :scope => :weekly_sales) %></td>       
+          <td style="background-color:#84d472;"><%= text_field :weekly_sale, :private_amount_explanation, :maxlength=>20 %></td>
+        </tr>
+       <tr> 
+          <td style="background-color:white; color:grey;"><%= t(:total_net, :scope => :weekly_sales) %></td>       
+          <td id="total_cash_net" style="background-color:#84d472; text-align:right;"><%= number_with_precision(@weekly_sale.total_cash_net, :locale =>I18n.locale) %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div id="buttons" class="actions">
+    <%= submit_tag t(:save, :scope => :global), :onclick=>"if (!validateFields()) return false;" %>
+  </div>
+<% end %>

@@ -1,0 +1,75 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Weekly sale setup:</b>
+  <%= @weekly_sale.weekly_sale_setup %>
+</p>
+
+<p>
+  <b>Journal:</b>
+  <%= @weekly_sale.journal %>
+</p>
+
+<p>
+  <b>Period:</b>
+  <%= @weekly_sale.period %>
+</p>
+
+<p>
+  <b>Company:</b>
+  <%= @weekly_sale.company.name %>
+</p>
+
+<p>
+  <b>Year:</b>
+  <%= @weekly_sale.period.year %>
+</p>
+
+<p>
+  <b>Week:</b>
+  <%= @weekly_sale.week %>
+</p>
+
+<p>
+  <b>Total product group amount:</b>
+  <%= @weekly_sale.total_product_group_amount %>
+</p>
+
+<p>
+  <b>Total actual cash amount:</b>
+  <%= @weekly_sale.total_actual_cash_amount %>
+</p>
+
+<p>
+  <b>Total liquid amount:</b>
+  <%= @weekly_sale.total_liquid_amount %>
+</p>
+
+<p>
+  <b>Private amount:</b>
+  <%= @weekly_sale.private_amount %>
+</p>
+
+<p>
+  <b>Private amount explanation:</b>
+  <%= @weekly_sale.private_amount_explanation %>
+</p>
+
+<p>
+  <b>Closed:</b>
+  <%= @weekly_sale.closed %>
+</p>
+
+<p>
+  <b>Closed by:</b>
+  <%= @weekly_sale.closed_by %>
+</p>
+
+<p>
+  <b>Closed at:</b>
+  <%= @weekly_sale.closed_at %>
+</p>
+
+
+<%= link_to 'Edit', {:controller=>'weekly_sales', :action=>'edit', :id=>@weekly_sale.id} %> |
+<%= link_to 'Back', {:controller=>'weekly_sales', :action=>'index'} %>

@@ -1,0 +1,74 @@
+
+<h1><%= t(:listing, :scope => :global) %> <%= t(:title_plural, :scope => :weekly_sale_setups) %></h1>
+
+<table>
+  <tr>
+    <th><%= t(:name, :scope => :weekly_sale_setups) -%></th>
+    <th><%= t(:voucher_type, :scope => :weekly_sale_setups) -%></th>
+    <th><%= t(:permanent_cash, :scope => :weekly_sale_setups) -%></th>
+    <th><%= t(:cash_account, :scope => :weekly_sale_setups) -%></th>
+    <th><%= t(:locked, :scope => :weekly_sale_setups) -%></th>
+    <th><%= t(:unit, :scope => :weekly_sale_setups) -%></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @weekly_sale_setups.each do |weekly_sale_setup| %>
+  <tr>
+    <td><%= weekly_sale_setup.name %></td>
+    <td><%= weekly_sale_setup.voucher_type %></td>
+    <td><%= number_to_currency(weekly_sale_setup.permanent_cash, :locale =>I18n.locale, :precision => 2) %></td>
+    <td><%= weekly_sale_setup.cash_account.description %></td>
+    <td><%= weekly_sale_setup.locked %></td>
+    <td><%= weekly_sale_setup.unit.name %></td>
+    <td><%= link_to t(:show, :scope => :global), weekly_sale_setup if permitted_to? :read, weekly_sale_setup %></td>
+    <td><%= link_to t(:edit, :scope => :global), edit_weekly_sale_setup_path(weekly_sale_setup) if ((permitted_to? :update, weekly_sale_setup) && weekly_sale_setup.weekly_sales.size==0) %></td>
+    <td><%= link_to t(:destroy, :scope => :global), weekly_sale_setup, :confirm => 'Are you sure?', :method => :delete if ((permitted_to? :delete, weekly_sale_setup) && weekly_sale_setup.weekly_sales.size==0) %></td>
+    <td><%= link_to (t(:new, :scope => :global) + " " + t(:title_singular, :scope => :weekly_sales)), {:controller=>'weekly_sales', :action=>'create_period', :weekly_sale_setup_id=>weekly_sale_setup.id} if weekly_sale_setup.valid_to_add_weekly_sales %></td>
+  </tr>
+<% end %>
+</table>
+
+</br>
+
+<%= link_to (t(:new, :scope => :global) + " " + t(:title_singular, :scope => :weekly_sale_setups)), new_weekly_sale_setup_path %>
+
+<h1><%= t(:listing, :scope => :global) %> <%= t(:title_plural, :scope => :weekly_sales) %></h1>
+
+<table>
+  <tr>
+    <th><%= t(:weekly_sale_setup, :scope => :weekly_sales) %></th>
+    <th><%= t(:journal, :scope => :weekly_sales) %></th>
+    <th><%= t(:period, :scope => :weekly_sales) %></th>
+    <th><%= t(:year, :scope => :weekly_sales) %></th>
+    <th><%= t(:week, :scope => :weekly_sales) %></th>
+    <th><%= t(:closed_by, :scope => :weekly_sales) %></th>
+    <th><%= t(:closed_at, :scope => :weekly_sales) %></th>   
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @weekly_sales.each do |weekly_sale| %>
+  <tr>
+    <td><%= weekly_sale.weekly_sale_setup %></td>
+    <td><%= weekly_sale.journal %></td>
+    <td><%= weekly_sale.period %></td>
+    <td><%= weekly_sale.period.year %></td>
+    <td><%= weekly_sale.week %></td>
+    <td><%= weekly_sale.closed_by %></td>
+    <td><%= weekly_sale.closed_at %></td>
+    <td><%= link_to t(:show, :scope => :global), {:controller=>'weekly_sales', :action=>'show', :id=>weekly_sale.id} %></td>
+    <td><%= link_to t(:edit, :scope => :global), {:controller=>'weekly_sales', :action=>'edit', :id=>weekly_sale.id} %></td>
+    <td><%= link_to t(:destroy, :scope => :global), {:controller=>'weekly_sales', :action=>'destroy', :id=>weekly_sale.id}, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+
+</table>
+
+<br />
+
+
+

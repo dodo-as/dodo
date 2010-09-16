@@ -1,4 +1,12 @@
 Lodo::Application.routes.draw do |map|
+#  resources :weekly_sales
+
+  resources :weekly_sale_setup_product_groups
+
+  resources :weekly_sale_setup_liquids
+
+  resources :weekly_sale_setups
+
   resources :paycheck_lines
   resources :paychecks
   
