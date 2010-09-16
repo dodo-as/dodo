@@ -1,0 +1,29 @@
+<% 
+  if @weekly_sale_setup_liquid && !@weekly_sale_setup_liquid.new_record?
+    @counter = @weekly_sale_setup_liquid.id unless @weekly_sale_setup_liquid.nil? 
+  end
+  if liquid_id
+    weekly_sale_setup_liquid = WeeklySaleSetupLiquid.find(liquid_id)
+    @counter = weekly_sale_setup_liquid.id
+  else
+    weekly_sale_setup_liquid = WeeklySaleSetupLiquid.new
+  end
+%>
+
+<tr id="row_weekly_sale_setup_liquid_<%=@counter.to_s%>">
+  <%= hidden_field_tag "weekly_sale_setup_liquids[#{@counter}][new_record]", weekly_sale_setup_liquid.new_record? ? 'true' : 'false'  %>
+  <%= hidden_field_tag "weekly_sale_setup_liquids[#{@counter}][id]", weekly_sale_setup_liquid.new_record? ? liquid_id : @counter %>    
+  <td id="weekly_sale_setup_liquid_name" style="background-color:#84d472;">   
+    <%= text_field_tag("weekly_sale_setup_liquids[#{@counter.to_s}][name]", weekly_sale_setup_liquid.name, :size=>30, :maxlength=>100) %>
+  </td>
+  <td id="weekly_sale_setup_liquid_display_order" style="background-color:#84d472;">   
+    <%= text_field_tag("weekly_sale_setup_liquids[#{@counter.to_s}][display_order]", weekly_sale_setup_liquid.display_order, :size=>5, :maxlength=>3) %>
+  </td>
+  <td id="weekly_sale_setup_liquid_account_id" style="background-color:#84d472;">   
+    <%= select_tag("weekly_sale_setup_liquids[#{@counter.to_s}][account_id]", options_from_collection_for_select(@accounts, "id", "name")) %>
+  </td>
+  <td>
+    <%= link_to_function 'Destroy', remote_function( 
+      :url=> { :action=>:destroy_liquid, :id=>@counter.to_s }) %>   
+  </td>
+</tr>

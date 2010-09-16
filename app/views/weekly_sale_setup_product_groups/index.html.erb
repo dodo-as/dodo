@@ -1,0 +1,29 @@
+<h1><%= t(:listing, :scope => :global) %> <%= t(:title_plural, :scope => :weekly_sale_setup_product_groups) %></h1>
+
+<table>
+  <tr>
+    <th><%= t(:name, :scope => :weekly_sale_setup_product_groups) -%></th>
+    <th><%= t(:project, :scope => :weekly_sale_setup_product_groups) -%></th>
+    <th><%= t(:account, :scope => :weekly_sale_setup_product_groups) -%></th>
+    <th><%= t(:weekly_sale_setup, :scope => :weekly_sale_setup_product_groups) -%></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @weekly_sale_setup_product_groups.each do |weekly_sale_setup_product_group| %>
+  <tr>
+    <td><%= weekly_sale_setup_product_group.name %></td>
+    <td><%= weekly_sale_setup_product_group.project %></td>
+    <td><%= weekly_sale_setup_product_group.account %></td>
+    <td><%= weekly_sale_setup_product_group.weekly_sale_setup %></td>
+    <td><%= link_to t(:show, :scope => :global), weekly_sale_setup_product_group %></td>
+    <td><%= link_to t(:edit, :scope => :global), edit_weekly_sale_setup_product_group_path(weekly_sale_setup_product_group) %></td>
+    <td><%= link_to t(:destroy, :scope => :global), weekly_sale_setup_product_group, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to (t(:new, :scope => :global) + " " + t(:title_singular, :scope => :weekly_sale_setup_product_groups)), new_weekly_sale_setup_product_group_path %>

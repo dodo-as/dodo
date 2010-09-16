@@ -1,5 +1,4 @@
 class JournalsController < ApplicationController
-
   include PeriodController
 
   before_filter :find_units_all, :only => [:new, :edit]

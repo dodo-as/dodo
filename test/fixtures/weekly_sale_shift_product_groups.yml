@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  weekly_sale_shift: 
+  weekly_sale_setup_product_group: 
+  amount: 1.5
+  quantity: 1.5
+
+two:
+  weekly_sale_shift: 
+  weekly_sale_setup_product_group: 
+  amount: 1.5
+  quantity: 1.5

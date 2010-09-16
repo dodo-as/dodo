@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  project: 
+  account: 
+  weekly_sale_setup: 
+  company: 
+
+two:
+  name: MyString
+  project: 
+  account: 
+  weekly_sale_setup: 
+  company: 

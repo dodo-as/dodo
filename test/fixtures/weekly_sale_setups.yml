@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+setup_one:
+  name: Setup for pos 1
+  voucher_type: 1
+  permanent_cash: 10.0
+  cash_account: Account.find(1)
+  locked: false
+
+setup_two:
+  name: Setup for pos 2
+  voucher_type: 2
+  permanent_cash: 20.0 
+  cash_account: Account.find(2)
+  locked: false
