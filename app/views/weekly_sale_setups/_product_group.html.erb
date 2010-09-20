@@ -20,10 +20,10 @@
     <%= text_field_tag("weekly_sale_setup_product_groups[#{@counter.to_s}][display_order]", weekly_sale_setup_product_group.display_order, :size=>5, :maxlength=>3) %>
   </td>
   <td id="weekly_sale_setup_product_group_project_id" style="background-color:#a0b1f1;">   
-    <%= select_tag("weekly_sale_setup_product_groups[#{@counter.to_s}][project_id]", options_from_collection_for_select(@projects, "id", "name")) %>
+    <%= select_tag("weekly_sale_setup_product_groups[#{@counter.to_s}][project_id]", options_from_collection_for_select(@projects, "id", "name", weekly_sale_setup_product_group.project_id)) %>
   </td>
   <td id="weekly_sale_setup_product_group_account_id" style="background-color:#a0b1f1;">   
-    <%= select_tag("weekly_sale_setup_product_groups[#{@counter.to_s}][account_id]", options_from_collection_for_select(@accounts, "id", "name")) %>
+    <%= select_tag("weekly_sale_setup_product_groups[#{@counter.to_s}][account_id]", options_from_collection_for_select(@accounts, "id", "name", weekly_sale_setup_product_group.account_id)) %>
   </td>
   <td>
     <%= link_to_function 'Destroy', remote_function( 
