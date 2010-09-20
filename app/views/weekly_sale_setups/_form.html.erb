@@ -10,58 +10,57 @@
       </ul>
     </div>
   <% end %>
-  <div id="top_weekly_sale_setup" style="width:100%; background-color:#bed6ea; color:grey;">
-    <table style="width:100%; border:none;">
-      <thead>
-        <tr style="border:none;">
-          <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:unit, :scope => :weekly_sale_setups) %></td>
-          <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:name, :scope => :weekly_sale_setups) %></td>
-          <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:journal_type, :scope => :weekly_sale_setups) %></td>    
-        </tr>
-        <tr style="border:none;">
-          <td style="border:none;"><%= f.select :unit_id, @units.map {|u| [ u.name, u.id ] } %></td>
-          <td style="border:none;"><%= f.text_field :name, :maxlength=>100,:size=>40 %></td>
-          <td style="border:none;"><%= f.text_field :journal_type, :maxlength=>3 %></td>
+  <div id="top_weekly_sale_setup" class="form_body">
+    <table>
+      <tbody>
+        <tr>
+          <td class="title"><%= t(:unit, :scope => :weekly_sale_setups) %></td>
+          <td class="title"><%= t(:name, :scope => :weekly_sale_setups) %></td>
+          <td class="title"><%= t(:journal_type, :scope => :weekly_sale_setups) %></td>
         </tr>
         <tr>
-          <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:permanent_cash, :scope => :weekly_sale_setups) %></td>
-          <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:cash_account, :scope => :weekly_sale_setups) %></td>
-          <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:locked, :scope => :weekly_sale_setups) %></td>
-        </tr>
-        <tr>    
-          <td style="border:none;"><%= f.text_field :permanent_cash %></td>
-          <td style="border:none;"><%= f.select :cash_account_id, @accounts.map {|a| [ a.description, a.id ] } %></td>
-          <td style="border:none;"><%= f.check_box :locked %></td>
+          <td><%= f.select :unit_id, @units.map {|u| [ u.name, u.id ] } %></td>
+          <td><%= f.text_field :name, :maxlength=>100,:size=>40 %></td>
+          <td><%= f.text_field :journal_type, :maxlength=>3 %></td>
         </tr>
         <tr>
-          <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:valid_from, :scope => :weekly_sale_setups) %></td>
-          <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:valid_to, :scope => :weekly_sale_setups) %></td>
+          <td class="title"><%= t(:permanent_cash, :scope => :weekly_sale_setups) %></td>
+          <td class="title"><%= t(:cash_account, :scope => :weekly_sale_setups) %></td>
+          <td class="title"><%= t(:locked, :scope => :weekly_sale_setups) %></td>
         </tr>
         <tr>    
-          <td style="border:none;"><%= f.date_select :valid_from %></td>
-          <td style="border:none;"><%= f.date_select :valid_to %></td>
+          <td><%= f.text_field :permanent_cash %></td>
+          <td><%= f.select :cash_account_id, @accounts.map {|a| [ a.description, a.id ] } %></td>
+          <td><%= f.check_box :locked %></td>
+        </tr>
+        <tr>
+          <td class="title"><%= t(:valid_from, :scope => :weekly_sale_setups) %></td>
+          <td colspan="2" class="title"><%= t(:valid_to, :scope => :weekly_sale_setups) %></td>
+        </tr>
+        <tr>    
+          <td><%= f.date_select :valid_from %></td>
+          <td colspan="2"><%= f.date_select :valid_to %></td>
         </tr>
         <tr> 
-          <td style="background-color:#bed6ea; color:grey"><%= button_to_function t(:add_product_group, :scope => :weekly_sale_setups), remote_function(:url => { :action => :add_product_group}) %></td>
-          <td style="background-color:#bed6ea; color:grey"><%= button_to_function t(:add_liquid, :scope => :weekly_sale_setups), remote_function(:url => { :action => :add_liquid}) %></td>                                        
+          <td><%= button_to_function t(:add_product_group, :scope => :weekly_sale_setups), remote_function(:url => { :action => :add_product_group}) %></td>
+          <td colspan="2"><%= button_to_function t(:add_liquid, :scope => :weekly_sale_setups), remote_function(:url => { :action => :add_liquid}) %></td>                                        
         </tr>        
       </thead>
     </table>
   </div>  
 
-  <% if @weekly_sale_setup.weekly_sale_setup_product_groups.any? %>
-    <div id="product_groups">
-  <% else %>
-    <div id="product_groups" style="display: none">
-  <% end %>
+  <div id="product_groups" class="form_items" 
+    style="<%= 'display: none' unless @weekly_sale_setup.weekly_sale_setup_product_groups.any? %>">
     <table>          
       <thead>
-        <tr><h2>Product Groups</h2></tr>
+        <tr>
+          <th colspan="4">Product Groups</th>
+        </tr>
         <tr> 
-        <td><b><small><%= t(:name, :scope => :weekly_sale_setup_product_groups) %></small></b></td>     
-        <td><b><small><%= t(:display_order, :scope => :weekly_sale_setup_product_groups) %></small></b></td>
-        <td><b><small><%= t(:project, :scope => :weekly_sale_setup_product_groups) %></small></b></td>
-        <td><b><small><%= t(:account, :scope => :weekly_sale_setup_product_groups) %></small></b></td>
+          <th><%= t(:name, :scope => :weekly_sale_setup_product_groups) %></th>     
+          <th><%= t(:display_order, :scope => :weekly_sale_setup_product_groups) %></th>
+          <th><%= t(:project, :scope => :weekly_sale_setup_product_groups) %></th>
+          <th><%= t(:account, :scope => :weekly_sale_setup_product_groups) %></th>
         </tr>
       </thead>
       <tbody id="rows_weekly_sale_setup_product_groups">
@@ -71,18 +70,18 @@
       </tbody>
     </table>
   </div>
-  <% if @weekly_sale_setup.weekly_sale_setup_liquids.any? %>
-    <div id="liquids">
-  <% else %>
-    <div id="liquids" style="display: none">
-  <% end %>
-    <table>          
+  
+  <div id="liquids" class="form_items" 
+    style="<%= 'display: none' unless @weekly_sale_setup.weekly_sale_setup_liquids.any? %>">
+    <table>
       <thead>            
-        <tr><h2>Liquid Accounts</h2></tr>
+        <tr>
+          <th colspan="3">Liquid Accounts</th>
+        </tr>
         <tr> 
-        <td><small><b><%= t(:name, :scope => :weekly_sale_setup_product_groups) %></small></b></td>     
-        <td><small><b><%= t(:display_order, :scope => :weekly_sale_setup_product_groups) %></small></b></td>            
-        <td><small><b><%= t(:account, :scope => :weekly_sale_setup_product_groups) %></small></b></td>
+          <th><%= t(:name, :scope => :weekly_sale_setup_product_groups) %></th>     
+          <th><%= t(:display_order, :scope => :weekly_sale_setup_product_groups) %></th>
+          <th><%= t(:account, :scope => :weekly_sale_setup_product_groups) %></th>
         </tr>
       </thead>
       <tbody id="rows_weekly_sale_setup_liquids">

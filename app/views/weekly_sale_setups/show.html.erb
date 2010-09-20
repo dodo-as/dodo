@@ -1,47 +1,49 @@
-<div id="top_weekly_sale_setup" class="form">
-  <table style="width:100%; border:none;">
-    <thead>
-      <tr style="border:none;">
-        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:unit, :scope => :weekly_sale_setups) %></td>
-        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:name, :scope => :weekly_sale_setups) %></td>
-        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:journal_type, :scope => :weekly_sale_setups) %></td>    
-      </tr>
-      <tr style="border:none;">
-        <td style="border:none;"><%= @weekly_sale_setup.unit %></td>
-        <td style="border:none;"><%= @weekly_sale_setup.name %></td>
-        <td style="border:none;"><%= @weekly_sale_setup.journal_type %></td>
+<div id="top_weekly_sale_setup" class="form_body">
+  <table>
+    <tbody>
+      <tr>
+        <td class="title"><%= t(:unit, :scope => :weekly_sale_setups) %></td>
+        <td class="title"><%= t(:name, :scope => :weekly_sale_setups) %></td>
+        <td class="title"><%= t(:journal_type, :scope => :weekly_sale_setups) %></td>    
       </tr>
       <tr>
-        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:permanent_cash, :scope => :weekly_sale_setups) %></td>
-        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:cash_account, :scope => :weekly_sale_setups) %></td>
-        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:locked, :scope => :weekly_sale_setups) %></td>
-      </tr>
-      <tr>    
-        <td style="border:none;"><%= @weekly_sale_setup.permanent_cash %></td>
-        <td style="border:none;"><%= @weekly_sale_setup.cash_account %></td>
-        <td style="border:none;"><%= @weekly_sale_setup.locked %></td>
+        <td><%= @weekly_sale_setup.unit %></td>
+        <td><%= @weekly_sale_setup.name %></td>
+        <td><%= @weekly_sale_setup.journal_type %></td>
       </tr>
       <tr>
-        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:valid_from, :scope => :weekly_sale_setups) %></td>
-        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:valid_to, :scope => :weekly_sale_setups) %></td>
+        <td class="title"><%= t(:permanent_cash, :scope => :weekly_sale_setups) %></td>
+        <td class="title"><%= t(:cash_account, :scope => :weekly_sale_setups) %></td>
+        <td class="title"><%= t(:locked, :scope => :weekly_sale_setups) %></td>
       </tr>
       <tr>    
-        <td style="border:none;"><%= @weekly_sale_setup.valid_from %></td>
-        <td style="border:none;"><%= @weekly_sale_setup.valid_to %></td>
+        <td><%= @weekly_sale_setup.permanent_cash %></td>
+        <td><%= @weekly_sale_setup.cash_account %></td>
+        <td><%= @weekly_sale_setup.locked %></td>
       </tr>
-    </thead>
+      <tr>
+        <td class="title"><%= t(:valid_from, :scope => :weekly_sale_setups) %></td>
+        <td colspan="2" class="title"><%= t(:valid_to, :scope => :weekly_sale_setups) %></td>
+      </tr>
+      <tr>    
+        <td><%= @weekly_sale_setup.valid_from %></td>
+        <td colspan="2"><%= @weekly_sale_setup.valid_to %></td>
+      </tr>
+    </tbody>
   </table>
 </div>  
 
-<div id="product_groups">
+<div id="product_groups" class="form_items">
   <table>          
     <thead>
-      <tr><h2>Product Groups</h2></tr>
+      <tr>
+        <th colspan="4">Product Groups</th>
+      </tr>
       <tr> 
-      <td><b><small><%= t(:name, :scope => :weekly_sale_setup_product_groups) %></small></b></td>     
-      <td><b><small><%= t(:display_order, :scope => :weekly_sale_setup_product_groups) %></small></b></td>
-      <td><b><small><%= t(:project, :scope => :weekly_sale_setup_product_groups) %></small></b></td>
-      <td><b><small><%= t(:account, :scope => :weekly_sale_setup_product_groups) %></small></b></td>
+        <th><%= t(:name, :scope => :weekly_sale_setup_product_groups) %></td>
+        <th><%= t(:display_order, :scope => :weekly_sale_setup_product_groups) %></td>
+        <th><%= t(:project, :scope => :weekly_sale_setup_product_groups) %></td>
+        <th><%= t(:account, :scope => :weekly_sale_setup_product_groups) %></td>
       </tr>
     </thead>
     <tbody id="rows_weekly_sale_setup_product_groups">
@@ -52,14 +54,16 @@
   </table>
 </div>
 
-<div id="liquids">
+<div id="liquids" class="form_items">
   <table>          
-    <thead>            
-      <tr><h2>Liquid Accounts</h2></tr>
+    <thead>     
+      <tr>
+        <th colspan="3">Liquid Accounts</th>
+      </tr>
       <tr> 
-      <td><small><b><%= t(:name, :scope => :weekly_sale_setup_product_groups) %></small></b></td>     
-      <td><small><b><%= t(:display_order, :scope => :weekly_sale_setup_product_groups) %></small></b></td>            
-      <td><small><b><%= t(:account, :scope => :weekly_sale_setup_product_groups) %></small></b></td>
+        <th><%= t(:name, :scope => :weekly_sale_setup_product_groups) %></th>
+        <th><%= t(:display_order, :scope => :weekly_sale_setup_product_groups) %></th>
+        <th><%= t(:account, :scope => :weekly_sale_setup_product_groups) %></th>
       </tr>
     </thead>
     <tbody id="rows_weekly_sale_setup_liquids">

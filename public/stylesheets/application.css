@@ -1,6 +1,9 @@
 .number {
     text-align: right;
 }
+.title {
+    font-weight: bold;
+}
 .center {
     text-align: center;
 }
@@ -24,7 +27,13 @@ div.form_header table tbody td {
 }
 
 div.form_body {
-    
+    background-color:#bed6ea;
+}
+div.form_body table {
+    width: 100%;
+}
+div.form_body table tr td {
+    border: 0px;
 }
 
 div.form_items table thead th {

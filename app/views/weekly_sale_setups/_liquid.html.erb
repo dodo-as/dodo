@@ -13,13 +13,13 @@
 <tr id="row_weekly_sale_setup_liquid_<%=@counter.to_s%>">
   <%= hidden_field_tag "weekly_sale_setup_liquids[#{@counter}][new_record]", weekly_sale_setup_liquid.new_record? ? 'true' : 'false'  %>
   <%= hidden_field_tag "weekly_sale_setup_liquids[#{@counter}][id]", weekly_sale_setup_liquid.new_record? ? liquid_id : @counter %>    
-  <td id="weekly_sale_setup_liquid_name" style="background-color:#84d472;">   
+  <td id="weekly_sale_setup_liquid_name" class="shift_liquid">   
     <%= text_field_tag("weekly_sale_setup_liquids[#{@counter.to_s}][name]", weekly_sale_setup_liquid.name, :size=>30, :maxlength=>100) %>
   </td>
-  <td id="weekly_sale_setup_liquid_display_order" style="background-color:#84d472;">   
+  <td id="weekly_sale_setup_liquid_display_order" class="shift_liquid">   
     <%= text_field_tag("weekly_sale_setup_liquids[#{@counter.to_s}][display_order]", weekly_sale_setup_liquid.display_order, :size=>5, :maxlength=>3) %>
   </td>
-  <td id="weekly_sale_setup_liquid_account_id" style="background-color:#84d472;">   
+  <td id="weekly_sale_setup_liquid_account_id" class="shift_liquid">   
     <%= select_tag("weekly_sale_setup_liquids[#{@counter.to_s}][account_id]", options_from_collection_for_select(@accounts, "id", "name",  weekly_sale_setup_liquid.account_id)) %>
   </td>
   <td>

@@ -1,16 +1,16 @@
 <% weekly_sale_setup_product_group = WeeklySaleSetupProductGroup.find(id) %>
 
 <tr id="row_weekly_sale_setup_product_group_<%=@counter.to_s %>">  
-  <td id="weekly_sale_setup_product_group_name" style="background-color:#a0b1f1;">   
+  <td id="weekly_sale_setup_product_group_name" class="shift_product">   
     <%= weekly_sale_setup_product_group.name %>
   </td>
-  <td id="weekly_sale_setup_product_group_display_order" style="background-color:#a0b1f1;">   
+  <td id="weekly_sale_setup_product_group_display_order" class="shift_product">
     <%= weekly_sale_setup_product_group.display_order %>
   </td>
-  <td id="weekly_sale_setup_product_group_project_id" style="background-color:#a0b1f1;">   
+  <td id="weekly_sale_setup_product_group_project_id" class="shift_product">
     <%= weekly_sale_setup_product_group.project %>
   </td>
-  <td id="weekly_sale_setup_product_group_account_id" style="background-color:#a0b1f1;">   
+  <td id="weekly_sale_setup_product_group_account_id" class="shift_product">
     <%= weekly_sale_setup_product_group.account %>
   </td>
 </tr>
