@@ -7,6 +7,8 @@ Lodo::Application.routes.draw do |map|
 
   resources :weekly_sale_setups
 
+  resources :weekly_sales
+
   resources :paycheck_lines
   resources :paychecks
   

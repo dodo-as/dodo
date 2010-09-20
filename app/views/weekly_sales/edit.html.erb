@@ -2,6 +2,6 @@
 
 <%= render 'form' %>
 
-<%= link_to t(:show, :scope => :global),{:controller=>'weekly_sales', :action=>'show', :id=>@weekly_sale.id} %> |
-<%= link_to t(:back, :scope => :global), {:controller=>'weekly_sales', :action=>'index'} %>
+<%= link_to t(:show, :scope => :global), @weekly_sale %> |
+<%= link_to t(:back, :scope => :global), weekly_sales_url %>
 

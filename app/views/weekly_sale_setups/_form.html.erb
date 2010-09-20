@@ -16,12 +16,12 @@
         <tr style="border:none;">
           <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:unit, :scope => :weekly_sale_setups) %></td>
           <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:name, :scope => :weekly_sale_setups) %></td>
-          <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:voucher_type, :scope => :weekly_sale_setups) %></td>    
+          <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:journal_type, :scope => :weekly_sale_setups) %></td>    
         </tr>
         <tr style="border:none;">
           <td style="border:none;"><%= f.select :unit_id, @units.map {|u| [ u.name, u.id ] } %></td>
           <td style="border:none;"><%= f.text_field :name, :maxlength=>100,:size=>40 %></td>
-          <td style="border:none;"><%= f.text_field :voucher_type, :maxlength=>3 %></td>
+          <td style="border:none;"><%= f.text_field :journal_type, :maxlength=>3 %></td>
         </tr>
         <tr>
           <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:permanent_cash, :scope => :weekly_sale_setups) %></td>

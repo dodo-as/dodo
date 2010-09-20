@@ -13,16 +13,16 @@
 <tr id="row_weekly_sale_setup_product_group_<%=@counter.to_s %>">
   <%= hidden_field_tag "weekly_sale_setup_product_groups[#{@counter}][new_record]", weekly_sale_setup_product_group.new_record? ? 'true' : 'false'  %>
   <%= hidden_field_tag "weekly_sale_setup_product_groups[#{@counter}][id]", weekly_sale_setup_product_group.new_record? ? product_group_id : @counter %>    
-  <td id="weekly_sale_setup_product_group_name" style="background-color:#9a7292;">   
+  <td id="weekly_sale_setup_product_group_name" style="background-color:#a0b1f1;">   
     <%= text_field_tag("weekly_sale_setup_product_groups[#{@counter.to_s}][name]", weekly_sale_setup_product_group.name, :size=>30, :maxlength=>100) %>
   </td>
-  <td id="weekly_sale_setup_product_group_display_order" style="background-color:#9a7292;">   
+  <td id="weekly_sale_setup_product_group_display_order" style="background-color:#a0b1f1;">   
     <%= text_field_tag("weekly_sale_setup_product_groups[#{@counter.to_s}][display_order]", weekly_sale_setup_product_group.display_order, :size=>5, :maxlength=>3) %>
   </td>
-  <td id="weekly_sale_setup_product_group_project_id" style="background-color:#9a7292;">   
+  <td id="weekly_sale_setup_product_group_project_id" style="background-color:#a0b1f1;">   
     <%= select_tag("weekly_sale_setup_product_groups[#{@counter.to_s}][project_id]", options_from_collection_for_select(@projects, "id", "name")) %>
   </td>
-  <td id="weekly_sale_setup_product_group_account_id" style="background-color:#9a7292;">   
+  <td id="weekly_sale_setup_product_group_account_id" style="background-color:#a0b1f1;">   
     <%= select_tag("weekly_sale_setup_product_groups[#{@counter.to_s}][account_id]", options_from_collection_for_select(@accounts, "id", "name")) %>
   </td>
   <td>

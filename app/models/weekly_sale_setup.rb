@@ -11,11 +11,14 @@ class WeeklySaleSetup < ActiveRecord::Base
   has_many :weekly_sales
 
   validates :name, :length=>{ :minimum=>1, :maximum=> 100 }, :presence=>true
-  validates :voucher_type, :length=>{ :minimum=>1, :maximum=> 3 }, :presence=>true
+  validates :journal_type, :length=>{ :minimum=>1, :maximum=> 3 }, :presence=>true
   validates :permanent_cash, :numericality=>true
   validates :unit, :presence=>true
   validates :cash_account, :presence=>true
   validates :company, :presence=>true
+
+  JOURNAL_TYPES = %w(O)
+  validates_inclusion_of :journal_type, :in => %w(O)
 
   validates_uniqueness_of :name, :scope => :company_id
 

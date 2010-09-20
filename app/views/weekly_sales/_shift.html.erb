@@ -14,7 +14,7 @@
 <tr id="row_weekly_sale_shift_<%= weekly_sale_shift.new_record? ? @counter.to_s : weekly_sale_shift.id.to_s %>">
   <%= hidden_field_tag "weekly_sale_shifts[#{@counter}][new_record]", weekly_sale_shift.new_record? ? 'true' : 'false'  %>
   <%= hidden_field_tag "weekly_sale_shifts[#{@counter}][id]", weekly_sale_shift.new_record? ? shift_id : @counter %>    
-  <td style="background-color:white"></td>  
+  <td style="background-color:white"><%=  weekly_sale_shift.new_record? ? '' : weekly_sale_shift.date.strftime("%A") %></td>  
   <td id="weekly_sale_shift_date" style="background-color:#9a7292;">   
     <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][date]", weekly_sale_shift.new_record? ? date_shift : weekly_sale_shift.date, :size=>7) %>
   </td>
@@ -22,7 +22,7 @@
     <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][z_number]", weekly_sale_shift.z_number, :size => 4) %>
   </td>
   <td id="weekly_sale_shift_z_amount" style="background-color:#9a7292;">
-    <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][z_amount]", number_with_precision(weekly_sale_shift.z_amount, :locale =>I18n.locale), :size => 7, :maxlength=>"14" , :class=>"text-align:right;") %>
+    <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][z_amount]", number_with_precision(weekly_sale_shift.z_amount, :locale =>I18n.locale), :size => 7, :maxlength=>"14" , :class=>"number") %>
   </td>  
   <% if weekly_sale_setup  &&  weekly_sale_shift %>          
     <% weekly_sale_setup.weekly_sale_setup_product_groups.each do |product| %>
@@ -36,18 +36,18 @@
         <%= hidden_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][id]", weekly_sale_shift_product_group.new_record? ? '' : weekly_sale_shift_product_group.id.to_s) if weekly_sale_shift_product_group %>
         <%#= hidden_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][weekly_sale_id]", @counter.to_s) %>
         <%= hidden_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][product_group_id]", product.id.to_s) %>
-        <%= text_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][amount]", number_with_precision(weekly_sale_shift_product_group.amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this, #{product.id})") if weekly_sale_shift_product_group %>
+        <%= text_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][amount]", number_with_precision(weekly_sale_shift_product_group.amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this, #{product.id})", :class=>"number") if weekly_sale_shift_product_group %>
       </td>      
       <% if product.account.has_quantity %>
         <td id="column_weekly_sale_shift_product_group_quantity" style="background-color:#a0b1f1;">
           <%= hidden_field_tag("weekly_sale_shift_product_groups_quantity[#{@counter.to_s}][#{product.id.to_s}][id]", weekly_sale_shift_product_group.new_record? ? '' : weekly_sale_shift_product_group.id.to_s) if weekly_sale_shift_product_group %>
           <%= hidden_field_tag("weekly_sale_shift_product_groups_quantity[#{@counter.to_s}][#{product.id.to_s}][product_group_id]", product.id.to_s) %>
-          <%= text_field_tag("weekly_sale_shift_product_groups_quantity[#{@counter.to_s}][#{product.id.to_s}][quantity]", number_with_precision(weekly_sale_shift_product_group.quantity, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)") if weekly_sale_shift_product_group %>          
+          <%= text_field_tag("weekly_sale_shift_product_groups_quantity[#{@counter.to_s}][#{product.id.to_s}][quantity]", number_with_precision(weekly_sale_shift_product_group.quantity, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)", :class=>"number") if weekly_sale_shift_product_group %>          
         </td>
       <% end %>      
     <% end %>
   <% end %>  
-  <td id="total_product_groups" style="background-color:#a0b1f1;"><%= number_with_precision(weekly_sale_shift.total_product_group_amount, :locale =>I18n.locale) %></td>
+  <td class="number" id="total_product_groups" style="background-color:#a0b1f1;"><%= number_with_precision(weekly_sale_shift.total_product_group_amount, :locale =>I18n.locale) %></td>
   <% if weekly_sale_setup  &&  weekly_sale_shift %>          
     <% weekly_sale_setup.weekly_sale_setup_liquids.each do |liquid| %>
     <% if weekly_sale_shift && !weekly_sale_shift.new_record? 
@@ -60,22 +60,22 @@
         <%= hidden_field_tag("weekly_sale_shift_liquids[#{@counter.to_s}][#{liquid.id.to_s}][id]", weekly_sale_shift_liquid.new_record? ? '' : weekly_sale_shift_liquid.id.to_s) if weekly_sale_shift_liquid %>
         <%#= hidden_field_tag("weekly_sale_shift_liquids[#{@counter.to_s}][#{liquid.id.to_s}][weekly_sale_id]", @counter.to_s) %>
         <%= hidden_field_tag("weekly_sale_shift_liquids[#{@counter.to_s}][#{liquid.id.to_s}][liquid_id]", liquid.id.to_s) %>
-        <%= text_field_tag("weekly_sale_shift_liquids[#{@counter.to_s}][#{liquid.id.to_s}][amount]", number_with_precision(weekly_sale_shift_liquid.amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)") if weekly_sale_shift_liquid %>
+        <%= text_field_tag("weekly_sale_shift_liquids[#{@counter.to_s}][#{liquid.id.to_s}][amount]", number_with_precision(weekly_sale_shift_liquid.amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)", :class=>"number") if weekly_sale_shift_liquid %>
       </td>
     <% end %>
   <% end %>
-  <td id="total_cash" style="background-color:#84d472;"><%= weekly_sale_shift.received_cash_amount.to_s %></td>
-  <td id="total_liquids" style="background-color:#84d472;"><%= number_with_precision(weekly_sale_shift.total_product_group_amount, :locale =>I18n.locale) %></td>
+  <td id="total_cash" class="number" style="background-color:#84d472;"><%= number_with_precision(weekly_sale_shift.received_cash_amount.to_s, :locale =>I18n.locale) %></td>
+  <td id="total_liquids" class="number" style="background-color:#84d472;"><%= number_with_precision(weekly_sale_shift.total_product_group_amount, :locale =>I18n.locale) %></td>
   <td id="weekly_sale_shift_inserted_cash_amount" style="background-color:#84d472;">
-    <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][inserted_cash_amount]", number_with_precision(weekly_sale_shift.inserted_cash_amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)") %>
+    <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][inserted_cash_amount]", number_with_precision(weekly_sale_shift.inserted_cash_amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)", :class=>"number") %>
   </td>
   <td id="weekly_sale_shift_extracted_cash_amount" style="background-color:#84d472;">
-    <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][extracted_cash_amount]", number_with_precision(weekly_sale_shift.extracted_cash_amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)") %>
+    <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][extracted_cash_amount]", number_with_precision(weekly_sale_shift.extracted_cash_amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)", :class=>"number") %>
   </td>
   <td id="weekly_sale_shift_actual_cash_amount" style="background-color:#84d472;">
-    <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][actual_cash_amount]", number_with_precision(weekly_sale_shift.actual_cash_amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)") %>
+    <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][actual_cash_amount]", number_with_precision(weekly_sale_shift.actual_cash_amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)", :class=>"number") %>
   </td>
-  <td id="difference_cash" style="background-color:#84d472;"><%= number_with_precision(weekly_sale_shift.difference_cash, :locale =>I18n.locale) %></td>
+  <td id="difference_cash" class="number" style="background-color:#84d472;"><%= number_with_precision(weekly_sale_shift.difference_cash, :locale =>I18n.locale) %></td>
   <td id="weekly_sale_shift_difference_cash_explanation" style="background-color:#84d472;">
     <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][difference_cash_explanation]", weekly_sale_shift.difference_cash_explanation, :size => 16) %>
   </td>  

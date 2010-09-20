@@ -15,15 +15,88 @@ class WeeklySale < ActiveRecord::Base
 
   validates_uniqueness_of :week, :scope => [:weekly_sale_setup_id, :from_date, :to_date]
 
-  def before_update
-    create_journal
-  end
-
   def create_journal
     if self.weekly_sale_shifts.size > 0 
-      self.weekly_sale_shifts.each do |shift|
-        
-      end  
+      if !self.journal
+        journal = Journal.new
+        self.journal = journal        
+      else
+        journal = self.journal
+        journal.journal_operations.destroy_all
+      end
+      journal.number = self.journal_number
+      journal.journal_date = self.journal_date
+      journal.company_id = self.company_id
+      journal.period_id = self.period_id
+      journal.journal_type = self.weekly_sale_setup.journal_type
+      total_product_groups = 0
+      setup_product_groups = WeeklySaleShiftProductGroup.find_by_sql(["
+        select sum(amount) as amount, 
+        weekly_sale_setup_product_groups.id,
+        min(weekly_sale_setup_product_groups.account_id) as account_id,
+        min(weekly_sale_setup_product_groups.project_id) as project_id 
+        from weekly_sale_shift_product_groups, 
+        weekly_sale_setup_product_groups, 
+        weekly_sale_shifts
+        where weekly_sale_shifts.weekly_sale_id = ?
+        and weekly_sale_setup_product_groups.id = 
+      	  weekly_sale_shift_product_groups.weekly_sale_setup_product_group_id
+	      group by weekly_sale_setup_product_groups.id  ", self.id])
+
+      setup_product_groups.each do |setup_product_group|        
+        journal_operation = JournalOperation.new
+        account = Account.find(setup_product_group.account_id)
+        journal_operation.account_id = setup_product_group.id
+        journal_operation.amount = setup_product_group.amount          
+        if account.vat_account
+          journal_operation.vat_account = account.vat_account
+          journal_operation.vat = account.vat_account.vat_account_period_from_date(self.journal_date)
+        end
+        journal_operation.project_id = setup_product_group.project_id
+        journal_operation.journal = journal
+        journal_operation.save!
+        total_product_groups += setup_product_group.amount
+      end
+      total_liquids = 0
+      setup_liquids = WeeklySaleShiftLiquid.find_by_sql(["
+        select sum(amount) as amount, 
+        weekly_sale_setup_liquids.id,
+        min(weekly_sale_setup_liquids.account_id) as account_id 
+        from weekly_sale_shift_liquids, 
+        weekly_sale_setup_liquids, 
+        weekly_sale_shifts
+        where weekly_sale_shifts.weekly_sale_id = ?
+        and weekly_sale_setup_liquids.id = 
+      	  weekly_sale_shift_liquids.weekly_sale_setup_liquid_id
+	      group by weekly_sale_setup_liquids.id  ", self.id])
+      setup_liquids.each do |setup_liquid|        
+        journal_operation = JournalOperation.new
+        account = Account.find(setup_liquid.account_id)
+        journal_operation.account_id = setup_liquid.id
+        journal_operation.amount = setup_liquid.amount * -1        
+        if account.vat_account
+          journal_operation.vat_account = account.vat_account
+          journal_operation.vat = account.vat_account.vat_account_period_from_date(self.journal_date)
+        end
+        journal_operation.journal = journal
+        journal_operation.save!
+        total_liquids += setup_liquid.amount
+      end          
+      cash_amount = total_liquids - total_product_groups
+      if cash_amount != 0
+        journal_operation = JournalOperation.new
+        account = self.weekly_sale_setup.cash_account
+        journal_operation.account_id = account.id
+        journal_operation.amount = cash_amount        
+        if account.vat_account
+          journal_operation.vat_account = account.vat_account
+          journal_operation.vat = account.vat_account.vat_account_period_from_date(self.journal_date)
+        end
+        journal_operation.journal = journal
+        journal_operation.save!
+      end
+      journal.save! 
+      self.save!      
     end    
   end
 
@@ -97,7 +170,7 @@ class WeeklySale < ActiveRecord::Base
   end
   def update_attributes_with_childs(params, weekly_sale_shifts, weekly_sale_shift_product_groups, weekly_sale_shift_product_groups_quantity, weekly_sale_shift_liquids)
 
-    transaction do     
+    WeeklySaleShift.transaction do     
       for_destroy = ""
       weekly_sale_shifts.each do |key, shift|               
         if shift[:new_record] == 'true'
@@ -166,6 +239,7 @@ class WeeklySale < ActiveRecord::Base
      for_destroy += '0'
      ActiveRecord::Base.connection().execute "delete from weekly_sale_shifts  where id not in (" + for_destroy + ") and weekly_sale_id = " + self.id.to_s
      self.update_attributes(params)
+     self.create_journal
     end                
   end
 

@@ -272,7 +272,7 @@ en:
     title_singular: Weekly Sale Setup
     title_plural: Weekly Sale Setups    
     name: Name
-    voucher_type: Voucher type
+    journal_type: Journal type
     permanent_cash: Permanent cash
     cash_account: Cash account
     unit: Unit
@@ -305,7 +305,8 @@ en:
     weekly_sale_setup: Weekly sale setup
     period: Period
     journal_date: Journal date
-    journal: Journal
+    journal_number: Journal number
+    journal: Journal    
     year: Year
     week: Week
     permanent_cash: Permanent cash
