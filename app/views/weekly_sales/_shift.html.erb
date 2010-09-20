@@ -39,10 +39,10 @@
         <%= text_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][amount]", number_with_precision(weekly_sale_shift_product_group.amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this, #{product.id})", :class=>"number") if weekly_sale_shift_product_group %>
       </td>      
       <% if product.account.has_quantity %>
-        <td id="column_weekly_sale_shift_product_group_quantity" style="background-color:#a0b1f1;">
-          <%= hidden_field_tag("weekly_sale_shift_product_groups_quantity[#{@counter.to_s}][#{product.id.to_s}][id]", weekly_sale_shift_product_group.new_record? ? '' : weekly_sale_shift_product_group.id.to_s) if weekly_sale_shift_product_group %>
-          <%= hidden_field_tag("weekly_sale_shift_product_groups_quantity[#{@counter.to_s}][#{product.id.to_s}][product_group_id]", product.id.to_s) %>
-          <%= text_field_tag("weekly_sale_shift_product_groups_quantity[#{@counter.to_s}][#{product.id.to_s}][quantity]", number_with_precision(weekly_sale_shift_product_group.quantity, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)", :class=>"number") if weekly_sale_shift_product_group %>          
+        <td id="column_weekly_sale_shift_product_group_" style="background-color:#a0b1f1;">
+          <%= hidden_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][id]", weekly_sale_shift_product_group.new_record? ? '' : weekly_sale_shift_product_group.id.to_s) if weekly_sale_shift_product_group %>
+          <%= hidden_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][product_group_id]", product.id.to_s) %>
+          <%= text_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][quantity]", number_with_precision(weekly_sale_shift_product_group.quantity, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)", :class=>"number") if weekly_sale_shift_product_group %>          
         </td>
       <% end %>      
     <% end %>

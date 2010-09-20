@@ -168,7 +168,10 @@ class WeeklySale < ActiveRecord::Base
       end
     end
   end
-  def update_attributes_with_childs(params, weekly_sale_shifts, weekly_sale_shift_product_groups, weekly_sale_shift_product_groups_quantity, weekly_sale_shift_liquids)
+  def update_attributes_with_childs(params, weekly_sale_shifts, weekly_sale_shift_product_groups,  weekly_sale_shift_liquids)
+
+    puts "shifts =============== "+ weekly_sale_shifts.inspect 
+    puts "shifts_products ====== "+ weekly_sale_shift_product_groups.inspect 
 
     WeeklySaleShift.transaction do     
       for_destroy = ""
@@ -199,26 +202,29 @@ class WeeklySale < ActiveRecord::Base
               end
               weekly_sale_shift_product_group.weekly_sale_setup_product_group_id = product[:product_group_id]
               weekly_sale_shift_product_group.amount = product[:amount]
-              weekly_sale_shift_product_group.weekly_sale_shift= weekly_sale_shift
-              weekly_sale_shift_product_group.save!
-            end
-          end
-        end
-        weekly_sale_shift_product_groups_quantity.each do |key_weekly_sale, products|          
-          if key_weekly_sale == key
-            products.each do |key_product, product|
-              if shift[:new_record] == 'true'
-                weekly_sale_shift_product_group = WeeklySaleShiftProductGroup.new()
-              else
-                weekly_sale_shift_product_group = WeeklySaleShiftProductGroup.find(product[:id])
+              if !product[:quantity].nil?
+                weekly_sale_shift_product_group.quantity = product[:quantity]
               end
-              weekly_sale_shift_product_group.weekly_sale_setup_product_group_id = product[:product_group_id]
-              weekly_sale_shift_product_group.quantity = product[:quantity]
               weekly_sale_shift_product_group.weekly_sale_shift= weekly_sale_shift
               weekly_sale_shift_product_group.save!
             end
           end
         end
+#        weekly_sale_shift_product_groups_quantity.each do |key_weekly_sale, products|          
+#          if key_weekly_sale == key
+#            products.each do |key_product, product|
+#              #if shift[:new_record] == 'true'
+#               # weekly_sale_shift_product_group = WeeklySaleShiftProductGroup.new()
+#              #else
+#                weekly_sale_shift_product_group = WeeklySaleShiftProductGroup.find(product[:id])
+#              #end
+#              weekly_sale_shift_product_group.weekly_sale_setup_product_group_id = product[:product_group_id]
+#              weekly_sale_shift_product_group.quantity = product[:quantity]
+#              weekly_sale_shift_product_group.weekly_sale_shift= weekly_sale_shift
+#              weekly_sale_shift_product_group.save!
+#            end
+#          end
+#        end
         weekly_sale_shift_liquids.each do |key_weekly_sale, liquids|          
           if key_weekly_sale == key
             liquids.each do |key_liquid, liquid|
