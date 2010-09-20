@@ -2,8 +2,9 @@ class WeeklySalesController < ApplicationController
   # GET /weekly_sales
   # GET /weekly_sales.xml
   def index
-    @weekly_sales = WeeklySale.all(:order=>'from_date desc')
-    @weekly_sale_setups = WeeklySaleSetup.all(:order=>"name")
+    @weekly_sales = WeeklySale.with_permissions_to(:index).order('from_date desc').paginate({:page => params[:page]})
+
+    @weekly_sale_setups = WeeklySaleSetup.with_permissions_to(:index).order("name")
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @weekly_sales }
@@ -23,13 +24,12 @@ class WeeklySalesController < ApplicationController
 
   # GET /weekly_sales/new
   # GET /weekly_sales/new.xml
-  def create_period
+  def new
     #weekly_sale = WeeklySale.create_weekly_sale(params[:weekly_sale_setup_id])
     weekly_sale = WeeklySale.create_weekly_sale(params[:weekly_sale_setup_id], @me.current_company.id)
     
-      redirect_to :controller => "weekly_sales", :action => "edit", :id => weekly_sale.id
+      redirect_to :controller => "weekly_sales", :action => "edit", :id => weekly_sale.id    
 
-    
   end
 
 #  def new
@@ -75,7 +75,7 @@ class WeeklySalesController < ApplicationController
   def update
     @weekly_sale = WeeklySale.find(params[:id])
     respond_to do |format|
-      if params[:weekly_sale_shifts].blank? ? @weekly_sale.update_attributes_without_childs(params[@weekly_sale]) : @weekly_sale.update_attributes_with_childs(params[:weekly_sale], params[:weekly_sale_shifts], params[:weekly_sale_shift_product_groups], params[:weekly_sale_shift_product_groups_quantity], params[:weekly_sale_shift_liquids])
+      if params[:weekly_sale_shifts].blank? ? @weekly_sale.update_attributes_without_childs(params[@weekly_sale]) : @weekly_sale.update_attributes_with_childs(params[:weekly_sale], params[:weekly_sale_shifts], params[:weekly_sale_shift_product_groups], params[:weekly_sale_shift_liquids])
         format.html { redirect_to(:action=>'show', :id=>@weekly_sale.id, :notice => 'Weekly sale was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -108,11 +108,6 @@ class WeeklySalesController < ApplicationController
 #  end
 
   def add_shift
-    puts "parametros date " +params[:date].inspect
-    puts "parametros id " +params[:id].inspect
-    puts "parametros with " +params[:with].inspect
-    puts "parametros  " +params.inspect
-
     @weekly_sale = WeeklySale.find(params[:weekly_sale_id])
     @weekly_sale_shift = WeeklySaleShift.new(:id=>0)
     @counter = (Time.now.to_f.to_s.sub('.', '_') + '_' + rand(9999999).to_s).to_s

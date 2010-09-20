@@ -1,35 +1,73 @@
-<p id="notice"><%= notice %></p>
+<div id="top_weekly_sale_setup" style="width:100%; background-color:#bed6ea; color:grey;">
+  <table style="width:100%; border:none;">
+    <thead>
+      <tr style="border:none;">
+        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:unit, :scope => :weekly_sale_setups) %></td>
+        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:name, :scope => :weekly_sale_setups) %></td>
+        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:journal_type, :scope => :weekly_sale_setups) %></td>    
+      </tr>
+      <tr style="border:none;">
+        <td style="border:none;"><%= @weekly_sale_setup.unit %></td>
+        <td style="border:none;"><%= @weekly_sale_setup.name %></td>
+        <td style="border:none;"><%= @weekly_sale_setup.journal_type %></td>
+      </tr>
+      <tr>
+        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:permanent_cash, :scope => :weekly_sale_setups) %></td>
+        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:cash_account, :scope => :weekly_sale_setups) %></td>
+        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:locked, :scope => :weekly_sale_setups) %></td>
+      </tr>
+      <tr>    
+        <td style="border:none;"><%= @weekly_sale_setup.permanent_cash %></td>
+        <td style="border:none;"><%= @weekly_sale_setup.cash_account %></td>
+        <td style="border:none;"><%= @weekly_sale_setup.locked %></td>
+      </tr>
+      <tr>
+        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:valid_from, :scope => :weekly_sale_setups) %></td>
+        <td style="border:none; background-color:#bed6ea; color:grey; font-weight:900;"><%= t(:valid_to, :scope => :weekly_sale_setups) %></td>
+      </tr>
+      <tr>    
+        <td style="border:none;"><%= @weekly_sale_setup.valid_from %></td>
+        <td style="border:none;"><%= @weekly_sale_setup.valid_to %></td>
+      </tr>
+    </thead>
+  </table>
+</div>  
 
-<p>
-  <b><%= t(:unit, :scope => :weekly_sale_setups) -%>:</b>
-  <%= @weekly_sale_setup.unit.name %>
-</p>
+<div id="product_groups">
+  <table>          
+    <thead>
+      <tr><h2>Product Groups</h2></tr>
+      <tr> 
+      <td><b><small><%= t(:name, :scope => :weekly_sale_setup_product_groups) %></small></b></td>     
+      <td><b><small><%= t(:display_order, :scope => :weekly_sale_setup_product_groups) %></small></b></td>
+      <td><b><small><%= t(:project, :scope => :weekly_sale_setup_product_groups) %></small></b></td>
+      <td><b><small><%= t(:account, :scope => :weekly_sale_setup_product_groups) %></small></b></td>
+      </tr>
+    </thead>
+    <tbody id="rows_weekly_sale_setup_product_groups">
+      <% @weekly_sale_setup.weekly_sale_setup_product_groups.each do |product_group| %>
+        <%= render :partial=>"show_product_group", :locals=>{:id=>product_group.id} %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
-<p>
-  <b><%= t(:name, :scope => :weekly_sale_setups) -%>:</b>
-  <%= @weekly_sale_setup.name %>
-</p>
-
-<p>
-  <b><%= t(:voucher_type, :scope => :weekly_sale_setups) -%>:</b>
-  <%= @weekly_sale_setup.voucher_type %>
-</p>
-
-<p>
-  <b><%= t(:permanent_cash, :scope => :weekly_sale_setups) -%>:</b>
-  <%= number_to_currency(@weekly_sale_setup.permanent_cash, :locale =>I18n.locale, :precision => 2) %>
-</p>
-
-<p>
-  <b><%= t(:cash_account, :scope => :weekly_sale_setups) -%>:</b>
-  <%= @weekly_sale_setup.cash_account.description %>
-</p>
-
-<p>
-  <b><%= t(:locked, :scope => :weekly_sale_setups) -%>:</b>
-  <%= @weekly_sale_setup.locked %>
-</p>
-
-
-<%= link_to t(:edit, :scope => :global), edit_weekly_sale_setup_path(@weekly_sale_setup) %> |
-<%= link_to 'Back', {:controller=>'weekly_sales', :action=>'index'} %>
+<div id="liquids">
+  <table>          
+    <thead>            
+      <tr><h2>Liquid Accounts</h2></tr>
+      <tr> 
+      <td><small><b><%= t(:name, :scope => :weekly_sale_setup_product_groups) %></small></b></td>     
+      <td><small><b><%= t(:display_order, :scope => :weekly_sale_setup_product_groups) %></small></b></td>            
+      <td><small><b><%= t(:account, :scope => :weekly_sale_setup_product_groups) %></small></b></td>
+      </tr>
+    </thead>
+    <tbody id="rows_weekly_sale_setup_liquids">
+      <% @weekly_sale_setup.weekly_sale_setup_liquids.each do |liquid| %>
+        <%= render :partial=>"show_liquid", :locals=>{:id=>liquid.id} %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<%= link_to t(:edit, :scope => :global), edit_weekly_sale_setup_path(@weekly_sale_setup) if permitted_to? :edit, @weekly_sale_setup %> |
+<%= link_to t(:back, :scope => :global), weekly_sales_path %>

@@ -96,6 +96,11 @@ authorization do
       if_attribute :company_id => nil
     end
 
+    has_permission_on :weekly_sales, :to => :manage do
+      if_attribute :company_id => is {user.current_company.id}
+      if_attribute :company_id => nil
+    end
+
   end
 
   role :accountant do

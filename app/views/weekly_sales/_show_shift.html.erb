@@ -1,0 +1,47 @@
+<% weekly_sale_shift = WeeklySaleShift.find(id) %>
+<tr id="row_weekly_sale_shift_<%= weekly_sale_shift.new_record? ? @counter.to_s : weekly_sale_shift.id.to_s %>">
+  <td style="background-color:white"><%=  weekly_sale_shift.date.strftime("%A") %></td>  
+  <td id="weekly_sale_shift_date" style="background-color:#9a7292;">   
+    <%= weekly_sale_shift.date %>
+<%= weekly_sale_shift.id %>
+  </td>
+  <td id="weekly_sale_shift_z_number" style="background-color:#9a7292;">    
+    <%= weekly_sale_shift.z_number %>
+  </td>
+  <td id="weekly_sale_shift_z_amount" style="background-color:#9a7292;">
+    <%= number_with_precision(weekly_sale_shift.z_amount, :class=>"text-align:right;") %>
+  </td>  
+  <% weekly_sale_shift.weekly_sale_shift_product_groups.each do |product| %>
+    <td id="column_weekly_sale_shift_product_group_<%= @counter.to_s %>_<%= product.id.to_s %>" style="background-color:#a0b1f1;">
+      <%= number_with_precision(product.amount, :locale =>I18n.locale) %>
+    </td>      
+    <% if product.weekly_sale_setup_product_group.account.has_quantity %>
+      <td id="column_weekly_sale_shift_product_group_quantity" style="background-color:#a0b1f1;">
+        <%= number_with_precision(product.quantity, :locale =>I18n.locale) %>          
+      </td>
+    <% end %>      
+  <% end %>
+  <td id="total_product_groups" style="background-color:#a0b1f1;"><%= number_with_precision(weekly_sale_shift.total_product_group_amount, :locale =>I18n.locale) %></td>
+  <% weekly_sale_shift.weekly_sale_shift_liquids.each do |liquid| %>
+    <td id="column_weekly_sale_shift_liquid" style="background-color:#84d472;">     
+      <%= number_with_precision(liquid.amount, :locale =>I18n.locale) %>
+    </td>
+  <% end %>
+  <td id="total_cash" style="background-color:#84d472;"><%= number_with_precision(weekly_sale_shift.received_cash_amount.to_s, :locale =>I18n.locale) %></td>
+  <td id="total_liquids" style="background-color:#84d472;"><%= number_with_precision(weekly_sale_shift.total_product_group_amount, :locale =>I18n.locale) %></td>
+  <td id="weekly_sale_shift_inserted_cash_amount" style="background-color:#84d472;">
+    <%= number_with_precision(weekly_sale_shift.inserted_cash_amount, :locale =>I18n.locale) %>
+  </td>
+  <td id="weekly_sale_shift_extracted_cash_amount" style="background-color:#84d472;">
+    <%= number_with_precision(weekly_sale_shift.extracted_cash_amount, :locale =>I18n.locale) %>
+  </td>
+  <td id="weekly_sale_shift_actual_cash_amount" style="background-color:#84d472;">
+    <%= number_with_precision(weekly_sale_shift.actual_cash_amount, :locale =>I18n.locale) %>
+  </td>
+  <td id="difference_cash" style="background-color:#84d472;"><%= number_with_precision(weekly_sale_shift.difference_cash, :locale =>I18n.locale) %></td>
+  <td id="weekly_sale_shift_difference_cash_explanation" style="background-color:#84d472;">
+    <%= weekly_sale_shift.difference_cash_explanation %>
+  </td>  
+  <td style="background-color:#9a7292"></td>    
+  <td style="background-color:#9a7292"></td>    
+</tr>

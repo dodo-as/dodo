@@ -134,15 +134,6 @@
     return true;
   }
 </script>
-<%
-  if params[:action] == 'new' || params[:action] == 'create'
-    action = 'create' 
-    method = 'post'
-  else
-    action = 'update' 
-    method = 'put'
-  end
-%>
 <% form_tag({:action=>"update", :id=>@weekly_sale.id}, :method =>"put", :style=>"border-width: 0px") do %>
 
   <% if @weekly_sale.errors.any? %>
@@ -156,72 +147,86 @@
   </div>
   <% end %>
 
-  <div id="top_weekly_sale" style="width:100%; background-color:#bed6ea; color:grey;">
-    <table style="width:100%;">
+  <div id="top_weekly_sale" class="form_header">
+    <table>
       <thead>
         <tr>
-          <td class="weekly_columns_1"><%= t(:weekly_sale_setup, :scope => :weekly_sales) %></td>
-          <td class="weekly_columns_1"><%= t(:period, :scope => :weekly_sales) %></td>
-          <td class="weekly_columns_1"><%= t(:journal_date, :scope => :weekly_sales) %></td>
-          <td class="weekly_columns_1"><%= t(:journal, :scope => :weekly_sales) %></td>
-          <td class="weekly_columns_1"><%= t(:year, :scope => :weekly_sales) %></td>
-          <td class="weekly_columns_1"><%= t(:week, :scope => :weekly_sales) %></td>
-          <td class="weekly_columns_1"><%= t(:permanent_cash, :scope => :weekly_sales) %></td>
-          <td class="weekly_columns_1"><%= t(:unit, :scope => :weekly_sales) %></td>
+          <th><%= t(:weekly_sale_setup, :scope => :weekly_sales) %></th>
+          <th><%= t(:period, :scope => :weekly_sales) %></th>
+          <th><%= t(:journal_date, :scope => :weekly_sales) %></th>
+          <th><%= t(:journal_number, :scope => :weekly_sales) %></th>    
+          <th><%= t(:journal, :scope => :weekly_sales) %></th>
+          <th><%= t(:year, :scope => :weekly_sales) %></th>
+          <th><%= t(:week, :scope => :weekly_sales) %></th>
         </tr>
-        <tr>
-          <% if params[:action] == 'new' || params[:action] == 'create' %>
-          <td class="weekly_columns_1"><%= select :weekly_sale, :weekly_sale_setup_id, @weekly_sale_setups.map {|r| [ r, r.id ] } %></td>     
-          <% else %>
-          <td class="weekly_columns_1"><%= @weekly_sale.weekly_sale_setup %>
-          <% end %>
-          <td class="weekly_columns_1"><%= current_user.assignments.where("roles.name = 'admin'").size>0 ? (select :weekly_sale, :period_id, @periods.map {|r| [ r, r.id ] }) : @weekly_sale.period.to_s %></td>          
-          <td class="weekly_columns_1"><%= current_user.assignments.where("roles.name = 'admin'").size>0 ? (date_select :weekly_sale, :journal_date) : @weekly_sale.journal_date.to_s %></td>
-          <td class="weekly_columns_1"><%= @weekly_sale.journal if @weekly_sale && @weekly_sale.journal %>
-          <td class="weekly_columns_1"><%= @weekly_sale.weekly_sale_setup.permanent_cash if @weekly_sale && @weekly_sale.weekly_sale_setup %></td>
-          <td class="weekly_columns_1"><%= current_user.assignments.where("roles.name = 'admin'").size>0 ? (text_field :weekly_sale, :week, :maxlength=>5) : @weekly_sale.week.to_s %></td>
-          <td class="weekly_columns_1"><%= @weekly_sale.weekly_sale_setup.permanent_cash if @weekly_sale && @weekly_sale.weekly_sale_setup %>
-          <td class="weekly_columns_1"><%= @weekly_sale.weekly_sale_setup.unit if @weekly_sale && @weekly_sale.weekly_sale_setup %>
-        </tr>            
       </thead>
+      <tbody>
+        <tr>
+          <td><%= @weekly_sale.weekly_sale_setup %></td>               
+          <td><%= current_user.assignments.where("roles.name = 'admin'").size>0 ? (select :weekly_sale, :period_id, @periods.map {|r| [ r, r.id ] }) : @weekly_sale.period.to_s %></td>          
+          <td><%= date_select :weekly_sale, :journal_date %></td>
+          <td><%= text_field :weekly_sale, :journal_number, :size=>8 %></td>
+          <td><%= ((permitted_to? :show, @weekly_sale.journal) ? link_to (@weekly_sale.journal.id.to_s, @weekly_sale.journal ) : @weekly_sale.journal.id.to_s)  if @weekly_sale && @weekly_sale.journal %>
+          <td><%= @weekly_sale.period.year if @weekly_sale  %></td>
+          <td><%= current_user.assignments.where("roles.name = 'admin'").size>0 ? (text_field :weekly_sale, :week, :maxlength=>5) : @weekly_sale.week.to_s %></td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr>
+          <th><%= t(:unit, :scope => :weekly_sales) %></th>
+          <th><%= t(:closed, :scope => :weekly_sales) %></th>
+          <th><%= t(:closed_by, :scope => :weekly_sales) %></th>
+          <th><%= t(:closed_at, :scope => :weekly_sales) %></th>
+          <th colspan="3" class="right"><%= t(:permanent_cash, :scope => :weekly_sales) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>                    
+          <td><%= @weekly_sale.weekly_sale_setup.unit if @weekly_sale && @weekly_sale.weekly_sale_setup %></td>
+          <td><%= check_box :weekly_sale, :closed %></td>
+          <td><%= @weekly_sale.closed_by %></td>
+          <td><%= @weekly_sale.closed_at %></td>
+          <td colspan="3"><%= number_with_precision(@weekly_sale.weekly_sale_setup.permanent_cash, :locale =>I18n.locale) if @weekly_sale && @weekly_sale.weekly_sale_setup %></td>
+        </tr>            
+      </tbody>
     </table>
   </div> 
 
-  <div id="shifts">
+  <div id="shifts" class="form_items">
     <table>          
       <thead>
         <tr> 
-          <th style="background-color:white"></th>       
-          <th style="background-color:#9a7292;"><%= t(:date_shift, :scope => :weekly_sales) %></th>                
-          <th style="background-color:#9a7292;"><%= t(:z_number, :scope => :weekly_sales) %></th>                
-          <th style="background-color:#9a7292;"><%= t(:z_amount, :scope => :weekly_sales) %></th>    
+          <th></th>       
+          <th><%= t(:date_shift, :scope => :weekly_sales) %></th>                
+          <th><%= t(:z_number, :scope => :weekly_sales) %></th>                
+          <th><%= t(:z_amount, :scope => :weekly_sales) %></th>    
           <% if @weekly_sale.weekly_sale_setup  %>          
             <% @weekly_sale.weekly_sale_setup.weekly_sale_setup_product_groups.each do |product| %>
-              <th style="background-color:#a0b1f1;"><%= product.name %> </th>
+              <th><%= product.name %> </th>
               <% if product.account.has_quantity %>
-                <th  style="background-color:#a0b1f1; font-size: x-small;">Units</th>                
+                <th>Units</th>                
               <% end %>
             <% end %>
           <% end %>
-          <th style="background-color:#a0b1f1;" ><%= t(:total_product_groups, :scope => :weekly_sales) %></th>          
+          <th><%= t(:total_product_groups, :scope => :weekly_sales) %></th>          
           <% if @weekly_sale.weekly_sale_setup  %>          
             <% @weekly_sale.weekly_sale_setup.weekly_sale_setup_liquids.each do |liquid| %>
-              <th style="background-color:#84d472;"><%= liquid.name %> </th>
+              <th><%= liquid.name %> </th>
             <% end %>
           <% end %>
-          <th style="background-color:#84d472;"><%= t(:received_cash, :scope => :weekly_sales) %></th>
-          <th style="background-color:#84d472;"><%= t(:total_product_groups, :scope => :weekly_sales) %></th>
-          <th style="background-color:#84d472;"><%= t(:inserted_cash, :scope => :weekly_sales) %></th>
-          <th style="background-color:#84d472;"><%= t(:extracted_cash, :scope => :weekly_sales) %></th>                                                        
-          <th style="background-color:#84d472;"><%= t(:actual_cash, :scope => :weekly_sales) %></th>                            
-          <th style="background-color:#84d472;"><%= t(:difference_cash, :scope => :weekly_sales) %></th>
-          <th style="background-color:#84d472;"><%= t(:explanation_different_cash, :scope => :weekly_sales) %></th>
-          <th style="background-color:#9a7292"><%= t(:sign_by, :scope => :weekly_sales) %></th>
-          <th style="background-color:#9a7292"><%= t(:closed_by, :scope => :weekly_sales) %></th>                                                                                                                
+          <th><%= t(:received_cash, :scope => :weekly_sales) %></th>
+          <th><%= t(:total_product_groups, :scope => :weekly_sales) %></th>
+          <th><%= t(:inserted_cash, :scope => :weekly_sales) %></th>
+          <th><%= t(:extracted_cash, :scope => :weekly_sales) %></th>                                                        
+          <th><%= t(:actual_cash, :scope => :weekly_sales) %></th>                            
+          <th><%= t(:difference_cash, :scope => :weekly_sales) %></th>
+          <th><%= t(:explanation_different_cash, :scope => :weekly_sales) %></th>
+          <th><%= t(:sign_by, :scope => :weekly_sales) %></th>
+          <th><%= t(:closed_by, :scope => :weekly_sales) %></th>                                                                                                                
         </tr>     
       </thead>         
       <tbody id="rows_weekly_sale_shifts">
-        <% @weekly_sale.weekly_sale_shifts.order('id').each do |shift| %>
+        <% @weekly_sale.weekly_sale_shifts.order('date, id').each do |shift| %>
           <%= render :partial=>"shift", :locals=>{:date_shift=>nil, :shift_id=>shift.id, :weekly_sale_setup_id=>@weekly_sale.weekly_sale_setup_id  } %>
         <% end %>        
         <tr>
@@ -231,7 +236,7 @@
           <td style="background-color:#9a7292;"></td>
           <% if @weekly_sale.weekly_sale_setup %>
             <% @weekly_sale.weekly_sale_setup.weekly_sale_setup_product_groups.each do |product| %>
-              <td id="sum_product_group_<%= product.id %>" style="background-color:#a0b1f1; font-size: x-small; text-align:right;"><%= number_with_precision(@weekly_sale.sum_a_product_group(product.id), :locale=>I18n.locale) %></td>
+              <td id="sum_product_group_<%= product.id %>" class="number" style="background-color:#a0b1f1; font-size: x-small; text-align:right;"><%= number_with_precision(@weekly_sale.sum_a_product_group(product.id), :locale=>I18n.locale) %></td>
               <% if product.account.has_quantity %>
                 <td id="sum_product_group_quantity" style="background-color:#a0b1f1; font-size: x-small;"></td>                
               <% end %>
@@ -243,12 +248,12 @@
               <td id="sum_liquid" style="background-color:#84d472; font-size: x-small; text-align:right;"><%= number_with_precision(@weekly_sale.sum_a_liquid(liquid.id), :locale =>I18n.locale) %></td>        
             <% end %>
           <% end %>
-          <td id="sum_total_cash" style="background-color:#84d472;"><%= @weekly_sale.sum_received_cash_amount %></td>
-          <td id="sum_total_liquids" style="background-color:#84d472;"><%= @weekly_sale.sum_product_group %></td>        
-          <td id="sum_weekly_sale_shift_inserted_cash_amount" style="background-color:#84d472; text-align:right;"><%= @weekly_sale.sum_inserted_cash_amount %></td>        
-          <td id="sum_weekly_sale_shift_extracted_cash_amount" style="background-color:#84d472 text-align:right;;"><%= @weekly_sale.sum_extracted_cash_amount %></td>        
-          <td id="sum_weekly_sale_shift_actual_cash_amount" style="background-color:#84d472; text-align:right;"><%= @weekly_sale.sum_actual_cash_amount %></td>        
-          <td id="sum_difference_cash" style="background-color:#84d472;"><%= @weekly_sale.sum_difference_cash_amount %></td>        
+          <td class="number" id="sum_total_cash" style="background-color:#84d472;"><%= @weekly_sale.sum_received_cash_amount %></td>
+          <td class="number" id="sum_total_liquids" style="background-color:#84d472;"><%= @weekly_sale.sum_product_group %></td>        
+          <td class="number" id="sum_weekly_sale_shift_inserted_cash_amount" style="background-color:#84d472; text-align:right;"><%= @weekly_sale.sum_inserted_cash_amount %></td>        
+          <td class="number" id="sum_weekly_sale_shift_extracted_cash_amount" style="background-color:#84d472 text-align:right;;"><%= @weekly_sale.sum_extracted_cash_amount %></td>        
+          <td class="number" id="sum_weekly_sale_shift_actual_cash_amount" style="background-color:#84d472; text-align:right;"><%= @weekly_sale.sum_actual_cash_amount %></td>        
+          <td class="number" id="sum_difference_cash" style="background-color:#84d472;"><%= @weekly_sale.sum_difference_cash_amount %></td>        
           <td style="background-color:#84d472;"></td>
           <td style="background-color:#9a7292"></td>
           <td style="background-color:#9a7292"></td>                
@@ -349,21 +354,21 @@
       <tbody>
        <tr> 
           <td style="background-color:white; color:grey;"><%= t(:inserted_cash, :scope => :weekly_sales) %></td>       
-          <td id="sum_weekly_sale_shift_inserted_cash_amount" style="background-color:#84d472; text-align:right;"><%= number_with_precision(@weekly_sale.total_inserted_cash_amount, :locale=>I18n.locale) %></td>
+          <td class="number" id="sum_weekly_sale_shift_inserted_cash_amount" style="background-color:#84d472; text-align:right;"><%= number_with_precision(@weekly_sale.total_inserted_cash_amount, :locale=>I18n.locale) %></td>
         </tr>
        <tr> 
           <td style="background-color:white; color:grey;"><%= t(:extracted_cash, :scope => :weekly_sales) %></td>       
-          <td id="sum_weekly_sale_shift_extracted_cash_amount" style="background-color:#84d472; text-align:right;"><%= number_with_precision(@weekly_sale.total_extracted_cash_amount, :locale=>I18n.locale) %></td>
+          <td class="number" id="sum_weekly_sale_shift_extracted_cash_amount" style="background-color:#84d472; text-align:right;"><%= number_with_precision(@weekly_sale.total_extracted_cash_amount, :locale=>I18n.locale) %></td>
         </tr>
        <tr> 
           <td style="background-color:white; color:grey;"><%= t(:private_amount, :scope => :weekly_sales) %></td>       
-          <td id="private_amount" style="background-color:#84d472;"><%= text_field :weekly_sale, :private_amount, :maxlength=>10, :onchange => "calcTotalNet(this)" %></td>
+          <td class="number" id="private_amount" style="background-color:#84d472;"><%= text_field :weekly_sale, :private_amount, :maxlength=>10, :onchange => "calcTotalNet(this)" %></td>
           <td style="background-color:white; color:grey;"><%= t(:explanation_private_amount, :scope => :weekly_sales) %></td>       
           <td style="background-color:#84d472;"><%= text_field :weekly_sale, :private_amount_explanation, :maxlength=>20 %></td>
         </tr>
        <tr> 
           <td style="background-color:white; color:grey;"><%= t(:total_net, :scope => :weekly_sales) %></td>       
-          <td id="total_cash_net" style="background-color:#84d472; text-align:right;"><%= number_with_precision(@weekly_sale.total_cash_net, :locale =>I18n.locale) %></td>
+          <td class="number" id="total_cash_net" style="background-color:#84d472; text-align:right;"><%= number_with_precision(@weekly_sale.total_cash_net, :locale =>I18n.locale) %></td>
         </tr>
       </tbody>
     </table>

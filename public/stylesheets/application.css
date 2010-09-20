@@ -1,0 +1,44 @@
+.number {
+    text-align: right;
+}
+.center {
+    text-align: center;
+}
+.right {
+    text-align: right;
+}
+
+div.form_header {
+    width:100%;
+    background-color:#bed6ea; 
+}
+div.form_header table {
+    width:100%;
+}
+div.form_header table thead th {
+    font-weight: bold; 
+    text-align: center;
+}
+div.form_header table tbody td {
+    text-align: center;
+}
+
+div.form_items table thead th {
+    font-weight: bold; 
+    text-align: center;
+}
+div.form_items table tbody td {
+    text-align: center;
+}
+
+/* weekly_sales_items */
+td.shift_general {
+    
+}
+td.shift_product {
+    
+}
+td.shift_liquid {
+    
+}
+
