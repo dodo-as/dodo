@@ -23,6 +23,10 @@ div.form_header table tbody td {
     text-align: center;
 }
 
+div.form_body {
+    
+}
+
 div.form_items table thead th {
     font-weight: bold; 
     text-align: center;
@@ -33,12 +37,12 @@ div.form_items table tbody td {
 
 /* weekly_sales_items */
 td.shift_general {
-    
+    background-color:#9a7292; 
 }
 td.shift_product {
-    
+    background-color:#a0b1f1;
 }
 td.shift_liquid {
-    
+    background-color:#84d472;
 }
 
