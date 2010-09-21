@@ -65,6 +65,7 @@ en:
     log_out: "Log out"
     active_company: "Active company"
     vat_plan: "VAT plan"
+    weekly_sales: "Weekly Sales"
   users:
     remember_me: "Remember me"
     reset_password: "Reset password"
