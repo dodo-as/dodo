@@ -75,7 +75,7 @@ class WeeklySalesController < ApplicationController
   def update
     @weekly_sale = WeeklySale.find(params[:id])
     respond_to do |format|
-      if params[:weekly_sale_shifts].blank? ? @weekly_sale.update_attributes_without_childs(params[@weekly_sale]) : @weekly_sale.update_attributes_with_childs(params[:weekly_sale], params[:weekly_sale_shifts], params[:weekly_sale_shift_product_groups], params[:weekly_sale_shift_liquids])
+      if params[:weekly_sale_shifts].blank? ? @weekly_sale.update_attributes_without_childs(params[@weekly_sale]) : @weekly_sale.update_attributes_with_childs(params[:weekly_sale], params[:weekly_sale_shifts], params[:weekly_sale_shift_product_groups], params[:weekly_sale_shift_liquids], current_user)
         format.html { redirect_to(:action=>'show', :id=>@weekly_sale.id, :notice => 'Weekly sale was successfully updated.') }
         format.xml  { head :ok }
       else

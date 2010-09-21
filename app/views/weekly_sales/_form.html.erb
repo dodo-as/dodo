@@ -117,7 +117,7 @@
 
   function calcTotalNet(element){
 
-    var total_cash = parseFloat(jQuery("#shifts").children("table").children("tbody").children("tr").children("#total_cash").html);
+    var total_cash = parseFloat(jQuery("#shifts").children("table").children("tbody").children("tr").children("#sum_total_cash").html);
     var actual_cash = parseFloat(jQuery("#shifts").children("table").children("tbody").children("tr").children("#sum_weekly_sale_shift_actual_cash_amount").html);
     var inserted_cash = parseFloat(jQuery("#shifts").children("table").children("tbody").children("tr").children("#sum_weekly_sale_shift_inserted_cash_amount").html);
     var extracted_cash = parseFloat(jQuery("#shifts").children("table").children("tbody").children("tr").children("#sum_weekly_sale_shift_extracted_cash_amount").html);
@@ -125,7 +125,16 @@
     var private_amount = jQuery("#bottom_weekly_sale").children("table").children("tbody").children("tr").children("#private_amount").children("input")[0].value;
     var cash_net = parseFloat(difference_cash) + parseFloat(private_amount);
 
-    jQuery("#bottom_weekly_sale").children("table").children("tbody").children("tr").children("#total_cash_net").html(cash_net);  
+
+   // alert(total_cash);
+   // alert(actual_cash);
+   // alert(inserted_cash);
+   // alert(extracted_cash);
+   // alert(difference_cash);
+   // alert(private_amount);
+   // alert(cash_net);
+
+    //jQuery("#bottom_weekly_sale").children("table").children("tbody").children("tr").children("#total_cash_net").html(cash_net);  
     
   }
   
@@ -183,7 +192,7 @@
       <tbody>
         <tr>                    
           <td><%= @weekly_sale.weekly_sale_setup.unit if @weekly_sale && @weekly_sale.weekly_sale_setup %></td>
-          <td><%= check_box :weekly_sale, :closed %></td>
+          <td><%= @weekly_sale.closed ? @weekly_sale.closed : (check_box :weekly_sale, :closed) %></td>
           <td><%= @weekly_sale.closed_by %></td>
           <td><%= @weekly_sale.closed_at %></td>
           <td colspan="3"><%= number_with_precision(@weekly_sale.weekly_sale_setup.permanent_cash, :locale =>I18n.locale) if @weekly_sale && @weekly_sale.weekly_sale_setup %></td>

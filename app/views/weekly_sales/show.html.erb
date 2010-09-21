@@ -224,5 +224,5 @@
     </tbody>
   </table>
 </div>
-<%= link_to t(:edit, :scope => :global), edit_weekly_sale_path(@weekly_sale) if permitted_to? :edit, @weekly_sale %> |
+<%= link_to t(:edit, :scope => :global), edit_weekly_sale_path(@weekly_sale) if ((permitted_to? :edit, @weekly_sale)  && (!@weekly_sale.closed)) %> |
 <%= link_to t(:back, :scope => :global), weekly_sales_url %>

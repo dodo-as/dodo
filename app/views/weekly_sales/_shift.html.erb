@@ -79,8 +79,8 @@
   <td id="weekly_sale_shift_difference_cash_explanation" style="background-color:#84d472;">
     <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][difference_cash_explanation]", weekly_sale_shift.difference_cash_explanation, :size => 16) %>
   </td>  
-  <td class="shift_general"></td>    
-  <td class="shift_general"></td>    
+  <td class="shift_general"><%= weekly_sale_shift.sign_by ?  weekly_sale_shift.sign_by : check_box_tag("weekly_sale_shifts[#{@counter.to_s}][sign]") %></td>    
+  <td class="shift_general"><%= weekly_sale_shift.closed_by ?  weekly_sale_shift.closed_by : check_box_tag("weekly_sale_shifts[#{@counter.to_s}][closed]") %></td>    
   <td>
     <%= link_to_function 'Destroy', remote_function( 
       :url=> { :action=>:destroy_shift, :id=>weekly_sale_shift.id.to_s }) %>   

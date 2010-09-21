@@ -6,8 +6,8 @@ class WeeklySaleSetup < ActiveRecord::Base
   belongs_to :cash_account, :class_name=>'Account'
   belongs_to :period
 
-  has_many :weekly_sale_setup_product_groups, :order=>'display_order'
-  has_many :weekly_sale_setup_liquids, :order=>'display_order'
+  has_many :weekly_sale_setup_product_groups, :order=>'display_order', :dependent=>:destroy
+  has_many :weekly_sale_setup_liquids, :order=>'display_order', :dependent=>:destroy
   has_many :weekly_sales
 
   validates :name, :length=>{ :minimum=>1, :maximum=> 100 }, :presence=>true

@@ -4,6 +4,7 @@ class WeeklySale < ActiveRecord::Base
   belongs_to :journal
   belongs_to :period
   belongs_to :company
+  belongs_to :closed_by, :class_name=>'User'
   has_many :weekly_sale_shifts, :dependent=>:destroy
   has_many :weekly_sale_shift_product_groups, :through => :weekly_sale_shifts
   has_many :weekly_sale_shift_liquids, :through => :weekly_sale_shifts
@@ -168,11 +169,8 @@ class WeeklySale < ActiveRecord::Base
       end
     end
   end
-  def update_attributes_with_childs(params, weekly_sale_shifts, weekly_sale_shift_product_groups,  weekly_sale_shift_liquids)
-
-    puts "shifts =============== "+ weekly_sale_shifts.inspect 
-    puts "shifts_products ====== "+ weekly_sale_shift_product_groups.inspect 
-
+  def update_attributes_with_childs(params, weekly_sale_shifts, weekly_sale_shift_product_groups,  weekly_sale_shift_liquids, user)
+    
     WeeklySaleShift.transaction do     
       for_destroy = ""
       weekly_sale_shifts.each do |key, shift|               
@@ -189,6 +187,15 @@ class WeeklySale < ActiveRecord::Base
         weekly_sale_shift.extracted_cash_amount = shift[:extracted_cash_amount]
         weekly_sale_shift.actual_cash_amount = shift[:actual_cash_amount]
         weekly_sale_shift.difference_cash_explanation = shift[:difference_cash_explanation]
+        if shift[:closed] == "1"
+          weekly_sale_shift.closed_by_id = user.id
+          weekly_sale_shift.closed_at = Time.now
+          weekly_sale_shift.closed = true  
+        end
+        if shift[:sign] == "1"
+          weekly_sale_shift.sign_by_id = user.id
+          weekly_sale_shift.sign_at = Time.now
+        end
         weekly_sale_shift.weekly_sale = self
         weekly_sale_shift.save!
         for_destroy += weekly_sale_shift.id.to_s + ', ' 
@@ -210,21 +217,6 @@ class WeeklySale < ActiveRecord::Base
             end
           end
         end
-#        weekly_sale_shift_product_groups_quantity.each do |key_weekly_sale, products|          
-#          if key_weekly_sale == key
-#            products.each do |key_product, product|
-#              #if shift[:new_record] == 'true'
-#               # weekly_sale_shift_product_group = WeeklySaleShiftProductGroup.new()
-#              #else
-#                weekly_sale_shift_product_group = WeeklySaleShiftProductGroup.find(product[:id])
-#              #end
-#              weekly_sale_shift_product_group.weekly_sale_setup_product_group_id = product[:product_group_id]
-#              weekly_sale_shift_product_group.quantity = product[:quantity]
-#              weekly_sale_shift_product_group.weekly_sale_shift= weekly_sale_shift
-#              weekly_sale_shift_product_group.save!
-#            end
-#          end
-#        end
         weekly_sale_shift_liquids.each do |key_weekly_sale, liquids|          
           if key_weekly_sale == key
             liquids.each do |key_liquid, liquid|
@@ -244,7 +236,11 @@ class WeeklySale < ActiveRecord::Base
       end
      for_destroy += '0'
      ActiveRecord::Base.connection().execute "delete from weekly_sale_shifts  where id not in (" + for_destroy + ") and weekly_sale_id = " + self.id.to_s
-     self.update_attributes(params)
+     if params[:closed] == '1'
+       params["closed_by_id"] = user.id
+       params["closed_at"] = Time.now
+     end  
+     self.update_attributes(params)  
      self.create_journal
     end                
   end
@@ -278,7 +274,7 @@ class WeeklySale < ActiveRecord::Base
   end
   
   def total_cash_net
-    0
+    self.sum_received_cash_amount + self.sum_inserted_cash_amount - self.sum_extracted_cash_amount + self.private_amount
   end
   def total_inserted_cash_amount
     self.weekly_sale_shifts.sum("inserted_cash_amount")

@@ -1,7 +1,8 @@
 class WeeklySaleShift < ActiveRecord::Base
 
   belongs_to :weekly_sale
-
+  belongs_to :closed_by, :class_name=>'User'
+  belongs_to :sign_by, :class_name=>'User'
   validates :weekly_sale, :presence=>true
 
   has_many :weekly_sale_shift_product_groups, :dependent=>:destroy
@@ -18,7 +19,5 @@ class WeeklySaleShift < ActiveRecord::Base
     self.received_cash_amount = self.total_product_group_amount - self.total_liquid_amount
     self.difference_cash = self.actual_cash_amount - (self.received_cash_amount + self.inserted_cash_amount - self.extracted_cash_amount)     
   end
-
   
-
 end

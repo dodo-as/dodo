@@ -4,9 +4,9 @@ class CreateWeeklySaleShifts < ActiveRecord::Migration
       t.references :weekly_sale, :null=>false
       t.date :date
       t.boolean :closed, :default=>false
-      t.integer :closed_by
+      t.integer :closed_by_id
       t.datetime :closed_at
-      t.integer :sign_by
+      t.integer :sign_by_id
       t.datetime :sign_at
       t.integer :z_number
       t.float :z_amount, :null=>false, :default=>0.0
@@ -19,8 +19,8 @@ class CreateWeeklySaleShifts < ActiveRecord::Migration
       t.float :inserted_cash_amount, :default=>0.0
       t.float :extracted_cash_amount, :default=>0.0
 
-      t.integer :created_by
-      t.integer :updated_by
+      t.integer :created_by_id
+      t.integer :updated_by_id
       t.timestamps
     end
 

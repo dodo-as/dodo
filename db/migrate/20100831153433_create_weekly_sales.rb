@@ -10,19 +10,14 @@ class CreateWeeklySales < ActiveRecord::Migration
       t.integer :week, :null=>false
       t.date :from_date, :null=>false
       t.date :to_date, :null=>false
-      t.float :total_product_group_amount, :null=>false, :default=>0.0
-      t.float :total_actual_cash_amount, :null=>false, :default=>0.0
-      t.float :total_liquid_amount, :null=>false, :default=>0.0
-      t.float :total_inserted_cash_amount, :null=>false, :default=>0.0
-      t.float :total_extracted_cash_amount, :null=>false, :default=>0.0
       t.float :private_amount, :null=>false, :default=>0.0
       t.string :private_amount_explanation, :limit=>100
       t.float :total_net, :null=>false, :default=>0
       t.boolean :closed, :null=>false, :default=>false
-      t.integer :closed_by
+      t.integer :closed_by_id
       t.datetime :closed_at
-      t.integer :created_by
-      t.integer :updated_by
+      t.integer :created_by_id
+      t.integer :updated_by_id
       t.timestamps
     end
 

@@ -61,7 +61,7 @@
     <td><%= weekly_sale.closed_at %></td>
     <td><%= link_to t(:show, :scope => :global), {:controller=>'weekly_sales', :action=>'show', :id=>weekly_sale.id} if permitted_to? :read, weekly_sale %></td>
     <td><%= link_to t(:edit, :scope => :global), edit_weekly_sale_path(weekly_sale) if ((permitted_to? :edit, weekly_sale)  && (!weekly_sale.closed)) %></td>
-    <td><%= link_to t(:destroy, :scope => :global), {:controller=>'weekly_sales', :action=>'destroy', :id=>weekly_sale.id}, :confirm => 'Are you sure?', :method => :delete if permitted_to? :destroy, weekly_sale %></td>
+    <td><%= link_to t(:destroy, :scope => :global), {:controller=>'weekly_sales', :action=>'destroy', :id=>weekly_sale.id}, :confirm => 'Are you sure?', :method => :delete if ((permitted_to? :destroy, weekly_sale) && (!weekly_sale.closed)) %></td>
   </tr>
 <% end %>
 

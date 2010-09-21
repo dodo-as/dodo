@@ -101,7 +101,7 @@ class WeeklySaleSetupsController < ApplicationController
     @weekly_sale_setup.destroy
 
     respond_to do |format|
-      format.html { redirect_to(weekly_sale_setups_url) }
+      format.html { redirect_to(weekly_sales_url) }
       format.xml  { head :ok }
     end
   end
