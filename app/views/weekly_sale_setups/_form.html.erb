@@ -21,7 +21,7 @@
         <tr>
           <td><%= f.select :unit_id, @units.map {|u| [ u.name, u.id ] } %></td>
           <td><%= f.text_field :name, :maxlength=>100,:size=>40 %></td>
-          <td><%= f.text_field :journal_type, :maxlength=>3 %></td>
+          <td><%= f.select :journal_type_id, @journal_types.map {|a| [ a.name, a.id ] } %></td>
         </tr>
         <tr>
           <td class="title"><%= t(:permanent_cash, :scope => :weekly_sale_setups) %></td>

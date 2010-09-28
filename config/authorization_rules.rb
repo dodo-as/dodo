@@ -20,6 +20,8 @@ authorization do
       if_attribute :company_id => nil
     end
 
+    has_permission_on :journal_types, :to => :manage 
+
     # just being authenticated as an admin covers
     # authorization for the admin ui
   end
@@ -101,6 +103,7 @@ authorization do
       if_attribute :company_id => nil
     end
 
+     has_permission_on :journal_types, :to => :read
   end
 
   role :accountant do

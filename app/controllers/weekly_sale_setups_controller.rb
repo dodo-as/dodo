@@ -28,6 +28,7 @@ class WeeklySaleSetupsController < ApplicationController
     list_units
     list_accounts
     list_projects
+    list_journal_types
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @weekly_sale_setup }
@@ -40,6 +41,7 @@ class WeeklySaleSetupsController < ApplicationController
     list_units
     list_accounts
     list_projects
+    list_journal_types
   end
 
   # POST /weekly_sale_setups
@@ -54,6 +56,7 @@ class WeeklySaleSetupsController < ApplicationController
       else
         list_units
         list_accounts
+        list_journal_types
         format.html { render :action => "new" }
         format.xml  { render :xml => @weekly_sale_setup.errors, :status => :unprocessable_entity }
       end
@@ -73,6 +76,7 @@ class WeeklySaleSetupsController < ApplicationController
         list_units
         list_accounts
         list_projects
+        list_journal_types
         flash[:error] = e.to_s
         format.html { render :action => "edit" }
         format.xml  { render :xml => @weekly_sale_setup.errors, :status => :unprocessable_entity }
@@ -158,4 +162,7 @@ class WeeklySaleSetupsController < ApplicationController
    @accounts = Account.with_permissions_to(:read).all(:order => "number")
   end
 
+  def list_journal_types
+   @journal_types = JournalType.with_permissions_to(:read).all(:order => "name")
+  end
 end
