@@ -1,4 +1,4 @@
-Lodo::Application.routes.draw do |map|
+Dodo::Application.routes.draw do |map|
   resources :paycheck_lines
   resources :paychecks
   

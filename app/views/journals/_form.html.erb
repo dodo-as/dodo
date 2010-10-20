@@ -2,11 +2,11 @@
   /*
   Use an object as a fake namespace. Spiffy.
   */
-  var LODO = new Object();
-  LODO.unitList = <%= raw(@units_all.all.to_json) %>;
-  LODO.projectList = <%= raw(@projects_all.all.to_json) %>;
-  LODO.accountList = <%= raw(@accounts_all.all.to_json :include => { :vat_account => {:include => { :vat_account_periods =>{}, :target_account=>{}}} }) %>;
-  LODO.journalOperationList = <%= raw(@journal.journal_operations.all.to_json) %>;
+  var DODO = new Object();
+  DODO.unitList = <%= raw(@units_all.all.to_json) %>;
+  DODO.projectList = <%= raw(@projects_all.all.to_json) %>;
+  DODO.accountList = <%= raw(@accounts_all.all.to_json :include => { :vat_account => {:include => { :vat_account_periods =>{}, :target_account=>{}}} }) %>;
+  DODO.journalOperationList = <%= raw(@journal.journal_operations.all.to_json) %>;
 </script>
 
 <%= form_for(@journal) do |f| %>

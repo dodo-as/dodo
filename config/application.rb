@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
-module Lodo
+module Dodo
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -56,7 +56,7 @@ module Lodo
     # Make sure the secret is at least 30 characters and all random, 
     # no regular words or you'll be exposed to dictionary attacks.
     config.action_dispatch.session = {
-      :session_key => '_lodo3_session',
+      :session_key => '_dodo3_session',
       :secret      => '29e52c8e64c464b41e52b98c9cceb4e43d1d8870df42124cd96be3c4004179720c0326431b0126f1f27d9c65bd834d1028c8f745ddcc8484e32ff0ac3e7d75fa'
     }
     

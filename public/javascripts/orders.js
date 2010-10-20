@@ -10,10 +10,10 @@ var orders = {
     getProductPrice: function(id) 
     {
 	
-	for (var i=0; i<LODO.productList.length; i++) {
-	    if (LODO.productList[i].product.id == id) 
+	for (var i=0; i<DODO.productList.length; i++) {
+	    if (DODO.productList[i].product.id == id) 
 		{
-		    return LODO.productList[i].product.price;
+		    return DODO.productList[i].product.price;
 		}
 		
 	}
@@ -27,7 +27,7 @@ var orders = {
      */
     validate: function()
     {
-	for (var i=0; i < LODO.productLines; i++) {
+	for (var i=0; i < DODO.productLines; i++) {
 	    var price = $('#unitPrice_' + i)[0];
 	    var productId = $('#product_id_' + i)[0].value;
 		
@@ -42,7 +42,7 @@ var orders = {
     sumColumn: function()
     {
 	var sum = 0.0;
-	for (var i=0; i < LODO.productLines; i++) {
+	for (var i=0; i < DODO.productLines; i++) {
 	    var val = parseFloatNazi($('#unitPrice_'+i)[0].innerHTML)*parseFloatNazi($('#amount_' + i)[0].value) * (100.0-parseFloatNazi($('#discount_'+i)[0].value))*0.01;
 	    sum += val;
 	    orders.setPrice(i,val);
@@ -56,11 +56,11 @@ var orders = {
      */
     makeProductSelect: function(value) {
 	var sel = document.createElement("select");
-	sel.name = "products[" + LODO.productLines+"][product_id]";
-	sel.id = "product_id_"+ LODO.productLines;
+	sel.name = "products[" + DODO.productLines+"][product_id]";
+	sel.id = "product_id_"+ DODO.productLines;
     
-	for (var i=0; i<LODO.productList.length; i++) {
-	    sel.add(new Option("" + LODO.productList[i].product.name, LODO.productList[i].product.id), null);
+	for (var i=0; i<DODO.productList.length; i++) {
+	    sel.add(new Option("" + DODO.productList[i].product.name, DODO.productList[i].product.id), null);
 	}
 
 	sel.onchange = function (event) {orders.validate();}
@@ -75,8 +75,8 @@ var orders = {
     makeAmount: function(value) {
 	var res = document.createElement("input");
 	res.type="text";
-	res.name = "products[" + LODO.productLines+"][amount]";
-	res.id='amount_' + LODO.productLines;
+	res.name = "products[" + DODO.productLines+"][amount]";
+	res.id='amount_' + DODO.productLines;
 	res.setAttribute("autocomplete","off");
 	
 	res.onkeyup = function (event) {orders.validate();}
@@ -91,7 +91,7 @@ var orders = {
     makeDiscount: function (value) {
 	var res = document.createElement("input");
 	res.type="text";
-	res.id='discount_' + LODO.productLines;
+	res.id='discount_' + DODO.productLines;
 	res.setAttribute("autocomplete","off");
 	
 	res.onkeyup = function (event) {orders.validate();}
@@ -108,8 +108,8 @@ var orders = {
 
 	var inp = document.createElement("input");
 	inp.type="hidden";
-	inp.id='price_' + LODO.productLines;
-	inp.name = "products[" + LODO.productLines+"][price]";
+	inp.id='price_' + DODO.productLines;
+	inp.name = "products[" + DODO.productLines+"][price]";
 	inp.value = value;
 	res.appendChild(inp);
 	res.appendChild(orders.makeText('priceLabel'));
@@ -138,7 +138,7 @@ var orders = {
      */
     makeText: function(id) {
 	var res = document.createElement("span");
-	res.id=id + "_" + LODO.productLines;
+	res.id=id + "_" + DODO.productLines;
 	return res;
     },
 
@@ -147,8 +147,8 @@ var orders = {
      */
     addProduct: function(line)
     {
-	if(!LODO.productLines) {
-	    LODO.productLines = 0;
+	if(!DODO.productLines) {
+	    DODO.productLines = 0;
 	}
 
 	var opTable = $('#products')[0];
@@ -173,24 +173,24 @@ var orders = {
 	if (line) {
 	    var line_id = document.createElement("input");
 	    line_id.type = "hidden";
-	    line_id.name = "products[" + LODO.productLines+"][id]";
+	    line_id.name = "products[" + DODO.productLines+"][id]";
 	    line_id.value = line.id;
 	    cell.appendChild(line_id);
 	}
 
 	row.addCell(cell);
 	
-	LODO.productLines++;
+	DODO.productLines++;
 	stripe();
 	orders.validate();
     },
 
     /**
-       Add all predefined product lines from the LODO.orderItemList array.
+       Add all predefined product lines from the DODO.orderItemList array.
     */
 
     addPredefined: function(){
-	lines = LODO.orderItemList;
+	lines = DODO.orderItemList;
 	for (var i=0; i<lines.length; i++) {
 	    line = lines[i]['order_item'];
 	    orders.addProduct(line);

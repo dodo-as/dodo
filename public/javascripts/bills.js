@@ -180,9 +180,9 @@ var bills = {
 	sel.name = bills.getCurrentLineName('#bill') + "[order_id]";
         sel.line_id = bills.getCurrentLineId('#bill')
 
-        for (var i=0; i<LODO.orderList.length; i++) {
-	    sel.add(new Option("" + LODO.orderList[i].order.customer.name + " - " + LODO.orderList[i].order.order_date + " - #" + LODO.orderList[i].order.id,
-                               LODO.orderList[i].order.id), null);
+        for (var i=0; i<DODO.orderList.length; i++) {
+	    sel.add(new Option("" + DODO.orderList[i].order.customer.name + " - " + DODO.orderList[i].order.order_date + " - #" + DODO.orderList[i].order.id,
+                               DODO.orderList[i].order.id), null);
 	}
         sel.value = bill_order && bill_order.order_id;
 
@@ -200,8 +200,8 @@ var bills = {
             "order_template");
 
 	res.updateProducts = function (order_id, bill_items) {
-            order_nr = LODO.orderDict[order_id];
-            res.discount = LODO.orderList[order_nr].order.price / sum(map(function (x) { return x.price; }, LODO.orderList[order_nr].order.order_items));
+            order_nr = DODO.orderDict[order_id];
+            res.discount = DODO.orderList[order_nr].order.price / sum(map(function (x) { return x.price; }, DODO.orderList[order_nr].order.order_items));
             res.table_lines = 0;
 
             var rows = bills.getRowList(res);
@@ -209,9 +209,9 @@ var bills = {
                 rows.deleteRow(0);
 
             $.each(
-                LODO.orderList[order_nr].order.order_items,
+                DODO.orderList[order_nr].order.order_items,
                 function () {
-                    var product_line = {price: LODO.orderList[order_nr].order.price * res.discount,
+                    var product_line = {price: DODO.orderList[order_nr].order.price * res.discount,
 				        amount: this.amount,
 					discount: 0.0,
 					order_item: this}
@@ -256,12 +256,12 @@ var bills = {
 	$('#bill')[0].table_lines = 0;
 	$('#bill')[0].name = 'bill';
 
-        LODO.orderDict = Array();
-        for (var pos = 0; pos <  LODO.orderList.length; pos++)
-            LODO.orderDict[LODO.orderList[pos].order.id] = pos;
+        DODO.orderDict = Array();
+        for (var pos = 0; pos <  DODO.orderList.length; pos++)
+            DODO.orderDict[DODO.orderList[pos].order.id] = pos;
 
-	for (var i=0; i<LODO.billItemList.length; i++) {
-	    bills.addOrder(LODO.billItemList[i].bill_order);
+	for (var i=0; i<DODO.billItemList.length; i++) {
+	    bills.addOrder(DODO.billItemList[i].bill_order);
 	}
 
         bills.validate();

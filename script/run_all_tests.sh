@@ -1,6 +1,6 @@
 #! /bin/sh
 
-BD=/home/lodo
+BD=/home/dodo
 
 # Chatty
 set -x

@@ -28,9 +28,9 @@ var journals = {
        Return the account with the specified id
      */
     getAccount: function (id) {
-	for( var i =0; i<LODO.accountList.length; i++) {
-	    if (LODO.accountList[i].account.id == id) {
-		return LODO.accountList[i].account;
+	for( var i =0; i<DODO.accountList.length; i++) {
+	    if (DODO.accountList[i].account.id == id) {
+		return DODO.accountList[i].account;
 	    }
 	}
 	return null;
@@ -43,7 +43,7 @@ var journals = {
     sumColumn: function (column)
     {
 	var sum = 0.0;
-	for (var i=0; i < LODO.journalLines; i++) {
+	for (var i=0; i < DODO.journalLines; i++) {
 	    sum += parseFloatNazi($('#dynfield_' + column + '_' + i)[0].value);
 	}
 	
@@ -53,7 +53,7 @@ var journals = {
     
 
     updateVat: function (reset_all) {
-        for (var i=0; i < LODO.journalLines; i++)
+        for (var i=0; i < DODO.journalLines; i++)
             if (reset_all || $('#vatFactor_'+i)[0].value == "-1")
                 journals.setDefaultVat(i);
     },
@@ -66,7 +66,7 @@ var journals = {
         journals.updateVat(false);
 	journals.sumColumn(1);
 	journals.sumColumn(2);
-	for (var i=0; i < LODO.journalLines; i++) {
+	for (var i=0; i < DODO.journalLines; i++) {
 	    var account = journals.getAccount($('#dynfield_0_'+i)[0].value);
 	    var vat_account;
             var vat_account_id;
@@ -119,15 +119,15 @@ var journals = {
      */
     makeAccountSelect: function () {
 	var sel = document.createElement("select");
-	sel.name = "journal_operations[" + LODO.journalLines+"][account_id]";
-	sel.id = "dynfield_0_"+ LODO.journalLines;
+	sel.name = "journal_operations[" + DODO.journalLines+"][account_id]";
+	sel.id = "dynfield_0_"+ DODO.journalLines;
 	
-	for (var i=0; i<LODO.accountList.length; i++) {
-	    sel.add(new Option("" + LODO.accountList[i].account.number + 
-			       "-" +LODO.accountList[i].account.name,
-			       LODO.accountList[i].account.id), null);
+	for (var i=0; i<DODO.accountList.length; i++) {
+	    sel.add(new Option("" + DODO.accountList[i].account.number + 
+			       "-" +DODO.accountList[i].account.name,
+			       DODO.accountList[i].account.id), null);
 	}
-	var line = LODO.journalLines;
+	var line = DODO.journalLines;
 	sel.onchange= function(){
 	    journals.setDefaultVat(line);
 	    journals.update();
@@ -141,12 +141,12 @@ var journals = {
      */
     makeUnitSelect: function () {
 	var sel = document.createElement("select");
-	sel.name = "journal_operations[" + LODO.journalLines+"][unit_id]";
-	sel.id = "dynfield_3_"+ LODO.journalLines;
+	sel.name = "journal_operations[" + DODO.journalLines+"][unit_id]";
+	sel.id = "dynfield_3_"+ DODO.journalLines;
 	
-	for (var i=0; i<LODO.unitList.length; i++) {
-	    sel.add(new Option(LODO.unitList[i].unit.name,
-			       LODO.unitList[i].unit.id), null);
+	for (var i=0; i<DODO.unitList.length; i++) {
+	    sel.add(new Option(DODO.unitList[i].unit.name,
+			       DODO.unitList[i].unit.id), null);
 	}
 	return sel;
     },
@@ -156,12 +156,12 @@ var journals = {
      */
     makeProjectSelect: function () {
 	var sel = document.createElement("select");
-	sel.name = "journal_operations[" + LODO.journalLines+"][project_id]";
-	sel.id = "dynfield_4_"+ LODO.journalLines;
+	sel.name = "journal_operations[" + DODO.journalLines+"][project_id]";
+	sel.id = "dynfield_4_"+ DODO.journalLines;
 	
-	for (var i=0; i<LODO.projectList.length; i++) {
-	    sel.add(new Option(LODO.projectList[i].project.name,
-			       LODO.projectList[i].project.id), null);
+	for (var i=0; i<DODO.projectList.length; i++) {
+	    sel.add(new Option(DODO.projectList[i].project.name,
+			       DODO.projectList[i].project.id), null);
 	}
 	return sel;
     },
@@ -229,16 +229,16 @@ var journals = {
     makeDebet: function () {
 	var res = document.createElement("input");
 	res.type="text";
-	res.name = "journal_operations[" + LODO.journalLines+"][debet]";
-	res.id='dynfield_1_' + LODO.journalLines;
+	res.name = "journal_operations[" + DODO.journalLines+"][debet]";
+	res.id='dynfield_1_' + DODO.journalLines;
 	res.setAttribute("autocomplete","off");
 	
 	var fun;
-	eval("fun=function (event) {journals.handleArrowKeys(event,  1, " + LODO.journalLines + ");}");
+	eval("fun=function (event) {journals.handleArrowKeys(event,  1, " + DODO.journalLines + ");}");
 	res.onkeypress=fun;
 	
 	var fun2;
-	eval("fun2=function (event) {journals.doDisable(" + LODO.journalLines + ");journals.update();}");
+	eval("fun2=function (event) {journals.doDisable(" + DODO.journalLines + ");journals.update();}");
 	res.onkeyup = fun2;
 	
 	return res;
@@ -251,16 +251,16 @@ var journals = {
     makeCredit: function () {
 	var res = document.createElement("input");
 	res.type="text";
-	res.name = "journal_operations[" + LODO.journalLines+"][credit]";
-	res.id='dynfield_2_' + LODO.journalLines;
+	res.name = "journal_operations[" + DODO.journalLines+"][credit]";
+	res.id='dynfield_2_' + DODO.journalLines;
 	res.setAttribute("autocomplete","off");
 	
 	var fun;
-	eval("fun=function (event) {journals.handleArrowKeys(event,  2, " + LODO.journalLines + ");}");
+	eval("fun=function (event) {journals.handleArrowKeys(event,  2, " + DODO.journalLines + ");}");
 	res.onkeypress=fun;
 	
 	var fun2;
-	eval("fun2=function (event) {journals.doDisable(" + LODO.journalLines + ");journals.update();}");
+	eval("fun2=function (event) {journals.doDisable(" + DODO.journalLines + ");journals.update();}");
 	res.onkeyup = fun2;
 	
 	return res;
@@ -272,8 +272,8 @@ var journals = {
     makeVat: function (val) {
 	var res = document.createElement("input");
 	res.type="text";
-	res.name = "journal_operations[" + LODO.journalLines+"][vat]";
-	res.id='vatFactor_' + LODO.journalLines;
+	res.name = "journal_operations[" + DODO.journalLines+"][vat]";
+	res.id='vatFactor_' + DODO.journalLines;
 	res.value = val;
 
 	res.onkeyup = journals.update;
@@ -286,7 +286,7 @@ var journals = {
      */
     makeText: function(id, content) {
 	var res = document.createElement("span");
-	res.id=id + "_" + LODO.journalLines;
+	res.id=id + "_" + DODO.journalLines;
 	if (content) {
 	    res.innerHTML = content;
 	}
@@ -307,8 +307,8 @@ var journals = {
      */
     addAccountLine: function(line)
     { 
-	if(!LODO.journalLines) {
-	    LODO.journalLines = 0;
+	if(!DODO.journalLines) {
+	    DODO.journalLines = 0;
 	}
 	
 	var opTable = $('#operations')[0];
@@ -333,9 +333,9 @@ var journals = {
 	var row3 = opTable.insertRow(opTable.rows.length);
 	row3.addCell = ac;
 
-	row.addCell(journals.makeText('main_details_'+LODO.journalLines,journals.makeDetails(line, 0)),'details');
-	row2.addCell(journals.makeText('vat1_details_'+LODO.journalLines,journals.makeDetails(line, 1)),'details');
-	row3.addCell(journals.makeText('vat2_details_'+LODO.journalLines,journals.makeDetails(line, 2)),'details');
+	row.addCell(journals.makeText('main_details_'+DODO.journalLines,journals.makeDetails(line, 0)),'details');
+	row2.addCell(journals.makeText('vat1_details_'+DODO.journalLines,journals.makeDetails(line, 1)),'details');
+	row3.addCell(journals.makeText('vat2_details_'+DODO.journalLines,journals.makeDetails(line, 2)),'details');
 	
 	row2.className="vat";
 	row2.addCell(journals.makeText('vat1_account'));
@@ -351,14 +351,14 @@ var journals = {
 	if (line) {
 	    var line_id = document.createElement("input");
 	    line_id.type = "hidden";
-	    line_id.name = "journal_operations[" + LODO.journalLines+"][id]";
+	    line_id.name = "journal_operations[" + DODO.journalLines+"][id]";
 	    line_id.value = line.id;
 	    cell.appendChild(line_id);
 	}
 	var vat_account_id = document.createElement("input");
 	vat_account_id.type = "hidden";
-	vat_account_id.name = "journal_operations[" + LODO.journalLines+"][vat_account_id]";
-	vat_account_id.id = "vat_account_" + LODO.journalLines;
+	vat_account_id.name = "journal_operations[" + DODO.journalLines+"][vat_account_id]";
+	vat_account_id.id = "vat_account_" + DODO.journalLines;
 	cell.appendChild(vat_account_id);
 
 	row.addCell(cell);
@@ -373,14 +373,14 @@ var journals = {
 
 	if (line) {
 	    amount = line.amount;
-	    $("#dynfield_0_"+ LODO.journalLines)[0].value = line.account_id;
-	    $("#dynfield_1_"+ LODO.journalLines)[0].value = amount<0?-amount:0;
-	    $("#dynfield_2_"+ LODO.journalLines)[0].value = amount>0?amount:0;
-	    $("#dynfield_3_"+ LODO.journalLines)[0].value = line.unit_id;
-	    $("#dynfield_4_"+ LODO.journalLines)[0].value = line.project_id;
-	    journals.doDisable(LODO.journalLines);
+	    $("#dynfield_0_"+ DODO.journalLines)[0].value = line.account_id;
+	    $("#dynfield_1_"+ DODO.journalLines)[0].value = amount<0?-amount:0;
+	    $("#dynfield_2_"+ DODO.journalLines)[0].value = amount>0?amount:0;
+	    $("#dynfield_3_"+ DODO.journalLines)[0].value = line.unit_id;
+	    $("#dynfield_4_"+ DODO.journalLines)[0].value = line.project_id;
+	    journals.doDisable(DODO.journalLines);
 	}
-	LODO.journalLines++;
+	DODO.journalLines++;
 	stripe('#operations_table');
 	if (!line) 
 	{
@@ -389,10 +389,10 @@ var journals = {
     },
 
     /**
-       Add all predefined journal_operation lines from the LODO.journalOperationList array.
+       Add all predefined journal_operation lines from the DODO.journalOperationList array.
      */
     addPredefined: function(){
-	lines = LODO.journalOperationList;
+	lines = DODO.journalOperationList;
 	for (var i=0; i<lines.length; i++) {
 	    line = lines[i]['journal_operation'];
 	    journals.addAccountLine(line);

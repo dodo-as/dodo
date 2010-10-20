@@ -2,9 +2,9 @@
   /*
   Use an object as a fake namespace. Spiffy.
   */
-  var LODO = new Object();
-  LODO.productList = <%= raw(@products_all.to_json) %>;
-  LODO.orderItemList = <%= raw(@order.order_items.to_json) %>;
+  var DODO = new Object();
+  DODO.productList = <%= raw(@products_all.to_json) %>;
+  DODO.orderItemList = <%= raw(@order.order_items.to_json) %>;
 </script>
 
 <div>Note: All amounts are ex. VAT.</div>

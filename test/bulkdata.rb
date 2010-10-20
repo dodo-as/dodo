@@ -220,7 +220,7 @@ if not $BULK_SALARY
       # create some accounts
       companies.each do |c|
         print '.'
-        # Vat accounts from empatix @ lodo.no
+        # Vat accounts from empatix @ dodo.no
         
         # **** Outgoing vat; sales ***
         a2700 = Account.make(:company => c, :name => "Utg mva kode 10", :number => 2700)
