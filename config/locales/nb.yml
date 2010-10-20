@@ -201,7 +201,7 @@
     name: "Navn"
     confirm_delete: "Bekreft sletting av konto %{name}"
     new_account: "Ny konto"
-    lodo_name: "Lodo navn"
+    dodo_name: "Dodo navn"
     debit_text: "Debit tekst"
     credit_text: "Credit tekst"
     vat_account: "MVA-konto"
@@ -361,7 +361,7 @@
   login:
     login: Logg inn
     maintainance: Vedlikehold
-    welcome: Velkommen til lodo regnskap
+    welcome: Velkommen til Dodo regnskap
   units:
     header_edit: Kjemperedigerer avdelning
     header_index: Kjempelister avdelninger

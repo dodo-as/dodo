@@ -100,7 +100,7 @@ end
 
 Account.blueprint do
   name { Sham.account_name }
-  lodo_name { name }
+  dodo_name { name }
   number { rand(10000) }
   debit_text { "debit" }
   credit_text { "credit" }
@@ -196,7 +196,7 @@ ActiveRecord::Base.transaction do
     # create some accounts
     companies.each do |c|
       print '.'
-      # Vat accounts from empatix @ lodo.no
+      # Vat accounts from empatix @ nodo.no
       
       # **** Outgoing vat; sales ***
       a2700 = Account.make(:company => c, :name => "Utg mva kode 10", :number => 2700)

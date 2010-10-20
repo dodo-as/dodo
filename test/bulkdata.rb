@@ -109,7 +109,7 @@ end
 
 Account.blueprint do
   name { Sham.account_name }
-  lodo_name { name }
+  dodo_name { name }
   number { rand(10000) }
   debit_text { "debit" }
   credit_text { "credit" }

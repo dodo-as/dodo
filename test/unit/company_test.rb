@@ -26,7 +26,7 @@ class CompanyTest < ActiveSupport::TestCase
     assert_equal template.projects.size, company.projects.size
 
     # let's compare the accounts for good measure
-    f = proc {|acc| [acc.number, acc.name, acc.lodo_name]}
+    f = proc {|acc| [acc.number, acc.name, acc.dodo_name]}
     assert_equal Set.new(template.accounts.map(&f)), Set.new(company.accounts.map(&f))
 
     # find account with a vat account and compare vat accounts..

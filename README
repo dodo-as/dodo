@@ -1,5 +1,5 @@
-# Lodo
-Lodo is a web based double entry accounting application, built on the [Ruby on Rails](http://rubyonrails.org/) framework.
+# Dodo
+Dodo is a web based double entry accounting application, built on the [Ruby on Rails](http://rubyonrails.org/) framework.
 It is open source, released under the MIT license.
 
 ## Project status
@@ -22,7 +22,7 @@ Preliminary feature list for the next milestone:
 
 ## Community
   * Redmine: <https://projects.freecode.no/projects/show/lodo-ng>
-  * Source: <http://github.com/lodo/lodo.git>, <https://projects.freecode.no/git/lodo.git>
+  * Source: <http://github.com/dodo-as/dodo.git>, <https://projects.freecode.no/git/lodo.git>
 
 ## Contributors
   * Funding, requirements and some development resources: [Arnt Telhaug](mailto:arnt@telhaug.no), <http://www.lodo.no/>

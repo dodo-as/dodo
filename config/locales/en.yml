@@ -86,7 +86,7 @@ en:
     destroy: "Destroy"
     confirm_delete: "Confirm you want to delete the account %{name}"
     new_account: "New account"
-    lodo_name: "Lodo name"
+    dodo_name: "Dodo name"
     debit_text: "Debit text"
     credit_text: "Credit text"
     vat_account: "VAT account"
