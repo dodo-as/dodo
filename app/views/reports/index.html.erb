@@ -2,29 +2,33 @@
   <%= t(:title_plural, :scope=>:reports) %>
 </h1>
 
-<div class="title">
-  <%= t(:ledger, :scope=>:reports) %>
-</div>
 <div class="reports">
+  <div class="title">
+    <%= t(:ledger, :scope=>:reports) %>
+  </div>
+
   <table>
     <%= form_tag ledger_balance_reports_path, :method=>:get do %>
       <tbody class="even">
         <tr>
-          <td>
+          <td class="report_title" rowspan="4">
+            <%= t(:balance, :scope=>:reports) %>
+          </td>
+          <td class="title">
             <%= t(:from_period, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :from_period_id, 
               options_from_collection_for_select(@periods, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:to_period, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :to_period_id, 
               options_from_collection_for_select(@periods, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:result_from_period, :scope=>:reports) %>
           </td>
           <td>
@@ -33,21 +37,21 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="title">
             <%= t(:unit, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :unit_id, 
               options_from_collection_for_select(@units, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:project, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :project_id, 
               options_from_collection_for_select(@projects, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:journal_type, :scope=>:reports) %>
           </td>
           <td>
@@ -56,19 +60,19 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="title">
             <%= t(:show_only_active_accounts, :scope=>:reports) %>
           </td>
           <td>
             <%= check_box_tag :show_only_active_accounts %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:last_year_figures, :scope=>:reports) %>
           </td>
           <td>
             <%= check_box_tag :last_year_figures %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:budget, :scope=>:reports) %>
           </td>
           <td>
@@ -76,10 +80,8 @@
           </td>
         </tr>
         <tr>
-          <td colspan="5">
-          </td>
-          <td>
-            <%= submit_tag t(:show, :scope=>:global) %>
+          <td colspan="6" class="submit">
+            <%= submit_tag t(:run_report, :scope=>:reports) %>
           </td>
         </tr>
       </tbody>
@@ -87,21 +89,24 @@
     <%= form_tag ledger_journal_reports_path, :method=>:get do %>
       <tbody class="odd">
         <tr>
-          <td>
+          <td class="report_title" rowspan="4">
+            <%= t(:journal, :scope=>:reports) %>
+          </td>
+          <td class="title">
             <%= t(:from_account, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :from_account_id, 
               options_from_collection_for_select(@accounts, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:to_account, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :to_account_id, 
               options_from_collection_for_select(@accounts, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:journal_type, :scope=>:reports) %>
           </td>
           <td>
@@ -110,21 +115,21 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="title">
             <%= t(:from_period, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :from_period_id, 
               options_from_collection_for_select(@periods, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:to_period, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :to_period_id, 
               options_from_collection_for_select(@periods, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:result_from_period, :scope=>:reports) %>
           </td>
           <td>
@@ -133,14 +138,14 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="title">
             <%= t(:unit, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :unit_id,
               options_from_collection_for_select(@units, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:project, :scope=>:reports) %>
           </td>
           <td>
@@ -153,38 +158,37 @@
           </td>
         </tr>
         <tr>
-          <td colspan="5">
-          </td>
-          <td>
-            <%= submit_tag t(:show, :scope=>:global) %>
+          <td colspan="6" class="submit">
+            <%= submit_tag t(:run_report, :scope=>:reports) %>
           </td>
         </tr>
       </tbody>
     <% end %>
   </table>
-</div>
 
-<div class="title">
-  <%= t(:subsidiary_ledger, :scope=>:reports) %>
-</div>
-<div class="reports">
+  <div class="title">
+    <%= t(:subsidiary_ledger, :scope=>:reports) %>
+  </div>
   <table>
     <%= form_tag subsidiary_journal_ledger_reports_path, :method=>:get do %>
       <tbody class="even">
         <tr>
-          <td>
+          <td class="report_title" rowspan="4">
+            <%= t(:balance, :scope=>:reports) %>
+          </td>
+          <td class="title">
             <%= t(:ledger_by_account_number, :scope=>:reports) %>
           </td>
           <td>
           </td>
-          <td>
+          <td class="title">
             <%= t(:ledger_from, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :ledger_from_id, 
               options_from_collection_for_select(@accounts, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:ledger_to, :scope=>:reports) %>
           </td>
           <td>
@@ -193,21 +197,21 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="title">
             <%= t(:from_period, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :from_period_id, 
               options_from_collection_for_select(@periods, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:to_period, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :to_period_id, 
               options_from_collection_for_select(@periods, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:result_from_period, :scope=>:reports) %>
           </td>
           <td>
@@ -216,7 +220,7 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="title">
             <%= t(:show_only_active_accounts, :scope=>:reports) %>
           </td>
           <td>
@@ -228,8 +232,8 @@
         <tr>
           <td colspan="5">
           </td>
-          <td>
-            <%= submit_tag t(:show, :scope=>:global) %>
+          <td class="submit">
+            <%= submit_tag t(:run_report, :scope=>:reports) %>
           </td>
         </tr>
       </tbody>
@@ -237,19 +241,22 @@
     <%= form_tag subsidiary_ledger_balance_reports_path, :method=>:get do %>
       <tbody class="odd">
         <tr>
-          <td>
+          <td class="report_title" rowspan="4">
+            <%= t(:journal, :scope=>:reports) %>
+          </td>
+          <td class="title">
             <%= t(:ledger_by_account_number, :scope=>:reports) %>
           </td>
           <td>
           </td>
-          <td>
+          <td class="title">
             <%= t(:from_account, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :from_account_id, 
               options_from_collection_for_select(@accounts, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:to_account, :scope=>:reports) %>
           </td>
           <td>
@@ -258,21 +265,21 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="title">
             <%= t(:from_period, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :from_period_id, 
               options_from_collection_for_select(@periods, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:to_period, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :to_period_id, 
               options_from_collection_for_select(@periods, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:journal_type, :scope=>:reports) %>
           </td>
           <td>
@@ -281,14 +288,14 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="title">
             <%= t(:unit, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :unit_id, 
               options_from_collection_for_select(@units, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:project, :scope=>:reports) %>
           </td>
           <td>
@@ -301,31 +308,31 @@
         <tr>
           <td colspan="5">
           </td>
-          <td>
-            <%= submit_tag t(:show, :scope=>:global) %>
+          <td class="submit">
+            <%= submit_tag t(:run_report, :scope=>:reports) %>
           </td>
         </tr>
       </tbody>
     <% end %>
-    
-    
-    
     <%= form_tag ledger_open_reports_path, :method=>:get do %>
       <tbody class="even">
         <tr>
-          <td>
+          <td class="report_title" rowspan="3">
+            <%= t(:open, :scope=>:reports) %>
+          </td>
+          <td class="title">
             <%= t(:ledger_by_account_number, :scope=>:reports) %>
           </td>
           <td>
           </td>
-          <td>
+          <td class="title">
             <%= t(:from_account, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :from_account_id, 
               options_from_collection_for_select(@accounts, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:to_account, :scope=>:reports) %>
           </td>
           <td>
@@ -334,14 +341,14 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="title">
             <%= t(:unit, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :unit_id, 
               options_from_collection_for_select(@units, "id", "to_s") %>
           </td>
-          <td>
+          <td class="title">
             <%= t(:project, :scope=>:reports) %>
           </td>
           <td>
@@ -354,8 +361,8 @@
         <tr>
           <td colspan="5">
           </td>
-          <td>
-            <%= submit_tag t(:show, :scope=>:global) %>
+          <td class="submit">
+            <%= submit_tag t(:run_report, :scope=>:reports) %>
           </td>
         </tr>
       </tbody>

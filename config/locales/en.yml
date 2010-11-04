@@ -338,6 +338,10 @@ en:
 
   reports:
     title_plural: Reports
+    balance: Balance
+    journal: Journal
+    open: Open
+    run_report: Run Report
     from_period: From Period
     to_period: To Period
     project: Project
