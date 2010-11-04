@@ -349,6 +349,7 @@ en:
     budget: Budget
     ledger: Ledger
     subsidiary_ledger: Subsidiary Ledger
+    ledger_by_account_number: Ledger by Account Number
     ledger_from: Ledger From
     ledger_to: Ledger To
     from_account: From Account
