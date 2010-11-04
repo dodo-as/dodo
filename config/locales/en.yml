@@ -347,7 +347,12 @@ en:
     result_from_period: Results From
     journal_type: Journal Type
     budget: Budget
-
+    ledger: Ledger
+    subsidiary_ledger: Subsidiary Ledger
+    ledger_from: Ledger From
+    ledger_to: Ledger To
+    from_account: From Account
+    to_account: To Account
 
 
 

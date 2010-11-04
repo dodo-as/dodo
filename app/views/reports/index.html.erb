@@ -2,77 +2,238 @@
   <%= t(:title_plural, :scope=>:reports) %>
 </h1>
 
-<div class="form_header">
-
-  <table>
-    <tbody>
-      <tr>
-        <td>
-          <%= t(:from_period, :scope=>:reports) %>
-        </td>
-        <td>
-          <%= select_tag :from_period_id, 
-            options_from_collection_for_select(@periods, "id", "to_s") %>
-        </td>
-        <td>
-          <%= t(:to_period, :scope=>:reports) %>
-        </td>
-        <td>
-          <%= select_tag :to_period_id, 
-            options_from_collection_for_select(@periods, "id", "to_s") %>
-        </td>
-        <td>
-          <%= t(:result_from_period, :scope=>:reports) %>
-        </td>
-        <td>
-          <%= select_tag :result_from_period_id, 
-            options_from_collection_for_select(@periods, "id", "to_s") %>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <%= t(:unit, :scope=>:reports) %>
-        </td>
-        <td>
-          <%= select_tag :unit_id, 
-            options_from_collection_for_select(@units, "id", "to_s") %>
-        </td>
-        <td>
-          <%= t(:project, :scope=>:reports) %>
-        </td>
-        <td>
-          <%= select_tag :project_id, 
-            options_from_collection_for_select(@projects, "id", "to_s") %>
-        </td>
-        <td>
-          <%= t(:journal_type, :scope=>:reports) %>
-        </td>
-        <td>
-          <%= select_tag :journal_type_id, 
-            options_from_collection_for_select(@journal_types, "id", "to_s") %>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <%= t(:show_only_active_accounts, :scope=>:reports) %>
-        </td>
-        <td>
-          <%= check_box_tag :show_only_active_accounts %>
-        </td>
-        <td>
-          <%= t(:last_year_figures, :scope=>:reports) %>
-        </td>
-        <td>
-          <%= check_box_tag :last_year_figures %>
-        </td>
-        <td>
-          <%= t(:budget, :scope=>:reports) %>
-        </td>
-        <td>
-          <%= check_box_tag :budget %>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
+<div class="title">
+  <%= t(:ledger, :scope=>:reports) %>
 </div>
+<div class="reports">
+  <table>
+    <%= form_tag ledger_balance_reports_path, :method=>:get do %>
+      <tbody class="even">
+        <tr>
+          <td>
+            <%= t(:from_period, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :from_period_id, 
+              options_from_collection_for_select(@periods, "id", "to_s") %>
+          </td>
+          <td>
+            <%= t(:to_period, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :to_period_id, 
+              options_from_collection_for_select(@periods, "id", "to_s") %>
+          </td>
+          <td>
+            <%= t(:result_from_period, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :result_from_period_id, 
+              options_from_collection_for_select(@periods, "id", "to_s") %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= t(:unit, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :unit_id, 
+              options_from_collection_for_select(@units, "id", "to_s") %>
+          </td>
+          <td>
+            <%= t(:project, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :project_id, 
+              options_from_collection_for_select(@projects, "id", "to_s") %>
+          </td>
+          <td>
+            <%= t(:journal_type, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :journal_type_id, 
+              options_from_collection_for_select(@journal_types, "id", "to_s") %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= t(:show_only_active_accounts, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= check_box_tag :show_only_active_accounts %>
+          </td>
+          <td>
+            <%= t(:last_year_figures, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= check_box_tag :last_year_figures %>
+          </td>
+          <td>
+            <%= t(:budget, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= check_box_tag :budget %>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="5">
+          </td>
+          <td>
+            <%= submit_tag t(:show, :scope=>:global) %>
+          </td>
+        </tr>
+      </tbody>
+    <% end %>
+    <%= form_tag ledger_journal_reports_path, :method=>:get do %>
+      <tbody class="odd">
+        <tr>
+          <td>
+            <%= t(:from_account, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :from_account_id, 
+              options_from_collection_for_select(@accounts, "id", "to_s") %>
+          </td>
+          <td>
+            <%= t(:to_account, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :to_account_id, 
+              options_from_collection_for_select(@accounts, "id", "to_s") %>
+          </td>
+          <td>
+            <%= t(:journal_type, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :journal_type_id, 
+              options_from_collection_for_select(@journal_types, "id", "to_s") %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= t(:from_period, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :from_period_id, 
+              options_from_collection_for_select(@periods, "id", "to_s") %>
+          </td>
+          <td>
+            <%= t(:to_period, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :to_period_id, 
+              options_from_collection_for_select(@periods, "id", "to_s") %>
+          </td>
+          <td>
+            <%= t(:result_from_period, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :result_from_period_id,
+              options_from_collection_for_select(@periods, "id", "to_s") %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= t(:unit, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :unit_id,
+              options_from_collection_for_select(@units, "id", "to_s") %>
+          </td>
+          <td>
+            <%= t(:project, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :project_id,
+              options_from_collection_for_select(@projects, "id", "to_s") %>
+          </td>
+          <td>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="5">
+          </td>
+          <td>
+            <%= submit_tag t(:show, :scope=>:global) %>
+          </td>
+        </tr>
+      </tbody>
+    <% end %>
+  </table>
+</div>
+
+<div class="title">
+  <%= t(:subsidiary_ledger, :scope=>:reports) %>
+</div>
+<div class="reports">
+  <table>
+    <%= form_tag subsidiary_ledger_balance_reports_path, :method=>:get do %>
+      <tbody class="even">
+        <tr>
+          <td>
+            t(:ledger_by_ledger_account_number)
+          </td>
+          <td>
+          </td>
+          <td>
+            <%= t(:ledger_from, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :ledger_from_id, 
+              options_from_collection_for_select(@accounts, "id", "to_s") %>
+          </td>
+          <td>
+            <%= t(:ledger_to, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :ledger_to_id, 
+              options_from_collection_for_select(@accounts, "id", "to_s") %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= t(:from_period, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :from_period_id, 
+              options_from_collection_for_select(@periods, "id", "to_s") %>
+          </td>
+          <td>
+            <%= t(:to_period, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :to_period_id, 
+              options_from_collection_for_select(@periods, "id", "to_s") %>
+          </td>
+          <td>
+            <%= t(:result_from_period, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :result_from_period_id, 
+              options_from_collection_for_select(@periods, "id", "to_s") %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= t(:show_only_active_accounts, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= check_box_tag :show_only_active_accounts %>
+          </td>
+          <td colspan="4">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="5">
+          </td>
+          <td>
+            <%= submit_tag t(:show, :scope=>:global) %>
+          </td>
+        </tr>
+      </tbody>
+    <% end %>
+  </table>
+</div>
+

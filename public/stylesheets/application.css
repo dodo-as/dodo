@@ -27,7 +27,7 @@ div.form_header table tbody td {
 }
 
 div.form_body {
-    background-color:#bed6ea;
+    background-color: #bed6ea;
 }
 div.form_body table {
     width: 100%;
@@ -46,12 +46,32 @@ div.form_items table tbody td {
 
 /* weekly_sales_items */
 td.shift_general {
-    background-color:#9a7292; 
+    background-color: #9a7292; 
 }
 td.shift_product {
-    background-color:#a0b1f1;
+    background-color: #a0b1f1;
 }
 td.shift_liquid {
-    background-color:#84d472;
+    background-color: #84d472;
 }
 
+/* reports */
+div.title {
+    background-color: #ccc;
+    color: #fff;
+    font-size: 20px;
+    padding: 10px;
+    text-align: center;
+}
+div.reports table {
+    width: 100%;
+}
+div.reports table tbody.even {
+    background-color: #bed6ea;
+}
+div.reports table tbody.odd {
+    background-color: #e7eaed;
+}
+div.reports table tbody tr td{
+    text-align: left;
+}

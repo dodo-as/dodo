@@ -57,6 +57,8 @@ Lodo::Application.routes.draw do |map|
   resources :reports, :only=>[:index] do
     collection do
       get :ledger_balance
+      get :ledger_journal
+      get :subsidiary_ledger_balance
     end
   end
 
