@@ -1,0 +1,78 @@
+<h1>
+  <%= t(:title_plural, :scope=>:reports) %>
+</h1>
+
+<div class="form_header">
+
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          <%= t(:from_period, :scope=>:reports) %>
+        </td>
+        <td>
+          <%= select_tag :from_period_id, 
+            options_from_collection_for_select(@periods, "id", "to_s") %>
+        </td>
+        <td>
+          <%= t(:to_period, :scope=>:reports) %>
+        </td>
+        <td>
+          <%= select_tag :to_period_id, 
+            options_from_collection_for_select(@periods, "id", "to_s") %>
+        </td>
+        <td>
+          <%= t(:result_from_period, :scope=>:reports) %>
+        </td>
+        <td>
+          <%= select_tag :result_from_period_id, 
+            options_from_collection_for_select(@periods, "id", "to_s") %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= t(:unit, :scope=>:reports) %>
+        </td>
+        <td>
+          <%= select_tag :unit_id, 
+            options_from_collection_for_select(@units, "id", "to_s") %>
+        </td>
+        <td>
+          <%= t(:project, :scope=>:reports) %>
+        </td>
+        <td>
+          <%= select_tag :project_id, 
+            options_from_collection_for_select(@projects, "id", "to_s") %>
+        </td>
+        <td>
+          <%= t(:journal_type, :scope=>:reports) %>
+        </td>
+        <td>
+          <%= select_tag :journal_type_id, 
+            options_from_collection_for_select(@journal_types, "id", "to_s") %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= t(:show_only_active_accounts, :scope=>:reports) %>
+        </td>
+        <td>
+          <%= check_box_tag :show_only_active_accounts %>
+        </td>
+        <td>
+          <%= t(:last_year_figures, :scope=>:reports) %>
+        </td>
+        <td>
+          <%= check_box_tag :last_year_figures %>
+        </td>
+        <td>
+          <%= t(:budget, :scope=>:reports) %>
+        </td>
+        <td>
+          <%= check_box_tag :budget %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

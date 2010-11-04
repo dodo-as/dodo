@@ -61,6 +61,7 @@ en:
     products: "Products"
     orders: "Orders"
     bills: "Bills"
+    reports: "Reports"
     logged_in_as: "Logged in as"
     log_out: "Log out"
     active_company: "Active company"
@@ -96,7 +97,7 @@ en:
     login_error: Login failed
     logged_out: You are now logged out
     password_sent: A new password has been sent by email
-    password_not_sent: Couldn't send password. Please try again later, or contact support.
+    password_not_sent: "Couldn't send password. Please try again later, or contact support."
     password_changed: Password changed
     update_success: User was successfully updated
   accounts:
@@ -335,8 +336,17 @@ en:
     z_amount: Z amount
     date_shift: Date
 
-    
-
+  reports:
+    title_plural: Reports
+    from_period: From Period
+    to_period: To Period
+    project: Project
+    unit: Department
+    show_only_active_accounts: Show Only Active Acount
+    last_year_figures: Last Year Figures
+    result_from_period: Results From
+    journal_type: Journal Type
+    budget: Budget
 
 
 

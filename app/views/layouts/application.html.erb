@@ -45,7 +45,7 @@
       
       <li><%= link_to t(:paycheck_periods, :scope => :layout), paycheck_periods_path %></li>
       <li><%= link_to t(:weekly_sales, :scope => :layout), weekly_sales_path %></li>
-
+      <li><%= link_to t(:reports, :scope => :layout), reports_path %></li>
       <li>
 	<%= t(:logged_in_as, :scope => :layout) -%> <%= current_user.email %> (<%= link_to t(:log_out, :scope => :layout), destroy_user_session_path %>)
       </li>

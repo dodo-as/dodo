@@ -1,4 +1,5 @@
-Lodo::Application.routes.draw do |map|
+Lodo::Application.routes.draw do |map|  
+
 #  resources :weekly_sales
 
   resources :weekly_sale_setup_product_groups
@@ -51,6 +52,14 @@ Lodo::Application.routes.draw do |map|
   resources :accounts do
     resources :ledgers
   end
+  
+  #Reports
+  resources :reports, :only=>[:index] do
+    collection do
+      get :ledger_balance
+    end
+  end
+
 
   match 'welcome/current_company' => 'welcome#current_company', :as => :change_company
   
