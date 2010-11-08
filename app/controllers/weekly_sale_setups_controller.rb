@@ -83,20 +83,6 @@ class WeeklySaleSetupsController < ApplicationController
       end
     end
   end
-#  def update
-#    @weekly_sale_setup = WeeklySaleSetup.find(params[:id])
-#    respond_to do |format|
-#      if @weekly_sale_setup.update_attributes(params[:weekly_sale_setup])
-#        format.html { redirect_to(@weekly_sale_setup, :notice => 'Weekly sale setup was successfully updated.') }
-#        format.xml  { head :ok }
-#      else
-#        list_units
-#        list_accounts
-#        format.html { render :action => "edit" }
-#        format.xml  { render :xml => @weekly_sale_setup.errors, :status => :unprocessable_entity }
-#      end
-#    end
-#  end
 
   # DELETE /weekly_sale_setups/1
   # DELETE /weekly_sale_setups/1.xml
@@ -113,7 +99,6 @@ class WeeklySaleSetupsController < ApplicationController
   def add_product_group
     list_accounts
     list_projects
-#    @weekly_sale_setup = WeeklySaleSetup.find(params[:with])
     @weekly_sale_setup_product_group = WeeklySaleSetupProductGroup.new(:id=>0)
     @counter = (Time.now.to_f.to_s.sub('.', '_') + '_' + rand(9999999).to_s).to_s
     render :update do |page| 
@@ -123,14 +108,12 @@ class WeeklySaleSetupsController < ApplicationController
   end
 
   def destroy_product_group
-   # @weekly_sale_shift = WeeklySaleShift.find(params[:id])
     render :update do |page|
       page["row_weekly_sale_setup_product_group_#{params[:id]}"].remove ##render(:partial=>'shift', :locals=>{:shift_id=>nil})      
     end
   end
 
   def add_liquid
-    puts "paametros =================== "+ params.inspect
     list_accounts
     #@weekly_sale_setup = WeeklySaleSetup.find(params[:with])
     @weekly_sale_setup_liquid = WeeklySaleSetupLiquid.new(:id=>0)
@@ -142,7 +125,6 @@ class WeeklySaleSetupsController < ApplicationController
   end
 
   def destroy_liquid
-   # @weekly_sale_shift = WeeklySaleShift.find(params[:id])
     render :update do |page|
       page["row_weekly_sale_setup_liquid_#{params[:id]}"].remove ##render(:partial=>'shift', :locals=>{:shift_id=>nil})      
     end

@@ -25,23 +25,11 @@ class WeeklySalesController < ApplicationController
   # GET /weekly_sales/new
   # GET /weekly_sales/new.xml
   def new
-    #weekly_sale = WeeklySale.create_weekly_sale(params[:weekly_sale_setup_id])
     weekly_sale = WeeklySale.create_weekly_sale(params[:weekly_sale_setup_id], @me.current_company.id)
     
       redirect_to :controller => "weekly_sales", :action => "edit", :id => weekly_sale.id    
 
   end
-
-#  def new
-#    @weekly_sale = WeeklySale.new
-#    @weekly_sale.create_period
-#    list_weekly_sale_setups
-#    list_periods
-#    respond_to do |format|
-#      format.html # new.html.erb
-#      format.xml  { render :xml => @weekly_sale }
-#    end
-#  end
 
   # GET /weekly_sales/1/edit
   def edit
@@ -59,7 +47,6 @@ class WeeklySalesController < ApplicationController
         format.html { redirect_to(@weekly_sale, :notice => 'Weekly sale was successfully created.') }
         #list_weekly_sale_setups
         #list_periods
-        #format.html { render :action => "edit"}        
         format.xml  { render :xml => @weekly_sale, :status => :created, :location => @weekly_sale }
       else
         list_weekly_sale_setups
@@ -97,28 +84,16 @@ class WeeklySalesController < ApplicationController
     end
   end
 
-#  def add_shift
-#    @weekly_sale = WeeklySale.find(params[:with])
-#    @weekly_sale_shift = WeeklySaleShift.new(:id=>0)
-#    @counter = (Time.now.to_f.to_s.sub('.', '_') + '_' + rand(9999999).to_s).to_s
-#    render :update do |page| 
-#       page[:shifts].show
-#       page.insert_html :before, 'rows_weekly_sale_shifts', {:partial => 'shift', :locals=>{:unique_id=>(Time.now.to_f.to_s.sub('.', '_') + '_' + rand(9999999).to_s).to_s, :weekly_sale_setup_id=>@weekly_sale.weekly_sale_setup.id.to_s, :shift_id=>nil}}
-#    end 
-#  end
-
   def add_shift
     @weekly_sale = WeeklySale.find(params[:weekly_sale_id])
     @weekly_sale_shift = WeeklySaleShift.new(:id=>0)
     @counter = (Time.now.to_f.to_s.sub('.', '_') + '_' + rand(9999999).to_s).to_s
     render :update do |page| 
-     #  page[:shifts].show
        page.insert_html :after, "row_weekly_sale_shift_#{params[:id]}", {:partial => 'shift', :locals=>{:unique_id=>(Time.now.to_f.to_s.sub('.', '_') + '_' + rand(9999999).to_s).to_s, :weekly_sale_setup_id=>@weekly_sale.weekly_sale_setup.id.to_s, :shift_id=>nil, :date_shift=>params[:date]}}
     end 
   end
 
   def destroy_shift
-   # @weekly_sale_shift = WeeklySaleShift.find(params[:id])
     render :update do |page|
       page["row_weekly_sale_shift_#{params[:id]}"].remove ##render(:partial=>'shift', :locals=>{:shift_id=>nil})      
     end
