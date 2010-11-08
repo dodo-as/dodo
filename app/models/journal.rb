@@ -14,4 +14,10 @@ class Journal < ActiveRecord::Base
   def editable?
     return (self.period.open? and self.open? and self.bill_id.nil?)
   end
+
+  def self.get_ledger_by_account(from_period, to_period, company, department, project, show_last_period)
+
+    
+  end
+
 end
