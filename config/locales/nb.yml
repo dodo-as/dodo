@@ -59,8 +59,8 @@
   number:
     format:
       precision: 2
-      separator: "."
-      delimiter: ","
+      separator: ","
+      delimiter: " "
     currency:
       format:
         unit: "kr"
@@ -68,8 +68,8 @@
     precision:
       format:
       precision: 2
-      separator: "."
-      delimiter: ""
+      separator: ","
+      delimiter: " "
   activerecord:
     errors:
       template:
