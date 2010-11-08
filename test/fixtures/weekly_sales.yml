@@ -1,0 +1,33 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  weekly_sale_setup: 
+  journal: 
+  period: 
+  company: 
+  year: 1
+  week: 1
+  total_product_group_amount: 1.5
+  total_actual_cash_amount: 1.5
+  total_liquid_amount: 1.5
+  private_amount: 1.5
+  private_amount_explanation: MyString
+  closed: false
+  closed_by: 1
+  closed_at: 
+
+two:
+  weekly_sale_setup: 
+  journal: 
+  period: 
+  company: 
+  year: 1
+  week: 1
+  total_product_group_amount: 1.5
+  total_actual_cash_amount: 1.5
+  total_liquid_amount: 1.5
+  private_amount: 1.5
+  private_amount_explanation: MyString
+  closed: false
+  closed_by: 1
+  closed_at: 

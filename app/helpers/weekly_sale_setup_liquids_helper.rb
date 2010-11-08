@@ -1,0 +1,2 @@
+module WeeklySaleSetupLiquidsHelper
+end

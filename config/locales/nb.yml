@@ -67,8 +67,9 @@
         format: "%n %u"
     precision:
       format:
-        delimiter: ""
-        precision: 4
+      precision: 2
+      separator: "."
+      delimiter: ""
   activerecord:
     errors:
       template:

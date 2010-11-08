@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  account_id: 
+  weekly_sale_setup_id: 
+
+two:
+  name: MyString
+  account_id: 
+  weekly_sale_setup_id: 

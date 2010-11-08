@@ -1,0 +1,113 @@
+.number {
+    text-align: right;
+}
+.title {
+    font-weight: bold;
+}
+.center {
+    text-align: center;
+}
+.right {
+    text-align: right;
+}
+
+div.form_header {
+    width:100%;
+    background-color:#bed6ea; 
+}
+div.form_header table {
+    width:100%;
+}
+div.form_header table thead th {
+    font-weight: bold; 
+    text-align: center;
+}
+div.form_header table tbody td {
+    text-align: center;
+}
+
+div.form_body {
+    background-color: #bed6ea;
+}
+div.form_body table {
+    width: 100%;
+}
+div.form_body table tr td {
+    border: 0px;
+}
+
+div.form_items table thead th {
+    font-weight: bold; 
+    text-align: center;
+}
+div.form_items table tbody td {
+    text-align: center;
+}
+
+/* weekly_sales_items */
+td.shift_general {
+    background-color: #9a7292; 
+}
+td.shift_product {
+    background-color: #a0b1f1;
+}
+td.shift_liquid {
+    background-color: #84d472;
+}
+
+/* reports */
+div.reports div.title {
+    background-color: #bbb;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+    margin: 20px 0px 0px 0px;
+}
+div.reports table {
+    margin: 0px;
+    width: 100%;
+    color: #333;
+    font-size: 14px;
+}
+div.reports table thead {
+    background-color: #f9f9f9;
+}
+div.reports table tbody tr td.report_title {
+    vertical-align: middle;
+    padding: 8px;
+    color: #111;
+    font-size: 16px;
+    font-weight: bold;
+}
+div.reports table tbody.even {
+    background-color: #bed6ea;
+}
+div.reports table tbody.odd {
+    background-color: #e7eaed;
+}
+div.reports table tbody tr td {
+    border-width: 0px;
+    text-align: left;
+    padding: 4px;
+    vertical-align: middle;
+}
+div.reports table tbody tr td.title {
+    font-weight: normal;
+    text-align: right;
+}
+div.reports table tbody tr td select, div.reports table tbody tr td input {
+    font-size: 14px;
+    padding: 4px;
+}
+div.reports table tbody tr td.submit {
+    text-align: right;
+    padding: 8px;
+}
+div.reports table tbody tr td.submit input {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px;
+    color: #333;
+}

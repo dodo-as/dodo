@@ -4,6 +4,24 @@ authorization do
   role :admin do
     has_permission_on :authorization_rules, :to => :manage
     has_permission_on :authorization_usages, :to => :manage
+
+    has_permission_on :weekly_sale_setups, :to => :manage do
+      if_attribute :company_id => is {user.current_company.id}
+      if_attribute :company_id => nil
+    end
+
+    has_permission_on :weekly_sale_setup_liquids, :to => :manage do
+      if_attribute :company_id => is {user.current_company.id}
+      if_attribute :company_id => nil
+    end
+
+    has_permission_on :weekly_sale_setup_product_groups, :to => :manage do
+      if_attribute :company_id => is {user.current_company.id}
+      if_attribute :company_id => nil
+    end
+
+    has_permission_on :journal_types, :to => :manage 
+
     # just being authenticated as an admin covers
     # authorization for the admin ui
   end
@@ -65,6 +83,27 @@ authorization do
       if_attribute :company_id => nil
     end
 
+    has_permission_on :weekly_sale_setups, :to => :manage do
+      if_attribute :company_id => is {user.current_company.id}
+      if_attribute :company_id => nil
+    end
+
+    has_permission_on :weekly_sale_setup_liquids, :to => :manage do
+      if_attribute :company_id => is {user.current_company.id}
+      if_attribute :company_id => nil
+    end
+
+    has_permission_on :weekly_sale_setup_product_groups, :to => :manage do
+      if_attribute :company_id => is {user.current_company.id}
+      if_attribute :company_id => nil
+    end
+
+    has_permission_on :weekly_sales, :to => :manage do
+      if_attribute :company_id => is {user.current_company.id}
+      if_attribute :company_id => nil
+    end
+
+     has_permission_on :journal_types, :to => :read
   end
 
   role :accountant do

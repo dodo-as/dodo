@@ -1,0 +1,93 @@
+<% 
+  if @weekly_sale_shift && !@weekly_sale_shift.new_record?
+    @counter = @weekly_sale_shift.id unless @weekly_sale_shift.nil? 
+  end
+  if shift_id
+    weekly_sale_shift = WeeklySaleShift.find(shift_id)
+    @counter = weekly_sale_shift.id
+  else
+    weekly_sale_shift = WeeklySaleShift.new
+  end
+%>
+
+<% weekly_sale_setup = WeeklySaleSetup.find(weekly_sale_setup_id) %>
+<tr id="row_weekly_sale_shift_<%= weekly_sale_shift.new_record? ? @counter.to_s : weekly_sale_shift.id.to_s %>">
+  <%= hidden_field_tag "weekly_sale_shifts[#{@counter}][new_record]", weekly_sale_shift.new_record? ? 'true' : 'false'  %>
+  <%= hidden_field_tag "weekly_sale_shifts[#{@counter}][id]", weekly_sale_shift.new_record? ? shift_id : @counter %>    
+  <td><%=  weekly_sale_shift.new_record? ? '' : weekly_sale_shift.date.strftime("%A") %></td>  
+  <td id="weekly_sale_shift_date" class="shift_general">   
+    <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][date]", weekly_sale_shift.new_record? ? date_shift : weekly_sale_shift.date, :size=>7) %>
+  </td>
+  <td id="weekly_sale_shift_z_number" class="shift_general">    
+    <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][z_number]", weekly_sale_shift.z_number, :size => 4) %>
+  </td>
+  <td id="weekly_sale_shift_z_amount" class="shift_general">
+    <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][z_amount]", number_with_precision(weekly_sale_shift.z_amount, :locale =>I18n.locale), :size => 7, :maxlength=>"14" , :class=>"number") %>
+  </td>  
+  <% if weekly_sale_setup  &&  weekly_sale_shift %>          
+    <% weekly_sale_setup.weekly_sale_setup_product_groups.each do |product| %>
+    <% if !weekly_sale_shift.new_record?       
+        weekly_sale_shift_product_group = WeeklySaleShiftProductGroup.where(['weekly_sale_setup_product_group_id = ? and weekly_sale_shift_id = ?', product.id, weekly_sale_shift.id]).first
+       else
+        weekly_sale_shift_product_group = WeeklySaleShiftProductGroup.new
+       end
+    %>
+      <td id="column_weekly_sale_shift_product_group_<%= @counter.to_s %>_<%= product.id.to_s %>" class="shift_product">
+        <%= hidden_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][id]", weekly_sale_shift_product_group.new_record? ? '' : weekly_sale_shift_product_group.id.to_s) if weekly_sale_shift_product_group %>
+        <%#= hidden_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][weekly_sale_id]", @counter.to_s) %>
+        <%= hidden_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][product_group_id]", product.id.to_s) %>
+        <%= text_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][amount]", number_with_precision(weekly_sale_shift_product_group.amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this, #{product.id})", :class=>"number") if weekly_sale_shift_product_group %>
+      </td>      
+      <% if product.account.has_quantity %>
+        <td id="column_weekly_sale_shift_product_group_" class="shift_product">
+          <%= hidden_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][id]", weekly_sale_shift_product_group.new_record? ? '' : weekly_sale_shift_product_group.id.to_s) if weekly_sale_shift_product_group %>
+          <%= hidden_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][product_group_id]", product.id.to_s) %>
+          <%= text_field_tag("weekly_sale_shift_product_groups[#{@counter.to_s}][#{product.id.to_s}][quantity]", number_with_precision(weekly_sale_shift_product_group.quantity, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)", :class=>"number") if weekly_sale_shift_product_group %>          
+        </td>
+      <% end %>      
+    <% end %>
+  <% end %>  
+  <td class="number shift_product" id="total_product_groups"><%= number_with_precision(weekly_sale_shift.total_product_group_amount, :locale =>I18n.locale) %></td>
+  <% if weekly_sale_setup  &&  weekly_sale_shift %>          
+    <% weekly_sale_setup.weekly_sale_setup_liquids.each do |liquid| %>
+    <% if weekly_sale_shift && !weekly_sale_shift.new_record? 
+        weekly_sale_shift_liquid = WeeklySaleShiftLiquid.where(['weekly_sale_setup_liquid_id = ? and weekly_sale_shift_id = ?', liquid.id, weekly_sale_shift.id]).first
+       else
+        weekly_sale_shift_liquid = WeeklySaleShiftLiquid.new
+       end
+    %>
+      <td id="column_weekly_sale_shift_liquid" class="shift_liquid">
+        <%= hidden_field_tag("weekly_sale_shift_liquids[#{@counter.to_s}][#{liquid.id.to_s}][id]", weekly_sale_shift_liquid.new_record? ? '' : weekly_sale_shift_liquid.id.to_s) if weekly_sale_shift_liquid %>
+        <%#= hidden_field_tag("weekly_sale_shift_liquids[#{@counter.to_s}][#{liquid.id.to_s}][weekly_sale_id]", @counter.to_s) %>
+        <%= hidden_field_tag("weekly_sale_shift_liquids[#{@counter.to_s}][#{liquid.id.to_s}][liquid_id]", liquid.id.to_s) %>
+        <%= text_field_tag("weekly_sale_shift_liquids[#{@counter.to_s}][#{liquid.id.to_s}][amount]", number_with_precision(weekly_sale_shift_liquid.amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)", :class=>"number") if weekly_sale_shift_liquid %>
+      </td>
+    <% end %>
+  <% end %>
+  <td id="total_cash" class="number shift_liquid"><%= number_with_precision(weekly_sale_shift.received_cash_amount.to_s, :locale =>I18n.locale) %></td>
+  <td id="total_liquids" class="number shift_liquid"><%= number_with_precision(weekly_sale_shift.total_product_group_amount, :locale =>I18n.locale) %></td>
+  <td id="weekly_sale_shift_inserted_cash_amount" class="shift_liquid">
+    <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][inserted_cash_amount]", number_with_precision(weekly_sale_shift.inserted_cash_amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)", :class=>"number") %>
+  </td>
+  <td id="weekly_sale_shift_extracted_cash_amount" class="shift_liquid">
+    <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][extracted_cash_amount]", number_with_precision(weekly_sale_shift.extracted_cash_amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)", :class=>"number") %>
+  </td>
+  <td id="weekly_sale_shift_actual_cash_amount" class="shift_liquid">
+    <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][actual_cash_amount]", number_with_precision(weekly_sale_shift.actual_cash_amount, :locale =>I18n.locale), :size => 7, :onchange => "calcTotal(this)", :class=>"number") %>
+  </td>
+  <td id="difference_cash" class="number shift_liquid"><%= number_with_precision(weekly_sale_shift.difference_cash, :locale =>I18n.locale) %></td>
+  <td id="weekly_sale_shift_difference_cash_explanation" style="background-color:#84d472;">
+    <%= text_field_tag("weekly_sale_shifts[#{@counter.to_s}][difference_cash_explanation]", weekly_sale_shift.difference_cash_explanation, :size => 16) %>
+  </td>  
+  <td class="shift_general"><%= weekly_sale_shift.sign_by ?  weekly_sale_shift.sign_by : check_box_tag("weekly_sale_shifts[#{@counter.to_s}][sign]") %></td>    
+  <td class="shift_general"><%= weekly_sale_shift.closed_by ?  weekly_sale_shift.closed_by : check_box_tag("weekly_sale_shifts[#{@counter.to_s}][closed]") %></td>    
+  <td>
+    <%= link_to_function 'Destroy', remote_function( 
+      :url=> { :action=>:destroy_shift, :id=>weekly_sale_shift.id.to_s }) %>   
+  </td>
+  <td>  
+  <%= button_to_function t(:add_shift, :scope => :weekly_sales), 
+    remote_function(:url =>{:action => :add_shift}, 
+    :with=>"'date='+jQuery('#weekly_sale_shifts_#{@counter.to_s}_date')[0].value+'&id=#{weekly_sale_shift.id.to_s}&weekly_sale_id=#{@weekly_sale.id.to_s}'") %>
+  </td>
+</tr>
