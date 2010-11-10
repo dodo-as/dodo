@@ -12,6 +12,34 @@ class Period < ActiveRecord::Base
   STATUSES = {0 => 'New', 1 => 'Open', 2 => 'Done', 3 => 'Closed'}
   STATUSE_NAMES = {'New' => 0, 'Open' => 1, 'Done' => 2, 'Closed' => 3}
 
+  # if (from_year, to_year) are nil, it will return all periods of the company
+  # if (to_year) are nil, it will return all periods until last period of the company
+  # if (from_year) are nil, it will return all periods since first period of the company
+  # company is required
+  def self.get_range(from_year, from_nr, to_year, to_nr, company_id)
+    periods = Array.new
+    if from_year.blank? && to_year.blank?
+      periods.concat(where(['company_id = ?', company_id]))
+    else
+      unless from_year.blank? 
+        periods.concat(where(['company_id = ? and year = ? and nr >= ?', company_id, from_year, from_nr]))    
+      end
+      if !from_year.blank? && to_year.blank?
+        periods.concat(where(['company_id = ? and year > ? ', company_id, from_year]))
+      end
+      unless to_year.blank?
+        periods.concat(where(['company_id = ? and year = ? and nr <= ? ', company_id, to_year, to_nr]))
+      end
+      if from_year.blank? && !to_year.blank?
+        periods.concat(where(['company_id = ? and year < ? ', company_id, to_year]))
+      end
+      if !from_year.blank? && !to_year.blank?
+        periods.concat(where(['company_id = ? and year > ? and year < ? ', company_id, from_year, to_year])) if (to_year - from_year > 1)
+      end    
+    end
+    return periods
+  end
+
   def status_name
     STATUSES[self.status]
   end
