@@ -34,15 +34,13 @@
   <%= @account.comments %>
 </p>
 
+<% if @account.has_ledger %>
 <p>
   <b><%= t(:ledger, :scope => :accounts) -%>:</b>
-  <% if @account.has_ledger %>
-  ...
-  <% else %>
-  No
-  <% end %>
+  <%= @account.ledgers.collect{ |l| l.to_s }.join ", " %>
 </p>
+<% end %>
 
 
-<%= link_to t(:edit, :scope => :accounts), edit_account_path(@account) %> |
-<%= link_to t(:back, :scope => :accounts), accounts_path %>
+<%= link_to t(:edit, :scope => :global), edit_account_path(@account) %> |
+<%= link_to t(:back, :scope => :global), accounts_path %>
