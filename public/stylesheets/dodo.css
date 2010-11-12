@@ -247,6 +247,11 @@ table
     border: 1px solid #aaa;
 }
 
+td.number
+{
+    text-align: right;
+}
+
 .ci_list_table,
 .ci_table,
 .history_table
@@ -255,12 +260,22 @@ table
     max-width: 60em;
 }
 
+table.rapport5 td
+{
+    border-bottom: none;
+}
+
 td, th
 {
     border-bottom: 1px solid #aaa;
     padding-left: 5pt;
     padding-right: 5pt;
     vertical-align: top;
+}
+
+tr.odd 
+{
+    background-color: #eee;
 }
 
 td.odd
