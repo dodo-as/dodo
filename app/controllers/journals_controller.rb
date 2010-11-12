@@ -1,5 +1,4 @@
 class JournalsController < ApplicationController
-
   include PeriodController
 
   before_filter :set_readonly

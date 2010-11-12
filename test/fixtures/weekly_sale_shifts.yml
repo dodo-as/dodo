@@ -1,0 +1,35 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  weekly_sale_day: 
+  closed: false
+  closed_by: 1
+  closed_at: 2010-08-31 17:25:26
+  sign_by: 1
+  sign_at: 2010-08-31 17:25:26
+  z_number: 1
+  z_amount: 1.5
+  total_product_groups_amount: 1.5
+  total_liquid_amount: 1.5
+  actual_cash_amount: 1.5
+  difference_cash: 1.5
+  difference_cash_explanation: MyString
+  inserted_cash_amount: 1.5
+  extracted_cash_amount: 1.5
+
+two:
+  weekly_sale_day: 
+  closed: false
+  closed_by: 1
+  closed_at: 2010-08-31 17:25:26
+  sign_by: 1
+  sign_at: 2010-08-31 17:25:26
+  z_number: 1
+  z_amount: 1.5
+  total_product_groups_amount: 1.5
+  total_liquid_amount: 1.5
+  actual_cash_amount: 1.5
+  difference_cash: 1.5
+  difference_cash_explanation: MyString
+  inserted_cash_amount: 1.5
+  extracted_cash_amount: 1.5

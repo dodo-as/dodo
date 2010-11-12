@@ -1,0 +1,13 @@
+<% weekly_sale_setup_liquid = WeeklySaleSetupLiquid.find(id) %>
+
+<tr id="row_weekly_sale_setup_liquid_<%=@counter.to_s%>">
+  <td id="weekly_sale_setup_liquid_name" class="shift_liquid">   
+    <%= weekly_sale_setup_liquid.name %>
+  </td>
+  <td id="weekly_sale_setup_liquid_display_order" class="shift_liquid">   
+    <%= weekly_sale_setup_liquid.display_order %>
+  </td>
+  <td id="weekly_sale_setup_liquid_account_id" class="shift_liquid">   
+    <%= weekly_sale_setup_liquid.account %>
+  </td>
+</tr>

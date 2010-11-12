@@ -25,6 +25,27 @@ en:
           default: "%Y-%m-%dT%H:%M:%S%Z"
       am: 'am'
       pm: 'pm'
+
+  number:
+    format:
+      precision: 2
+      separator: "."
+      delimiter: ","
+    precision:
+      format:
+      precision: 2
+      separator: "."
+      delimiter: ","
+
+  global:
+    show: Show
+    edit: Edit
+    destroy: Destroy
+    back: Back
+    editing: Editing
+    listing: Listing
+    new: New
+    save: Save
   admin:
     companies:
       select_template_company: Select company as template
@@ -40,10 +61,12 @@ en:
     products: "Products"
     orders: "Orders"
     bills: "Bills"
+    reports: "Reports"
     logged_in_as: "Logged in as"
     log_out: "Log out"
     active_company: "Active company"
     vat_plan: "VAT plan"
+    weekly_sales: "Weekly Sales"
   users:
     remember_me: "Remember me"
     reset_password: "Reset password"
@@ -74,7 +97,7 @@ en:
     login_error: Login failed
     logged_out: You are now logged out
     password_sent: A new password has been sent by email
-    password_not_sent: Couldn't send password. Please try again later, or contact support.
+    password_not_sent: "Couldn't send password. Please try again later, or contact support."
     password_changed: Password changed
     update_success: User was successfully updated
   accounts:
@@ -247,13 +270,94 @@ en:
     total_for_this_order: Total for this order
     total_for_all_orders: Total for all orders
     total: Total
+  weekly_sale_setups:
+    title_singular: Weekly Sale Setup
+    title_plural: Weekly Sale Setups    
+    name: Name
+    journal_type: Journal type
+    permanent_cash: Permanent cash
+    cash_account: Cash account
+    unit: Unit
+    locked: Locked
+    add_product_group: Add Product Group
+    add_liquid: Add Liquid Account
+    valid_from: Valid from
+    valid_to: Valid to
 
+  weekly_sale_setup_liquids:
+    title_singular: Weekly Sale Setup Liquid Account
+    title_plural: Weekly Sale Setup Liquid Accounts
+    name: Name
+    account: Account
+    weekly_sale_setup: Weekly sale setup
+    display_order: Display order
 
+  weekly_sale_setup_product_groups:
+    title_singular: Weekly Sale Setup Product Group
+    title_plural: Weekly Sale Setup Product Groups
+    name: Name
+    account: Account
+    weekly_sale_setup: Weekly sale setup
+    project: Project
+    display_order: Display order
 
+  weekly_sales:
+    title_singular: Weekly Sale
+    title_plural: Weekly Sales
+    weekly_sale_setup: Weekly sale setup
+    period: Period
+    journal_date: Journal date
+    journal_number: Journal number
+    journal: Journal    
+    year: Year
+    week: Week
+    permanent_cash: Permanent cash
+    unit: Unit
+    add_shift: Add Shift
+    sum: Sum
+    accounts: Accounts
+    units: Units
+    projects: Projects
+    received_cash: Cash
+    inserted_cash: Cash in
+    extracted_cash: Cash out
+    difference_cash: Diff
+    actual_cash: Count
+    private_amount: Private amount (deposits - withdrawals)
+    total_net: Total
+    total_product_groups: Total
+    explanation_private_amount: Explanation
+    explanation_different_cash: Explanation
+    closed: Closed
+    closed_at: Closed at
+    sign_by: Sign by
+    closed_by: Closed by
+    z_number: Z number
+    z_amount: Z amount
+    date_shift: Date
 
-
-
-
+  reports:
+    title_plural: Reports
+    balance: Balance
+    journal: Journal
+    open: Open
+    run_report: Run Report
+    from_period: From Period
+    to_period: To Period
+    project: Project
+    unit: Department
+    show_only_active_accounts: Show Only Active Acount
+    last_year_figures: Last Year Figures
+    result_from_period: Results From
+    journal_type: Journal Type
+    budget: Budget
+    ledger: Ledger
+    subsidiary_ledger: Subsidiary Ledger
+    ledger_by_account_number: Ledger by Account Number
+    ledger_from: Ledger From
+    ledger_to: Ledger To
+    from_account: From Account
+    to_account: To Account
 
 
 

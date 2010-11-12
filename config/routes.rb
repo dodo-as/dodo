@@ -1,4 +1,15 @@
 Dodo::Application.routes.draw do |map|
+
+#  resources :weekly_sales
+
+  resources :weekly_sale_setup_product_groups
+
+  resources :weekly_sale_setup_liquids
+
+  resources :weekly_sale_setups
+
+  resources :weekly_sales
+
   resources :paycheck_lines
   resources :paychecks
   
@@ -43,6 +54,18 @@ Dodo::Application.routes.draw do |map|
   resources :accounts do
     resources :ledgers
   end
+  
+  #Reports
+  resources :reports, :only=>[:index] do
+    collection do
+      get :ledger_balance
+      get :ledger_journal
+      get :subsidiary_ledger_balance
+      get :subsidiary_journal_ledger
+      get :ledger_open
+    end
+  end
+
 
   match 'welcome/current_company' => 'welcome#current_company', :as => :change_company
   
