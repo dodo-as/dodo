@@ -23,6 +23,8 @@ Dodo::Application.routes.draw do |map|
     resources :tax_zones
   end
 
+  resources :payment_runs
+  resources :cars
   resources :units
   resources :projects
   resources :vat_accounts
