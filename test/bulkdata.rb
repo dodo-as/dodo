@@ -3,10 +3,10 @@
 raise "Set RAILS_ENV=test before loading blueprint" unless Rails.env == 'test'
 
 # Number of users
-USER_COUNT = 150
+USER_COUNT = 50
 #15000
 # Number of companies
-COMPANY_COUNT = 100
+COMPANY_COUNT = 10
 #10000
 # Average number of products for a company
 PRODUCT_COUNT = 20
@@ -220,7 +220,7 @@ if not $BULK_SALARY
       # create some accounts
       companies.each do |c|
         print '.'
-        # Vat accounts from empatix @ dodo.no
+        # Vat accounts from empatix @ lodo.no
         
         # **** Outgoing vat; sales ***
         a2700 = Account.make(:company => c, :name => "Utg mva kode 10", :number => 2700)
@@ -292,8 +292,10 @@ if not $BULK_SALARY
         Account.make(:company => c, :name => "Accounts payable", :number => 2400)
         # TODO: create some suppliers
         
-        Account.make(:company => c, :name => "Employees", :number => 2930)
+        Account.make(:company => c, :name => "Employees", :number => 2930, :has_ledger => true)
         # TODO: create some employees
+
+        Account.make(:company => c, :name => "Customer bills", :number => 1500, :has_ledger => true)
         
         # create some random filler accounts
         (rand(200) + 40).times do
@@ -423,7 +425,7 @@ else
                                     :rate => t.rate,
                                     :amount => t.amount,
                                     :payroll_tax => t.payroll_tax,
-                                    :vacation_basis => t.vacation_basis,
+                                    :vacation_basis => t.vacation_basis
                                     )
         end
         sql = "

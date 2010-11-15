@@ -3,7 +3,7 @@ class JournalOperation < ActiveRecord::Base
   belongs_to :account
   belongs_to :ledger
   belongs_to :vat_account
-  belongs_to :unit
+  belongs_to :car
   belongs_to :project
   
   def debet= (num)

@@ -1,15 +1,20 @@
 class JournalsController < ApplicationController
   include PeriodController
 
-  before_filter :find_units_all, :only => [:new, :edit]
-  before_filter :find_projects_all, :only => [:new, :edit]
-  before_filter :find_accounts_all, :only => [:new, :edit]
+  before_filter :set_readonly
+  before_filter :find_units_all, :only => [:new, :edit, :show]
+  before_filter :find_cars_all, :only => [:new, :edit, :show]
+  before_filter :find_projects_all, :only => [:new, :edit, :show]
+  before_filter :find_accounts_all, :only => [:new, :edit, :show]
   filter_resource_access
 
   # GET /journals
   # GET /journals.xml
   def index
-    @journals = period_filter(Journal.with_permissions_to(:index).order("number, journal_date desc, journal_type")).paginate({:page => params[:page]})
+    @journals = period_filter(
+      Journal.with_permissions_to(:index).order(
+      "number, journal_date desc, journal_type_id")).paginate(
+      {:page => params[:page]})
 
     respond_to do |format|
       format.html # index.html.erb
@@ -21,6 +26,7 @@ class JournalsController < ApplicationController
   # GET /journals/1
   # GET /journals/1.xml
   def show
+    @readonly = true
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @journal }
@@ -79,14 +85,21 @@ class JournalsController < ApplicationController
         begin
           @journal.update_attributes(params[:journal]) or raise ActiveRecord::Rollback
           @journal.journal_operations.clear
+          print "\n\nWOOO, save oeprations\n"
           params[:journal_operations].each do
             |key, value|
+            print "\nValues\n"
+            print value
             op = JournalOperation.new(value)
             if op.amount != 0.0
+              print "\nNot zero amount. Yay!"
               @journal.journal_operations.push op 
             end
+            print "\nOperation to be saved:\n"
+            print op
           end
           @journal.save!
+          print "\n\n\n"
 
           flash[:notice] = 'Journal was successfully updated.'
           format.html { redirect_to(@journal) }
@@ -113,18 +126,39 @@ class JournalsController < ApplicationController
   private 
   
   def find_accounts_all
-    @accounts_all =
+    tmp =
       Account.where(:company_id => @me.current_company.id).order(:number)
+    @accounts_all = []
+    tmp.each do
+      |a|
+      if a.has_ledger then
+        a.ledgers.each do
+          |l|
+          @accounts_all << {:name => "#{a.number} #{a.name} - #{l.name}", :value => "#{a.id}.#{l.id}"}
+        end
+      else
+        @accounts_all << {:name => "#{a.number} #{a.name}", :value => a.id, :vat_account => a.vat_account}
+      end
+    end
   end
-
+  
   def find_units_all
     @units_all =
       Unit.where(:company_id => @me.current_company.id).order(:name)
   end
 
+  def find_cars_all
+    @cars_all =
+      Car.where(:company_id => @me.current_company.id).order(:name)
+  end
+  
   def find_projects_all
     @projects_all =
       Project.where(:company_id => @me.current_company.id).order(:name)
+  end
+  
+  def set_readonly
+    @readonly=false
   end
 
 end

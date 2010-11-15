@@ -1,0 +1,31 @@
+<h1><%= t('cars.header_index')%></h1>
+
+<table>
+  <tr>
+    <th><%= t('activerecord.attributes.car.name') %></th>
+    <th><%= t('activerecord.attributes.car.comments') %></th>
+    <th></th>
+  </tr>
+
+<% @cars.each do |car| %>
+  <tr>
+    <td><%= car.name %></td>
+    <td><%= car.comments %></td>
+    <td>
+      <%= link_to t("global.show"), car %>
+      <% if permitted_to? :edit, car %>
+      <%= link_to t("global.edit"), edit_car_path(car) %>
+      <% end %>
+      <% if permitted_to? :delete, car %>
+      <%= link_to t("global.destroy"), car, :confirm => 'Are you sure?', :method => :delete %>
+      <% end %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<% if permitted_to? :create, :cars %>
+  <%= link_to t('New car'), new_car_path %>
+<% end %>

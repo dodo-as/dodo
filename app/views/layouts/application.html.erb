@@ -35,6 +35,7 @@
       <li><%= link_to t(:vat_plan, :scope => :layout), vat_accounts_path %></li>
       <li><%= link_to t(:journals, :scope => :layout), journals_path %></li>
       <li><%= link_to t(:projects, :scope => :layout), projects_path %></li>
+      <li><%= link_to t(:cars, :scope => :layout), cars_path %></li>
       <li><%= link_to t(:units, :scope => :layout), units_path %></li>
       <li><%= link_to t(:products, :scope => :layout), products_path %></li>
       <li><%= link_to t(:orders, :scope => :layout), orders_path %></li>
@@ -50,6 +51,8 @@
 	<%= t(:logged_in_as, :scope => :layout) -%> <%= current_user.email %> (<%= link_to t(:log_out, :scope => :layout), destroy_user_session_path %>)
       </li>
 
+      <li><%= link_to t(:payment_run, :scope => :layout), payment_runs_path %></li>
+      
       <li class="change_company_form">
       <%= form_tag change_company_path, :method => :put do -%>
          <label for="current_company"><%= t(:active_company, :scope => :layout) -%>:</label>

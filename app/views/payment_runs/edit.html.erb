@@ -1,0 +1,118 @@
+
+<table class='rapport5'>
+<% 
+
+   def num_format num
+   return num
+#      return number_to_human(num, :precision => 2)
+   end
+
+# :precision - Sets the precision of the number (defaults to 3).
+# :significant - If true, precision will be the # of significant_digits. If false, the # of fractional #digits (defaults to true)
+# :separator - Sets the separator between the fractional and integer digits (defaults to ".").
+# :delimiter - Sets the thousands delimiter (defaults to "").
+# :strip_insignificant_zeros - If true removes insignificant zeros after the decimal separator (defaults t
+
+
+   odd = false
+   ledger = nil
+   @matches.each do
+     |ops| 
+     odd = !odd
+     odd_str = odd ? "odd" : "even"
+
+   if ledger != ops[0].ledger then
+     ledger = ops[0].ledger
+%>
+  <tr>
+    <th colspan='7'>
+      <%= ledger.name %>
+    </th>
+  </tr>
+  <tr>
+    <th>
+      Debet
+    </th>
+    <th>
+      Kredit
+    </th>
+    <th>
+      Forfallodato
+    </th>
+    <th>
+      KID
+    </th>
+    <th>
+      Faktura #
+    </th>
+    <th>
+      Tekst
+    </th>
+    <th>
+    </th>
+  </tr>
+
+<%
+   end
+
+%>
+
+
+
+  <tr class='<%= odd_str %>'>
+    <td class='number'>
+      <%= num_format(ops[0].amount > 0 ? ops[0].amount : "") %>
+    </td>
+    
+    <td class='number'>
+      <%= ops[0].amount < 0 ? ops[0].amount : "" %>
+    </td>
+    
+    <td>
+      <%= ops[0].journal.due_date %>
+    </td>
+    
+    <td>
+      <%= ops[0].journal.kid %>
+    </td>
+    <td>
+      <%= ops[0].journal.bill_number %>
+    </td>
+    <td>
+      <%= ops[0].journal.description %>
+    </td>
+    <td rowspan='2'>
+      <button>Lukk</button>
+    </td>
+
+  </tr>
+  <tr class='<%= odd_str %>'>
+    <td class='number'>
+      <%= ops[1].amount > 0 ? ops[1].amount : "" %>
+    </td>
+
+    <td class='number'>
+      <%= ops[1].amount < 0 ? ops[1].amount : "" %>
+    </td>
+        
+    <td>
+      <%= ops[1].journal.due_date %>
+    </td>
+    
+    <td>
+      <%= ops[1].journal.kid %>
+    </td>
+    <td>
+      <%= ops[1].journal.bill_number %>
+    </td>
+    <td>
+      <%= ops[1].journal.description %>
+    </td>
+  </tr>
+
+<% end %>
+
+</table>
+
+
+

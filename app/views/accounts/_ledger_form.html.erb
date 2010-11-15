@@ -115,7 +115,7 @@
 
 <div style="clear: both;" />
 
-  <%= submit_tag t(:save, :scope => :accounts) %>
+  <%= submit_tag t(:add_ledger, :scope => :accounts) %>
 <%= javascript_tag "$('#new_ledger').submit( function () { jQuery.ajax({
 		    type: 'POST',
 		    url: '/accounts/#{@account.id}/ledgers',

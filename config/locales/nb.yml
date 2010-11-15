@@ -1,5 +1,6 @@
 # Norwegian, norsk bokmål, by irb.no
 "nb":
+
   helpers:
     submit:
       create: "Kjempeskap %{model}"
@@ -225,6 +226,7 @@
     comment: "Beskrivelse"
     account_created: Konto opprettet
     account_updated: Konto oppdatert
+    add_ledger: "Kjempelegg til"
   ledgers:
     ledger_saved: Reskontro %{name} lagret
   vat:

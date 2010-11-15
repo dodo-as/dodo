@@ -42,3 +42,9 @@ gem "declarative_authorization"
 #  gem "ruby_parser"
 #end
 
+gem "erubis"
+
+group :development do
+  gem "ruby-debug19"
+end
+

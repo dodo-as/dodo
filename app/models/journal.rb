@@ -3,6 +3,7 @@ class Journal < ActiveRecord::Base
   belongs_to :company
   belongs_to :bill
   belongs_to :period
+  belongs_to :unit
   belongs_to :journal_type 
 
   self.per_page = 200
