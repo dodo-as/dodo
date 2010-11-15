@@ -32,11 +32,11 @@ class Period < ActiveRecord::Base
     periods = []
 
     if options[:from_year] == options[:to_year]
-      periods.concat(where(['company_id = ? and year = ? and nr >= ? and nr <= ?', company_id, options[:from_year], options[:from_nr], options[:to_nr]]))    
+      periods.concat(where(['company_id = ? and year = ? and nr >= ? and nr <= ? ', company_id, options[:from_year], options[:from_nr], options[:to_nr]]).order("year, nr"))    
     else  
-      periods.concat(where(['company_id = ? and year = ? and nr >= ?', company_id, options[:from_year], options[:from_nr]]))    
-      periods.concat(where(['company_id = ? and year = ? and nr <= ? ', company_id, options[:to_year], options[:to_nr]]))    
-      periods.concat(where(['company_id = ? and year > ? and year < ? ', company_id, options[:from_year], options[:to_year]])) if (options[:to_year] - options[:from_year] > 1)
+      periods.concat(where(['company_id = ? and year = ? and nr >= ? ', company_id, options[:from_year], options[:from_nr]]).order("year, nr"))    
+      periods.concat(where(['company_id = ? and year > ? and year < ? ', company_id, options[:from_year], options[:to_year]]).order("year, nr")) if (options[:to_year] - options[:from_year] > 1)
+      periods.concat(where(['company_id = ? and year = ? and nr <= ? ', company_id, options[:to_year], options[:to_nr]]).order("year, nr")) 
     end
 
     return periods

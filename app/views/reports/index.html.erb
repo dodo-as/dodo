@@ -18,22 +18,25 @@
             <%= t(:from_period, :scope=>:reports) %>
           </td>
           <td>
-            <%= select_tag :from_period_id, 
-              options_from_collection_for_select(@periods, "id", "to_s") %>
+            <%= select_tag :from_period_id,              
+              options_from_collection_for_select(@periods, "id", "to_s"), 
+              :include_blank => true %>
           </td>
           <td class="title">
             <%= t(:to_period, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :to_period_id, 
-              options_from_collection_for_select(@periods, "id", "to_s") %>
+              options_from_collection_for_select(@periods, "id", "to_s"),
+              :include_blank => true %>
           </td>
           <td class="title">
             <%= t(:result_from_period, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :result_from_period_id, 
-              options_from_collection_for_select(@periods, "id", "to_s") %>
+              options_from_collection_for_select(@periods, "id", "to_s"),
+              :include_blank => true %>
           </td>
         </tr>
         <tr>
@@ -42,21 +45,24 @@
           </td>
           <td>
             <%= select_tag :unit_id, 
-              options_from_collection_for_select(@units, "id", "to_s") %>
+              options_from_collection_for_select(@units, "id", "to_s"),
+              :include_blank => true %>
           </td>
           <td class="title">
             <%= t(:project, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :project_id, 
-              options_from_collection_for_select(@projects, "id", "to_s") %>
+              options_from_collection_for_select(@projects, "id", "to_s"),
+              :include_blank => true %>
           </td>
           <td class="title">
             <%= t(:journal_type, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :journal_type_id, 
-              options_from_collection_for_select(@journal_types, "id", "to_s") %>
+              options_from_collection_for_select(@journal_types, "id", "to_s"),
+              :include_blank => true %>
           </td>
         </tr>
         <tr>
