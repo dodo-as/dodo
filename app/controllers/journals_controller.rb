@@ -9,7 +9,10 @@ class JournalsController < ApplicationController
   # GET /journals
   # GET /journals.xml
   def index
-    @journals = period_filter(Journal.with_permissions_to(:index).order("number, journal_date desc, journal_type")).paginate({:page => params[:page]})
+    @journals = period_filter(
+      Journal.with_permissions_to(:index).order(
+      "number, journal_date desc, journal_type_id")).paginate(
+      {:page => params[:page]})
 
     respond_to do |format|
       format.html # index.html.erb

@@ -1,0 +1,48 @@
+<script>
+  var ajaxRequest = null;
+  
+  jQuery(document).keydown(function(e) {
+    if(e.keyCode == 27) {
+      abortLoad();
+    }
+  });
+  
+  function abortLoad() {
+    ajaxRequest.transport.abort(); jQuery('#load_info').hide();
+  }
+</script>
+
+<div id="load_info" 
+  style="padding: 20px; font-size: 24px; position: fixed; margin: 0px; width: 100%; bottom: 0px; text-align: center; background:#fff;">
+  <span id="loaded_records">0</span> of <%= @count %> loaded <%= image_tag 'loading.gif' %>
+  
+  <%= link_to_function "Cancel", "if (ajaxRequest != null) { abortLoad() }" %>
+</div>
+
+<table class="report">
+  <thead>
+    <tr>
+      <th>
+        <%= t(:date, :scope=>:reports) %>
+      </th>
+      <th>
+        <%= t(:journal_number, :scope=>:reports) %>
+      </th>
+      <th>
+        <%= t(:credit, :scope=>:reports) %>
+      </th>
+      <th>
+        <%= t(:debit, :scope=>:reports) %>
+      </th>
+      <th>
+        <%= t(:balance, :scope=>:reports) %>
+      </th>
+    </tr>
+  </thead>
+  <tbody id="data">
+    <%= render :partial=>"ledger_journal_data" %>
+  </tbody>
+</table>
+
+<div style="height: 60px">
+</div>
