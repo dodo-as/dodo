@@ -7,4 +7,11 @@ class PaycheckLine < ActiveRecord::Base
   validates :line_type, :presence => true, :inclusion => {:in => PaycheckLineTemplate::TYPES.keys}
   validates :description, :presence => true
   validates :account, :presence => true, :unless => proc {line_type == PaycheckLineTemplate::TYPE_INFO}
+  def period_total period 
+
+    return 0.0
+  end
+
+
+
 end

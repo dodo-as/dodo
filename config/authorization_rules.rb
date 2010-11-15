@@ -50,6 +50,11 @@ authorization do
     end
     has_permission_on :units, :to => :create
 
+    has_permission_on :cars, :to => :manage do
+      if_attribute :company_id => is {user.current_company.id}
+    end
+    has_permission_on :cars, :to => :create
+
     has_permission_on :products, :to => :manage do
       if_attribute :account => { :company_id => is {user.current_company.id} }
     end

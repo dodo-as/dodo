@@ -2,11 +2,14 @@
   /*
   Use an object as a fake namespace. Spiffy.
   */
-  var DODO = new Object();
-  DODO.unitList = <%= raw(@units_all.all.to_json) %>;
-  DODO.projectList = <%= raw(@projects_all.all.to_json) %>;
-  DODO.accountList = <%= raw(@accounts_all.all.to_json :include => { :vat_account => {:include => { :vat_account_periods =>{}, :target_account=>{}}} }) %>;
-  DODO.journalOperationList = <%= raw(@journal.journal_operations.all.to_json) %>;
+  var DODO = {
+    carList: <%= raw(@cars_all.all.to_json) %>,
+    projectList: <%= raw(@projects_all.all.to_json) %>,
+    accountList: <%= raw(@accounts_all.to_json) %>,
+    journalOperationList: <%= raw(@journal.journal_operations.all.to_json) %>,
+    readonly: <%= @readonly?"true":"false" %>
+  };
+
 </script>
 
 <%= form_for(@journal) do |f| %>
@@ -14,25 +17,93 @@
 
 <p>
   <%= f.label :journal_type, t(:type, :scope => :journals) %><br />
-  <%= f.text_field :journal_type %>
+  <%= if @readonly then
+       @journal.journal_type
+     else 
+       f.text_field :journal_type 
+     end %>
 </p>
 <p>
   <%= f.label :number, t(:number, :scope => :journals) %><br />
-  <%= f.text_field :number %>
+  <%= if @readonly then
+       @journal.number
+     else 
+       f.text_field :number 
+     end %>
+
 </p>
 <p>
   <%= f.label :period_id, "Period" %><br />
-  <%= f.select :period_id, @me.open_periods.collect {|p| [ p, p.id ] } %>
+  <%= if @readonly then
+       @journal.period
+     else 
+       f.select :period_id, @me.open_periods.collect {|p| [ p, p.id ] } 
+     end %>
 </p>
 <p>
   <%= f.label :journal_date, t(:journal_date, :scope => :journals) %><br />
-  <%= f.unobtrusive_date_text_picker :journal_date, :format=>'y-m-d', :divider=>'-' %>
+  <%= if @readonly then
+       @journal.journal_date
+       f.hidden_field :journal_date
+     else 
+       f.unobtrusive_date_text_picker :journal_date, :format=>'y-m-d', :divider=>'-'
+     end %>  
+</p>
+
+<p>
+  <%= f.label :due_date, t(:due_date, :scope => :journals) %><br />
+  <%= if @readonly then
+       @journal.due_date
+       f.hidden_field :due_date
+     else 
+       f.unobtrusive_date_text_picker :due_date, :format=>'y-m-d', :divider=>'-'
+     end %>  
+</p>
+
+<p> 
+  <%= f.label :kid, t(:kid, :scope => :journals) %><br />
+  <%= if @readonly then
+       @journal.kid
+     else 
+       f.text_field :kid 
+     end %>
+
 </p>
 <p>
+  <%= f.label :bill_number, t(:bill_number, :scope => :journals) %><br />
+  <%= if @readonly then
+       @journal.bill_number
+     else 
+       f.text_field :bill_number 
+     end %>
+
+</p>
+<p>
+  <%= f.label :description, t(:description, :scope => :journals) %><br />
+  <%= if @readonly then
+       @journal.description
+     else 
+       f.text_field :description 
+     end %>
+</p>
+
+<p>
+  <%= f.label :unit_id, t("journals.unit") %><br />
+  <%= if @readonly then
+       @journal.unit
+     else 
+       f.select :unit_id, @me.current_company.units.collect {|p| [ p, p.id ] } 
+     end %>
+</p>
+
+<p>
+<% if !@readonly %>
   <button onClick='journals.addAccountLine();' type='button'><%= t(:new_journal_operation, :scope => :journals) -%></button>
+<% end %>
+
   <input type='checkbox' id='vat' onchange='journals.toggleVisibility();'/><label for='vat'><%= t(:vat, :scope => :journals) -%></label>
   <input type='checkbox' id='details' onchange='journals.toggleVisibility();'/><label for='details'><%= t(:details, :scope => :journals) -%></label>
-  
+
 </p>
 <p>
   <table class='striped' id='operations_table'>
@@ -60,25 +131,16 @@
 	  <%= t(:out, :scope => :journals) %>
 	</th>
 	<th>
+	  <%= t(:amount, :scope => :journals) %>
+	</th>
+	<th>
 	  <%= t(:vat, :scope => :journals) %>
 	</th>
 	<th>
-	  <%= t(:unit, :scope => :journals) %>
+	  <%= t(:car, :scope => :journals) %>
 	</th>
 	<th>
 	  <%= t(:project, :scope => :journals) %>
-	</th>
-	<th>
-	  <%= t(:due_date, :scope => :journals) %>
-	</th>
-	<th>
-	  <%= t(:kid, :scope => :journals) %>
-	</th>
-	<th>
-	  <%= t(:invoice, :scope => :journals) %>
-	</th>
-	<th>
-	  <%= t(:text, :scope => :journals) %>
 	</th>
 	<th>
 	</th>
@@ -101,7 +163,7 @@
 
 </p>
 <p>
-  <%= f.submit t(:save, :scope => :global) %>
+  <%= if !@readonly then f.submit t(:save, :scope => :global) end %>
 </p>
 <script>
 journals.addPredefined();

@@ -1,5 +1,5 @@
 /**
-   Separate hournals namespace for journals specific scripting
+   Separate journals namespace for journals specific scripting
  */
 var journals = {
 
@@ -8,6 +8,11 @@ var journals = {
      */
     validate: function ()
     {
+	if(DODO.readonly)
+	{
+	    return;
+	}
+	
 	var sum1 = $('#dynfield_1_sum')[0].innerHTML;
 	var sum2 = $('#dynfield_2_sum')[0].innerHTML;
 	
@@ -28,11 +33,15 @@ var journals = {
        Return the account with the specified id
      */
     getAccount: function (id) {
+	console.log("Looking for account " + id);
 	for( var i =0; i<DODO.accountList.length; i++) {
-	    if (DODO.accountList[i].account.id == id) {
-		return DODO.accountList[i].account;
+	    if (DODO.accountList[i].value == id) {
+		console.log("Found it:");
+		console.log(DODO.accountList[i]);
+		return DODO.accountList[i];
 	    }
 	}
+	console.log("Failed");
 	return null;
     },
     
@@ -118,35 +127,71 @@ var journals = {
        Return a DOM select node, populated with a list of all accounts that can be used for a transaction
      */
     makeAccountSelect: function () {
-	var sel = document.createElement("select");
-	sel.name = "journal_operations[" + DODO.journalLines+"][account_id]";
-	sel.id = "dynfield_0_"+ DODO.journalLines;
+	var id = "dynfield_0_"+ DODO.journalLines;
+
+	var sel = $("<select>")[0];
+	if(DODO.readonly)
+	{
+	    sel.disabled=true;
+	}
+	sel.name = "tralala[" +  DODO.journalLines + "]";
+	sel.id = id;
+	
+	var a_id = $("<input type='hidden' />")[0];
+	a_id.name = "journal_operations[" + DODO.journalLines+"][account_id]"; 
+	
+	var l_id = $("<input type='hidden' />")[0];
+	l_id.name = "journal_operations[" + DODO.journalLines+"][ledger_id]"; 
+	l_id.value=null;
 	
 	for (var i=0; i<DODO.accountList.length; i++) {
-	    sel.add(new Option("" + DODO.accountList[i].account.number + 
-			       "-" +DODO.accountList[i].account.name,
-			       DODO.accountList[i].account.id), null);
+	    sel.add(new Option(DODO.accountList[i].name,			       
+			       DODO.accountList[i].value), null);
 	}
 	var line = DODO.journalLines;
-	sel.onchange= function(){
-	    journals.setDefaultVat(line);
-	    journals.update();
-	}
 	
-	return sel;
+	var uf = function(){
+		vals = sel.value.split(".");
+		if(vals.length > 1){
+		    a_id.value = vals[0];
+		    l_id.value = vals[1];
+		}
+		else{
+		    a_id.value = vals[0];
+		    l_id.value = "";
+		}
+
+	}
+	uf();
+
+	$(sel).change(
+	    function(){
+		uf();
+		journals.setDefaultVat(line);
+		journals.update();
+	    }
+	    );
+	
+	var res = $("<span>");
+	res.append(sel).append(a_id).append(l_id);
+	return res[0];
     },
 
     /**
-       Return a DOM select node, populated with a list of all units that can be used for a transaction
+       Return a DOM select node, populated with a list of all cars that can be used for a transaction
      */
-    makeUnitSelect: function () {
+    makeCarSelect: function () {
 	var sel = document.createElement("select");
-	sel.name = "journal_operations[" + DODO.journalLines+"][unit_id]";
+	if(DODO.readonly)
+	{
+	    sel.disabled=true;
+	}
+	sel.name = "journal_operations[" + DODO.journalLines+"][car_id]";
 	sel.id = "dynfield_3_"+ DODO.journalLines;
 	
-	for (var i=0; i<DODO.unitList.length; i++) {
-	    sel.add(new Option(DODO.unitList[i].unit.name,
-			       DODO.unitList[i].unit.id), null);
+	for (var i=0; i<DODO.carList.length; i++) {
+	    sel.add(new Option(DODO.carList[i].car.name,
+			       DODO.carList[i].car.id), null);
 	}
 	return sel;
     },
@@ -156,6 +201,10 @@ var journals = {
      */
     makeProjectSelect: function () {
 	var sel = document.createElement("select");
+	if(DODO.readonly)
+	{
+	    sel.disabled=true;
+	}
 	sel.name = "journal_operations[" + DODO.journalLines+"][project_id]";
 	sel.id = "dynfield_4_"+ DODO.journalLines;
 	
@@ -172,12 +221,19 @@ var journals = {
     setDefaultVat: function (line) 
     {
         var current_date = $('#journal_journal_date')[0].value;
-	var account = journals.getAccount($('#dynfield_0_'+line)[0].value);
-        var percentage = 0;
 
+	console.log("Get account for line " + line);
+	console.log("Select box:");
+	console.log($('#dynfield_0_'+line));
+
+	var account = journals.getAccount($('#dynfield_0_'+line)[0].value);
+	console.log(account);
+
+        var percentage = 0;
+	
         if (current_date != '')
             current_date = Date.fromString(current_date);
-
+	
         if (account.vat_account != undefined) {
             var current_vat_account_period;
             var current_vat_account_period_valid_from;
@@ -208,6 +264,11 @@ var journals = {
      */
     doDisable: function (row_number)
     {
+	if(DODO.readonly)
+	{
+	    return;
+	}
+
 	var debet = $('#dynfield_1_' + row_number)[0];
 	var credit = $('#dynfield_2_' + row_number)[0];
 	
@@ -228,6 +289,10 @@ var journals = {
      */
     makeDebet: function () {
 	var res = document.createElement("input");
+	if(DODO.readonly)
+	{
+	    res.disabled=true;
+	}
 	res.type="text";
 	res.name = "journal_operations[" + DODO.journalLines+"][debet]";
 	res.id='dynfield_1_' + DODO.journalLines;
@@ -250,6 +315,10 @@ var journals = {
      */
     makeCredit: function () {
 	var res = document.createElement("input");
+	if(DODO.readonly)
+	{
+	    res.disabled=true;
+	}
 	res.type="text";
 	res.name = "journal_operations[" + DODO.journalLines+"][credit]";
 	res.id='dynfield_2_' + DODO.journalLines;
@@ -271,9 +340,32 @@ var journals = {
      */
     makeVat: function (val) {
 	var res = document.createElement("input");
+	if(DODO.readonly)
+	{
+	    res.disabled=true;
+	}
 	res.type="text";
 	res.name = "journal_operations[" + DODO.journalLines+"][vat]";
 	res.id='vatFactor_' + DODO.journalLines;
+	res.value = val;
+
+	res.onkeyup = journals.update;
+	
+	return res;
+    },
+    
+    /**
+       Returns a DOM node suitable for using as a amount input box.
+     */
+    makeAmount: function (val) {
+	var res = document.createElement("input");
+	if(DODO.readonly)
+	{
+	    res.disabled=true;
+	}
+	res.type="text";
+	res.name = "journal_operations[" + DODO.journalLines+"][amount_other]";
+	res.id='amountFactor_' + DODO.journalLines;
 	res.value = val;
 
 	res.onkeyup = journals.update;
@@ -286,7 +378,8 @@ var journals = {
      */
     makeText: function(id, content) {
 	var res = document.createElement("span");
-	res.id=id + "_" + DODO.journalLines;
+	if(id)
+	    res.id=id + "_" + DODO.journalLines;
 	if (content) {
 	    res.innerHTML = content;
 	}
@@ -355,8 +448,7 @@ var journals = {
 	    line_id.value = line.id;
 	    cell.appendChild(line_id);
 	}
-	var vat_account_id = document.createElement("input");
-	vat_account_id.type = "hidden";
+	var vat_account_id = $("<input type='hidden'>")[0];
 	vat_account_id.name = "journal_operations[" + DODO.journalLines+"][vat_account_id]";
 	vat_account_id.id = "vat_account_" + DODO.journalLines;
 	cell.appendChild(vat_account_id);
@@ -367,8 +459,9 @@ var journals = {
 	row.addCell(journals.makeText('balance'));
 	row.addCell(journals.makeText('in'));
 	row.addCell(journals.makeText('out'));
+	row.addCell(journals.makeAmount(line?line.vat:-1));
 	row.addCell(journals.makeVat(line?line.vat:-1));
-	row.addCell(journals.makeUnitSelect());
+	row.addCell(journals.makeCarSelect());
 	row.addCell(journals.makeProjectSelect());
 
 	if (line) {
@@ -376,7 +469,7 @@ var journals = {
 	    $("#dynfield_0_"+ DODO.journalLines)[0].value = line.account_id;
 	    $("#dynfield_1_"+ DODO.journalLines)[0].value = amount<0?-amount:0;
 	    $("#dynfield_2_"+ DODO.journalLines)[0].value = amount>0?amount:0;
-	    $("#dynfield_3_"+ DODO.journalLines)[0].value = line.unit_id;
+	    $("#dynfield_3_"+ DODO.journalLines)[0].value = line.car_id;
 	    $("#dynfield_4_"+ DODO.journalLines)[0].value = line.project_id;
 	    journals.doDisable(DODO.journalLines);
 	}

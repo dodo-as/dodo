@@ -1,0 +1,21 @@
+<h1><%= t(:payment_run, :scope => :global) -%></h1>
+
+<table class='striped'>
+  <tr>
+    <th><%= t(:number, :scope => :accounts) -%></th>
+    <th><%= t(:name, :scope => :accounts) -%></th>
+    <th></th>
+  </tr>
+<% for account in @accounts %>
+  <tr>
+    <td><%= account.number %></td>
+    <td><%= account.name %></td>
+    <td>
+      <%= link_to t("global.edit"), edit_payment_run_path(account) %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+

@@ -1,54 +1,6 @@
-<p>
-  <b><%= t(:type, :scope => :journals) -%>:</b>
-  <%= @journal.journal_type %>
-</p>
+<h1><%= t(:viewing_journal, :scope => :journals) %></h1>
 
-<p>
-  <b><%= t(:number, :scope => :journals) -%>:</b>
-  <%= @journal.number %>
-</p>
-
-<p>
-  <b><%= t(:journal_date, :scope => :journals) -%>:</b>
-  <%= @journal.journal_date ? l(@journal.journal_date) : "" %>
-</p>
-
-<p>
-  <table class='striped'>
-    <thead>
-      <tr>
-	<th>
-	  <%= t(:account, :scope => :journals) -%>
-	</th>
-	<th>
-	  <%= t(:debit, :scope => :journals) -%>
-	</th>
-	<th>
-	  <%= t(:credit, :scope => :journals) -%>
-	</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% for op in @journal.journal_operations %>
-      <tr>
-	<td>
-	  <%= op.account.name %>
-	  <% if op.ledger %>
-	  : <%= op.ledger %>
-	  <% end %>
-	</td>
-	<td>
-	  <%= op.debet %>
-	</td>
-	<td>
-	  <%= op.credit %>
-	</td>
-      </tr>
-      <% end %>
-    </tbody>
-    
-  </table>
-</p>
+<%= render :partial => "form" %>
 
 <% if permitted_to? :edit, @journal %>
   <%= link_to t(:edit, :scope => :journals), edit_journal_path(@journal) %> |
