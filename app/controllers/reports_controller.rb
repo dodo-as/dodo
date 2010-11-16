@@ -126,8 +126,10 @@ class ReportsController < ApplicationController
                                           current_user.current_company, 
                                           @unit, @project, @show_last_period)
 
+  end
+
   def ledger_journal
-    
+
     accounts = nil
     periods = nil
     journal_operations = nil
@@ -156,12 +158,12 @@ class ReportsController < ApplicationController
     where[where.length - 1] = true
     result_accounts = Account.with_permissions_to(:read).where( where )
     
-    from_period = params[:from_period_id].blank? ? nil : Period.find(params[:from_period_id])
-    to_period = params[:to_period_id].blank? ? nil : Period.find(params[:to_period_id])    
-    from_year = from_period.nil? ? nil : from_period.year
-    to_year = to_period.nil? ? nil : to_period.year
-    from_nr = from_period.nil? ? nil : from_period.nr
-    to_nr = to_period.nil? ? nil : to_period.nr
+    @from_period = params[:from_period_id].blank? ? nil : Period.find(params[:from_period_id])
+    @to_period = params[:to_period_id].blank? ? nil : Period.find(params[:to_period_id])    
+    from_year = @from_period.nil? ? nil : @from_period.year
+    to_year = @to_period.nil? ? nil : @to_period.year
+    from_nr = @from_period.nil? ? nil : @from_period.nr
+    to_nr = @to_period.nil? ? nil : @to_period.nr
     
     result_from_period = params[:result_from_period_id].blank? ? nil : Period.find(params[:result_from_period_id])
     result_from_year = result_from_period.nil? ? nil : result_from_period.year
@@ -214,7 +216,7 @@ class ReportsController < ApplicationController
       format.html
       format.js {
         render :update do |page|
-          page.<< "jQuery('#data').append( '#{escape_javascript(render(:partial=>'ledger_journal_data'))}' )"
+          page.<< "jQuery('table.report').append( '#{escape_javascript(render(:partial=>'ledger_journal_data'))}' )"
         end
       }
       format.xml  { render :xml => @unit }

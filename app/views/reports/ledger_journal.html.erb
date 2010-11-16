@@ -37,11 +37,11 @@
       <th>
         <%= t(:balance, :scope=>:reports) %>
       </th>
+      <th>
+      </th>
     </tr>
   </thead>
-  <tbody id="data">
-    <%= render :partial=>"ledger_journal_data" %>
-  </tbody>
+  <%= render :partial=>"ledger_journal_data" %>
 </table>
 
 <div style="height: 60px">

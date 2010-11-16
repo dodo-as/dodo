@@ -1,71 +1,85 @@
-  <% 
-    account_id = params[:last_account_id].nil? ? 0 : params[:last_account_id].to_i
-    period_id = params[:last_period_id].nil? ? 0 : params[:last_period_id].to_i
-    balance = 0
-  %>
-  <% @journal_operations.each do |jo| %>
-    <% if account_id != jo.account_id 
-          account_id = jo.account_id
-          period_id = 0 %>
-      <tr class="section1">
-        <td colspan="5">
-          <%= jo.account.to_s %>
-        </td>
-      </tr>
-    <% end %>
-    <% if period_id != jo.journal.period_id 
-          period_id = jo.journal.period_id 
-          balance = previous_balance jo.account, jo.journal.period %>
-      <tr class="section2">
-        <td>
-          <%= jo.journal.period.to_s %>
-        </td>
-        <td>
-          <%= t(:journal_number, :scope=>:reports) %>
-        </td>
-        <td>
-          <%= t(:credit, :scope=>:reports) %>
-        </td>
-        <td>
-          <%= t(:debit, :scope=>:reports) %>
-        </td>
-        <td>
-          <%= balance  %>
-        </td>
-      </tr>
-    <% end %>
-    <tr>
-      <td>
-        <%= jo.journal.journal_date.to_s %>
-      </td>
-      <td>
-        <%# Some journal.numbers are empty. Should validate these numbers are not empty? %>
-        <%= link_to jo.journal.number.nil? ? jo.journal.id : jo.journal.number, edit_journal_path(jo.journal.id) %>
-      </td>
-      <td>
-        <%= jo.amount if jo.amount >= 0 %>
-      </td>
-      <td>
-        <%= jo.amount if jo.amount < 0 %>
-      </td>
-      <td>
-        <% balance += jo.amount %>
-        <%= balance %>
+<% 
+  account_id = params[:last_account_id].nil? ? 0 : params[:last_account_id].to_i
+  period_id = params[:last_period_id].nil? ? 0 : params[:last_period_id].to_i
+  balance = 0
+  diff_balance = 0
+%>
+<% @journal_operations.each do |jo| %>
+  <% if account_id != jo.account_id 
+        account_id = jo.account_id
+        period_id = 0 
+        from_year = @from_period.nil? ? 1900 : @from_period.year
+        from_nr = @from_period.nil? ? 0 : @from_period.nr
+        to_year = @to_period.nil? ? 3999 : @to_period.year
+        to_nr = @to_period.nil? ? 1999 : @to_period.nr
+        balance = balance_less_to_period jo.account, from_year, from_nr
+        last_balance = balance_less_or_equals_to_period jo.account, to_year, to_nr
+        diff_balance = last_balance - balance %>
+    <tr class="section1">
+      <td colspan="6">
+        <%= jo.account.to_s %>
+        <%= "BALANCE #{balance}" %>
+        <%= "LAST_BALANCE #{last_balance}" %>
       </td>
     </tr>
   <% end %>
-  <script>
-    <% if @journal_operations.size < 500  %>
-      jQuery('#load_info').hide();
-    <% else %>
-      <% params[:offset] = params[:offset].to_i + 500
-         params[:last_account_id] = account_id
-         params[:last_period_id] = period_id
-         _params = ""
-         params.each_pair {|key, value| _params+="#{_params.blank? ? '' : '&'}#{key}=#{value}" }
-      %>
-      jQuery('#loaded_records').html( parseInt(jQuery('#loaded_records').text()) + <%= @journal_operations.size %> );
-      <%= 'ajaxRequest = ' + remote_function(:url=>ledger_journal_reports_path, :method=>:get,
-        :with=>"'#{_params}'") %>;
-    <% end %>
-  </script>
+  <% if period_id != jo.journal.period_id 
+        period_id = jo.journal.period_id  %>
+    <tr class="section2">
+      <td>
+        <%= jo.journal.period.to_s %>
+      </td>
+      <td>
+        <%= t(:journal_number, :scope=>:reports) %>
+      </td>
+      <td>
+        <%= t(:credit, :scope=>:reports) %>
+      </td>
+      <td>
+        <%= t(:debit, :scope=>:reports) %>
+      </td>
+      <td class="balance">
+        <%= balance %>
+      </td>
+      <td>
+      </td>
+    </tr>
+  <% end %>
+  <tr>
+    <td>
+      <%= jo.journal.journal_date.to_s %>
+    </td>
+    <td>
+      <%# Some journal.numbers are empty. Should validate these numbers are not empty? %>
+      <%= link_to jo.journal.number ? jo.journal.number : jo.journal.id, edit_journal_path(jo.journal.id) %>
+    </td>
+    <td>
+      <%= jo.amount if jo.amount >= 0 %>
+    </td>
+    <td>
+      <%= jo.amount if jo.amount < 0 %>
+    </td>
+    <td class="balance">
+      <% balance += jo.amount %>
+      <%= balance %>
+    </td>
+    <td class="diff">
+      <%= diff_balance %>
+    </td>
+  </tr>
+<% end %>
+<script>
+  <% if @journal_operations.size < 500  %>
+    jQuery('#load_info').hide();
+  <% else %>
+    <% params[:offset] = params[:offset].to_i + 500
+       params[:last_account_id] = account_id
+       params[:last_period_id] = period_id
+       _params = ""
+       params.each_pair {|key, value| _params+="#{_params.blank? ? '' : '&'}#{key}=#{value}" }
+    %>
+    jQuery('#loaded_records').html( parseInt(jQuery('#loaded_records').text()) + <%= @journal_operations.size %> );
+    <%= 'ajaxRequest = ' + remote_function(:url=>ledger_journal_reports_path, :method=>:post,
+      :with=>"'#{_params}'") %>;
+  <% end %>
+</script>
