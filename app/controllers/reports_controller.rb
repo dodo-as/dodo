@@ -41,7 +41,7 @@ class ReportsController < ApplicationController
     balance_to_nr = to_period.nr unless to_period.blank?
 
     balance_previous_to_year = balance_to_year unless balance_to_year.blank?
-    balance_previous_to_nr = balance_to_nr-1 unless balance_to_nr.blank?
+    balance_previous_to_nr = balance_from_nr-1 unless balance_from_nr.blank?
 
     balance_last_from_year = from_period.year-1 unless from_period.blank?
     balance_last_to_year = to_period.year-1 unless to_period.blank?
@@ -86,7 +86,7 @@ class ReportsController < ApplicationController
 
     periods_to_balance_last_previous = Period.get_range(current_user.current_company.id, 
                         {:from_year=>nil, :from_nr=>nil, 
-                        :to_year=>balance_last_from_year, :to_nr=>balance_from_nr})
+                        :to_year=>balance_last_previous_to_year, :to_nr=>balance_last_previous_to_nr})
 
    # periods_to_balance_before_last = Period.get_range(current_user.current_company.id, 
    #                     {:from_year=>balance_before_last_from_year, :from_nr=>balance_from_nr, 
@@ -116,7 +116,30 @@ class ReportsController < ApplicationController
       @last_period_to_result_last = periods_to_result_last.last
     end
 
-    @balance, @total_balance, @result = 
+    puts "========== periods to balance "
+    periods_to_balance.each do |p|
+      puts "year " + p.year.to_s
+      puts "nr " + p.nr.to_s
+    end
+    puts "========== periods to balance previous "
+    periods_to_balance_previous.each do |p|
+      puts "year " + p.year.to_s
+      puts "nr " + p.nr.to_s
+    end
+
+    puts "========== periods to balance last "
+    periods_to_balance_last.each do |p|
+      puts "year " + p.year.to_s
+      puts "nr " + p.nr.to_s
+    end
+
+    puts "========== periods to balance last previous"
+    periods_to_balance_last_previous.each do |p|
+      puts "year " + p.year.to_s
+      puts "nr " + p.nr.to_s
+    end
+
+    @balance, @total_balance, @result, @total_result = 
             Journal.report_ledger_balance(periods_to_balance, 
                                           periods_to_balance_previous,
                                           periods_to_balance_last,
@@ -124,7 +147,10 @@ class ReportsController < ApplicationController
                                           periods_to_result, 
                                           periods_to_result_last,
                                           current_user.current_company, 
-                                          @unit, @project, @show_last_period)
+                                          @unit, @project, @show_last_period,
+                                          @show_only_active_accounts)
+
+  end
 
   def ledger_journal
     
