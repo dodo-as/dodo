@@ -28,20 +28,22 @@
       <th>
         <%= t(:journal_number, :scope=>:reports) %>
       </th>
-      <th>
+      <th style="text-align: right">
         <%= t(:credit, :scope=>:reports) %>
       </th>
-      <th>
+      <th style="text-align: right">
         <%= t(:debit, :scope=>:reports) %>
       </th>
-      <th>
+      <th style="text-align: right">
         <%= t(:balance, :scope=>:reports) %>
       </th>
       <th>
       </th>
     </tr>
   </thead>
-  <%= render :partial=>"ledger_journal_data" %>
+  <tbody id="data">
+    <%= render :partial=>"ledger_journal_data" %>
+  </tbody>
 </table>
 
 <div style="height: 60px">

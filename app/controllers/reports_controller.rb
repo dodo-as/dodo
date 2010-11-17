@@ -152,8 +152,6 @@ class ReportsController < ApplicationController
 
   end
 
-  end
-
   def ledger_journal
 
     accounts = nil
@@ -229,7 +227,6 @@ class ReportsController < ApplicationController
         "account_id, journals.period_id, journal_operations.created_at").includes(
         :journal, :account).limit(500).offset(params[:offset])
 
-
       if params[:offset]==0
         @count = JournalOperation.count(
           :joins=>" INNER JOIN journals ON journal_operations.journal_id = journals.id 
@@ -242,7 +239,7 @@ class ReportsController < ApplicationController
       format.html
       format.js {
         render :update do |page|
-          page.<< "jQuery('table.report').append( '#{escape_javascript(render(:partial=>'ledger_journal_data'))}' )"
+          page.<< "jQuery('tbody#data').append( '#{escape_javascript(render(:partial=>'ledger_journal_data', :locals=>{:params=>params}))}' )"
         end
       }
       format.xml  { render :xml => @unit }
