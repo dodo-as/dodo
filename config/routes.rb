@@ -60,7 +60,6 @@ Dodo::Application.routes.draw do |map|
     collection do
       get :ledger_balance
       get :ledger_journal
-      post :ledger_journal
       get :subsidiary_ledger_balance
       get :subsidiary_journal_ledger
       get :ledger_open
