@@ -3,7 +3,6 @@ class AddIndexesToJournalOperations < ActiveRecord::Migration
     add_index :journal_operations, :journal_id
     add_index :journal_operations, :account_id
     add_index :journal_operations, :vat_account_id
-    add_index :journal_operations, :unit_id
     add_index :journal_operations, :project_id
     add_index :journal_operations, :ledger_id
   end
@@ -12,7 +11,6 @@ class AddIndexesToJournalOperations < ActiveRecord::Migration
     remove_index :journal_operations, :journal_id
     remove_index :journal_operations, :account_id
     remove_index :journal_operations, :vat_account_id
-    remove_index :journal_operations, :unit_id
     remove_index :journal_operations, :project_id
     remove_index :journal_operations, :ledger_id
   end
