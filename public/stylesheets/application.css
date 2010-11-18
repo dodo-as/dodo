@@ -117,7 +117,12 @@ table.report {
     border-width: 1px;
     border-style: solid;
 }
-table.report thead tr th, table.report tbody tr td {
+table.report thead tr th, table.report tfoot tr td {
+    background-color: #777;
+    color: #fff;
+    font-weight: bold;
+}
+table.report thead tr th, table.report tbody tr td, table.report tfoot tr td {
     padding: 10px;
     font-size: 14px;
 }
@@ -131,4 +136,13 @@ table.report tbody tr.section2 td {
     border-color: #888;
     border-width: 1px;
     border-style: solid;
+}
+table.report tbody tr.detail1 {
+    background-color: #d8e2ea;
+}
+table.report tbody tr.detail2 {
+    background-color: #eaeaea;   
+}
+table.report tbody tr.detail3 {
+    background-color: #dfeddf;   
 }

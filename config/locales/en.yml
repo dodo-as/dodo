@@ -350,6 +350,7 @@ en:
     last_year_figures: Last Year Figures
     result_from_period: Results From
     journal_type: Journal Type
+    journal_number: Number
     budget: Budget
     ledger: Ledger
     subsidiary_ledger: Subsidiary Ledger
@@ -358,7 +359,22 @@ en:
     ledger_to: Ledger To
     from_account: From Account
     to_account: To Account
-
-
+    credit: Credit
+    debit: Debit
+    balance: Balance
+    date: Date
+    account_name: Account Name
+    account_number: Account Number
+    old_balance: Old Balance
+    new_balance: New Balance
+    period: Period
+    series: Series
+    accounting: Accounting
+    budget: Budget
+    diff: Diff
+    result: Result
+    revenue: Revenue
+    expenses: Expenses
+    ledger_balance_period: Ledger Balance Period
 
 
