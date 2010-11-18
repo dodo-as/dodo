@@ -3,7 +3,7 @@
 raise "Set RAILS_ENV=test before loading blueprint" unless Rails.env == 'test'
 
 # Number of users
-USER_COUNT = 50
+USER_COUNT = 5
 #15000
 # Number of companies
 COMPANY_COUNT = 10
@@ -13,15 +13,19 @@ PRODUCT_COUNT = 20
 # 50
 # Average number of units
 UNIT_COUNT = 7
+# Average number of cars
+CAR_COUNT = 7
 # 7
 # Average number of projects
 PROJECT_COUNT = 7
 # 7 
-YEARS=(2000..2010)
+YEARS=(2005..2010)
 # Maximum number of journals per period and company
 MAX_JOURNAL_COUNT=500
 # Number of journal operations per journal entry
 JOURNAL_OPERATION_COUNT = 5
+# Number of journal with ledger operations per journal entry
+JOURNAL_LEDGER_OPERATION_COUNT = 4
 # Number of employees per company
 EMPLOYEE_COUNT = 5
 # Password used for _all_ users, including admins
@@ -64,6 +68,12 @@ Sham.product_name(:unique => false) { Faker::Lorem.words(3).join(" ").capitalize
 Sham.account_name(:unique => false) { Faker::Lorem.words(3).join(" ").capitalize }
 Sham.role_name(:unique => true) { Faker::Lorem.words(3).join("_").downcase }
 Sham.description(:unique => false) { Faker::Company.catch_phrase }
+Sham.car_name(:unique => true) {
+  ["Ferrari","Mazda","Ford","Fiat","Toyota","Volvo","Saab","VW","BMW", "Nissan","Lexus","Maserati","Jaguar","Mercedes","Renault","Aston Martin","Bugatti","Alfa Romeo","Seat","Lada"].rand +
+  " "+ 
+  ["Prius", "Explorer", "Expander", "Canyanaro", "Punto","Sport","190","Skyline","Diabolo","M7","M5","M3","S3"].rand +
+  [" S"," E"," XS"," SL"," Touring", "D", "X", ""].rand
+}
 
 User.blueprint do
   email { Sham.email }
@@ -94,6 +104,10 @@ end
 Unit.blueprint do
   name { Sham.company_name + " (unit)" }
   address
+end
+
+Car.blueprint do
+  name { Sham.car_name}
 end
 
 Project.blueprint do
@@ -331,7 +345,7 @@ insert into journal_operations
 (journal_id, account_id, amount) 
 select 
     id as journal_id, 
-    (select id from accounts where company_id=#{company.id} order by random() limit 1) as account_id,
+    (select id from accounts where company_id=#{company.id} and has_ledger=false order by random() limit 1) as account_id,
     (random() * 200 - 100)::numeric(16,2) as amount 
 from (select j.id from journals j 
 where j.company_id = #{company.id} 
@@ -340,21 +354,41 @@ where j.company_id = #{company.id}
         where jo.journal_id = j.id)) as aa, (select 1 from generate_series(1, #{JOURNAL_OPERATION_COUNT-1})) as bb"
       ActiveRecord::Base.connection.execute sql
       
+    end
+
+
+    def create_journal_ledger_operations(company)
+      sql = "
+update journal_operations jo
+    set 
+        ledger_id = (select id from ledgers where account_id = jo.account_id), 
+        amount = 1000
+    where account_id in (select id from accounts where has_ledger = true)
+"
+      ActiveRecord::Base.connection.execute sql
+
+    end
+    
+    def close_journal_operations(company)
       # find and close open journal entries
       sql = "
 insert into journal_operations 
 (journal_id, account_id, amount) 
 select 
     journal_id, 
-    (select id from accounts where company_id=#{company.id} order by random() limit 1) as account_id,
+    (select id from accounts where company_id=#{company.id} and has_ledger=false order by random() limit 1) as account_id,
     -amount from (
         select journal_id, sum(amount) as amount 
         from journals j 
         inner join journal_operations jo 
             on (j.id = jo.journal_id) 
-        where company_id = #{company.id} group by journal_id having sum(amount) <> 0) as qq"
+        where j.company_id = #{company.id} group by journal_id having sum(amount) <> 0) as qq"
       ActiveRecord::Base.connection.execute sql
     end
+
+
+
+
 
     def create_period(company, year, nr)
       p = Period.make(:company => company, :year => year, :nr => nr)
@@ -380,6 +414,8 @@ select
           end
         end
         create_journal_operations(c)
+        create_journal_ledger_operations(c)
+        close_journal_operations(c)
       end
     end # ActiveRecord::Base.transaction do
   end
