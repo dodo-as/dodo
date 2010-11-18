@@ -26,9 +26,9 @@ class CreateWeeklySales < ActiveRecord::Migration
     execute "ALTER TABLE weekly_sales ADD CONSTRAINT fk_weekly_sales_period FOREIGN KEY (period_id)  REFERENCES periods(id) "
     execute "ALTER TABLE weekly_sales ADD CONSTRAINT fk_weekly_sales_journal FOREIGN KEY (journal_id)  REFERENCES journals(id) "
     execute "ALTER TABLE weekly_sales ADD CONSTRAINT fk_weekly_sales_wueekly_sale_setup FOREIGN KEY (weekly_sale_setup_id)  REFERENCES weekly_sale_setups(id) "
-    execute "ALTER TABLE weekly_sales ADD CONSTRAINT fk_weekly_sales_closed_by FOREIGN KEY (closed_by)  REFERENCES users(id) "
-    execute "ALTER TABLE weekly_sales ADD CONSTRAINT fk_weekly_sales_created_by FOREIGN KEY (created_by)  REFERENCES users(id) "
-    execute "ALTER TABLE weekly_sales ADD CONSTRAINT fk_weekly_sales_updated_by FOREIGN KEY (updated_by)  REFERENCES users(id) "
+    execute "ALTER TABLE weekly_sales ADD CONSTRAINT fk_weekly_sales_closed_by FOREIGN KEY (closed_by_id)  REFERENCES users(id) "
+    execute "ALTER TABLE weekly_sales ADD CONSTRAINT fk_weekly_sales_created_by FOREIGN KEY (created_by_id)  REFERENCES users(id) "
+    execute "ALTER TABLE weekly_sales ADD CONSTRAINT fk_weekly_sales_updated_by FOREIGN KEY (updated_by_id)  REFERENCES users(id) "
     execute "ALTER TABLE weekly_sales ADD CONSTRAINT fk_weekly_sales_company FOREIGN KEY (company_id)  REFERENCES companies(id) "
 
   end

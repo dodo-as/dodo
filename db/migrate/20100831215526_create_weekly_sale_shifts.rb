@@ -25,9 +25,9 @@ class CreateWeeklySaleShifts < ActiveRecord::Migration
     end
 
     execute "ALTER TABLE weekly_sale_shifts ADD CONSTRAINT fk_weekly_sale_shifts_weekly_sale FOREIGN KEY (weekly_sale_id)  REFERENCES weekly_sales(id) "
-    execute "ALTER TABLE weekly_sale_shifts ADD CONSTRAINT fk_weekly_sale_shifts_closed_by FOREIGN KEY (closed_by)  REFERENCES users(id) "
-    execute "ALTER TABLE weekly_sale_shifts ADD CONSTRAINT fk_weekly_sale_shifts_created_by FOREIGN KEY (created_by)  REFERENCES users(id) "
-    execute "ALTER TABLE weekly_sale_shifts ADD CONSTRAINT fk_weekly_sale_shifts_updated_by FOREIGN KEY (updated_by)  REFERENCES users(id) "
+    execute "ALTER TABLE weekly_sale_shifts ADD CONSTRAINT fk_weekly_sale_shifts_closed_by FOREIGN KEY (closed_by_id)  REFERENCES users(id) "
+    execute "ALTER TABLE weekly_sale_shifts ADD CONSTRAINT fk_weekly_sale_shifts_created_by FOREIGN KEY (created_by_id)  REFERENCES users(id) "
+    execute "ALTER TABLE weekly_sale_shifts ADD CONSTRAINT fk_weekly_sale_shifts_updated_by FOREIGN KEY (updated_by_id)  REFERENCES users(id) "
 
 
   end
