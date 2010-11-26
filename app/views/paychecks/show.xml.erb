@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<paycheck_messages>
+
+<paycheck>
+  <from_date>XXXX</from_date>
+  <to_date>XXXX</to_date>
+  <document_number>XXXX</document_number>
+  <document_date>XXXX</document_date>
+  <period><%= @paycheck.period %></period>
+  <currency_code>NOK</currency_code>
+  <paid_amount>XXXX</paid_amount>
+  <paid_amount_year>XXXX</paid_amount_year>
+  <paid_date>XXXX</paid_date>
+  <taxing_method>XXXX</taxing_method>
+
+  <project>Prosjekt1</project>
+  <department>Analyse og design</department>
+
+  <employer>
+    <name><%= @paycheck.employee.account.company.name %></name>
+    <postal_address>
+      <street><%= @paycheck.employee.account.company.address.street1 %></street>
+      <additional_street><%= @paycheck.employee.account.company.address.street2 %></additional_street>     
+      <state></state>
+      <city><%= @paycheck.employee.account.company.address.town %></city>
+      <zip_code><%= @paycheck.employee.account.company.address.postal_code %></zip_code>      
+      <country_code><%= @paycheck.employee.account.company.address.country %></country_code>
+    </postal_address>
+    <email>YYYY</email>
+    <identifier><%= @paycheck.employee.account.company.organization_number %></identifier>
+    <scheme>NO:ORGNR</scheme>
+  </employer>
+
+  <employee>
+    <first_name><%= @paycheck.employee.first_name %></first_name>
+    <last_name><%= @paycheck.employee.last_name %></last_name>
+    <scheme>FAKTURABANK:EMAIL</scheme>
+    <email><%= @paycheck.employee.email %></email>          
+    <postal_address>
+      <street><%= @paycheck.employee.address.street1 %></street>
+      <additional_street><%= @paycheck.employee.address.street2 %></additional_street>     
+      <state></state>
+      <city><%= @paycheck.employee.address.town %></city>
+      <zip_code><%= @paycheck.employee.address.postal_code %></zip_code>      
+      <country_code><%= @paycheck.employee.address.country %></country_code>
+    </postal_address> 
+    <cellphone><%= @paycheck.employee.mobile_number %></cellphone>
+    <bank_account_country>XXX</bank_account_country>
+    <bank_account_number><%= @paycheck.employee.foreign_bank_number %></bank_account_number>
+  </employee>
+
+  <paycheck_line>
+    <line>1</line>
+    <code>10</code>
+    <description>Lønn</description>
+    <work_amount>48</work_amount>
+    <work_amount_unit>Vanlige arbeidstimer</work_amount_unit>
+    <work_amount_unit_rate>100</work_amount_unit_rate>
+    <amount_period>4800</amount_period>
+    <amount_year>19000</amount_year>
+    <department>Salg</department>
+    <project>Majoristsalg</project>
+  </paycheck_line>
+
+  <paycheck_line>
+    <line>2</line>
+    <code>20</code>
+    <description>Bonus</description>
+    <work_amount>5</work_amount>
+    <work_amount_unit>månedlig</work_amount_unit>
+    <work_amount_unit_rate>100</work_amount_unit_rate>
+    <amount_period>500</amount_period>
+    <amount_year>1500</amount_year>
+    <department>Salg</department>
+    <project>Majoristsalg</project>
+  </paycheck_line>               
+
+  <paycheck_additional>
+    <title>Feriedager igjen</title>
+    <value>16</value>
+  </paycheck_additional>
+
+</paycheck>
+
+<paycheck>
+  <from_date>2010-01-01</from_date>
+  <to_date>2010-01-31</to_date>
+  <document_number>a-01-002</document_number>
+  <document_date>2010-02-01</document_date>
+  <period>2010-01</period>
+  <currency_code>NOK</currency_code>
+  <paid_amount>2500</paid_amount>
+  <paid_amount_year>7500</paid_amount_year>
+  <paid_date></paid_date>
+  <taxing_method>Normal</taxing_method>
+  <employer>
+    <name>Caracaspc</name>
+    <postal_address>  
+      <street>Av Loma Redonda</street>
+      <additional_street>calle 1</additional_street>
+      <state>Oslo</state>
+      <city>Oslo</city>
+      <zip_code>0363</zip_code>
+      <country_code>NO</country_code>
+    </postal_address>
+    <email>info@caracaspc.com</email>
+    <scheme>NO:ORGNR</scheme>
+    <identifier>991075070</identifier>
+  </employer>
+  <employee>
+    <first_name>Carolina</first_name>
+    <last_name>Forero</last_name>
+    <scheme>FAKTURABANK:EMAIL</scheme>
+    <identifier>carolinaforero@person.fakturabank.no</identifier>
+    <email>carolinaforero@hotmail.com</email>          
+    <postal_address>      
+      <street>Lysgate 3</street>
+      <state>Oslo</state>
+      <city>Oslo</city>
+      <zip_code>0363</zip_code>
+      <country_code>NO</country_code>
+    </postal_address>
+    <bank_account_country>NO</bank_account_country>
+    <bank_account_number>26702456789</bank_account_number>
+  </employee>
+  <paycheck_line>
+    <line>1</line>
+    <code>10</code>
+    <description>Lønn</description>
+    <work_amount>36</work_amount>
+    <work_amount_unit>Vanlige arbeidstimer</work_amount_unit>
+    <work_amount_unit_rate>100</work_amount_unit_rate>
+    <amount_period>3600</amount_period>
+    <amount_year>3600</amount_year>
+    <department>Administrasjon</department>
+    <project>Generell administrasjon</project>
+    <pay_check_line_additional>
+      <title>Annen lønningsinfo</title>
+      <value>Hittil ingenting</value>
+    </pay_check_line_additional>
+  </paycheck_line>
+  <paycheck_line>
+    <line>2</line>
+    <code>30</code>
+    <description>otra cosa</description>
+    <work_amount>7</work_amount>
+    <work_amount_unit>aguinaldos</work_amount_unit>
+    <work_amount_unit_rate>1</work_amount_unit_rate>
+    <amount_period>2000</amount_period>
+    <amount_year>4000</amount_year>
+    <department>Administrasjon</department>
+    <project>Administrasjon general</project>
+  </paycheck_line>               
+  <paycheck_additional>
+    <title>Feriedager igjen</title>
+    <value>6</value>
+  </paycheck_additional>
+</paycheck>
+<paycheck>
+  <from_date>2010-01-01</from_date>
+  <to_date>2010-01-31</to_date>
+  <document_number>a-01-001</document_number>
+  <document_date>2010-02-01</document_date>
+  <period>2010-01</period>
+  <currency_code>NOK</currency_code>
+  <paid_amount>1600</paid_amount>
+  <paid_amount_year>3200</paid_amount_year>
+  <paid_date>2010-02-02</paid_date>
+  <taxing_method>Normal</taxing_method>
+  <project>Prosjekt1</project>
+  <department>Analyse og design</department>
+  <employer>
+    <name>Caracaspc</name>
+    <postal_address>
+      <street></street>
+      <additional_street>calle 1</additional_street>
+      <state>Oslo</state>
+      <city>Oslo</city>
+      <zip_code>0363</zip_code>
+      <country_code>NO</country_code>
+    </postal_address>
+    <email>info@caracaspc.com</email>
+    <identifier>991075070</identifier>
+    <scheme>NO:ORGNR</scheme>
+  </employer>
+  <employee>
+    <first_name>Andres</first_name>
+    <last_name>Forero</last_name>
+    <scheme>FAKTURABANK:EMAIL</scheme>
+    <email>andresforero@hothotmail.com</email>          
+    <postal_address>
+      <street>Calle jose</street>
+      <additional_street>Blokka2</additional_street>     
+      <state>Oslo</state>
+      <city>Oslo</city>
+      <zip_code>1081</zip_code>      
+      <country_code>NO</country_code>
+    </postal_address> 
+    <cellphone>0412-656.7777</cellphone>         
+    <bank_account_country>NO</bank_account_country>
+    <bank_account_number>190-000-01</bank_account_number>
+  </employee>
+  <paycheck_line>
+    <line>1</line>
+    <code>10</code>
+    <description>Lønn</description>
+    <work_amount>48</work_amount>
+    <work_amount_unit>Vanlige arbeidstimer</work_amount_unit>
+    <work_amount_unit_rate>100</work_amount_unit_rate>
+    <amount_period>4800</amount_period>
+    <amount_year>19000</amount_year>
+    <department>Salg</department>
+    <project>Majoristsalg</project>
+    <paycheck_line_additional>
+      <title>Lovbestemtlønn</title>
+      <value>Arbeidsmiljøloven paragraf 2.1</value>
+    </paycheck_line_additional>
+  </paycheck_line>
+  <paycheck_line>
+    <line>2</line>
+    <code>20</code>
+    <description>Bonus</description>
+    <work_amount>5</work_amount>
+    <work_amount_unit>månedlig</work_amount_unit>
+    <work_amount_unit_rate>100</work_amount_unit_rate>
+    <amount_period>500</amount_period>
+    <amount_year>1500</amount_year>
+    <department>Salg</department>
+    <project>Majoristsalg</project>
+  </paycheck_line>               
+  <paycheck_additional>
+    <title>Feriedager igjen</title>
+    <value>16</value>
+  </paycheck_additional>
+  <paycheck_additional>
+    <title>Annen info her</title>
+    <value>Viktig!</value>
+  </paycheck_additional>
+</paycheck>
+<paycheck>
+  <from_date>2010-01-01</from_date>
+  <to_date>2010-01-31</to_date>
+  <document_number>a-01-002</document_number>
+  <document_date>2010-02-01</document_date>
+  <period>2010-01</period>
+  <currency_code>NOK</currency_code>
+  <paid_amount>2500</paid_amount>
+  <paid_amount_year>7500</paid_amount_year>
+  <paid_date></paid_date>
+  <taxing_method>Normal</taxing_method>
+  <employer>
+    <name>Caracaspc</name>
+    <postal_address>  
+      <street>Ringvei 2</street>
+      <additional_street>Avstikkeren 5</additional_street>
+      <state>Oslo</state>
+      <city>Oslo</city>
+      <zip_code>0363</zip_code>
+      <country_code>NO</country_code>
+    </postal_address>
+    <email>info@oslopc.com</email>
+    <scheme>NO:ORGNR</scheme>
+    <identifier>991075070</identifier>
+  </employer>
+  <employee>
+    <first_name>Carolina</first_name>
+    <last_name>Forero</last_name>
+    <scheme>FAKTURABANK:EMAIL</scheme>
+    <identifier>carolinaforero@person.fakturabank.no</identifier>
+    <email>carolinaforero@foomail.com</email>          
+    <postal_address>      
+      <street>Gydas vei</street>
+      <additional_street>stikkvei 1</additional_street>
+      <state>Oslo</state>
+      <city>Oslo</city>
+      <zip_code>0363</zip_code>
+      <country_code>NO</country_code>
+    </postal_address>
+    <bank_account_country>NO</bank_account_country>
+    <bank_account_number>26702456782</bank_account_number>
+  </employee>
+  <paycheck_line>
+    <line>1</line>
+    <code>10</code>
+    <description>Lønn</description>
+    <work_amount>36</work_amount>
+    <work_amount_unit>Vanlige timer</work_amount_unit>
+    <work_amount_unit_rate>100</work_amount_unit_rate>
+    <amount_period>3600</amount_period>
+    <amount_year>3600</amount_year>
+    <department>Administrasjon</department>
+    <project>Generell administrasjon</project>
+    <pay_check_line_additional>
+      <title>Ekstra lønnsinformasjon</title>
+      <value>Ingenting for øyeblikket</value>
+    </pay_check_line_additional>
+  </paycheck_line>
+  <paycheck_line>
+    <line>2</line>
+    <code>30</code>
+    <description>Noe annet</description>
+    <work_amount>7</work_amount>
+    <work_amount_unit>Overtidsarbeid</work_amount_unit>
+    <work_amount_unit_rate>1</work_amount_unit_rate>
+    <amount_period>2000</amount_period>
+    <amount_year>4000</amount_year>
+    <department>Administrasjon</department>
+    <project>Generell Administrasjon</project>
+  </paycheck_line>               
+  <paycheck_additional>
+    <title>Feriedager igjen</title>
+    <value>6</value>
+  </paycheck_additional>
+</paycheck>
+</paycheck_messages>
+

@@ -21,4 +21,12 @@ class Ledger < ActiveRecord::Base
     Account.where(:number => 5400, :company_id => self.account.company_id).first
   end
 
+  def first_name
+    self.name.split(' ')[0]
+  end
+
+  def last_name
+    self.name.split(' ',2)[1]
+  end
+
 end

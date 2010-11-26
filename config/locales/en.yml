@@ -46,6 +46,9 @@ en:
     listing: Listing
     new: New
     save: Save
+    period: 
+      one: Period
+      other: Periods
   admin:
     companies:
       select_template_company: Select company as template

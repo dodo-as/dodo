@@ -38,13 +38,15 @@ class PaychecksController < ApplicationController
   # GET /paychecks/1
   # GET /paychecks/1.xml
   def show
-        
+    print "AAAA\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     @paycheck = Paycheck.find(params[:id])
+    print "BBB\n"    
     make_journal @paycheck
+    print "CC\n"   
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @paycheck }
+      format.xml # { render :xml => @paycheck }
     end
   end
   
@@ -88,13 +90,16 @@ class PaychecksController < ApplicationController
       j = Journal.new
     end
 
-    j.journal_type = 1
+    print "a1\n"
+
+    j.journal_type = JournalType.where({:name=>'Paycheck'}).first
     j.journal_date = paycheck.updated_at
     j.company = @me.current_company
     j.period_id = paycheck.period_id
     j.closed = true
     j.save
     ops = {}
+    print "a2\n"
     
     paycheck.paycheck_lines.each do
       |line|
@@ -114,6 +119,7 @@ class PaychecksController < ApplicationController
       end
     end
     
+    print "a3\n"
     print "COUNT: #{ops.count}\n"
 
     tot = 0

@@ -59,6 +59,7 @@ class JournalsController < ApplicationController
           params[:journal_operations].each do
             |key, value|
             op = JournalOperation.new(value)
+            op.company = @me.current_company
             if op.amount != 0.0
               @journal.journal_operations.push op 
             end
@@ -83,6 +84,18 @@ class JournalsController < ApplicationController
     respond_to do |format|
       Journal.transaction do
         begin
+
+          @journal.journal_operations.each do
+            |op|
+            if op.closed_operation then
+              op.closed_operation.journal_operations.each do
+                |op2|
+                op2.closed_operation = nil
+                op2.save
+              end
+            end
+          end
+
           @journal.update_attributes(params[:journal]) or raise ActiveRecord::Rollback
           @journal.journal_operations.clear
           print "\n\nWOOO, save oeprations\n"
@@ -91,6 +104,7 @@ class JournalsController < ApplicationController
             print "\nValues\n"
             print value
             op = JournalOperation.new(value)
+            op.company = @me.current_company
             if op.amount != 0.0
               print "\nNot zero amount. Yay!"
               @journal.journal_operations.push op 
@@ -100,7 +114,7 @@ class JournalsController < ApplicationController
           end
           @journal.save!
           print "\n\n\n"
-
+          
           flash[:notice] = 'Journal was successfully updated.'
           format.html { redirect_to(@journal) }
           format.xml  { head :ok }
