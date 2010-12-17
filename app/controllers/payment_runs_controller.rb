@@ -18,7 +18,7 @@ class PaymentRunsController < ApplicationController
   end
 
   def edit
-    @ops = JournalOperation.where({:account_id => params[:id],:closed_operation_id => nil}).order('ledger_id').all().to_a()
+    @ops = JournalOperation.where({:account_id => params[:id],:closed_operation_id => nil}).order('ledger_id, updated_at').all().to_a()
     @matches = []
     @pay_id = params[:id]
     @ops.each_with_index do
@@ -48,16 +48,34 @@ class PaymentRunsController < ApplicationController
   def create
 
     ClosedOperation.transaction do 
-      print "WEEE!!!! #{params['ops']}\n\n" 
-      cl = ClosedOperation.new 
-      cl.save 
-      params['ops'].each do
-        |op_id| 
-        print "Close #{op_id}\n\n"
-        op = JournalOperation.where({:id => op_id}).first
-        op.closed_operation = cl 
-        op.save 
-      end 
+
+      if params['mops'] then
+        params['mops'].each do
+          |idx, ops|
+          cl = ClosedOperation.new 
+          cl.save 
+          print "\n\n\nOp thingie #{ops}\n\n\n"
+          ops.each do
+            |op_id| 
+            print "\n\n\nClose #{op_id}\n\n\n"
+            op = JournalOperation.where({:id => op_id}).first
+            op.closed_operation = cl 
+            op.save 
+          end 
+        end
+      else
+
+        print "WEEE!!!! #{params['ops']}\n\n" 
+        cl = ClosedOperation.new 
+        cl.save 
+        params['ops'].each do
+          |op_id| 
+          print "Close #{op_id}\n\n"
+          op = JournalOperation.where({:id => op_id}).first
+          op.closed_operation = cl 
+          op.save 
+        end 
+      end
       #        redirect_to("/payment_runs/#{params['pay_id']}/edit") 
       redirect_to :action => :edit, :id => params['pay_id']
     end 

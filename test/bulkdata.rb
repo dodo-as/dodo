@@ -335,9 +335,10 @@ ActiveRecord::Base.transaction do
                               :start_month => m,
                               :start_day => 1,
                               :stop_month => m,
-                              :stop_day => 25,
-                              :pay_month => m,
-                              :pay_day => 28 })
+                              :stop_day => 31,
+                              # Make december plus one wrap around to january
+                              :pay_month => (m-1)%12+1, 
+                              :pay_day => 10 }).save!
       end
       print '.'
       emp_account = Account.where(:company_id => c.id, :number => 2930).first
@@ -523,7 +524,7 @@ companies.each_with_index do |c,idx|
       ActiveRecord::Base.connection.execute "vacuum analyze"    
     end
   end
-  print_time "Creating periods for company #{idx+1} of #{COMPANY_COUNT}" do
+  print_time "Creating periods, journals and journal operations for company #{idx+1} of #{COMPANY_COUNT}" do
     ActiveRecord::Base.transaction do
       YEARS.each do |year|
         (1..12).each do |month|
@@ -545,7 +546,11 @@ print_time "Creating paychecks" do
       sql = "
 insert into paychecks
 (period_id, employee_id, created_at, updated_at, paycheck_period_id)
-select p.id, #{emp.id}, now(), now(), id from periods p where company_id = #{c.id};
+select p.id, #{emp.id}, now(), now(), pp.id 
+from periods p 
+join paycheck_periods pp
+on p.company_id = pp.company_id and p.nr = pp.start_month
+where p.company_id = #{c.id};
 "
       ActiveRecord::Base.connection.execute sql
       

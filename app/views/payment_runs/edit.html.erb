@@ -1,12 +1,27 @@
+<form method='post' action='/payment_runs/create'>
+  <button type='submit'>Lukk alle</button>
+  <input type='hidden' name='pay_id' value='<%= @pay_id %>'>
+  
+<%
+   @matches.each_with_index do
+     |ops, idx|
+%>
+  <input type='hidden' name='mops[<%= idx %>][0]' value='<%=ops[0].id %>'>
+  <input type='hidden' name='mops[<%= idx %>][1]' value='<%=ops[1].id %>'>
+<%
+   end
+%>
+</form>
 
-<table class='rapport5'>
+
+<table class='repport5'>
+
 <% 
 
    def num_format num
    return num
 #      return number_to_human(num, :precision => 2)
    end
-
 
    odd = false
    ledger = nil
@@ -15,11 +30,12 @@
      odd = !odd
      odd_str = odd ? "odd" : "even"
 
+
    if ledger != ops[0].ledger then
      ledger = ops[0].ledger
 %>
   <tr>
-    <th colspan='7'>
+    <th colspan='8'>
       <%= ledger.name %>
     </th>
   </tr>
@@ -32,6 +48,9 @@
     </th>
     <th>
       Forfallodato
+    </th>
+    <th>
+      Fakturadato
     </th>
     <th>
       KID
@@ -65,6 +84,9 @@
     <td>
       <%= ops[0].journal.due_date %>
     </td>
+    <td>
+      <%= ops[0].journal.journal_date %>
+    </td>
     
     <td>
       <%= ops[0].journal.kid %>
@@ -97,6 +119,9 @@
     <td>
       <%= ops[1].journal.due_date %>
     </td>
+    <td>
+      <%= ops[1].journal.journal_date %>
+    </td>
     
     <td>
       <%= ops[1].journal.kid %>
@@ -113,21 +138,33 @@
 
 </table>
 
+<script>
+paymentRuns.amounts = {
+<%@ops.each do |op|
+%>
+<%= op.id %>: <%= op.amount %>,
+<%
+end    
+ %>};
 
-<table class='striped'>
+</script>
+
 
 <%
 
    def footer
 %>
   <tr>
-    <th colspan='6'>
+    <th colspan='7'>
+      <span class='amount'></span>
     </th>
     <th>
       <button type='submit'>Lukk</button>
     </th>
   </tr>
+</table>
   </form>
+
 
 <%
 
@@ -135,6 +172,10 @@
    end
 
    ledger = nil
+
+   
+
+
    @ops.each do
      |op| 
 
@@ -147,10 +188,11 @@
        ledger = op.ledger
 
 %>
-  <form action='/payment_runs/create' method='post'>
+  <form action='/payment_runs/create' method='post' class='pr-user-form'>
+<table>
     <input type='hidden' name='pay_id' value='<%= @pay_id %>'>
   <tr>
-    <th colspan='7'>
+    <th colspan='8'>
       <%= ledger.name %>
     </th>
   </tr>
@@ -163,6 +205,9 @@
     </th>
     <th>
       Forfallodato
+    </th>
+    <th>
+      Fakturadato
     </th>
     <th>
       KID
@@ -195,6 +240,10 @@
     </td>
     
     <td>
+      <%= op.journal.journal_date %>
+    </td>
+    
+    <td>
       <%= op.journal.kid %>
     </td>
     <td>
@@ -204,7 +253,7 @@
       <%= op.journal.description %>
     </td>
     <td>
-      <input type='checkbox' name='ops[]' id='check_<%= op.id %>' value='<%=op.id %>'><label for='check_<%= op.id %>'>Lukk</label>
+      <input onchange='paymentRuns.validate()' amount='<%= op.amount %>' type='checkbox' name='ops[]' id='check_<%= op.id %>' value='<%=op.id %>'><label for='check_<%= op.id %>' >Lukk</label>
     </td>
 
 </tr>
@@ -215,7 +264,5 @@
   if ledger != nil then footer end
 
 %>
-
-</table>
 
 
