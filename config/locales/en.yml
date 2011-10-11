@@ -46,9 +46,12 @@ en:
     listing: Listing
     new: New
     save: Save
-    period: 
+    comments: Comments
+    name: Name
+    period:
       one: Period
       other: Periods
+    valid_for: Valid for
   admin:
     companies:
       select_template_company: Select company as template
@@ -381,3 +384,6 @@ en:
     ledger_balance_period: Ledger Balance Period
 
 
+  project:
+    edit_project: Editing project
+    new_project: New project

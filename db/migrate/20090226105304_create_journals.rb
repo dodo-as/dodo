@@ -5,7 +5,7 @@ class CreateJournals < ActiveRecord::Migration
       t.integer :number
       t.date :journal_date
       t.references :company
-
+      
       t.timestamps
     end
   end

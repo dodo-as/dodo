@@ -2,23 +2,28 @@
 
 <table>
   <tr>
-    <th>Name</th>
-    <th>Address</th>
-    <th>Comments</th>
+    <th><%= t('global.name') %></th>
+    <th><%= t('address.address') %></th>
+    <th><%= t('global.valid_for') %></th>
+    <th><%= t('global.comments') %></th>
+    <th></th>
   </tr>
 
 <% @projects.each do |project| %>
   <tr>
     <td><%= project.name %></td>
     <td><%= render :partial => "/addresses/show", :locals => { :address => project.address }  %></td>
+    <td><%= project.from %> - <%= project.to %></td>
     <td><%= project.comments %></td>
-    <td><%= link_to t("global.show"), project %></td>
-    <% if permitted_to? :edit, project %>
-      <td><%= link_to t("global.edit"), edit_project_path(project) %></td>
-    <% end %>
-    <% if permitted_to? :delete, project %>
-      <td><%= link_to t("global.destroy"), project, :confirm => 'Are you sure?', :method => :delete %></td>
-    <% end %>
+    <td>
+      <%= link_to t("global.show"), project %>
+      <% if permitted_to? :edit, project %>
+      <%= link_to t("global.edit"), edit_project_path(project) %>
+      <% end %>
+      <% if permitted_to? :delete, project %>
+      <%= link_to t("global.destroy"), project, :confirm => 'Are you sure?', :method => :delete %>
+      <% end %>
+    </td>
   </tr>
 <% end %>
 </table>

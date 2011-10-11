@@ -22,6 +22,5 @@ class Account < ActiveRecord::Base
   def to_s
     return description
   end
-
   
 end

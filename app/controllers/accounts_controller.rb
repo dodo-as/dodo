@@ -6,10 +6,11 @@ class AccountsController < ApplicationController
   # GET /accounts.xml
   def index
     @accounts = Account.with_permissions_to(:index).all(:order => "number")
-    
+
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @accounts } 
+      format.json  { render :json => @accounts } 
     end
   end
 
@@ -54,8 +55,8 @@ class AccountsController < ApplicationController
     end
   end
 
-  # PUT /accounts/1
-  # PUT /accounts/1.xml
+  # POST /accounts/1
+  # POST /accounts/1.xml
   def update
     respond_to do |format|
       if @account.update_attributes(params[:account])
