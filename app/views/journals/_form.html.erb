@@ -46,7 +46,7 @@
        @journal.journal_date
        f.hidden_field :journal_date
      else 
-       f.unobtrusive_date_text_picker :journal_date, :format=>'y-m-d', :divider=>'-'
+       f.text_field :journal_date, :class => :datepicker
      end %>  
 </p>
 
@@ -56,7 +56,7 @@
        @journal.due_date
        f.hidden_field :due_date
      else 
-       f.unobtrusive_date_text_picker :due_date, :format=>'y-m-d', :divider=>'-'
+       f.text_field :due_date, :class => :datepicker
      end %>  
 </p>
 
@@ -66,20 +66,22 @@
        @journal.kid
      else 
        f.text_field :kid 
-     end %>
+     end 
+  %>
 
 </p>
 <p>
-  <%= f.label :bill_number, t(:bill_number, :scope => :journals) %><br />
+  <%= f.label :bill_number, t(:bill_number, :scope => :bills) %><br />
   <%= if @readonly then
        @journal.bill_number
      else 
        f.text_field :bill_number 
-     end %>
+     end 
+  %>
 
 </p>
 <p>
-  <%= f.label :description, t(:description, :scope => :journals) %><br />
+  <%= f.label :description, t(:description, :scope => :global) %><br />
   <%= if @readonly then
        @journal.description
      else 
@@ -131,16 +133,16 @@
 	  <%= t(:out, :scope => :journals) %>
 	</th>
 	<th>
-	  <%= t(:amount, :scope => :journals) %>
+	  <%= t(:amount, :scope => :global) %>
 	</th>
 	<th>
 	  <%= t(:vat, :scope => :journals) %>
 	</th>
 	<th>
-	  <%= t(:car, :scope => :journals) %>
+	  <%= t(:car, :scope => :cars) %>
 	</th>
 	<th>
-	  <%= t(:project, :scope => :journals) %>
+	  <%= t(:project, :scope => :projects) %>
 	</th>
 	<th>
 	</th>

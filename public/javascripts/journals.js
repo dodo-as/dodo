@@ -33,11 +33,11 @@ var journals = {
        Return the account with the specified id
      */
     getAccount: function (id) {
-	console.log("Looking for account " + id);
+	//	console.log("Looking for account " + id);
 	for( var i =0; i<DODO.accountList.length; i++) {
 	    if (DODO.accountList[i].value == id) {
-		console.log("Found it:");
-		console.log(DODO.accountList[i]);
+		//	console.log("Found it:");
+		//console.log(DODO.accountList[i]);
 		return DODO.accountList[i];
 	    }
 	}
@@ -60,10 +60,39 @@ var journals = {
 	
     },
     
+    getVat: function(line)
+    {
+	return $('#dynfield_4_'+line)[0];
+    },
+    
+    getDebet: function(line)
+    {
+	return $('#dynfield_1_'+line)[0];
+    },
+
+    getCredit: function(line)
+    {
+	return $('#dynfield_2_'+line)[0];
+    },
+
+    getAmount: function(line)
+    {
+	return $('#dynfield_3_'+line)[0];
+    },
+
+    getInput: function(line)
+    {
+	return {
+	    vat: journals.getVat(line),
+	    debet: journals.getDebet(line),
+	    credit: journals.getCredit(line),
+	    amount: journals.getAmount(line)
+	};
+    },
 
     updateVat: function (reset_all) {
         for (var i=0; i < DODO.journalLines; i++)
-            if (reset_all || $('#vatFactor_'+i)[0].value == "-1")
+            if (reset_all || journals.getVat(i).value == "-1")
                 journals.setDefaultVat(i);
     },
 
@@ -76,7 +105,7 @@ var journals = {
 	journals.sumColumn(1);
 	journals.sumColumn(2);
 	for (var i=0; i < DODO.journalLines; i++) {
-	    var account = journals.getAccount($('#dynfield_0_'+i)[0].value);
+	    var account = journals.getAccount($('#account_'+i)[0].value);
 	    var vat_account;
             var vat_account_id;
             if (account.vat_account != undefined) {
@@ -87,23 +116,24 @@ var journals = {
                 vat_account = {'name': '&lt;No VAT account&gt;', 'overridable': 0, 'id': ''};  
              }
 
-	    $('#vat1_account_'+i)[0].innerHTML = journals.getAccount($('#dynfield_0_'+i)[0].value).name;
+	    $('#vat1_account_'+i)[0].innerHTML = journals.getAccount($('#account_'+i)[0].value).name;
 	    $('#vat2_account_'+i)[0].innerHTML = vat_account.name;
 	    
-	    var debet = parseFloatNazi($('#dynfield_2_' + i)[0].value);
-	    var credit = parseFloatNazi($('#dynfield_1_' + i)[0].value);
+	    var inputs = journals.getInput(i);
+	    var debet = parseFloatNazi(inputs.debet.value);
+	    var credit = parseFloatNazi(inputs.credit.value);
+
 	    var debet1 = $('#vat1_debet_'+i)[0];
 	    var debet2 = $('#vat2_debet_'+i)[0];
 	    var credit1 = $('#vat1_credit_'+i)[0];
 	    var credit2 = $('#vat2_credit_'+i)[0];
 	    credit1.innerHTML =debet1.innerHTML =credit2.innerHTML =debet2.innerHTML ='';
 	    
-	    var vatFactorInput = $('#vatFactor_'+i)[0];
 	    var overridable = vat_account.overridable || account.vat_overridable;
 	    
-	    vatFactorInput.readOnly=!overridable;
+	    inputs.vat.readOnly=!overridable;
 	    
-	    var vatFactor = 1.0 - 1.0/(1.0+0.01*parseFloatNazi(vatFactorInput.value));
+	    var vatFactor = 1.0 - 1.0/(1.0+0.01*parseFloatNazi(inputs.vat.value));
 	    var baseAmount = (credit > 0.0)?credit:debet;
 	    var vatAmount = toMoney(vatFactor * baseAmount);
 
@@ -127,12 +157,12 @@ var journals = {
        Return a DOM select node, populated with a list of all accounts that can be used for a transaction
      */
     makeAccountSelect: function () {
-	var id = "dynfield_0_"+ DODO.journalLines;
+	var id = "account_"+ DODO.journalLines;
 
 	var sel = $("<select>")[0];
 	if(DODO.readonly)
 	{
-	    sel.disabled=true;
+	    sel.readOnly=true;
 	}
 	sel.name = "tralala[" +  DODO.journalLines + "]";
 	sel.id = id;
@@ -184,10 +214,10 @@ var journals = {
 	var sel = document.createElement("select");
 	if(DODO.readonly)
 	{
-	    sel.disabled=true;
+	    sel.readOnly=true;
 	}
 	sel.name = "journal_operations[" + DODO.journalLines+"][car_id]";
-	sel.id = "dynfield_3_"+ DODO.journalLines;
+	sel.id = "car_"+ DODO.journalLines;
 	
 	for (var i=0; i<DODO.carList.length; i++) {
 	    sel.add(new Option(DODO.carList[i].car.name,
@@ -203,10 +233,10 @@ var journals = {
 	var sel = document.createElement("select");
 	if(DODO.readonly)
 	{
-	    sel.disabled=true;
+	    sel.readOnly=true;
 	}
 	sel.name = "journal_operations[" + DODO.journalLines+"][project_id]";
-	sel.id = "dynfield_4_"+ DODO.journalLines;
+	sel.id = "project_"+ DODO.journalLines;
 	
 	for (var i=0; i<DODO.projectList.length; i++) {
 	    sel.add(new Option(DODO.projectList[i].project.name,
@@ -224,9 +254,9 @@ var journals = {
 
 	console.log("Get account for line " + line);
 	console.log("Select box:");
-	console.log($('#dynfield_0_'+line));
+	console.log($('#account_'+line));
 
-	var account = journals.getAccount($('#dynfield_0_'+line)[0].value);
+	var account = journals.getAccount($('#account_'+line)[0].value);
 	console.log(account);
 
         var percentage = 0;
@@ -253,7 +283,7 @@ var journals = {
                 percentage = current_vat_account_period.percentage;
         }
 
-	$('#vatFactor_'+line)[0].value = percentage;
+	$('#dynfield_4_'+line)[0].value = percentage;
 
     },
 
@@ -272,14 +302,14 @@ var journals = {
 	var debet = $('#dynfield_1_' + row_number)[0];
 	var credit = $('#dynfield_2_' + row_number)[0];
 	
-	credit.disabled=false;
-	debet.disabled=false;
+	credit.readOnly=false;
+	debet.readOnly=false;
 	
 	if (parseFloatNazi(debet.value) > 0.0) {
-	    credit.disabled=true;
+	    credit.readOnly=true;
 	}
 	else if (parseFloatNazi(credit.value) > 0.0) {
-	    debet.disabled=true;
+	    debet.readOnly=true;
 	}
 	
     },
@@ -291,23 +321,19 @@ var journals = {
 	var res = document.createElement("input");
 	if(DODO.readonly)
 	{
-	    res.disabled=true;
+	    res.readOnly=true;
 	}
 	res.type="text";
 	res.name = "journal_operations[" + DODO.journalLines+"][debet]";
 	res.id='dynfield_1_' + DODO.journalLines;
 	res.setAttribute("autocomplete","off");
 	
-	var fun;
-	eval("fun=function (event) {journals.handleArrowKeys(event,  1, " + DODO.journalLines + ");}");
-	res.onkeypress=fun;
+	var currentLines = DODO.journalLines;
 	
-	var fun2;
-	eval("fun2=function (event) {journals.doDisable(" + DODO.journalLines + ");journals.update();}");
-	res.onkeyup = fun2;
+	$(res).keypress(journals.handleArrowKeys);
+	$(res).keyup(function (event) {journals.doDisable( currentLines );journals.update();});
 	
 	return res;
-	
     },
     
     /**
@@ -317,20 +343,16 @@ var journals = {
 	var res = document.createElement("input");
 	if(DODO.readonly)
 	{
-	    res.disabled=true;
+	    res.readOnly=true;
 	}
 	res.type="text";
 	res.name = "journal_operations[" + DODO.journalLines+"][credit]";
 	res.id='dynfield_2_' + DODO.journalLines;
 	res.setAttribute("autocomplete","off");
 	
-	var fun;
-	eval("fun=function (event) {journals.handleArrowKeys(event,  2, " + DODO.journalLines + ");}");
-	res.onkeypress=fun;
-	
-	var fun2;
-	eval("fun2=function (event) {journals.doDisable(" + DODO.journalLines + ");journals.update();}");
-	res.onkeyup = fun2;
+	var currentLines = DODO.journalLines;
+	$(res).keypress(journals.handleArrowKeys);
+	$(res).keyup(function (event) {journals.doDisable( currentLines );journals.update();});
 	
 	return res;
     },
@@ -342,14 +364,15 @@ var journals = {
 	var res = document.createElement("input");
 	if(DODO.readonly)
 	{
-	    res.disabled=true;
+	    res.readOnly=true;
 	}
 	res.type="text";
 	res.name = "journal_operations[" + DODO.journalLines+"][vat]";
-	res.id='vatFactor_' + DODO.journalLines;
+	res.id='dynfield_4_' + DODO.journalLines;
 	res.value = val;
 
-	res.onkeyup = journals.update;
+	$(res).keypress(journals.handleArrowKeys);
+	$(res).keyup(journals.update);
 	
 	return res;
     },
@@ -361,14 +384,15 @@ var journals = {
 	var res = document.createElement("input");
 	if(DODO.readonly)
 	{
-	    res.disabled=true;
+	    res.readOnly=true;
 	}
 	res.type="text";
 	res.name = "journal_operations[" + DODO.journalLines+"][amount_other]";
-	res.id='amountFactor_' + DODO.journalLines;
+	res.id='dynfield_3_' + DODO.journalLines;
 	res.value = val;
 
-	res.onkeyup = journals.update;
+	$(res).keypress(journals.handleArrowKeys);
+	$(res).keyup(journals.update);
 	
 	return res;
     },
@@ -459,18 +483,18 @@ var journals = {
 	row.addCell(journals.makeText('balance'));
 	row.addCell(journals.makeText('in'));
 	row.addCell(journals.makeText('out'));
-	row.addCell(journals.makeAmount(line?line.vat:-1));
-	row.addCell(journals.makeVat(line?line.vat:-1));
+	row.addCell(journals.makeAmount(line?line.vat:''));
+	row.addCell(journals.makeVat(line?line.vat:''));
 	row.addCell(journals.makeCarSelect());
 	row.addCell(journals.makeProjectSelect());
 
 	if (line) {
 	    amount = line.amount;
-	    $("#dynfield_0_"+ DODO.journalLines)[0].value = line.account_id;
+	    $("#account_"+ DODO.journalLines)[0].value = line.account_id;
 	    $("#dynfield_1_"+ DODO.journalLines)[0].value = amount<0?-amount:0;
 	    $("#dynfield_2_"+ DODO.journalLines)[0].value = amount>0?amount:0;
-	    $("#dynfield_3_"+ DODO.journalLines)[0].value = line.car_id;
-	    $("#dynfield_4_"+ DODO.journalLines)[0].value = line.project_id;
+	    $("#car_"+ DODO.journalLines)[0].value = line.car_id;
+	    $("#project_"+ DODO.journalLines)[0].value = line.project_id;
 	    journals.doDisable(DODO.journalLines);
 	}
 	DODO.journalLines++;
@@ -498,50 +522,52 @@ var journals = {
         }
     },
     
+    columnOf: function(input)
+    {
+	return parseInt(input.id.split("_")[1]);
+    },
+
+    rowOf: function(input)
+    {
+	return parseInt(input.id.split("_")[2]);
+    },
+
     /**
        Scroll with arrow keys
      */
-    handleArrowKeys: function(evt, col_number, row_number) {
-	evt = (evt) ? evt : ((window.event) ? event : null);
-	if (evt) {
-	    var el=null;
+    handleArrowKeys: function(evt){
+	col_number=journals.columnOf(evt.target);
+	row_number=journals.rowOf(evt.target);
+	/*
+	console.log("AAA");
+	console.log(evt);
+	console.log(evt.target);
+	console.log(col_number);
+	console.log(row_number);
+	*/
+		    
+	switch (evt.keyCode) {
+	case $.ui.keyCode.LEFT:
+	    col_number--;
+	    break;    
 	    
-	    switch (evt.keyCode) {
-	    case 37:
-		/*
-		  left
-		*/
-		col_number--;
-		break;    
-		
-	    case 38:
-		/*
-		  up
-		*/
-		row_number--;
-		break;    
-		
-	    case 39:
-		/*
-		  right
-		*/
-		col_number++;
-		break;    
-		
-	    case 40:
-		/*
-		  down
-	    */
-		row_number++;
-		break;
-		
-	    }
+	case $.ui.keyCode.UP:
+	    row_number--;
+	    break;    
 	    
-	    el = $('#dynfield_' + col_number+'_' +row_number)[0];
+	case $.ui.keyCode.RIGHT:
+	    col_number++;
+	    break;    
 	    
-	    if (el) {
-		el.focus();
-	    }
+	case $.ui.keyCode.DOWN:
+	    row_number++;
+	    break;
+	}
+	
+	el = $('#dynfield_' + col_number+'_' +row_number)[0];
+	    
+	if (el) {
+	    el.focus();
 	}
     },
 

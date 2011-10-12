@@ -56,6 +56,8 @@ en:
       other: Periods
     valid_for: Valid for
     filter: Filter
+    description: Description
+    amount: Amount
   admin:
     companies:
       select_template_company: Select company as template
@@ -185,7 +187,6 @@ en:
     in: "Inn"
     out: "Ut"
     unit: "Avdeling"
-    project: "Prosjekt"
     due_date: "Forfallsdato"
     kid: "KID"
     invoice: "Faktura?"
@@ -280,6 +281,8 @@ en:
     total_for_this_order: Total for this order
     total_for_all_orders: Total for all orders
     total: Total
+    bill_number: Bill number
+    
   weekly_sale_setups:
     title_singular: Weekly Sale Setup
     title_plural: Weekly Sale Setups    
@@ -308,7 +311,6 @@ en:
     name: Name
     account: Account
     weekly_sale_setup: Weekly sale setup
-    project: Project
     display_order: Display order
 
   weekly_sales:
@@ -354,7 +356,6 @@ en:
     run_report: Run Report
     from_period: From Period
     to_period: To Period
-    project: Project
     unit: Department
     show_only_active_accounts: Show Only Active Acount
     last_year_figures: Last Year Figures
@@ -387,7 +388,9 @@ en:
     expenses: Expenses
     ledger_balance_period: Ledger Balance Period
 
-
-  project:
+  cars:
+    car: Car
+  projects:
     edit_project: Editing project
     new_project: New project
+    project: Project
