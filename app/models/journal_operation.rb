@@ -8,20 +8,24 @@ class JournalOperation < ActiveRecord::Base
   belongs_to :closed_operation
   belongs_to :company
   
-  def debet= (num)
-    self.amount = - num.to_f
+  def debet= (num) 
+    if num != "" and num.to_f > 0 then
+      self.amount = -num.to_f
+    end
   end
-
+  
   def credit= (num)
-    self.amount = num.to_f
+    if num != "" and num.to_f > 0 then
+      self.amount = num.to_f
+    end
   end
-
+  
   def debet
-    return (self.amount<0.0) ? (-self.amount) : 0.0
+    return (self.amount<0.0) ? (-self.amount) : nil
   end
 
   def credit
-    return (self.amount>0.0) ? self.amount : 0.0
+    return (self.amount>0.0) ? self.amount : nil
   end
-
+  
 end

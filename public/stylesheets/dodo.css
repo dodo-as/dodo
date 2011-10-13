@@ -510,3 +510,6 @@ iframe
   background: yellow;
 }
 
+#operations_table input {
+    width: 5em;
+}

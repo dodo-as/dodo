@@ -55,20 +55,21 @@ class JournalsController < ApplicationController
   # POST /journals.xml
   def create
     respond_to do |format|
+      raise Authorization::NotAuthorized unless permitted_to? :create, @journal
       Journal.transaction do
         begin
+
           @journal = Journal.new(params[:journal])
           @journal.company = @me.current_company
           params[:journal_operations].each do
             |key, value|
+            puts "Wee #{key} #{value}"
             op = JournalOperation.new(value)
             op.company = @me.current_company
-            if op.amount != 0.0
-              @journal.journal_operations.push op 
-            end
+            @journal.journal_operations.push op 
+                        
           end
           @journal.save!
-          raise Authorization::NotAuthorized unless permitted_to? :create, @journal
 
           flash[:notice] = 'Journal was successfully created.'
           format.html { redirect_to(@journal) }
@@ -105,9 +106,7 @@ class JournalsController < ApplicationController
             |key, value|
             op = JournalOperation.new(value)
             op.company = @me.current_company
-            if op.amount != 0.0
-              @journal.journal_operations.push op 
-            end
+            @journal.journal_operations.push op 
           end
           @journal.save!
           print "\n\n\n"

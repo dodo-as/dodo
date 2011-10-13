@@ -164,7 +164,7 @@ var journals = {
 	{
 	    sel.readOnly=true;
 	}
-	sel.name = "tralala[" +  DODO.journalLines + "]";
+	sel.name = "sccount_select[" +  DODO.journalLines + "]";
 	sel.id = id;
 	
 	var a_id = $("<input type='hidden' />")[0];
