@@ -66,6 +66,7 @@ en:
     journals: "Journals"
     companies: "Companies"
     projects: "Projects"
+    cars: "Cars"
     periods: Periods
     units: Units
     products: "Products"
@@ -215,6 +216,8 @@ en:
     postal_code: Zip
     town: City
     country: Country
+  units:
+    
   products:
     listing_products: Listing products
     price: Price

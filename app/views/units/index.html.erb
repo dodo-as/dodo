@@ -1,10 +1,11 @@
-<h1><%= t('untis.header_index')%></h1>
+<h1><%= t('units.header_index')%></h1>
 
 <table>
   <tr>
-    <th><%= t('activerecord.attributes.unit.name') %></th>
-    <th><%= t('activerecord.attributes.unit.address') %></th>
-    <th><%= t('activerecord.attributes.unit.comments') %></th>
+    <th><%= t('units.name') %></th>
+    <th><%= t('units.address') %></th>
+    <th><%= t('global.valid_for') %></th>
+    <th><%= t('units.comments') %></th>
     <th></th>
   </tr>
 
@@ -12,6 +13,7 @@
   <tr>
     <td><%= unit.name %></td>
     <td><%= render :partial => "/addresses/show", :locals => { :address => unit.address }  %></td>
+    <td><%= unit.from %> - <%= unit.to %></td>
     <td><%= unit.comments %></td>
     <td>
       <%= link_to t("global.show"), unit %>
