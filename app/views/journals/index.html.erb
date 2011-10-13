@@ -1,5 +1,17 @@
 <h1><%= t(:listing_journals, :scope => :journals) -%></h1>
 
+<ul>
+<% 
+  if permitted_to? :create, :journals 
+    JournalType.all.each{|jt|
+%>
+  <li><%= link_to t(:new_journal, :scope => :journals, :type => jt.to_s), new_journal_path + "?journal_type_id=" + jt.id.to_s  %></li>
+<% 
+    }
+  end
+ %>
+</ul>
+
 <%= render :partial => "shared/period_picker" %>
 <%= will_paginate @companies %>
 
@@ -49,6 +61,3 @@ def url_gen(object); "/#{object.class.name.tableize}/#{object.id}"; end
 
 <br />
 
-<% if permitted_to? :create, :journals %>
-  <%= link_to t(:new_journal, :scope => :journals), new_journal_path %>
-<% end %>

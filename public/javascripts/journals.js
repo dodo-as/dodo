@@ -8,7 +8,7 @@ var journals = {
      */
     validate: function ()
     {
-	if(DODO.readonly)
+	if(DODO.readOnly)
 	{
 	    return;
 	}
@@ -160,7 +160,7 @@ var journals = {
 	var id = "account_"+ DODO.journalLines;
 
 	var sel = $("<select>")[0];
-	if(DODO.readonly)
+	if(DODO.readOnly)
 	{
 	    sel.readOnly=true;
 	}
@@ -212,7 +212,7 @@ var journals = {
      */
     makeCarSelect: function () {
 	var sel = document.createElement("select");
-	if(DODO.readonly)
+	if(DODO.readOnly)
 	{
 	    sel.readOnly=true;
 	}
@@ -231,7 +231,7 @@ var journals = {
      */
     makeProjectSelect: function () {
 	var sel = document.createElement("select");
-	if(DODO.readonly)
+	if(DODO.readOnly)
 	{
 	    sel.readOnly=true;
 	}
@@ -294,7 +294,7 @@ var journals = {
      */
     doDisable: function (row_number)
     {
-	if(DODO.readonly)
+	if(DODO.readOnly)
 	{
 	    return;
 	}
@@ -319,7 +319,7 @@ var journals = {
      */
     makeDebet: function () {
 	var res = document.createElement("input");
-	if(DODO.readonly)
+	if(DODO.readOnly)
 	{
 	    res.readOnly=true;
 	}
@@ -341,7 +341,7 @@ var journals = {
      */
     makeCredit: function () {
 	var res = document.createElement("input");
-	if(DODO.readonly)
+	if(DODO.readOnly)
 	{
 	    res.readOnly=true;
 	}
@@ -362,7 +362,7 @@ var journals = {
      */
     makeVat: function (val) {
 	var res = document.createElement("input");
-	if(DODO.readonly)
+	if(DODO.readOnly)
 	{
 	    res.readOnly=true;
 	}
@@ -382,7 +382,7 @@ var journals = {
      */
     makeAmount: function (val) {
 	var res = document.createElement("input");
-	if(DODO.readonly)
+	if(DODO.readOnly)
 	{
 	    res.readOnly=true;
 	}

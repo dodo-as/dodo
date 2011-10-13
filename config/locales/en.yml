@@ -167,6 +167,8 @@ en:
     create_success: VAT entry created
     update_success: VAT entry updated
   journals:
+    viewing_journal: "Journal %{number}"
+    editing_journal: "Journal %{number}"
     listing_journals: "Listing journal entries?"
     type: "Type"
     number: "Number"
@@ -175,7 +177,7 @@ en:
     show: "Show"
     edit: "Edit"
     destroy: "Destroy"
-    new_journal: "New journal entry"
+    new_journal: "New %{type} journal"
     back: "Back"
     new_journal_operation: "Ny postering"
     vat: "Mva"

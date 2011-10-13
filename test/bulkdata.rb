@@ -1,12 +1,13 @@
+# -*- coding: utf-8 -*-
 # Ensure we're in test mode to avoid mail timeout errors
 # when creating users.
-raise "Set RAILS_ENV=test before loading blueprint" unless Rails.env == 'test'
+raise "Set RAILS_ENV=test before loading blueprint" unless Rails.env != 'production'
 
 # Number of users
 USER_COUNT = 5
 #15000
 # Number of companies
-COMPANY_COUNT = 1
+COMPANY_COUNT = 5
 #10000
 # Average number of products for a company
 PRODUCT_COUNT = 20
@@ -218,15 +219,23 @@ ActiveRecord::Base.transaction do
       c.assignments.create(:user => bob, :role => Role.find_by_name("accountant"))
     end
   end
-
+  
   print_time "Creating journal types" do
-    jt = JournalType.new
-    jt.name = "Paycheck"
-    jt.save
+    jt =[
+         ["K", "Kassa"], ["B", "Bank"],
+         ["U", "Kjøp"], ["L", "Lønn"],
+         ["S", "Salg"], ["A", "Auto"], 
+         ["O", "Ukeomsetning"]
+        ]
+    jt.each {
+      |val|
 
-    jt = JournalType.new
-    jt.name="Default"
-    jt.save
+      jt = JournalType.new
+      jt.abbreviation = val[0]
+      jt.name = val[1]
+
+      jt.save
+    }
   end
 
   print_time "Creating units" do

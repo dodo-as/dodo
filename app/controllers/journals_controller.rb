@@ -13,8 +13,8 @@ class JournalsController < ApplicationController
   def index
     @journals = period_filter(
       Journal.with_permissions_to(:index).order(
-      "number, journal_date desc, journal_type_id")).paginate(
-      {:page => params[:page]})
+        "number, journal_date desc, journal_type_id")).paginate(
+          {:page => params[:page]})
 
     respond_to do |format|
       format.html # index.html.erb
@@ -36,8 +36,11 @@ class JournalsController < ApplicationController
   # GET /journals/new
   # GET /journals/new.xml
   def new
-    @journal = Journal.new
-    
+    @journal = Journal.new :journal_type_id => params[:journal_type_id]
+    if !@journal.journal_type
+      raise "No journal type specified"
+    end
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @journal }
@@ -98,19 +101,13 @@ class JournalsController < ApplicationController
 
           @journal.update_attributes(params[:journal]) or raise ActiveRecord::Rollback
           @journal.journal_operations.clear
-          print "\n\nWOOO, save oeprations\n"
           params[:journal_operations].each do
             |key, value|
-            print "\nValues\n"
-            print value
             op = JournalOperation.new(value)
             op.company = @me.current_company
             if op.amount != 0.0
-              print "\nNot zero amount. Yay!"
               @journal.journal_operations.push op 
             end
-            print "\nOperation to be saved:\n"
-            print op
           end
           @journal.save!
           print "\n\n\n"

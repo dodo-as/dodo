@@ -5,6 +5,7 @@ class Company < ActiveRecord::Base
   has_many :bills
   has_many :vat_accounts
   has_many :paycheck_periods
+  has_many :journal_type_counters
   belongs_to :address
 
   has_many :assignments, :include => [:role, :user]

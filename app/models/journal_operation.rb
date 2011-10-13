@@ -6,6 +6,7 @@ class JournalOperation < ActiveRecord::Base
   belongs_to :car
   belongs_to :project
   belongs_to :closed_operation
+  belongs_to :company
   
   def debet= (num)
     self.amount = - num.to_f

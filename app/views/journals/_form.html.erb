@@ -7,7 +7,7 @@
     projectList: <%= raw(@projects_all.all.to_json) %>,
     accountList: <%= raw(@accounts_all.to_json) %>,
     journalOperationList: <%= raw(@journal.journal_operations.all.to_json) %>,
-    readonly: <%= @readonly?"true":"false" %>
+    readOnly: <%= @readonly?"true":"false" %>
   };
 
 </script>
@@ -17,11 +17,7 @@
 
 <p>
   <%= f.label :journal_type, t(:type, :scope => :journals) %><br />
-  <%= if @readonly then
-       @journal.journal_type
-     else 
-       f.text_field :journal_type 
-     end %>
+  <%= @journal.journal_type %>
 </p>
 <p>
   <%= f.label :number, t(:number, :scope => :journals) %><br />
