@@ -6,17 +6,19 @@ class JournalType < ActiveRecord::Base
     self.name
   end
 
-  def get_next_number(company)
+  def counter company
     cnt = JournalTypeCounter.where(:company_id => company, :journal_type_id => self)
-
+    
     if cnt.exists?
       cnt=cnt[0]
     else
       cnt = JournalTypeCounter.new :company => company, :journal_type => self, :counter => 1
     end
-    
+  end
+  
+  def get_next_number company
+    cnt = self.counter company
     num = cnt.counter
-    
     while Journal.where(:company_id => company, :journal_type_id => self, :number => num).exists?
       num = num+1
     end

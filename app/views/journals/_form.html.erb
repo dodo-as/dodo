@@ -18,14 +18,15 @@
 <p>
   <%= f.label :journal_type, t(:type, :scope => :journals) %><br />
   <%= @journal.journal_type %>
+  <%= f.hidden_field :journal_type_id %>
 </p>
 <p>
   <%= f.label :number, t(:number, :scope => :journals) %><br />
   <%= if @readonly then
        @journal.number
-     else 
+      else 
        f.text_field :number 
-     end %>
+      end %>
 
 </p>
 <p>

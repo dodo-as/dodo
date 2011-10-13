@@ -40,7 +40,8 @@ class JournalsController < ApplicationController
     if !@journal.journal_type
       raise "No journal type specified"
     end
-
+    @journal.number = @journal.journal_type.get_next_number(@me.current_company)
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @journal }
@@ -58,19 +59,23 @@ class JournalsController < ApplicationController
       raise Authorization::NotAuthorized unless permitted_to? :create, @journal
       Journal.transaction do
         begin
-
+          
           @journal = Journal.new(params[:journal])
           @journal.company = @me.current_company
           params[:journal_operations].each do
             |key, value|
-            puts "Wee #{key} #{value}"
             op = JournalOperation.new(value)
             op.company = @me.current_company
             @journal.journal_operations.push op 
-                        
           end
           @journal.save!
 
+          cnt = @journal.journal_type.counter(@me.current_company)
+          if cnt.adjust_outside_of_sequence
+            cnt.counter = @journal.number+1
+            cnt.save
+          end
+          
           flash[:notice] = 'Journal was successfully created.'
           format.html { redirect_to(@journal) }
           format.xml  { render :xml => @journal, :status => :created, :location => @journal }
@@ -109,11 +114,17 @@ class JournalsController < ApplicationController
             @journal.journal_operations.push op 
           end
           @journal.save!
-          print "\n\n\n"
+          
+          cnt = @journal.journal_type.counter(@me.current_company)
+          if cnt.adjust_outside_of_sequence
+            cnt.counter = @journal.number+1
+            cnt.save
+          end
           
           flash[:notice] = 'Journal was successfully updated.'
           format.html { redirect_to(@journal) }
           format.xml  { head :ok }
+
         rescue ActiveRecord::Rollback
           format.html { render :action => "edit" }
           format.xml  { render :xml => @journal.errors, :status => :unprocessable_entity }
@@ -170,5 +181,5 @@ class JournalsController < ApplicationController
   def set_readonly
     @readonly=false
   end
-
+  
 end
