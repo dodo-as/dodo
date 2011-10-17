@@ -153,6 +153,9 @@ en:
     comment: "Comment"
     account_created: Account created
     account_updated: Account updated
+    salary_email: "Salary e-mail"
+    personal_number: "Personal number"
+    id_number: "Personal number"
   ledgers:
     ledger_saved: Ledger %{name} saved
   vat:
