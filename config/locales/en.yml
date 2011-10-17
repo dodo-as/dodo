@@ -43,6 +43,7 @@ en:
   global:
     show: Show
     edit: Edit
+    update: Update
     destroy: Destroy
     back: Back
     editing: Editing
@@ -68,6 +69,7 @@ en:
     journals: "Journals"
     companies: "Companies"
     projects: "Projects"
+    cars: "Cars"
     periods: Periods
     units: Units
     products: "Products"
@@ -223,6 +225,25 @@ en:
     postal_code: Zip
     town: City
     country: Country
+  units:
+    header_index: Listing units
+    header_edit: Editing unit
+    new: New unit
+    name: Unit name
+    address: Address
+    comments: Comments
+  cars:
+    header_edit: Edit car
+    header_new: New car
+    header_index: Listing cars
+    name: Registration number
+    car_type: Type
+    comments: Comments
+    odometer: Odometer count
+    new: New car
+    from: From
+    to: To
+    
   products:
     listing_products: Listing products
     price: Price
@@ -397,11 +418,16 @@ en:
 
   cars:
     car: Car
+
   projects:
     edit_project: Editing project
     new_project: New project
     project: Project
+    name: Project name
+
   login:
     login: Log in as a regular user
     maintainance: Log in in the administration backend
     welcome: Welcome to Dodo
+
+

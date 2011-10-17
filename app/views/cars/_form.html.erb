@@ -1,0 +1,36 @@
+<%= form_for(@car) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label t('cars.name') %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label t('cars.car_type') %><br />
+    <%= f.text_field :car_type %>
+  </p>
+
+  <p>
+    <%= f.label t('cars.from') %><br />
+    <%= f.text_field :from, :class=> :datepicker %>
+  </p>
+  <p>
+    <%= f.label t('cars.to') %><br />
+    <%= f.text_field :to, :class=> :datepicker %>
+  </p>
+
+  <p>
+    <%= f.label t('global.comments') %><br />
+    <%= f.text_area :comments %>
+  </p>
+
+  <p>
+    <%= f.label t('cars.odometer') %><br />
+    <%= f.text_field :odometer %>
+  </p>
+
+  <p>
+    <%= f.submit t('global.save') %>
+  </p>
+<% end %>
+

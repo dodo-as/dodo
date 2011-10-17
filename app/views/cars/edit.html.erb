@@ -1,20 +1,6 @@
 <h1><%= t('cars.header_edit')%></h1>
 
-<%= form_for(@car) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :comments %><br />
-    <%= f.text_area :comments %>
-  </p>
-  <p>
-    <%= f.submit t('global.update') %>
-  </p>
-<% end %>
+<%= render :partial => 'form' %>
 
 <%= link_to t('global.show'), @car %> |
 <%= link_to t('global.back'), cars_path %>
