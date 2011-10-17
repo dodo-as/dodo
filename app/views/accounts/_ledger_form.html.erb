@@ -15,7 +15,6 @@
     <%= f.label :number, t(:number, :scope => :accounts) -%><br />
     <%= f.text_field :number %>
   </p>
-  <p>
     <%= f.label :name, t(:name, :scope => :accounts) -%><br />
     <%= f.text_field :name %>
   </p>
@@ -24,7 +23,11 @@
     <%= f.text_field :id_number %>
   </p>
   <p>
-    <%= f.label :telepone_number, t(:telephone_number, :scope => :accounts) -%><br />
+    <%= f.label :date_of_birth, t(:date_of_birth, :scope => :accounts) -%><br />
+    <%= f.text_field :date_of_birth, :class => :datepicker  %>
+  </p>
+  <p>
+    <%= f.label :telephone_number, t(:telephone_number, :scope => :accounts) -%><br />
     <%= f.text_field :telephone_number %>
   </p>
   <p>
@@ -33,7 +36,11 @@
   </p>
   <p>
     <%= f.label :email, t(:email, :scope => :accounts) -%><br />
-    <%= f.text_field :email %>
+    <%= f.email_field :email %>
+  </p>
+  <p>
+    <%= f.label :salary_email, t(:salary_email, :scope => :accounts) -%><br/>
+    <%= f.email_field :salary_email %>
   </p>
   <p>
     <%= f.label :ledger_bank_number, t(:ledger_bank_number, :scope => :accounts) -%><br />
@@ -47,19 +54,40 @@
     <%= f.label :credit_days, t(:credit_days, :scope => :accounts) -%><br />
     <%= f.text_field :credit_days %>
   </p>
+<!--
   <p>
     <%= f.label :auto_payment, t(:auto_payment, :scope => :accounts) -%><br />
     <%= f.check_box :auto_payment %>
   </p>
+-->
+  <p>
+    <%= f.label :procenttrekk, t(:procenttrekk, :scope => :accounts) -%><br />
+    <%= f.number_field :procenttrekk %>
+  </p>
+  <p>
+    <%= f.label :tabelltrekk, t(:tabelltrekk, :scope => :accounts) -%><br />
+    <%= f.number_field :tabelltrekk %>
+  </p>
+  <p>
+    <%= f.label :work_start, t(:work_start, :scope => :accounts) -%><br />
+    <%= f.text_field :work_start, :class => :datepicker  %>
+  </p>
+  <p>
+    <%= f.label :work_stop, t(:work_stop, :scope => :accounts) -%><br />
+    <%= f.text_field :work_stop, :class => :datepicker  %>
+  </p>
+  
   <p>
     <%= f.label :placement_top, t(:placement_top, :scope => :accounts) -%><br />
     <%= f.check_box :placement_top %>
   </p>
+<!--
   <p>
     <%= f.label :net_bank, t(:net_bank, :scope => :accounts) -%><br />
     <%= f.check_box :net_bank %>
   </p>
   
+-->
   <p>
     <%= f.label :unit_id, t(:unit, :scope => :accounts) -%><br />
     <%= f.select :unit_id, Unit.where(:company_id => current_user.current_company.id).map {|u| [u.name, u.id]}, {:include_blank => true} %>

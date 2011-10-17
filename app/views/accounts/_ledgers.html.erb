@@ -10,14 +10,23 @@
     <tr>
       <th><%= t(:number, :scope => :accounts) -%></th>
       <th><%= t(:name, :scope => :accounts) -%></th>
+      <th><%= t(:id_number, :scope => :accounts) -%></th>
+      <th><%= t(:date_of_birth, :scope => :accounts) -%></th>
       <th><%= t(:telephone_number, :scope => :accounts) -%></th>
       <th><%= t(:mobile_number, :scope => :accounts) -%></th>
       <th><%= t(:email, :scope => :accounts) -%></th>
+      <th><%= t(:salary_email, :scope => :accounts) -%></th>
       <th><%= t(:credit_days, :scope => :accounts) -%></th>
+      <th><%= t(:procenttrekk, :scope => :accounts) -%></th>
+      <th><%= t(:tabelltrekk, :scope => :accounts) -%></th>
+<!--
       <th><%= t(:auto_payment, :scope => :accounts) -%></th>
+-->
       <th><%= t(:placement_top, :scope => :accounts) -%></th>
       <th><%= t(:unit, :scope => :accounts) -%></th>
       <th><%= t(:project, :scope => :accounts) -%></th>
+      <th><%= t(:work_start, :scope => :accounts) -%></th>
+      <th><%= t(:work_stop, :scope => :accounts) -%></th>
     </tr>
     
     <% @account.ledgers.each do |ledger| %>
@@ -27,14 +36,23 @@
       <td><%= link_to ledger.name, edit_account_ledger_path(ledger.account, ledger) -%></td>
 -->
       <td><%= ledger.name -%></td>
+      <td><%= ledger.id_number -%></td>
+      <td><%= ledger.date_of_birth -%></td>
       <td><%= ledger.telephone_number -%></td>
       <td><%= ledger.mobile_number -%></td>
       <td><%= ledger.email -%></td>
+      <td><%= ledger.salary_email -%></td>
       <td><%= ledger.credit_days -%></td>
+      <td><%= ledger.procenttrekk -%></td>
+      <td><%= ledger.tabelltrekk -%></td>
+<!--
       <td><%= ledger.auto_payment -%></td>
+-->
       <td><%= ledger.placement_top -%></td>
       <td><%= ledger.unit ? ledger.unit.name : "" -%></td>
       <td><%= ledger.project ? ledger.project.name : "" -%></td>
+      <td><%= ledger.work_start -%></td>
+      <td><%= ledger.work_stop -%></td>
     </tr>
     <% end %>
 
