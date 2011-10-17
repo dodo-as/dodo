@@ -79,6 +79,11 @@ en:
     active_company: "Active company"
     vat_plan: "VAT plan"
     weekly_sales: "Weekly Sales"
+    tax_zones: Tax zones
+    tax_zone_taxes: Tax rates
+    counties: Counties
+    county_tax_zones: County tax zones
+        	     	 
   users:
     remember_me: "Remember me"
     reset_password: "Reset password"
@@ -396,3 +401,7 @@ en:
     edit_project: Editing project
     new_project: New project
     project: Project
+  login:
+    login: Log in as a regular user
+    maintainance: Log in in the administration backend
+    welcome: Welcome to Dodo
