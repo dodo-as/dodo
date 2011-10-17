@@ -43,6 +43,7 @@ en:
   global:
     show: Show
     edit: Edit
+    update: Update
     destroy: Destroy
     back: Back
     editing: Editing
@@ -68,6 +69,7 @@ en:
     journals: "Journals"
     companies: "Companies"
     projects: "Projects"
+    cars: "Cars"
     periods: Periods
     units: Units
     products: "Products"
@@ -79,6 +81,11 @@ en:
     active_company: "Active company"
     vat_plan: "VAT plan"
     weekly_sales: "Weekly Sales"
+    tax_zones: Tax zones
+    tax_zone_taxes: Tax rates
+    counties: Counties
+    county_tax_zones: County tax zones
+        	     	 
   users:
     remember_me: "Remember me"
     reset_password: "Reset password"
@@ -170,6 +177,8 @@ en:
     create_success: VAT entry created
     update_success: VAT entry updated
   journals:
+    viewing_journal: "Journal %{number}"
+    editing_journal: "Journal %{number}"
     listing_journals: "Listing journal entries?"
     type: "Type"
     number: "Number"
@@ -178,7 +187,7 @@ en:
     show: "Show"
     edit: "Edit"
     destroy: "Destroy"
-    new_journal: "New journal entry"
+    new_journal: "New %{type} journal"
     back: "Back"
     new_journal_operation: "Ny postering"
     vat: "Mva"
@@ -219,6 +228,25 @@ en:
     postal_code: Zip
     town: City
     country: Country
+  units:
+    header_index: Listing units
+    header_edit: Editing unit
+    new: New unit
+    name: Unit name
+    address: Address
+    comments: Comments
+  cars:
+    header_edit: Edit car
+    header_new: New car
+    header_index: Listing cars
+    name: Registration number
+    car_type: Type
+    comments: Comments
+    odometer: Odometer count
+    new: New car
+    from: From
+    to: To
+    
   products:
     listing_products: Listing products
     price: Price
@@ -393,7 +421,16 @@ en:
 
   cars:
     car: Car
+
   projects:
     edit_project: Editing project
     new_project: New project
     project: Project
+    name: Project name
+
+  login:
+    login: Log in as a regular user
+    maintainance: Log in in the administration backend
+    welcome: Welcome to Dodo
+
+

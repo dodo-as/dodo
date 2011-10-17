@@ -7,7 +7,7 @@
     projectList: <%= raw(@projects_all.all.to_json) %>,
     accountList: <%= raw(@accounts_all.to_json) %>,
     journalOperationList: <%= raw(@journal.journal_operations.all.to_json) %>,
-    readonly: <%= @readonly?"true":"false" %>
+    readOnly: <%= @readonly?"true":"false" %>
   };
 
 </script>
@@ -17,19 +17,16 @@
 
 <p>
   <%= f.label :journal_type, t(:type, :scope => :journals) %><br />
-  <%= if @readonly then
-       @journal.journal_type
-     else 
-       f.text_field :journal_type 
-     end %>
+  <%= @journal.journal_type %>
+  <%= f.hidden_field :journal_type_id %>
 </p>
 <p>
   <%= f.label :number, t(:number, :scope => :journals) %><br />
   <%= if @readonly then
        @journal.number
-     else 
+      else 
        f.text_field :number 
-     end %>
+      end %>
 
 </p>
 <p>
@@ -155,10 +152,12 @@
 	<td></td>
 	<td id='dynfield_1_sum'>0,00</td>
 	<td id='dynfield_2_sum'>0,00</td>
+	<td colspan='8'></td>
       </tr>
       <tr>
 	<td></td>
 	<td id='dynfield_diff'>0,00</td>
+	<td colspan='9'></td>
       </tr>
     </tfoot>
   </table>

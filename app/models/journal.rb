@@ -8,6 +8,10 @@ class Journal < ActiveRecord::Base
 
   self.per_page = 200
 
+  def to_s
+    "Journal #{self.id}: #{self.company} #{self.journal_type} #{self.number}"
+  end
+
   def open?
    return (not self.closed)
   end
@@ -303,4 +307,13 @@ class Journal < ActiveRecord::Base
 
     return balance, total_balance, result, total_result
   end
+
+  def set_number
+    if self.number != nil
+      return
+    end
+    puts "Journal type for #{self}: #{journal_type}"
+    self.number = self.journal_type.get_next_number(self.company)
+  end
+
 end

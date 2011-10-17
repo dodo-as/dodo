@@ -1,4 +1,4 @@
-<h1><%= t(:new_journal, :scope => :journals) -%></h1>
+<h1><%= t(:new_journal, :scope => :journals, :type=>@journal.journal_type.to_s) -%></h1>
 
 <%= render :partial => "form" %>
 <script>

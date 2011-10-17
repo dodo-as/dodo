@@ -13,8 +13,8 @@ class JournalsController < ApplicationController
   def index
     @journals = period_filter(
       Journal.with_permissions_to(:index).order(
-      "number, journal_date desc, journal_type_id")).paginate(
-      {:page => params[:page]})
+        "number, journal_date desc, journal_type_id")).paginate(
+          {:page => params[:page]})
 
     respond_to do |format|
       format.html # index.html.erb
@@ -36,7 +36,11 @@ class JournalsController < ApplicationController
   # GET /journals/new
   # GET /journals/new.xml
   def new
-    @journal = Journal.new
+    @journal = Journal.new :journal_type_id => params[:journal_type_id]
+    if !@journal.journal_type
+      raise "No journal type specified"
+    end
+    @journal.number = @journal.journal_type.get_next_number(@me.current_company)
     
     respond_to do |format|
       format.html # new.html.erb
@@ -52,21 +56,26 @@ class JournalsController < ApplicationController
   # POST /journals.xml
   def create
     respond_to do |format|
+      raise Authorization::NotAuthorized unless permitted_to? :create, @journal
       Journal.transaction do
         begin
+          
           @journal = Journal.new(params[:journal])
           @journal.company = @me.current_company
           params[:journal_operations].each do
             |key, value|
             op = JournalOperation.new(value)
             op.company = @me.current_company
-            if op.amount != 0.0
-              @journal.journal_operations.push op 
-            end
+            @journal.journal_operations.push op 
           end
           @journal.save!
-          raise Authorization::NotAuthorized unless permitted_to? :create, @journal
 
+          cnt = @journal.journal_type.counter(@me.current_company)
+          if cnt.adjust_outside_of_sequence
+            cnt.counter = @journal.number+1
+            cnt.save
+          end
+          
           flash[:notice] = 'Journal was successfully created.'
           format.html { redirect_to(@journal) }
           format.xml  { render :xml => @journal, :status => :created, :location => @journal }
@@ -98,26 +107,24 @@ class JournalsController < ApplicationController
 
           @journal.update_attributes(params[:journal]) or raise ActiveRecord::Rollback
           @journal.journal_operations.clear
-          print "\n\nWOOO, save oeprations\n"
           params[:journal_operations].each do
             |key, value|
-            print "\nValues\n"
-            print value
             op = JournalOperation.new(value)
             op.company = @me.current_company
-            if op.amount != 0.0
-              print "\nNot zero amount. Yay!"
-              @journal.journal_operations.push op 
-            end
-            print "\nOperation to be saved:\n"
-            print op
+            @journal.journal_operations.push op 
           end
           @journal.save!
-          print "\n\n\n"
+          
+          cnt = @journal.journal_type.counter(@me.current_company)
+          if cnt.adjust_outside_of_sequence
+            cnt.counter = @journal.number+1
+            cnt.save
+          end
           
           flash[:notice] = 'Journal was successfully updated.'
           format.html { redirect_to(@journal) }
           format.xml  { head :ok }
+
         rescue ActiveRecord::Rollback
           format.html { render :action => "edit" }
           format.xml  { render :xml => @journal.errors, :status => :unprocessable_entity }
@@ -174,5 +181,5 @@ class JournalsController < ApplicationController
   def set_readonly
     @readonly=false
   end
-
+  
 end
