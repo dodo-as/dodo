@@ -46,6 +46,9 @@ Dodo::Application.routes.draw do |map|
   resources :products
   resources :journal_operations
   resources :journals
+
+  resources :companies
+
   resources :periods do
     member do
       post :elevate_status
