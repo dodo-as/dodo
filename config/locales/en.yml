@@ -430,4 +430,8 @@ en:
     maintainance: Log in in the administration backend
     welcome: Welcome to Dodo
 
+  period_picker: 
+    first_period: First period
+    last_period: Last period
+
 
