@@ -212,5 +212,9 @@ function stripe(id) {
 $(function()
 {
     $.datepicker.setDefaults({"dateFormat": 'yy-mm-dd'});
-    $('.datepicker').datepicker();
+    $('.datepicker').datepicker({
+			changeMonth: true,
+			changeYear: true,
+            yearRange: '1900:c+10'
+		});
 });
