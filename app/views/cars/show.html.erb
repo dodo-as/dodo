@@ -1,14 +1,29 @@
 <p>
-  <b>Name:</b>
+  <b><%= t('cars.name') %>:</b>
   <%= @car.name %>
 </p>
 
 <p>
-  <b>Comments:</b>
+  <b><%= t('cars.car_type') %>:</b>
+  <%= @car.car_type %>
+</p>
+
+<p>
+  <b><%= t('global.valid_for') %>:</b>
+  <%= @car.from %> - <%= @car.to %>
+</p>
+
+<p>
+  <b><%= t('global.comments') %>:</b>
   <%= @car.comments %>
 </p>
 
+<p>
+  <b><%= t('cars.odometer') %>:</b>
+  <%= @car.odometer %>
+</p>
+
 <% if permitted_to? :edit, @car %>
-  <%= link_to 'Edit', edit_car_path(@car) %> |
+  <%= link_to t('global.edit'), edit_car_path(@car) %> |
 <% end %>
-<%= link_to 'Back', cars_path %>
+<%= link_to t('global.back'), cars_path %>

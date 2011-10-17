@@ -1,19 +1,24 @@
 <p>
-  <b>Name:</b>
+  <b><%= t('global.name') %>:</b>
   <%= @unit.name %>
 </p>
 
 <p>
-  <b>Address:</b>
+  <b><%= t('address.address') %>:</b>
   <%= render :partial => "/addresses/show", :locals => { :address => @unit.address }  %>
 </p>
 
 <p>
-  <b>Comments:</b>
+  <b><%= t('global.valid_for') %>:</b>
+  <%= @unit.from %> - <%= @unit.to %>
+</p>
+
+<p>
+  <b><%= t('global.comments') %>:</b>
   <%= @unit.comments %>
 </p>
 
 <% if permitted_to? :edit, @unit %>
-  <%= link_to 'Edit', edit_unit_path(@unit) %> |
+  <%= link_to t('global.edit'), edit_unit_path(@unit) %> |
 <% end %>
-<%= link_to 'Back', units_path %>
+<%= link_to t('global.back'), units_path %>

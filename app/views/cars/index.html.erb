@@ -2,8 +2,8 @@
 
 <table>
   <tr>
-    <th><%= t('activerecord.attributes.car.name') %></th>
-    <th><%= t('activerecord.attributes.car.comments') %></th>
+    <th><%= t('cars.name') %></th>
+    <th><%= t('cars.comments') %></th>
     <th></th>
   </tr>
 
@@ -27,5 +27,5 @@
 <br />
 
 <% if permitted_to? :create, :cars %>
-  <%= link_to t('New car'), new_car_path %>
+  <%= link_to t('cars.new'), new_car_path %>
 <% end %>

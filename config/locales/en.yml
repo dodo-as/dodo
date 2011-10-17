@@ -43,6 +43,7 @@ en:
   global:
     show: Show
     edit: Edit
+    update: Update
     destroy: Destroy
     back: Back
     editing: Editing
@@ -217,6 +218,23 @@ en:
     town: City
     country: Country
   units:
+    header_index: Listing units
+    header_edit: Editing unit
+    new: New unit
+    name: Unit name
+    address: Address
+    comments: Comments
+  cars:
+    header_edit: Edit car
+    header_new: New car
+    header_index: Listing cars
+    name: Registration number
+    car_type: Type
+    comments: Comments
+    odometer: Odometer count
+    new: New car
+    from: From
+    to: To
     
   products:
     listing_products: Listing products
@@ -391,6 +409,7 @@ en:
     ledger_balance_period: Ledger Balance Period
 
 
-  project:
+  projects:
     edit_project: Editing project
     new_project: New project
+    name: Project name
