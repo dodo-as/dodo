@@ -306,9 +306,11 @@ var journals = {
 	debet.readOnly=false;
 	
 	if (parseFloatNazi(debet.value) > 0.0) {
+	    credit.value = "";
 	    credit.readOnly=true;
 	}
 	else if (parseFloatNazi(credit.value) > 0.0) {
+	    debet.value = "";
 	    debet.readOnly=true;
 	}
 	
@@ -538,14 +540,7 @@ var journals = {
     handleArrowKeys: function(evt){
 	col_number=journals.columnOf(evt.target);
 	row_number=journals.rowOf(evt.target);
-	/*
-	console.log("AAA");
-	console.log(evt);
-	console.log(evt.target);
-	console.log(col_number);
-	console.log(row_number);
-	*/
-		    
+
 	switch (evt.keyCode) {
 	case $.ui.keyCode.LEFT:
 	    col_number--;
