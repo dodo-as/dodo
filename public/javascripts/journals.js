@@ -164,9 +164,12 @@ var journals = {
 	{
 	    sel.readOnly=true;
 	}
-	sel.name = "sccount_select[" +  DODO.journalLines + "]";
+	sel.name = "account_select[" +  DODO.journalLines + "]";
 	sel.id = id;
 	
+    // axel has cleverly hidden the account/ledger ids to fit them into a
+    // single account select.
+    // i think.
 	var a_id = $("<input type='hidden' />")[0];
 	a_id.name = "journal_operations[" + DODO.journalLines+"][account_id]"; 
 	
