@@ -80,12 +80,15 @@ en:
     log_out: "Log out"
     active_company: "Active company"
     vat_plan: "VAT plan"
-    weekly_sales: "Weekly Sales"
+    weekly_sales: "Weekly sales"
     tax_zones: Tax zones
     tax_zone_taxes: Tax rates
     counties: Counties
     county_tax_zones: County tax zones
-        	     	 
+    paycheck_templates: "Paycheck templates"
+    paycheck_periods: "Paycheck periods"
+    paychecks: "Paychecks"
+    payment_run: "Payment run"
   users:
     remember_me: "Remember me"
     reset_password: "Reset password"
@@ -147,6 +150,7 @@ en:
     unit: "Default unit"
     project: "Default project"
     new_ledger: "New ledger"
+    add_ledger: "Add ledger"
     ledger_bank_number: "Bank number"
     foreign_bank_number: "Foreign bank number"
     net_bank: "Net bank"
@@ -156,6 +160,11 @@ en:
     salary_email: "Salary e-mail"
     personal_number: "Personal number"
     id_number: "Personal number"
+    date_of_birth: "Date of birth"
+    procenttrekk: "Tax, prosent"
+    tabelltrekk: "Tax, table"
+    work_start: "Employment start date"
+    work_stop: "Employment termination date"
   ledgers:
     ledger_saved: Ledger %{name} saved
   vat:
@@ -438,5 +447,9 @@ en:
     login: Log in as a regular user
     maintainance: Log in in the administration backend
     welcome: Welcome to Dodo
+
+  period_picker: 
+    first_period: First period
+    last_period: Last period
 
 
