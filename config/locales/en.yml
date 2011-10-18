@@ -222,6 +222,10 @@ en:
     editing_company: "Editing company"
     save: "Save"
     accounts: "Chart of accounts"
+    show_turnover: Show turnover
+    bill_comment_placement: Bill comment placement
+    top: Top
+    bottom: Bottom      
   address:
     address: "Address"
     name: Name
