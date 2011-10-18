@@ -215,9 +215,11 @@ en:
     save: "Lagre"
     editing_journals: "Editing journal entry"
   companies:
+    users: "Users"
+    contact: Contact
+    accounting: Accounting
     listing_companies: "Listing companies"
     name: "Name"
-    users: "Users"
     organization_number: "Org. number"
     address: "Address"
     show: "Show"

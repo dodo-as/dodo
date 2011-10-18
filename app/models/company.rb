@@ -6,7 +6,9 @@ class Company < ActiveRecord::Base
   has_many :vat_accounts
   has_many :paycheck_periods
   has_many :journal_type_counters
-  belongs_to :address
+  belongs_to :visiting_address, :class_name =>'Address'
+  belongs_to :billing_address, :class_name =>'Address'
+  belongs_to :delivery_address, :class_name =>'Address'
 
   has_many :assignments, :include => [:role, :user]
   accepts_nested_attributes_for :assignments, :allow_destroy => true,
@@ -123,5 +125,23 @@ class Company < ActiveRecord::Base
   def to_s
     name
   end
+
+  def validate_fields 
+    if !self.visiting_address
+      puts 'barf'
+      puts self
+      puts self.visiting_address
+      puts Address.new
+      self.visiting_address = Address.new
+    end
+    if !self.billing_address
+      self.billing_address = Address.new
+    end
+    if !self.delivery_address
+      self.delivery_address = Address.new
+    end
+
+  end
+  
 
 end

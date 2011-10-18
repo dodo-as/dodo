@@ -4,22 +4,18 @@ class Admin::CompaniesController < Admin::BaseController
 
   def find_company
     @company = Company.find(params[:id])
-    if !@company.address
-      @company.address = Address.new
-    end
+    @company.validate_fields
   end
-
+  
   # GET /companies
   # GET /companies.xml
   def index
-    @companies = Company.order("name").includes(:assignments).includes(:address).paginate({:page => params[:page]})
+    @companies = Company.order("name").includes(:assignments).includes(:visiting_address, :billing_address, :delivery_address).paginate({:page => params[:page]})
     @companies.each do
       |c| 
-      if !c.address 
-        c.address = Address.new
-      end
+      c.validate_fields
     end
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @companies }
@@ -39,7 +35,7 @@ class Admin::CompaniesController < Admin::BaseController
   # GET /companies/new.xml
   def new
     @company = Company.new
-    @company.address = Address.new
+    @company.validate_fields
     3.times { @company.assignments.build }
 
     respond_to do |format|
@@ -59,7 +55,7 @@ class Admin::CompaniesController < Admin::BaseController
     users = params[:company][:user_ids]
     params[:company][:user_ids] = nil
     @company = Company.new(params[:company])
-    @company.address ||= Address.new
+    @company.validate_fields
     
     respond_to do |format|
       if @company.save
@@ -85,7 +81,10 @@ class Admin::CompaniesController < Admin::BaseController
   def update
 
     respond_to do |format|
-      if @company.update_attributes(params[:company]) && @company.address.update_attributes(params[:address])
+      if @company.update_attributes(params[:company]) && 
+          @company.visiting_address.update_attributes(params[:visiting_address]) &&
+          @company.billing_address.update_attributes(params[:billing_address]) &&
+          @company.delivery_address.update_attributes(params[:delivery_address]) 
         flash[:notice] = 'Company was successfully updated.'
         format.html { redirect_to([:admin, @company]) }
         format.xml  { head :ok }
