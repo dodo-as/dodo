@@ -46,7 +46,7 @@
     </p>
     <p>
       <%= f.label :bill_comment_top, t(:bill_comment_placement, :scope => :companies) %><br />
-      <%= f.select :bill_comment_top, { t("companies.top")=> true, t("companies.bottom")=> false }, :selected => @company.bill_comment_top %>
+      <%= f.select :bill_comment_top, { t("companies.bottom")=> false, t("companies.top")=> true }, :selected => @company.bill_comment_top %>
       <%
 	 puts "AAAAAAAAAAAAAAA", @company.bill_comment_top
 %>

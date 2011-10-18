@@ -4,6 +4,7 @@
   */
   var DODO = {
     carList: <%= raw(@cars_all.all.to_json) %>,
+    unitList: <%= raw(@units_all.all.to_json) %>,
     projectList: <%= raw(@projects_all.all.to_json) %>,
     accountList: <%= raw(@accounts_all.to_json) %>,
     journalOperationList: <%= raw(@journal.journal_operations.all.to_json) %>,
@@ -134,6 +135,9 @@
 	</th>
 	<th>
 	  <%= t(:vat, :scope => :journals) %>
+	</th>
+	<th>
+	  <%= t(:unit, :scope => :units) %>
 	</th>
 	<th>
 	  <%= t(:car, :scope => :cars) %>
