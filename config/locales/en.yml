@@ -147,6 +147,7 @@ en:
     unit: "Default unit"
     project: "Default project"
     new_ledger: "New ledger"
+    add_ledger: "Add ledger"
     ledger_bank_number: "Bank number"
     foreign_bank_number: "Foreign bank number"
     net_bank: "Net bank"
