@@ -1,44 +1,61 @@
 
 <%= form_for([:admin, @company]) do |f| %>
-  <%= f.error_messages %>
+<%= f.error_messages %>
 
-  <% if @company.new_record? %>
+<div class="dodo-tab-group">
+  <ul>
+    <li><a href="#dodo-contact"><%= t('companies.contact') %></a></li>
+    <li><a href="#dodo-accounting"><%= t('companies.accounting') %></a></li>
+    <li><a href="#dodo-users"><%= t('companies.users') %></a></li>
+  </ul>
+
+  <div id="dodo-contact">
+    <% if @company.new_record? %>
     <p>
       <%= f.label :template_company_id %><br />
       <%= f.select :template_company_id, Company.all.map {|c| [c.name, c.id]}, :include_blank => t("admin.companies.select_template_company") %>
     </p>
-  <% end %>
+    <% end %>
 
-  <p>
-    <%= f.label :name, t(:name, :scope => :companies) %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :organization_number, t(:organization_number, :scope => :companies) %><br />
-    <%= f.text_field :organization_number %>
-  </p>
+    <p>
+      <%= f.label :name, t(:name, :scope => :companies) %><br />
+      <%= f.text_field :name %>
+    </p>
+    <p>
+      <%= f.label :organization_number, t(:organization_number, :scope => :companies) %><br />
+      <%= f.text_field :organization_number %>
+    </p>
 
-  <p>
-    <%= t(:users, :scope => :companies) %><br />
+    <p>
+      <%= render :partial => "addresses/form", :locals => { :address => @company.visiting_address } %>
+    </p>
+  </div>
+  <div id="dodo-accounting">
+    baberiba
+  </div>
 
-    <%= f.fields_for :assignments do |assignment| %>
+  <div id="dodo-users">
+    <p>
+      <%= t(:users, :scope => :companies) %><br />
+
+      <%= f.fields_for :assignments do |assignment| %>
 
       <%= assignment.select :user_id, User.all.map {|p| [p.email, p.id]}, :include_blank => "Add user" %>
       <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, :include_blank => "Select role" %>
 
       <% unless assignment.object.new_record? %>
-        <%= assignment.check_box '_destroy' %>
-        <%= assignment.label '_destroy' %>
+      <%= assignment.check_box '_destroy' %>
+      <%= assignment.label '_destroy' %>
       <% end %>
 
       <br />
 
-    <% end %>
-  </p>
-  <p>
-    <%= render :partial => "addresses/form", :locals => { :address => @company.address } %>
-  </p>
+      <% end %>
+    </p>
+  </div>
+
+
   <p>
     <%= f.submit t(:save, :scope => :companies) %>
   </p>
-<% end %>
+  <% end %>

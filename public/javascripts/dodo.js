@@ -212,9 +212,10 @@ function stripe(id) {
 $(function()
 {
     $.datepicker.setDefaults({"dateFormat": 'yy-mm-dd'});
+    $( ".dodo-tab-group" ).tabs();
     $('.datepicker').datepicker({
-			changeMonth: true,
-			changeYear: true,
-            yearRange: '1900:c+10'
+	    changeMonth: true,
+		changeYear: true,
+		yearRange: '1900:c+10'
 		});
 });
