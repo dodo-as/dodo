@@ -208,6 +208,25 @@ var journals = {
     },
 
     /**
+       Return a DOM select node, populated with a list of all units that can be used for a transaction
+     */
+    makeUnitSelect: function () {
+	var sel = document.createElement("select");
+	if(DODO.readOnly)
+	{
+	    sel.readOnly=true;
+	}
+	sel.name = "journal_operations[" + DODO.journalLines+"][unit_id]";
+	sel.id = "unit_"+ DODO.journalLines;
+	
+	for (var i=0; i<DODO.unitList.length; i++) {
+	    sel.add(new Option(DODO.unitList[i].unit.name,
+			       DODO.unitList[i].unit.id), null);
+	}
+	return sel;
+    },
+
+     /**
        Return a DOM select node, populated with a list of all cars that can be used for a transaction
      */
     makeCarSelect: function () {
@@ -306,9 +325,11 @@ var journals = {
 	debet.readOnly=false;
 	
 	if (parseFloatNazi(debet.value) > 0.0) {
+	    credit.value = "";
 	    credit.readOnly=true;
 	}
 	else if (parseFloatNazi(credit.value) > 0.0) {
+	    debet.value = "";
 	    debet.readOnly=true;
 	}
 	
@@ -485,6 +506,7 @@ var journals = {
 	row.addCell(journals.makeText('out'));
 	row.addCell(journals.makeAmount(line?line.vat:''));
 	row.addCell(journals.makeVat(line?line.vat:''));
+	row.addCell(journals.makeUnitSelect());
 	row.addCell(journals.makeCarSelect());
 	row.addCell(journals.makeProjectSelect());
 
@@ -494,6 +516,7 @@ var journals = {
 	    $("#dynfield_1_"+ DODO.journalLines)[0].value = amount<0?-amount:0;
 	    $("#dynfield_2_"+ DODO.journalLines)[0].value = amount>0?amount:0;
 	    $("#car_"+ DODO.journalLines)[0].value = line.car_id;
+	    $("#unit_"+ DODO.journalLines)[0].value = line.unit_id;
 	    $("#project_"+ DODO.journalLines)[0].value = line.project_id;
 	    journals.doDisable(DODO.journalLines);
 	}
@@ -538,14 +561,7 @@ var journals = {
     handleArrowKeys: function(evt){
 	col_number=journals.columnOf(evt.target);
 	row_number=journals.rowOf(evt.target);
-	/*
-	console.log("AAA");
-	console.log(evt);
-	console.log(evt.target);
-	console.log(col_number);
-	console.log(row_number);
-	*/
-		    
+
 	switch (evt.keyCode) {
 	case $.ui.keyCode.LEFT:
 	    col_number--;

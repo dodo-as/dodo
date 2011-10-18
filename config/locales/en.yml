@@ -80,7 +80,7 @@ en:
     log_out: "Log out"
     active_company: "Active company"
     vat_plan: "VAT plan"
-    weekly_sales: "Weekly Sales"
+    weekly_sales: "Weekly sales"
     tax_zones: Tax zones
     tax_zone_taxes: Tax rates
     counties: Counties
@@ -150,6 +150,7 @@ en:
     unit: "Default unit"
     project: "Default project"
     new_ledger: "New ledger"
+    add_ledger: "Add ledger"
     ledger_bank_number: "Bank number"
     foreign_bank_number: "Foreign bank number"
     net_bank: "Net bank"
@@ -164,7 +165,6 @@ en:
     tabelltrekk: "Tax, table"
     work_start: "Employment start date"
     work_stop: "Employment termination date"
-    add_ledger: "Add ledger"
   ledgers:
     ledger_saved: Ledger %{name} saved
   vat:
@@ -198,21 +198,21 @@ en:
     destroy: "Destroy"
     new_journal: "New %{type} journal"
     back: "Back"
-    new_journal_operation: "Ny postering"
-    vat: "Mva"
-    details: "Detaljer"
-    account: "Konto"
-    debit: "Debet"
-    credit: "Kredit"
-    balance: "Saldo"
-    in: "Inn"
-    out: "Ut"
-    unit: "Avdeling"
-    due_date: "Forfallsdato"
+    new_journal_operation: "New operation"
+    vat: "VAT"
+    details: "Details"
+    account: "Account"
+    debit: "Debit"
+    credit: "Credit"
+    balance: "Balance"
+    in: "In"
+    out: "Out"
+    unit: "Unit"
+    due_date: "Due date"
     kid: "KID"
-    invoice: "Faktura?"
-    text: "Tekst"
-    save: "Lagre"
+    invoice: "Invoice?"
+    text: "Text"
+    save: "Save"
     editing_journals: "Editing journal entry"
   companies:
     users: "Users"
@@ -231,6 +231,10 @@ en:
     editing_company: "Editing company"
     save: "Save"
     accounts: "Chart of accounts"
+    show_turnover: Show turnover
+    bill_comment_placement: Bill comment placement
+    top: Top
+    bottom: Bottom      
   address:
     address: "Address"
     name: Name
@@ -443,5 +447,9 @@ en:
     login: Log in as a regular user
     maintainance: Log in in the administration backend
     welcome: Welcome to Dodo
+
+  period_picker: 
+    first_period: First period
+    last_period: Last period
 
 

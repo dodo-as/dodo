@@ -10,28 +10,52 @@
   </ul>
 
   <div id="dodo-contact">
+
+
     <% if @company.new_record? %>
     <p>
       <%= f.label :template_company_id %><br />
       <%= f.select :template_company_id, Company.all.map {|c| [c.name, c.id]}, :include_blank => t("admin.companies.select_template_company") %>
     </p>
     <% end %>
-
+    
     <p>
       <%= f.label :name, t(:name, :scope => :companies) %><br />
       <%= f.text_field :name %>
     </p>
+
+    <h2><%= t('companies.visiting_address') %></h2>
+
+    <p>
+      <%= render :partial => "addresses/form", :locals => { :address => @company.visiting_address } %>
+    </p>
+
     <p>
       <%= f.label :organization_number, t(:organization_number, :scope => :companies) %><br />
       <%= f.text_field :organization_number %>
     </p>
 
+    <h2><%= t('companies.billing_information') %></h2>
+
     <p>
-      <%= render :partial => "addresses/form", :locals => { :address => @company.visiting_address } %>
+      <%= render :partial => "addresses/form", :locals => { :address => @company.billing_address } %>
     </p>
+
+    <p>
+      <%= f.check_box :show_turnover %><%= f.label :show_turnover, t(:show_turnover, :scope => :companies) %>
+    </p>
+    <p>
+      <%= f.label :bill_comment_top, t(:bill_comment_placement, :scope => :companies) %><br />
+      <%= f.select :bill_comment_top, { t("companies.top")=> true, t("companies.bottom")=> false }, :selected => @company.bill_comment_top %>
+      <%
+	 puts "AAAAAAAAAAAAAAA", @company.bill_comment_top
+%>
+    </p>
+
+
   </div>
   <div id="dodo-accounting">
-    baberiba
+
   </div>
 
   <div id="dodo-users">
@@ -47,7 +71,7 @@
       <%= assignment.check_box '_destroy' %>
       <%= assignment.label '_destroy' %>
       <% end %>
-
+      
       <br />
 
       <% end %>
