@@ -85,7 +85,10 @@ en:
     tax_zone_taxes: Tax rates
     counties: Counties
     county_tax_zones: County tax zones
-        	     	 
+    paycheck_templates: "Paycheck templates"
+    paycheck_periods: "Paycheck periods"
+    paychecks: "Paychecks"
+    payment_run: "Payment run"
   users:
     remember_me: "Remember me"
     reset_password: "Reset password"
@@ -156,6 +159,12 @@ en:
     salary_email: "Salary e-mail"
     personal_number: "Personal number"
     id_number: "Personal number"
+    date_of_birth: "Date of birth"
+    procenttrekk: "Tax, prosent"
+    tabelltrekk: "Tax, table"
+    work_start: "Employment start date"
+    work_stop: "Employment termination date"
+    add_ledger: "Add ledger"
   ledgers:
     ledger_saved: Ledger %{name} saved
   vat:
