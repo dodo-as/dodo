@@ -183,7 +183,7 @@ var journals = {
 	}
 	var line = DODO.journalLines;
 	
-	var uf = function(){
+	sel.updateFields = function(){
 		vals = sel.value.split(".");
 		if(vals.length > 1){
 		    a_id.value = vals[0];
@@ -193,13 +193,12 @@ var journals = {
 		    a_id.value = vals[0];
 		    l_id.value = "";
 		}
-
 	}
-	uf();
+	sel.updateFields();
 
 	$(sel).change(
 	    function(){
-		uf();
+		sel.updateFields();
 		journals.setDefaultVat(line);
 		journals.update();
 	    }
@@ -516,6 +515,7 @@ var journals = {
 	if (line) {
 	    amount = line.amount;
 	    $("#account_"+ DODO.journalLines)[0].value = line.account_id;
+	    $("#account_"+ DODO.journalLines)[0].updateFields();
 	    $("#dynfield_1_"+ DODO.journalLines)[0].value = amount<0?-amount:0;
 	    $("#dynfield_2_"+ DODO.journalLines)[0].value = amount>0?amount:0;
 	    $("#car_"+ DODO.journalLines)[0].value = line.car_id;

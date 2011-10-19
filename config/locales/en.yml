@@ -41,6 +41,11 @@ en:
       delimiter: ","
 
   global:
+    telephone_number: "Telephone"
+    fax: "Fax"
+    mobile_number: "Mobile"
+    email: "Email"
+    web_site: "Web site"
     show: Show
     edit: Edit
     update: Update
@@ -141,9 +146,6 @@ en:
     editing_account: "Editing account"
     save: "Save"
     ledger_accounts: "Ledger accounts"
-    telephone_number: "Telephone"
-    mobile_number: "Mobile"
-    email: "Email"
     credit_days: "Credit days"
     auto_payment: "Auto payment"
     placement_top: "Placement top"
@@ -215,6 +217,9 @@ en:
     save: "Save"
     editing_journals: "Editing journal entry"
   companies:
+    visiting_address: Visiting address
+    billing_address: Billing address
+    delivery_address: Delivery address
     users: "Users"
     contact: Contact
     accounting: Accounting
@@ -233,8 +238,11 @@ en:
     accounts: "Chart of accounts"
     show_turnover: Show turnover
     bill_comment_placement: Bill comment placement
+    bill_line_comment_placement: Bill line comment placement
     top: Top
     bottom: Bottom      
+    copy_from_visiting: Copy visiting address
+    contact_information: Contact information
   address:
     address: "Address"
     name: Name

@@ -1,3 +1,15 @@
+var dodo = 
+{
+    copyAddress: function(from, to)
+    {
+	$.each(["street1", "street2", "postal_code", "town", "country"], function(key, val){
+		console.log(to + "_address_attributes_" + val);
+		$("#" + to + "_address_attributes_" + val)[0].value = 
+		$("#" + from + "_address_attributes_" + val)[0].value;
+	    }); 
+    }
+};
+
 function $i (id) { return $("#" + id); }
 
 function startswith (str, prefix) {

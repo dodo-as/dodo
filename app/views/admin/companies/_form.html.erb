@@ -11,7 +11,9 @@
 
   <div id="dodo-contact">
 
-
+    <table>
+<tr>
+<td>
     <% if @company.new_record? %>
     <p>
       <%= f.label :template_company_id %><br />
@@ -27,7 +29,7 @@
     <h2><%= t('companies.visiting_address') %></h2>
 
     <p>
-      <%= render :partial => "addresses/form", :locals => { :address => @company.visiting_address } %>
+      <%= render :partial => "addresses/nested_form", :locals => { :parent => f, :field_name => :visiting_address } %>
     </p>
 
     <p>
@@ -35,10 +37,16 @@
       <%= f.text_field :organization_number %>
     </p>
 
-    <h2><%= t('companies.billing_information') %></h2>
+</td><td>
+
+    <h2><%= t('companies.billing_address') %></h2>
+    <button type="button" onclick="dodo.copyAddress('company_visiting','company_billing')">
+      <%= t("companies.copy_from_visiting") %>
+    </button>
 
     <p>
-      <%= render :partial => "addresses/form", :locals => { :address => @company.billing_address } %>
+      <%= render :partial => "addresses/nested_form", :locals => { :parent => f, :field_name => :billing_address } %>
+
     </p>
 
     <p>
@@ -52,6 +60,32 @@
 %>
     </p>
 
+    <p>
+      <%= f.label :bill_line_comment_top, t(:bill_line_comment_placement, :scope => :companies) %><br />
+      <%= f.select :bill_line_comment_top, { t("companies.bottom")=> false, t("companies.top")=> true  } %>
+    </p>
+</td><td>
+
+    <h2><%= t('companies.delivery_address') %></h2>
+    <button type="button" onclick="dodo.copyAddress('company_visiting','company_delivery')">
+      <%= t("companies.copy_from_visiting") %>
+    </button>
+
+    <p>
+      <%= render :partial => "addresses/nested_form", :locals => { :parent => f, :field_name => :delivery_address } %>
+    </p>
+</td><td>
+
+    <h2><%= t('companies.contact_information') %></h2>
+    <% [:telephone_number, :fax, :mobile_number, :email, :web_site ].each{ |sym| %>
+    <p>
+      <%= f.label sym, t(sym, :scope => :global) %><br />
+      <%= f.text_field sym %>
+    </p>
+    <% } %>
+</td>
+</tr>
+</table>
 
   </div>
   <div id="dodo-accounting">
