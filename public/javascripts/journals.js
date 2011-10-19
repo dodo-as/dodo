@@ -162,7 +162,7 @@ var journals = {
 	var sel = $("<select>")[0];
 	if(DODO.readOnly)
 	{
-	    sel.readOnly=true;
+	    sel.disabled=true;
 	}
 	sel.name = "account_select[" +  DODO.journalLines + "]";
 	sel.id = id;
@@ -213,7 +213,7 @@ var journals = {
 	var sel = document.createElement("select");
 	if(DODO.readOnly)
 	{
-	    sel.readOnly=true;
+	    sel.disabled=true;
 	}
 	sel.name = "journal_operations[" + DODO.journalLines+"][unit_id]";
 	sel.id = "unit_"+ DODO.journalLines;
@@ -232,7 +232,7 @@ var journals = {
 	var sel = document.createElement("select");
 	if(DODO.readOnly)
 	{
-	    sel.readOnly=true;
+	    sel.disabled=true;
 	}
 	sel.name = "journal_operations[" + DODO.journalLines+"][car_id]";
 	sel.id = "car_"+ DODO.journalLines;
@@ -251,7 +251,7 @@ var journals = {
 	var sel = document.createElement("select");
 	if(DODO.readOnly)
 	{
-	    sel.readOnly=true;
+	    sel.disabled=true;
 	}
 	sel.name = "journal_operations[" + DODO.journalLines+"][project_id]";
 	sel.id = "project_"+ DODO.journalLines;
