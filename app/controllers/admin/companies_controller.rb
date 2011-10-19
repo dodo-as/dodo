@@ -81,10 +81,7 @@ class Admin::CompaniesController < Admin::BaseController
   def update
 
     respond_to do |format|
-      if @company.update_attributes(params[:company]) && 
-          @company.visiting_address.update_attributes(params[:visiting_address]) &&
-          @company.billing_address.update_attributes(params[:billing_address]) &&
-          @company.delivery_address.update_attributes(params[:delivery_address]) 
+      if @company.update_attributes(params[:company])
         flash[:notice] = 'Company was successfully updated.'
         format.html { redirect_to([:admin, @company]) }
         format.xml  { head :ok }
