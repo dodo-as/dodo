@@ -505,6 +505,7 @@ var journals = {
 	row.addCell(journals.makeText('out'));
 	row.addCell(journals.makeAmount(line?line.vat:''));
 	row.addCell(journals.makeVat(line?line.vat:''));
+	row.addCell(journals.makeUnitSelect());
 	row.addCell(journals.makeCarSelect());
 	row.addCell(journals.makeProjectSelect());
 

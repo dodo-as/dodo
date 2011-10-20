@@ -86,7 +86,34 @@
        f.text_field :description 
      end %>
 </p>
-<!--
+
+<p>
+  <table class='striped' id='defaults_table'>
+    <tr>
+      <th>
+        <%= t('journals.defaults') %>
+      </th>
+      <th>
+        <%= t('units.unit') %>
+      </th>
+      <th>
+        <%= t('cars.car') %>
+      </th>
+      <th>
+        <%= t('projects.project') %>
+      </th>
+    </tr>
+    <tr>
+      <td />
+      <td />
+      <td />
+      <td />
+    </tr>
+  </table>
+</p>
+
+
+<!--  units now inside the table
 <p>
   <%= f.label :unit_id, t("journals.unit") %><br />
   <%= if @readonly then
@@ -172,6 +199,8 @@
   <%= if !@readonly then f.submit t(:save, :scope => :global) end %>
 </p>
 <script>
-journals.addPredefined();
+var meh = Date.fromString('11/11/2011');
+document.write(meh.toString());
+//journals.addPredefined();
 </script>
 <% end %>
