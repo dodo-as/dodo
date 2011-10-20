@@ -259,6 +259,7 @@ en:
     address: Address
     comments: Comments
   cars:
+    car: Car
     header_edit: Edit car
     header_new: New car
     header_index: Listing cars
@@ -441,9 +442,6 @@ en:
     revenue: Revenue
     expenses: Expenses
     ledger_balance_period: Ledger Balance Period
-
-  cars:
-    car: Car
 
   projects:
     edit_project: Editing project

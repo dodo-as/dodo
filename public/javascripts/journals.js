@@ -188,7 +188,6 @@ var journals = {
 		if(vals.length > 1){
 		    a_id.value = vals[0];
 		    l_id.value = vals[1];
-            sel.value = vals[0];
 		}
 		else{
 		    a_id.value = vals[0];
@@ -284,7 +283,7 @@ var journals = {
         var percentage = 0;
 	
         if (current_date != '')
-            current_date = Date.fromString("10/10/2001");
+            current_date = Date.fromString(current_date);
 	
         if (account.vat_account != undefined) {
             var current_vat_account_period;
