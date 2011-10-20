@@ -113,17 +113,6 @@
 </p>
 
 
-<!--  units now inside the table
-<p>
-  <%= f.label :unit_id, t("journals.unit") %><br />
-  <%= if @readonly then
-       @journal.unit
-     else 
-       f.select :unit_id, @me.current_company.units.collect {|p| [ p, p.id ] } 
-     end %>
-</p>
--->
-
 <p>
 <% if !@readonly %>
   <button onClick='journals.addAccountLine();' type='button'><%= t(:new_journal_operation, :scope => :journals) -%></button>
