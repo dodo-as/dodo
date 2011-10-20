@@ -280,7 +280,7 @@ var journals = {
         var percentage = 0;
 	
         if (current_date != '')
-            current_date = Date.fromString(current_date);
+            current_date = Date.fromString("10/10/2001");
 	
         if (account.vat_account != undefined) {
             var current_vat_account_period;

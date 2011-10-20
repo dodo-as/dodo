@@ -12,9 +12,11 @@
   <%= stylesheet_link_tag 'jquery-ui' %>
   <%= javascript_include_tag :defaults %>
   <%= javascript_include_tag "dodo" %>
+  <%= javascript_include_tag "date" %>
   <%= javascript_include_tag "journals" %>
   <%= javascript_include_tag "payment_runs" %>
   <%= javascript_include_tag "jquery-ui" %>
+  <%= javascript_include_tag "submitaction" %>
 </head>
 <body>
   <div class='main_menu'>
@@ -64,9 +66,7 @@
          <%= select_tag "current_company", options_for_select(current_user.companies.collect {|p| [ p.name, p.id ] },
                                                               if current_user.current_company.nil? then 0 else current_user.current_company.id end ) %>
         <% end %>
-        <!-- get rid of this until it does something useful
         <script>submitAction.registerSubmitAction('#current_company', 'change', '.change_company_form form');</script>
-        -->
       </li>
       
       <% else %>
