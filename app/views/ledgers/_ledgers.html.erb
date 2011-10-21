@@ -1,5 +1,5 @@
 <div id="ledgers">
-  <% if @account.ledgers.size == 0 %>
+  <% if @ledger.account.ledgers.size == 0 %>
     <%= javascript_tag "$(document).ready( function () { $('#ledgers').hide(); } );" %>
   <% end %>
 
@@ -29,7 +29,7 @@
       <th><%= t(:work_stop, :scope => :accounts) -%></th>
     </tr>
     
-    <% @account.ledgers.each do |ledger| %>
+    <% @ledger.account.ledgers.each do |ledger| %>
     <tr class="ledger_item" id="ledger_id_<%= ledger.id %>">
       <td><%= ledger.number -%></td>
 
@@ -43,9 +43,7 @@
       <td><%= ledger.credit_days -%></td>
       <td><%= ledger.procenttrekk -%></td>
       <td><%= ledger.tabelltrekk -%></td>
-<!--
-      <td><%= ledger.auto_payment -%></td>
--->
+
       <td><%= ledger.placement_top -%></td>
       <td><%= ledger.unit ? ledger.unit.name : "" -%></td>
       <td><%= ledger.project ? ledger.project.name : "" -%></td>
@@ -59,8 +57,19 @@
 
     <button type="button" onclick="accounts.prepareFormForNewLedger();"><%= t(:new_ledger, :scope => :accounts) -%></button>
 
-    <div id="ledger_form_wrapper">
-      <%= render :partial => "ledger_form" %>
-    </div>
+    <% if @ledger.errors.any? %>
+        <div id="error_explanation">
+            <h2> <%= pluralize(@ledger.errors.count, "error") %> prohibited this ledger from being saved:</h2>
+            <ul>
+                <% @ledger.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+        <div id="ledger_form_wrapper">
+          <%= render :partial => "ledger_form" %>
+        </div>
     
 </div>

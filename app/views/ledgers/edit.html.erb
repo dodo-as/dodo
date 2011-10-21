@@ -1,0 +1,8 @@
+<h1><%= t(:editing_account, :scope => :accounts) -%></h1>
+
+<%= render :partial => "form" %>
+
+<%= link_to t(:show, :scope => :global), @ledger.account %> |
+<%= link_to t(:back, :scope => :global), accounts_path %>
+
+<%= render :partial => "ledgers" %>

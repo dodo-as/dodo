@@ -32,8 +32,14 @@ class LedgersController < ApplicationController
         format.xml { head :ok }
       end
     else
-      flash[:ledger] = @ledger
-      raise @ledger.errors.full_messages.join(", ")
+      #~ flash[:ledger] = @ledger\
+      #~ raise @ledger.errors.full_messages.join(", ")
+    respond_to do |format|
+      #~ format.html { redirect_to edit_account_path(@ledger.account)}
+      #~ format.html{ render :partial => "accounts/ledger_form", :locals => {:account => @account, :ledger => @ledger} }
+      format.json { render json: @ledger.errors, status: :unprocessable_entity }
+      format.html{ render :action => "edit", :locals => {:account => @ledger.account, :ledger => @ledger} }
+    end
     end
   end
 
@@ -61,7 +67,7 @@ class LedgersController < ApplicationController
                                                     )
       }
       @account = @ledger.account
-      format.html { render :partial => "accounts/ledger_form", :locals => {:account => @account, :ledger => @ledger} }
+      format.html { render :partial => "ledgers/ledger_form", :locals => {:account => @account, :ledger => @ledger} }
     end
   end
 

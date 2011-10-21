@@ -1,0 +1,46 @@
+<p>
+  <b><%= t(:number, :scope => :accounts) -%>:</b>
+  <%= @account.number %>
+</p>
+
+<p>
+  <b><%= t(:name, :scope => :accounts) -%>:</b>
+  <%= @account.name %>
+</p>
+
+<p>
+  <b><%= t(:dodo_name, :scope => :accounts) -%>:</b>
+  <%= @account.dodo_name %>
+</p>
+
+
+<p>
+  <b><%= t(:debit_text, :scope => :accounts) -%>:</b>
+  <%= @account.debit_text %>
+</p>
+
+<p>
+  <b><%= t(:credit_text, :scope => :accounts) -%>:</b>
+  <%= @account.credit_text %>
+</p>
+
+<p>
+  <b><%= t(:vat_account, :scope => :accounts) -%>:</b>
+  <%= @account.vat_description %>
+</p>
+
+<p>
+  <b><%= t(:comments, :scope => :accounts) -%>:</b>
+  <%= @account.comments %>
+</p>
+
+<% if @account.has_ledger %>
+<p>
+  <b><%= t(:ledger, :scope => :accounts) -%>:</b>
+  <%= @account.ledgers.collect{ |l| l.to_s }.join ", " %>
+</p>
+<% end %>
+
+
+<%= link_to t(:edit, :scope => :global), edit_account_path(@account) %> |
+<%= link_to t(:back, :scope => :global), accounts_path %>

@@ -144,6 +144,11 @@ box, to add the top/bottom margins, thus working around the problem.
     z-index: 3;
 }
 
+.mandatory 
+{
+    background: yellow;
+}
+
 .popup_content
 {
     padding: 5px 15px;

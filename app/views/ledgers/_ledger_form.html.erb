@@ -1,37 +1,24 @@
 <%
    account ||= nil
    ledger ||= Ledger.new
-   @account ||= account
    @ledger ||= ledger
    @ledger.address ||= Address.new
 %>
 
-<%= form_for([@account, @ledger], {:name => "new_ledger", :id => "ledger_form"} ) do |f| %>
+<%= form_for( [@ledger.account, @ledger], {:name => "new_ledger", :id => "ledger_form"} ) do |f| %>
 
 <div id="ledger_form_div" style="float: left;">
   <h3><%= t(:ledger, :scope => :accounts) -%></h3>
-<!--
-  <% if @ledger.errors.any? %>
-    <div id="error_explanation">
-      <h2> <%= pluralize(@ledger.errors.count, "error") %> prohibited this post from being saved:</h2>
-      <ul>
-      <% @ledger.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-    <% end %>
--->
   <p>
     <%= f.label :number, t(:number, :scope => :accounts) -%><br />
-    <%= f.text_field :number, :class => 'mandatory' %>
+    <%= f.text_field(:number, :class => 'mandatory') %>
   </p>
     <%= f.label :name, t(:name, :scope => :accounts) -%><br />
-    <%= f.text_field :name %>
+    <%= f.text_field :name, :class => 'mandatory' %>
   </p>
   <p>
     <%= f.label :id_number, t(:id_number, :scope => :accounts) -%><br />
-    <%= f.text_field :id_number %>
+    <%= f.text_field :id_number, :class => 'mandatory' %>
   </p>
   <p>
     <%= f.label :date_of_birth, t(:date_of_birth, :scope => :accounts) -%><br />
@@ -43,11 +30,11 @@
   </p>
   <p>
     <%= f.label :mobile_number, t(:mobile_number, :scope => :accounts) -%><br />
-    <%= f.text_field :mobile_number %>
+    <%= f.text_field :mobile_number, :class => 'mandatory' %>
   </p>
   <p>
     <%= f.label :email, t(:email, :scope => :accounts) -%><br />
-    <%= f.email_field :email %>
+    <%= f.email_field :email, :class => 'mandatory' %>
   </p>
   <p>
     <%= f.label :salary_email, t(:salary_email, :scope => :accounts) -%><br/>
@@ -55,11 +42,11 @@
   </p>
   <p>
     <%= f.label :ledger_bank_number, t(:ledger_bank_number, :scope => :accounts) -%><br />
-    <%= f.text_field :ledger_bank_number %>
+    <%= f.text_field :ledger_bank_number, :class => 'mandatory' %>
   </p>
   <p>
     <%= f.label :foreign_bank_number, t(:foreign_bank_number, :scope => :accounts) -%><br />
-    <%= f.text_field :foreign_bank_number %>
+    <%= f.text_field :foreign_bank_number, :class => 'mandatory' %>
   </p>
   <p>
     <%= f.label :credit_days, t(:credit_days, :scope => :accounts) -%><br />
@@ -73,11 +60,11 @@
 -->
   <p>
     <%= f.label :procenttrekk, t(:procenttrekk, :scope => :accounts) -%><br />
-    <%= f.number_field :procenttrekk %>
+    <%= f.number_field :procenttrekk, :class => 'mandatory' %>
   </p>
   <p>
     <%= f.label :tabelltrekk, t(:tabelltrekk, :scope => :accounts) -%><br />
-    <%= f.number_field :tabelltrekk %>
+    <%= f.number_field :tabelltrekk, :class => 'mandatory' %>
   </p>
   <p>
     <%= f.label :work_start, t(:work_start, :scope => :accounts) -%><br />
@@ -157,7 +144,7 @@
   <%= submit_tag t(:add_ledger, :scope => :accounts) %>
 <%= javascript_tag "$('#new_ledger').submit( function () { jQuery.ajax({
 		    type: 'POST',
-		    url: '/accounts/#{@account.id}/ledgers',
+		    url: '/accounts/#{@ledger.account.id}/ledgers',
 		    data: $('#new_ledger').serialize(),
 		    success: accounts.updateLedgerItemsTable,
 		      error: accounts.errorSavingLedger,

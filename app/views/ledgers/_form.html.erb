@@ -1,4 +1,4 @@
-<%= form_for(@account) do |f| %>
+<%= form_for(@ledger.account) do |f| %>
   <%= f.error_messages %>
   
 <p>
@@ -33,11 +33,11 @@
   <%= f.check_box :has_ledger, :onchange => "accounts.toggleLedger( $('#account_has_ledger').attr('checked') );" %>
   <%= f.label :has_ledger, t(:ledger, :scope => :accounts) %><br />
 </p>
-<% if @account.has_ledger %>
+<% if @ledger.account.has_ledger %>
 <%= javascript_tag "$(document).ready( function () { $('#has_ledger_toggle').hide(); } );" %>
 <% end %>
 
-<%= render :partial => "active_periods/form", :locals => { :active_periods => @account.activatable } %>
+<%= render :partial => "active_periods/form", :locals => { :active_periods => @ledger.account.activatable } %>
 
 <p>
   <%= f.submit t(:save, :scope => :global) %>
