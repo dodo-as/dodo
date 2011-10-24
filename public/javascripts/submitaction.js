@@ -1,10 +1,8 @@
 var submitAction = {
     registerSubmitAction: function (controller, action, form) {
 
-        handler = function (event) {
+        $(controller)[0]['on' + action] = function (event) {
             $(form)[0].submit();
         };
-
-        eval('$(controller)[0].on' + action + ' = handler');
     }
 }
