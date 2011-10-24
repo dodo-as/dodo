@@ -5,6 +5,7 @@ class CreateTravelLogs < ActiveRecord::Migration
       t.date :date, :null => false
 
       t.timestamps
+      t.integer :car_id, :null => false
     end
     add_index :travel_logs, :car_id
   end
