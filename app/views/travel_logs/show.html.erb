@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Odometer:</b>
+  <%= @travel_log.odometer %>
+</p>
+
+<p>
+  <b>Date:</b>
+  <%= @travel_log.date %>
+</p>
+
+
+<%= link_to 'Edit', edit_travel_log_path(@travel_log) %> |
+<%= link_to 'Back', travel_logs_path %>
