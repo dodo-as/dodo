@@ -89,6 +89,31 @@
 
   </div>
   <div id="dodo-accounting">
+    <h2><%= t("companies.accounts") %></h2>
+    <p>
+      <%= f.label :bank_account, t(:bank_account, :scope => :companies) %><br />
+      <%= f.text_field :bank_account %>
+    </p>
+    
+    <h2><%= t("companies.interest") %></h2>
+    <p>
+      <%= f.label :interest_rate, t(:interest_rate, :scope => :companies) %><br />
+      <%= f.text_field :interest_rate %>
+    </p>
+    <p>
+      <%= f.label :late_fee, t(:late_fee, :scope => :companies) %><br />
+      <%= f.text_field :late_fee %>
+    </p>
+    <%
+       JournalType.all.each {
+       |type|
+       %>
+    <%= type %>
+
+    <%
+       } 
+       %>
+    
 
   </div>
 

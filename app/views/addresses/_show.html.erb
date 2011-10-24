@@ -1,4 +1,5 @@
 <div class='address'>
+  <% if address %>
   <%= address.street1 %><br/>
   <% if address.street2 && address.street2 != "" %>
   <%= address.street2 %><br/>
@@ -6,6 +7,7 @@
   <%= address.postal_code %>   <%= address.town %><br/>
   <% if address.country && address.country != "" %>
   <%= address.country %><br/>
+  <% end %>
   <% end %>
 </div>
 

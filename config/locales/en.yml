@@ -243,6 +243,8 @@ en:
     bottom: Bottom      
     copy_from_visiting: Copy visiting address
     contact_information: Contact information
+    bank_account: Bank account
+    accounts: Accounts
   address:
     address: "Address"
     name: Name
