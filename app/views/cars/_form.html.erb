@@ -24,10 +24,16 @@
     <%= f.text_area :comments %>
   </p>
 
+  <!-- TODO get rid of this entirely
   <p>
     <%= f.label t('cars.odometer') %><br />
     <%= f.text_field :odometer %>
   </p>
+  -->
+
+  <%= :travel_logs.each do |tl| %>
+    <p>Meh</p>
+  <% end %>
 
   <p>
     <%= f.submit t('global.save') %>

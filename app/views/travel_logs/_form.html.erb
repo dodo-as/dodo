@@ -11,13 +11,15 @@
     </div>
   <% end %>
 
+  <input type="hidden" name="travel_log[car_id]" value="1" />
   <div class="field">
     <%= f.label :odometer %><br />
     <%= f.text_field :odometer %>
   </div>
   <div class="field">
     <%= f.label :date %><br />
-    <%= f.date_select :date %>
+    <%= f.text_field :date, :class=> :datepicker %>
+    <!--<%= f.date_select :date %>-->
   </div>
   <div class="actions">
     <%= f.submit %>

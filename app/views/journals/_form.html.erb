@@ -88,6 +88,16 @@
 </p>
 
 <p>
+<% if !@readonly %>
+  <button onClick='journals.addAccountLine();' type='button'><%= t(:new_journal_operation, :scope => :journals) -%></button>
+<% end %>
+
+  <input type='checkbox' id='vat' onchange='journals.toggleVisibility();'/><label for='vat'><%= t(:vat, :scope => :journals) -%></label>
+  <input type='checkbox' id='details' onchange='journals.toggleVisibility();'/><label for='details'><%= t(:details, :scope => :journals) -%></label>
+
+</p>
+
+<p>
   <table class='striped' id='defaults_table'>
     <tr>
       <th>
@@ -112,16 +122,6 @@
   </table>
 </p>
 
-
-<p>
-<% if !@readonly %>
-  <button onClick='journals.addAccountLine();' type='button'><%= t(:new_journal_operation, :scope => :journals) -%></button>
-<% end %>
-
-  <input type='checkbox' id='vat' onchange='journals.toggleVisibility();'/><label for='vat'><%= t(:vat, :scope => :journals) -%></label>
-  <input type='checkbox' id='details' onchange='journals.toggleVisibility();'/><label for='details'><%= t(:details, :scope => :journals) -%></label>
-
-</p>
 <p>
   <table class='striped' id='operations_table'>
     <thead>

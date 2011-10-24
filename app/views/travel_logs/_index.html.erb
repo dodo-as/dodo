@@ -1,0 +1,23 @@
+<h1>Listing travel_logs</h1>
+
+<table>
+  <tr>
+    <th>Odometer</th>
+    <th>Date</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% travel_logs.each do |travel_log| %>
+  <tr>
+    <td><%= travel_log.odometer %></td>
+    <td><%= travel_log.date %></td>
+    <td><%= link_to 'Edit', edit_travel_log_path(travel_log) %></td>
+    <td><%= link_to 'Destroy', travel_log, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Travel log', new_travel_log_path %>

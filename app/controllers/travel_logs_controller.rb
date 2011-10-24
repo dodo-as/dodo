@@ -1,7 +1,7 @@
 class TravelLogsController < ApplicationController
   # GET /travel_logs
   # GET /travel_logs.xml
-  def index
+=begin  def index
     @travel_logs = TravelLog.all
 
     respond_to do |format|
@@ -9,7 +9,7 @@ class TravelLogsController < ApplicationController
       format.xml  { render :xml => @travel_logs }
     end
   end
-
+=end
   # GET /travel_logs/1
   # GET /travel_logs/1.xml
   def show
