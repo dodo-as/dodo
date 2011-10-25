@@ -88,13 +88,30 @@
 </p>
 
 <p>
-  <%= f.label :unit_id, t("journals.unit") %><br />
-  <%= if @readonly then
-       @journal.unit
-     else 
-       f.select :unit_id, @me.current_company.units.collect {|p| [ p, p.id ] } 
-     end %>
+  <table class='striped' id='defaults_table'>
+    <tr>
+      <th>
+        <%= t('journals.defaults') %>
+      </th>
+      <th>
+        <%= t('units.unit') %>
+      </th>
+      <th>
+        <%= t('cars.car') %>
+      </th>
+      <th>
+        <%= t('projects.project') %>
+      </th>
+    </tr>
+    <tr>
+      <td />
+      <td />
+      <td />
+      <td />
+    </tr>
+  </table>
 </p>
+
 
 <p>
 <% if !@readonly %>

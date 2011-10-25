@@ -157,21 +157,24 @@ var journals = {
        Return a DOM select node, populated with a list of all accounts that can be used for a transaction
      */
     makeAccountSelect: function () {
-	var id = "account_"+ DODO.journalLines;
 
-	var sel = $("<select>")[0];
+	//var sel = $("<select>")[0];
+	var sel = document.createElement("select");
 	if(DODO.readOnly)
 	{
-	    sel.readOnly=true;
+	    sel.disabled=true;
 	}
-	sel.name = "sccount_select[" +  DODO.journalLines + "]";
-	sel.id = id;
+	sel.name = "account_select[" +  DODO.journalLines + "]";
+	sel.id = "account_"+ DODO.journalLines;
 	
 	var a_id = $("<input type='hidden' />")[0];
 	a_id.name = "journal_operations[" + DODO.journalLines+"][account_id]"; 
+    a_id.id = "acct_split_" + DODO.journalLines;
+	a_id.value=null;
 	
 	var l_id = $("<input type='hidden' />")[0];
 	l_id.name = "journal_operations[" + DODO.journalLines+"][ledger_id]"; 
+    l_id.id = "ledg_split_" + DODO.journalLines;
 	l_id.value=null;
 	
 	for (var i=0; i<DODO.accountList.length; i++) {
@@ -180,7 +183,7 @@ var journals = {
 	}
 	var line = DODO.journalLines;
 	
-	var uf = function(){
+	sel.updateFields = function(){
 		vals = sel.value.split(".");
 		if(vals.length > 1){
 		    a_id.value = vals[0];
@@ -190,13 +193,12 @@ var journals = {
 		    a_id.value = vals[0];
 		    l_id.value = "";
 		}
-
 	}
-	uf();
+	sel.updateFields();
 
 	$(sel).change(
 	    function(){
-		uf();
+		sel.updateFields();
 		journals.setDefaultVat(line);
 		journals.update();
 	    }
@@ -214,7 +216,7 @@ var journals = {
 	var sel = document.createElement("select");
 	if(DODO.readOnly)
 	{
-	    sel.readOnly=true;
+	    sel.disabled=true;
 	}
 	sel.name = "journal_operations[" + DODO.journalLines+"][unit_id]";
 	sel.id = "unit_"+ DODO.journalLines;
@@ -233,7 +235,7 @@ var journals = {
 	var sel = document.createElement("select");
 	if(DODO.readOnly)
 	{
-	    sel.readOnly=true;
+	    sel.disabled=true;
 	}
 	sel.name = "journal_operations[" + DODO.journalLines+"][car_id]";
 	sel.id = "car_"+ DODO.journalLines;
@@ -252,7 +254,7 @@ var journals = {
 	var sel = document.createElement("select");
 	if(DODO.readOnly)
 	{
-	    sel.readOnly=true;
+	    sel.disabled=true;
 	}
 	sel.name = "journal_operations[" + DODO.journalLines+"][project_id]";
 	sel.id = "project_"+ DODO.journalLines;
@@ -510,13 +512,20 @@ var journals = {
 	row.addCell(journals.makeCarSelect());
 	row.addCell(journals.makeProjectSelect());
 
+    // returns a valid account, does to some extent the opposite of updateFields
+    acct_ledg_merge = function(a, l) {
+        if(l == null) return a;
+        else return a + "." + l;
+    }
+
 	if (line) {
 	    amount = line.amount;
-	    $("#account_"+ DODO.journalLines)[0].value = line.account_id;
+	    $("#account_"+ DODO.journalLines)[0].value = acct_ledg_merge(line.account_id, line.ledger_id);
+	    $("#account_"+ DODO.journalLines)[0].updateFields();
 	    $("#dynfield_1_"+ DODO.journalLines)[0].value = amount<0?-amount:0;
 	    $("#dynfield_2_"+ DODO.journalLines)[0].value = amount>0?amount:0;
-	    $("#car_"+ DODO.journalLines)[0].value = line.car_id;
 	    $("#unit_"+ DODO.journalLines)[0].value = line.unit_id;
+	    $("#car_"+ DODO.journalLines)[0].value = line.car_id;
 	    $("#project_"+ DODO.journalLines)[0].value = line.project_id;
 	    journals.doDisable(DODO.journalLines);
 	}
