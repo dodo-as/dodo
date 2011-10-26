@@ -1,3 +1,5 @@
+<p>oi oi oi</p>
+<% if false %>
 <%= form_for(@travel_log) do |f| %>
   <% if @travel_log.errors.any? %>
     <div id="error_explanation">
@@ -11,7 +13,6 @@
     </div>
   <% end %>
 
-  <input type="hidden" name="travel_log[car_id]" value="1" />
   <div class="field">
     <%= f.label :odometer %><br />
     <%= f.text_field :odometer %>
@@ -24,4 +25,5 @@
   <div class="actions">
     <%= f.submit %>
   </div>
+<% end %>
 <% end %>

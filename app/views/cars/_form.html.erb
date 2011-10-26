@@ -31,12 +31,9 @@
   </p>
   -->
 
-  <%= :travel_logs.each do |tl| %>
-    <p>Meh</p>
-  <% end %>
-
   <p>
     <%= f.submit t('global.save') %>
   </p>
 <% end %>
 
+<%= render :partial => "/travel_logs/index", :locals => { :travel_logs => @car.travel_logs }  %>

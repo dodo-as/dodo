@@ -4,20 +4,31 @@
   <tr>
     <th>Odometer</th>
     <th>Date</th>
-    <th></th>
-    <th></th>
+    <%= if !@readonly then raw('<th></th>') end %>
   </tr>
 
 <% travel_logs.each do |travel_log| %>
   <tr>
     <td><%= travel_log.odometer %></td>
     <td><%= travel_log.date %></td>
-    <td><%= link_to 'Edit', edit_travel_log_path(travel_log) %></td>
-    <td><%= link_to 'Destroy', travel_log, :confirm => 'Are you sure?', :method => :delete %></td>
+    <% if !@readonly %>
+      <td><%= link_to 'Destroy', travel_log, :confirm => 'Are you sure?', :method => :delete %></td>
+    <% end %>
+  </tr>
+<% end %>
+
+<% if !@readonly %>
+  <tr>
+    <% form_for(TravelLog.new :car => @car) do |f| %>
+      <td><%= f.text_field :odometer %></td>
+      <%= f.hidden_field :car_id %>
+      <td><%= f.text_field :date, :class => :datepicker %></td>
+      <td><%= f.submit "I like pie" %></td>
+    <% end %>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Travel log', new_travel_log_path %>
+<%= if !@readonly then link_to 'New Travel log', new_travel_log_path end %>
