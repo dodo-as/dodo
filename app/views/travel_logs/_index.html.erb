@@ -1,4 +1,4 @@
-<h1>Listing travel_logs</h1>
+<b><%= t('travel_logs.header_index') %>:</b><br />
 
 <table>
   <tr>
@@ -23,12 +23,8 @@
       <td><%= f.text_field :odometer %></td>
       <%= f.hidden_field :car_id %>
       <td><%= f.text_field :date, :class => :datepicker %></td>
-      <td><%= f.submit "I like pie" %></td>
+      <td><%= f.submit t('travel_logs.new') %></td>
     <% end %>
   </tr>
 <% end %>
 </table>
-
-<br />
-
-<%= if !@readonly then link_to 'New Travel log', new_travel_log_path end %>
