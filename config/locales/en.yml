@@ -284,6 +284,9 @@ en:
     new: New car
     from: From
     to: To
+  travel_logs:
+    new: New entry
+    header_index: Travel entries
     
   products:
     listing_products: Listing products
