@@ -13,7 +13,9 @@ class JournalType < ActiveRecord::Base
       cnt=cnt[0]
     else
       cnt = JournalTypeCounter.new :company => company, :journal_type => self, :counter => 1
+      cnt.save
     end
+    return cnt
   end
   
   def get_next_number company
@@ -29,5 +31,4 @@ class JournalType < ActiveRecord::Base
     
   end
   
-
 end

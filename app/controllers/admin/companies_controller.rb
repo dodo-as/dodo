@@ -1,3 +1,4 @@
+
 class Admin::CompaniesController < Admin::BaseController
 
   before_filter :find_company, :only => [:show, :edit, :update, :destroy]
@@ -81,13 +82,16 @@ class Admin::CompaniesController < Admin::BaseController
   def update
 
     respond_to do |format|
-      if @company.update_attributes(params[:company])
-        flash[:notice] = 'Company was successfully updated.'
-        format.html { redirect_to([:admin, @company]) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @company.errors, :status => :unprocessable_entity }
+      Company.transaction do
+        if @company.update_attributes(params[:company]) and 
+            @company.update_journal_types(params[:journal_type])
+          flash[:notice] = 'Company was successfully updated.'
+          format.html { redirect_to([:admin, @company]) }
+          format.xml  { head :ok }
+        else
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @company.errors, :status => :unprocessable_entity }
+        end
       end
     end
   end

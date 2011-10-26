@@ -134,4 +134,18 @@ class Company < ActiveRecord::Base
   def validate_fields 
   end
 
+  def update_journal_types data
+
+    hh = Hash[data.map{
+                |i|
+                item = i[1]
+                [item[:id].to_i, item]
+              }]
+    self.journal_type_counters.each {
+      |counter|
+      counter.update_attributes(hh[counter.id])
+    }
+    
+  end
+
 end
