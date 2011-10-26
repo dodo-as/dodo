@@ -69,6 +69,10 @@
         <script>submitAction.registerSubmitAction('#current_company', 'change', '.change_company_form form');</script>
       </li>
       
+      <% if current_user.is_user_admin %>
+        <li><%= link_to t(:user_administration, :scope => :layout), admin_users_path %></li>
+      <% end %>
+      
       <% else %>
       <li><%= link_to "Til forsiden", root_path  %></li>
       <% end %>
