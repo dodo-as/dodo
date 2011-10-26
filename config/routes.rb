@@ -55,9 +55,9 @@ Dodo::Application.routes.draw do |map|
       post :elevate_status
     end
   end
-  resources :accounts do
-    resources :ledgers
-  end
+  resources :accounts 
+  
+  resources :ledgers
   
   #Reports
   resources :reports, :only=>[:index] do

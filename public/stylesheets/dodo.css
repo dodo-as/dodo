@@ -9,6 +9,16 @@ body
     margin: 0%;
 }
 
+
+.mandatory 
+{
+    background: yellow;
+}
+.field_with_errors, input
+{
+    background: red;
+}
+
 body
 {
     font-size: 80%;
@@ -513,3 +523,6 @@ iframe
 #operations_table input {
     width: 5em;
 }
+
+
+
