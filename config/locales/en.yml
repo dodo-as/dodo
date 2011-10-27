@@ -65,7 +65,7 @@ en:
     filter: Filter
     description: Description
     amount: Amount
-    no: No
+    "no": "No"
   admin:
     companies:
       select_template_company: Select company as template
