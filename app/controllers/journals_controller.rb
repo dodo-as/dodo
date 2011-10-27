@@ -179,8 +179,7 @@ class JournalsController < ApplicationController
   end
   
   def set_readonly
-    before_filter :set_readonly
-      @readonly=false
+    @readonly=false
   end
   
 end

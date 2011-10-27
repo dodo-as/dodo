@@ -108,7 +108,10 @@ var journals = {
 	    var account = journals.getAccount($('#account_'+i)[0].value);
 	    var vat_account;
             var vat_account_id;
-            if (account.vat_account != undefined) {
+            console.log(account);
+            //removing until we fix this
+            //if (account.vat_account != undefined) {
+            if (false) {
                 vat_account_id = account.vat_account.id;
                 vat_account = account.vat_account.target_account;
             } else {

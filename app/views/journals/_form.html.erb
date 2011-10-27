@@ -97,12 +97,10 @@
 
 </p>
 
+<b><%= t('journals.defaults') %></b>
 <p>
-  <table class='striped' id='defaults_table'>
+  <table id='defaults_table'>
     <tr>
-      <th>
-        <%= t('journals.defaults') %>
-      </th>
       <th>
         <%= t('units.unit') %>
       </th>
@@ -114,10 +112,9 @@
       </th>
     </tr>
     <tr>
-      <td />
-      <td />
-      <td />
-      <td />
+        <td><%= f.select :default_unit, Unit.where(:company_id => current_user.current_company.id).map { |p| [p.name, p.id] } %>
+        <td><%= f.select :default_car, Car.where(:company_id => current_user.current_company.id).map { |p| [p.name, p.id] } %>
+        <td><%= f.select :default_project, Project.where(:company_id => current_user.current_company.id).map { |p| [p.name, p.id] } %>
     </tr>
   </table>
 </p>
