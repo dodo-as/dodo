@@ -61,6 +61,7 @@
 
       <li><%= link_to t(:payment_run, :scope => :layout), payment_runs_path %></li>
       
+      
       <li class="change_company_form">
       <%= form_tag change_company_path, :method => :put do -%>
          <label for="current_company"><%= t(:active_company, :scope => :layout) -%>:</label>
@@ -68,6 +69,7 @@
                                                               if current_user.current_company.nil? then 0 else current_user.current_company.id end ) %>
         <% end %>
         <script>submitAction.registerSubmitAction('#current_company', 'change', '.change_company_form form');</script>
+         (<%= link_to "#{t(:edit, :scope => :global)}", edit_company_path %>)
       </li>
       
 <!--
