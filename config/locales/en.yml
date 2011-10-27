@@ -218,6 +218,7 @@ en:
     text: "Text"
     save: "Save"
     editing_journals: "Editing journal entry"
+    defaults: Defaults
   companies:
     visiting_address: Visiting address
     billing_address: Billing address
@@ -266,6 +267,7 @@ en:
     town: City
     country: Country
   units:
+    unit: Unit
     header_index: Listing units
     header_edit: Editing unit
     new: New unit
