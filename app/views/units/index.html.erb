@@ -13,7 +13,7 @@
   <tr>
     <td><%= unit.name %></td>
     <td><%= render :partial => "/addresses/show", :locals => { :address => unit.address }  %></td>
-    <td><%= unit.from %> - <%= unit.to %></td>
+    <td><%= unit.from || t('global.unknown_date') %> - <%= unit.to || t('global.unknown_date') %></td>
     <td><%= unit.comments %></td>
     <td>
       <%= link_to t("global.show"), unit %>

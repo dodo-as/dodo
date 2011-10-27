@@ -66,6 +66,7 @@ en:
     description: Description
     amount: Amount
     "no": "No"
+    unknown_date: '?'
   admin:
     companies:
       select_template_company: Select company as template
