@@ -15,18 +15,18 @@
   
   <p>
     <%= f.label :number, t(:number, :scope => :accounts) -%><br />
-    <%= f.text_field :number, :class => 'mandatory' %>
+    <%= f.text_field :number, :class => 'dodo-validate-mandatory' %>
   </p>
     <%= f.label :name, t(:name, :scope => :accounts) -%><br />
-    <%= f.text_field :name, :class => 'mandatory'%>
+    <%= f.text_field :name, :class => 'dodo-validate-mandatory'%>
   </p>
   <p>
     <%= f.label :id_number, t(:id_number, :scope => :accounts) -%><br />
-    <%= f.text_field :id_number, :class => 'mandatory' %>
+    <%= f.text_field :id_number, :class => 'dodo-validate-mandatory' %>
   </p>
   <p>
     <%= f.label :date_of_birth, t(:date_of_birth, :scope => :accounts) -%><br />
-    <%= f.text_field :date_of_birth, :class => 'mandatory datepicker'  %>
+    <%= f.text_field :date_of_birth, :class => 'dodo-validate-mandatory datepicker'  %>
   </p>
   <p>
     <%= f.label :telephone_number, t(:telephone_number, :scope => :accounts) -%><br />
@@ -34,23 +34,23 @@
   </p>
   <p>
     <%= f.label :mobile_number, t(:mobile_number, :scope => :accounts) -%><br />
-    <%= f.text_field :mobile_number, :class => 'mandatory'  %>
+    <%= f.text_field :mobile_number, :class => 'dodo-validate-mandatory'  %>
   </p>
   <p>
     <%= f.label :email, t(:email, :scope => :accounts) -%><br />
-    <%= f.email_field :email, :class => 'mandatory'  %>
+    <%= f.text_field :email, :class => ' dodo-validate-mandatory'  %>
   </p>
   <p>
     <%= f.label :salary_email, t(:salary_email, :scope => :accounts) -%><br/>
-    <%= f.email_field :salary_email %>
+    <%= f.email_field :salary_email, :class => 'dodo-validate-email' %>
   </p>
   <p>
     <%= f.label :ledger_bank_number, t(:ledger_bank_number, :scope => :accounts) -%><br />
-    <%= f.text_field :ledger_bank_number, :class => 'mandatory'  %>
+    <%= f.text_field :ledger_bank_number, :class => 'dodo-validate-mandatory'  %>
   </p>
   <p>
     <%= f.label :foreign_bank_number, t(:foreign_bank_number, :scope => :accounts) -%><br />
-    <%= f.text_field :foreign_bank_number, :class => 'mandatory'  %>
+    <%= f.text_field :foreign_bank_number, :class => 'dodo-validate-mandatory'  %>
   </p>
   <p>
     <%= f.label :credit_days, t(:credit_days, :scope => :accounts) -%><br />
@@ -59,11 +59,11 @@
 
   <p>
     <%= f.label :procenttrekk, t(:procenttrekk, :scope => :accounts) -%><br />
-    <%= f.number_field :procenttrekk, :class => 'mandatory'  %>
+    <%= f.number_field :procenttrekk, :class => 'dodo-validate-mandatory'  %>
   </p>
   <p>
     <%= f.label :tabelltrekk, t(:tabelltrekk, :scope => :accounts) -%><br />
-    <%= f.number_field :tabelltrekk, :class => 'mandatory'  %>
+    <%= f.number_field :tabelltrekk, :class => 'dodo-validate-mandatory'  %>
   </p>
   <p>
     <%= f.label :work_start, t(:work_start, :scope => :accounts) -%><br />
@@ -109,13 +109,5 @@
 <div style="clear: both;" />
 
   <%= submit_tag t(:add_ledger, :scope => :accounts) %>
-<%= javascript_tag "$('#new_ledger').submit( function () { jQuery.ajax({
-		    type: 'POST',
-		    url: '/accounts/#{@ledger.account.id}/ledgers',
-		    data: $('#new_ledger').serialize(),
-		    success: accounts.updateLedgerItemsTable,
-		      error: accounts.errorSavingLedger,
-		      dataType: 'json'
-		      }); return false; });" %>
 
 <% end %>
