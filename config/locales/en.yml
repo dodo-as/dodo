@@ -41,6 +41,7 @@ en:
       delimiter: ","
 
   global:
+    "yes": "Yes"
     telephone_number: "Telephone"
     fax: "Fax"
     mobile_number: "Mobile"
@@ -64,6 +65,7 @@ en:
     filter: Filter
     description: Description
     amount: Amount
+    no: No
   admin:
     companies:
       select_template_company: Select company as template
@@ -228,13 +230,9 @@ en:
     organization_number: "Org. number"
     address: "Address"
     show: "Show"
-    edit: "Edit"
-    destroy: "Destroy"
     new_company: "New company"
     destroy_confirmation: "Confirm deleting the company %{name}"
-    back: "Back"
     editing_company: "Editing company"
-    save: "Save"
     accounts: "Chart of accounts"
     show_turnover: Show turnover
     bill_comment_placement: Bill comment placement
@@ -257,6 +255,8 @@ en:
     information: Information	 
     deliver_terms: Delivery terms
     payment_terms: Payment terms
+    result_accounts: Result accounts
+    shares: Shares
   address:
     address: "Address"
     name: Name
