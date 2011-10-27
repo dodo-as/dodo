@@ -56,12 +56,7 @@
     <%= f.label :credit_days, t(:credit_days, :scope => :accounts) -%><br />
     <%= f.text_field :credit_days %>
   </p>
-<!--
-  <p>
-    <%= f.label :auto_payment, t(:auto_payment, :scope => :accounts) -%><br />
-    <%= f.check_box :auto_payment %>
-  </p>
--->
+
   <p>
     <%= f.label :procenttrekk, t(:procenttrekk, :scope => :accounts) -%><br />
     <%= f.number_field :procenttrekk, :class => 'mandatory'  %>
@@ -83,13 +78,6 @@
     <%= f.label :placement_top, t(:placement_top, :scope => :accounts) -%><br />
     <%= f.check_box :placement_top %>
   </p>
-<!--
-  <p>
-    <%= f.label :net_bank, t(:net_bank, :scope => :accounts) -%><br />
-    <%= f.check_box :net_bank %>
-  </p>
-  
--->
   <p>
     <%= f.label :unit_id, t(:unit, :scope => :accounts) -%><br />
     <%= f.select :unit_id, Unit.where(:company_id => current_user.current_company.id).map {|u| [u.name, u.id]}, {:include_blank => true} %>
@@ -115,32 +103,7 @@
 <div id="addresses" style="float: left;">
   
   <h4><%= t(:address, :scope => :address) -%></h4>
-  <%= f.fields_for :address do |a| %>
-  <p>
-    <%= a.label :name, t(:name, :scope => :address)%><br />
-    <%= a.text_field :name %>
-  </p>
-  <p>
-    <%= a.label :street1, t(:street1, :scope => :address)%><br />
-    <%= a.text_field :street1 %>
-  </p>
-  <p>
-    <%= a.label :street2, t(:street2, :scope => :address)%><br />
-    <%= a.text_field :street2 %>
-  </p>
-  <p>
-    <%= a.label :postal_code, t(:postal_code, :scope => :address)%><br />
-    <%= a.text_field :postal_code %>
-  </p>
-  <p>
-    <%= a.label :town, t(:town, :scope => :address)%><br />
-      <%= a.text_field :town %>
-  </p>
-  <p>
-    <%= a.label :country, t(:country, :scope => :address)%><br />
-    <%= a.text_field :country %>
-  </p>
-  <% end %>
+  <%= render :partial => "addresses/nested_form", :locals => { :parent => f, :field_name => :address } %>
 </div>
 
 <div style="clear: both;" />
