@@ -245,6 +245,18 @@ en:
     contact_information: Contact information
     bank_account: Bank account
     accounts: Accounts
+    adjust_outside_of_sequence: Adjust outside of sequence
+    other: Other
+    interest_rate: Interest rate
+    late_fee: Late fee
+    share_value: Share value
+    share_count: Share count
+    incorporation_date: Incorporation date
+    result_account_balance: Result account balance
+    result_account_result: Result account result
+    information: Information	 
+    deliver_terms: Delivery terms
+    payment_terms: Payment terms
   address:
     address: "Address"
     name: Name
@@ -272,6 +284,9 @@ en:
     new: New car
     from: From
     to: To
+  travel_logs:
+    new: New entry
+    header_index: Travel entries
     
   products:
     listing_products: Listing products

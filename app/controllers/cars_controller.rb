@@ -1,6 +1,8 @@
 class CarsController < ApplicationController
-  filter_resource_access
 
+  before_filter :set_readonly
+
+  filter_resource_access
 
   # GET /cars
   # GET /cars.xml
@@ -16,6 +18,7 @@ class CarsController < ApplicationController
   # GET /cars/1
   # GET /cars/1.xml
   def show
+    @readonly = true
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @car }
@@ -80,5 +83,10 @@ class CarsController < ApplicationController
       format.html { redirect_to(cars_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  def set_readonly
+    #before_filter :set_readonly
+      @readonly=false
   end
 end

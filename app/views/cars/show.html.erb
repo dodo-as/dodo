@@ -18,10 +18,8 @@
   <%= @car.comments %>
 </p>
 
-<p>
-  <b><%= t('cars.odometer') %>:</b>
-  <%= @car.odometer %>
-</p>
+<%= render :partial => "/travel_logs/index", :locals => { :travel_logs => @car.travel_logs, :readonly => @readonly }  %>
+
 
 <% if permitted_to? :edit, @car %>
   <%= link_to t('global.edit'), edit_car_path(@car) %> |

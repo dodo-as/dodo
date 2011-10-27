@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  odometer: 1
+  date: 2011-10-21
+
+two:
+  odometer: 1
+  date: 2011-10-21

@@ -36,6 +36,7 @@ Dodo::Application.routes.draw do |map|
 
   resources :payment_runs
   resources :cars
+  resources :travel_logs
   resources :units
   resources :projects
   resources :vat_accounts

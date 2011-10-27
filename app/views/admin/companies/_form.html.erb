@@ -6,14 +6,15 @@
   <ul>
     <li><a href="#dodo-contact"><%= t('companies.contact') %></a></li>
     <li><a href="#dodo-accounting"><%= t('companies.accounting') %></a></li>
+    <li><a href="#dodo-other"><%= t('companies.other') %></a></li>
     <li><a href="#dodo-users"><%= t('companies.users') %></a></li>
   </ul>
 
   <div id="dodo-contact">
 
     <table>
-<tr>
-<td>
+      <tr>
+	<td>
     <% if @company.new_record? %>
     <p>
       <%= f.label :template_company_id %><br />
@@ -77,10 +78,16 @@
 </td><td>
 
     <h2><%= t('companies.contact_information') %></h2>
-    <% [:telephone_number, :fax, :mobile_number, :email, :web_site ].each{ |sym| %>
+    <% [[:telephone_number, "dodo-validate-phone"], [:fax, "dodo-validate-phone"], [:mobile_number, "dodo-validate-phone"], [:email, "dodo-validate-email"], [:web_site] ].each{ |it|
+       sym = it[0]
+       cls = ""
+       if it.length > 1 
+         cls = it[1]
+       end
+       %>
     <p>
       <%= f.label sym, t(sym, :scope => :global) %><br />
-      <%= f.text_field sym %>
+      <%= f.text_field sym, :class => cls %>
     </p>
     <% } %>
 </td>
@@ -88,7 +95,11 @@
 </table>
 
   </div>
+
   <div id="dodo-accounting">
+    <table>
+      <tr>
+	<td>
     <h2><%= t("companies.accounts") %></h2>
     <p>
       <%= f.label :bank_account, t(:bank_account, :scope => :companies) %><br />
@@ -104,17 +115,73 @@
       <%= f.label :late_fee, t(:late_fee, :scope => :companies) %><br />
       <%= f.text_field :late_fee %>
     </p>
+
+    <h2><%= t("companies.shares") %></h2>
+    <p>
+      <%= f.label :share_value, t(:share_value, :scope => :companies) %><br />
+      <%= f.text_field :share_value, :class => "dodo-validate-float" %>
+    </p>
+    <p>
+      <%= f.label :share_count, t(:share_count, :scope => :companies) %><br />
+      <%= f.text_field :share_count, :class => "dodo-validate-integer" %>
+    </p>
+    <p>
+      <%= f.label :incorporation_date, t(:incorporation_date, :scope => :companies) %><br />
+      <%= f.text_field :incorporation_date, :class => "datepicker dodo-validate-date" %>
+    </p>
+	</td>
+	<td>
+    <h2><%= t("companies.accounting") %></h2>
     <%
        JournalType.all.each {
        |type|
+       nam = "journal_type["+type.id.to_s+ "]"
+       cnt = type.counter(@company)
+       puts cnt.adjust_outside_of_sequence
        %>
-    <%= type %>
-
+    <%= hidden_field nam, :id, :value => cnt.id %>
+    <p>
+      <%= label nam, :counter, type.name %><br>
+      <%= text_field nam, :counter, :value => cnt.counter %>
+      <%= check_box(nam, :adjust_outside_of_sequence, :checked => cnt.adjust_outside_of_sequence) %>
+      <%= label nam, :adjust_outside_of_sequence, t("companies.adjust_outside_of_sequence") %>
+    </p>
     <%
        } 
        %>
-    
+	</td>
+	<td>    
+	  <h2><%= t("companies.result_accounts") %></h2>
+	  <p>
+	    <%= f.label :result_account_balance_id, t(:result_account_balance, :scope => :companies) %><br />
+	    <%= f.account_select_field :result_account_balance_id %>
+	  </p>
+	  
+	  <p>
+	    <%= f.label :result_account_result_id, t(:result_account_result, :scope => :companies) %><br />
+	    <%= f.account_select_field :result_account_result_id %>
+	  </p>
+	</td>
+      </tr>
+    </table>
+  </div>
+  
+  <div id="dodo-other">
+    <h2><%= t("companies.other") %></h2>
+    <p>
+      <%= f.label :information, t("companies.information") %><br />
+      <%= f.text_area :information %>
+    </p>
 
+    <p>
+      <%= f.label :deliver_terms, t("companies.deliver_terms") %><br />
+      <%= f.text_field :deliver_terms %>
+    </p>
+
+    <p>
+      <%= f.label :payment_terms, t("companies.payment_terms") %><br />
+      <%= f.text_field :payment_terms %>
+    </p>
   </div>
 
   <div id="dodo-users">
@@ -137,8 +204,7 @@
     </p>
   </div>
 
-
   <p>
-    <%= f.submit t(:save, :scope => :companies) %>
+    <%= f.submit t(:save, :scope => :companies), :class => "dodo-validate-submit" %>
   </p>
   <% end %>

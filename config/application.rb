@@ -7,6 +7,7 @@ require 'rails/all'
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 module Dodo
   class Application < Rails::Application
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -66,7 +67,6 @@ module Dodo
 end
 
 
-
 ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.smtp_settings = {
   :address => "mail.freecodeint.com",
@@ -76,3 +76,5 @@ ActionMailer::Base.smtp_settings = {
   #    :password => "MyPassword",
   :authentication => :plain
 }
+
+require "dodo_forms"
