@@ -48,7 +48,9 @@ Dodo::Application.routes.draw do |map|
   resources :journal_operations
   resources :journals
 
-  resources :companies
+#  match "/company" => "company#show"
+ # match "/company/edit" => "company#edit"
+  resource :company
 
   resources :periods do
     member do

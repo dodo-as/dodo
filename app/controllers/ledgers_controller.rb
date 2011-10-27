@@ -55,7 +55,6 @@ class LedgersController < ApplicationController
   end
 
   def new
-    puts "0000000000000000000", params[:account_id],"AAAAAaaaaaaaaaaaaaaaa"
     @account = Account.find(params[:account_id])
     @ledger = Ledger.new(:account => @account)
     @ledger.address = Address.new

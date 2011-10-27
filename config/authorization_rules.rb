@@ -3,6 +3,14 @@ authorization do
   role :admin do
     has_permission_on :authorization_rules, :to => :manage
     has_permission_on :authorization_usages, :to => :manage
+    has_permission_on :admin_companies, :to => :manage
+    has_permission_on :admin_users, :to => :manage
+    has_permission_on :admin_admins, :to => :manage
+    has_permission_on :admin_company, :to => :manage
+    has_permission_on :admin_counties, :to => :manage
+    has_permission_on :admin_tax_zones, :to => :manage
+    has_permission_on :admin_tax_zone_taxes, :to => :manage
+    has_permission_on :admin_county_tax_zones, :to => :manage
 
     has_permission_on :weekly_sale_setups, :to => :manage do
       if_attribute :company_id => is {user.current_company.id}
@@ -131,6 +139,11 @@ authorization do
       if_attribute :employee_id => is {user.id}
     end
   end
+  
+  #~ role :user_admin do
+        #~ has_permission_on :admin_users, :to => :manage
+    #~ # authorization for the admin ui
+  #~ end
 end
 
 privileges do
