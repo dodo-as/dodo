@@ -3,6 +3,11 @@ require "mod11"
 class LedgerValidator < ActiveModel::Validator  
   def validate(record)  
      @country = record.address.country
+
+    if record.date_of_birth.blank?
+        record.errors.add :date_of_birth, "is mandatory"
+    end
+
     if record.id_number.blank?
         record.errors.add "Personal number", "can't be blank"
      else
@@ -11,13 +16,6 @@ class LedgerValidator < ActiveModel::Validator
             # Check norwegian personal number
             if !check_norwegian_id_number(record.id_number)
                 record.errors.add "Personal number", ' is not valid'
-            end
-            if record.date_of_birth.blank?# and record.id_number.length == 11
-                #~ @per_number = record.id_number
-                #~ @b = '19' + @per_number[4..5] + '-' + @per_number[2..3] + '-' + @per_number[0..1]
-                #~ record.date_of_birth = @b
-            #~ else
-                record.errors.add :date_of_birth, "is mandatory"
             end
             
             # Check norwegian bank account
