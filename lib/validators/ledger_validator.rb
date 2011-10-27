@@ -19,7 +19,7 @@ class LedgerValidator < ActiveModel::Validator
             end
             
             # Check norwegian bank account
-            if !check_norwegian_account(record.ledger_bank_number)
+            if !check_norwegian_account(record.ledger_bank_number) and record.foreign_bank_number.blank? and !record.ledger_bank_number.blank?
                 record.errors.add "Bank number", "is not valid"
             end
             
