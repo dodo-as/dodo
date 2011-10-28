@@ -225,7 +225,9 @@ var journals = {
 	sel.name = "journal_operations[" + DODO.journalLines+"][unit_id]";
 	sel.id = "unit_"+ DODO.journalLines;
     var def = $('#journal_default_unit')[0]; 
-    def = def.options[def.selectedIndex].value;
+    if (def.selectedIndex >= 0) {
+        def = def.options[def.selectedIndex].value;
+    }
 	
 	for (var i=0; i<DODO.unitList.length; i++) {
         $(sel).append($("<option>").text(DODO.unitList[i].unit.name).attr("value", DODO.unitList[i].unit.id).attr("selected", DODO.unitList[i].unit.id == def));
@@ -245,7 +247,9 @@ var journals = {
 	sel.name = "journal_operations[" + DODO.journalLines+"][car_id]";
 	sel.id = "car_"+ DODO.journalLines;
     var def = $('#journal_default_car')[0]; 
-    def = def.options[def.selectedIndex].value;
+    if (def.selectedIndex >= 0) {
+        def = def.options[def.selectedIndex].value;
+    }
 	
 	for (var i=0; i<DODO.carList.length; i++) {
         $(sel).append($("<option>").text(DODO.carList[i].car.name).attr("value", DODO.carList[i].car.id).attr("selected", DODO.carList[i].car.id == def));
@@ -265,7 +269,10 @@ var journals = {
 	sel.name = "journal_operations[" + DODO.journalLines+"][project_id]";
 	sel.id = "project_"+ DODO.journalLines;
     var def = $('#journal_default_project')[0]; 
-    def = def.options[def.selectedIndex].value;
+
+    if (def.selectedIndex >= 0) {
+        def = def.options[def.selectedIndex].value;
+    }
 	
 	for (var i=0; i<DODO.projectList.length; i++) {
         $(sel).append($("<option>").text(DODO.projectList[i].project.name).attr("value", DODO.projectList[i].project.id).attr("selected", DODO.projectList[i].project.id == def));
