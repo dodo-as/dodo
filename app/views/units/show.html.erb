@@ -10,7 +10,7 @@
 
 <p>
   <b><%= t('global.valid_for') %>:</b>
-  <%= @unit.from %> - <%= @unit.to %>
+  <%= @unit.from || t('global.unknown_date') %> - <%= @unit.to || t('global.unknown_date') %>
 </p>
 
 <p>
