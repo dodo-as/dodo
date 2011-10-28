@@ -6,6 +6,7 @@ class Company < ActiveRecord::Base
   has_many :vat_accounts
   has_many :paycheck_periods
   has_many :journal_type_counters
+  has_many :vat_chunks
 
   belongs_to :visiting_address, :class_name =>'Address'
   belongs_to :billing_address, :class_name =>'Address'

@@ -1,0 +1,33 @@
+<%= form_for(@vat_chunk) do |f| %>
+  <% if @vat_chunk.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@vat_chunk.errors.count, "error") %> prohibited this vat_chunk from being saved:</h2>
+
+      <ul>
+      <% @vat_chunk.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :number %><br />
+    <%= f.text_field :number %>
+  </div>
+  <div class="field">
+    <%= f.label :start_date %><br />
+    <%= f.text_field :start_date, :class => "datepicker" %>
+  </div>
+  <div class="field">
+    <%= f.label :stop_date %><br />
+    <%= f.text_field :stop_date, :class => "datepicker" %>
+  </div>
+  <div class="field">
+    <%= f.label :account_id %><br />
+    <%= f.account_select_field :account_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

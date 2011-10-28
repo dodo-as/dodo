@@ -258,6 +258,8 @@ en:
     payment_terms: Payment terms
     result_accounts: Result accounts
     shares: Shares
+  vat_chunks:
+    vat_chunks: Vat chunks
   address:
     address: "Address"
     name: Name

@@ -1,0 +1,29 @@
+<h1>Listing vat_chunks</h1>
+
+<table>
+  <tr>
+    <th>Number</th>
+    <th>Start date</th>
+    <th>Stop date</th>
+    <th>Account</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @vat_chunks.each do |vat_chunk| %>
+  <tr>
+    <td><%= vat_chunk.number %></td>
+    <td><%= vat_chunk.start_date %></td>
+    <td><%= vat_chunk.stop_date %></td>
+    <td><%= vat_chunk.account %></td>
+    <td><%= link_to 'Show', vat_chunk %></td>
+    <td><%= link_to 'Edit', edit_vat_chunk_path(vat_chunk) %></td>
+    <td><%= link_to 'Destroy', vat_chunk, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Vat chunk', new_vat_chunk_path %>
