@@ -13,7 +13,7 @@ class Ledger < ActiveRecord::Base
   #~ validates :id_number, :presence => true
   
   validates :mobile_number, :presence => true
-  validates :email, :presence => true
+  #~ validates :email, :presence => true
   #~ validates :ledger_bank_number, :presence => true, :if => Proc.new { |a| a.foreign_bank_number.blank? }
   #~ validates :foreign_bank_number, :presence => true, :if => Proc.new { |a| a.ledger_bank_number.blank? }
   validates :credit_days, :presence => true

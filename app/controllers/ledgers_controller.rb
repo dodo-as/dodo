@@ -74,7 +74,7 @@ class LedgersController < ApplicationController
                                                     )
       }
       @account = @ledger.account
-      format.html { render :partial => "accounts/ledger_form", :locals => {:account => @account, :ledger => @ledger} }
+      format.html { render :partial => "form", :locals => {:account => @account, :ledger => @ledger} }
     end
   end
 

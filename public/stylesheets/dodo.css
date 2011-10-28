@@ -10,13 +10,14 @@ body
 }
 
 
-.mandatory 
+.dodo-validate-mandatory 
 {
     background: yellow;
 }
-.field_with_errors, input
+.field_with_errors
 {
-    background: red;
+    color: red;
+    font-weight: bold;
 }
 
 body
