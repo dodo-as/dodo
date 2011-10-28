@@ -4,3 +4,7 @@
 
 <%= link_to t('global.show'), @car %> |
 <%= link_to t('global.back'), cars_path %>
+
+<p>
+  <%= render :partial => "/travel_logs/index", :locals => { :travel_logs => @car.travel_logs }  %>
+</p>

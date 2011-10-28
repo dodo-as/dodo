@@ -4,6 +4,8 @@ class Unit < ActiveRecord::Base
   accepts_nested_attributes_for :address
   attr_protected :company_id, :company
 
+  validates_with DateValidator # ensures from < to
+
   def to_s
     return name
   end
