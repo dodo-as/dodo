@@ -10,7 +10,7 @@
 
 <p>
   <b><%= t('global.valid_for') %>:</b>
-  <%= @car.from %> - <%= @car.to %>
+  <%= @car.from || t('global.unknown_date') %> - <%= @car.to || t('global.unknown_date') %>
 </p>
 
 <p>
