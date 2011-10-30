@@ -218,6 +218,7 @@ var journals = {
      */
     makeUnitSelect: function () {
 	var sel = document.createElement("select");
+    $(sel).attr("class", "dodo-unit-selector");
 	if(DODO.readOnly)
 	{
 	    sel.disabled=true;
@@ -228,7 +229,6 @@ var journals = {
     if (def.selectedIndex >= 0) {
         def = def.options[def.selectedIndex].value;
     }
-	
 	for (var i=0; i<DODO.unitList.length; i++) {
         $(sel).append($("<option>").text(DODO.unitList[i].unit.name).attr("value", DODO.unitList[i].unit.id).attr("selected", DODO.unitList[i].unit.id == def));
 	}
@@ -250,7 +250,6 @@ var journals = {
     if (def.selectedIndex >= 0) {
         def = def.options[def.selectedIndex].value;
     }
-	
 	for (var i=0; i<DODO.carList.length; i++) {
         $(sel).append($("<option>").text(DODO.carList[i].car.name).attr("value", DODO.carList[i].car.id).attr("selected", DODO.carList[i].car.id == def));
 	}
@@ -555,17 +554,21 @@ var journals = {
        Add all predefined journal_operation lines from the DODO.journalOperationList array.
      */
     addPredefined: function(){
-	lines = DODO.journalOperationList;
-	for (var i=0; i<lines.length; i++) {
-	    line = lines[i]['journal_operation'];
-	    journals.addAccountLine(line);
-	}
-        journals.updateVat(false);
-	journals.update();
-        $('#journal_journal_date')[0].onchange = function (e) {
-            journals.updateVat(true);
-	    journals.update();
+        lines = DODO.journalOperationList;
+        for (var i=0; i<lines.length; i++) {
+            line = lines[i]['journal_operation'];
+            journals.addAccountLine(line);
         }
+        journals.updateVat(false);
+        journals.update();
+        $('#journal_journal_date')[0].onchange = function (e) {
+                journals.updateVat(true);
+            journals.update();
+            }
+        $("#journal_journal_date")[0].onchange = function (e) {
+            journals.filterSelectos();
+        }
+        journals.filterSelectos();
     },
     
     columnOf: function(input)
@@ -618,6 +621,77 @@ var journals = {
 	box.checked ? $('.vat').show():$('.vat').hide();
 	var box2 = $('#details')[0];
 	box2.checked ? $('.details').show():$('.details').hide();
-    }
+    },
+    
+    updateUnitSel : function () {
+        var date = $("#journal_journal_date")[0].value;
+        for (var i=0; i<DODO.journalLines; i++) {
+            selected = $("#unit_"+i)[0].value
+            $("#unit_"+i+" option").detach()
+            for (var j=0; j<DODO.unitList.length; j++) {
+                var from = DODO.unitList[j].unit.from;
+                var to = DODO.unitList[j].unit.to;
+                if (date >= from && date <= to) {
+                    $("#unit_"+i).append($("<option>").text(DODO.unitList[j].unit.name).attr("value", DODO.unitList[j].unit.id));
+                } 
+                else if (to == null && date>=from) {
+                    $("#unit_"+i).append($("<option>").text(DODO.unitList[j].unit.name).attr("value", DODO.unitList[j].unit.id));
+                }
+                
+            }
+            $("#unit_"+i)[0].value=selected;
+        }
+    },
+    
+    updateCarSel : function () {
+        var date = $("#journal_journal_date")[0].value;
+        for (var i=0; i<DODO.journalLines; i++) {
+            selected = $("#car_"+i)[0].value
+            $("#car_"+i+" option").detach()
+            for (var j=0; j<DODO.carList.length; j++) {
+                var from = DODO.carList[j].car.from;
+                var to = DODO.carList[j].car.to;
+                if (date >= from && date <= to) {
+                    $("#car_"+i).append($("<option>").text(DODO.carList[j].car.name).attr("value", DODO.carList[j].car.id));
+                } 
+                else if (to == null && date>=from) {
+                    $("#car_"+i).append($("<option>").text(DODO.carList[j].car.name).attr("value", DODO.carList[j].car.id));
+                }
+                
+            }
+            $("#car_"+i)[0].value=selected;
+        }
+    },
    
+    updateProjectSel : function () {
+        var date = $("#journal_journal_date")[0].value;
+        for (var i=0; i<DODO.journalLines; i++) {
+            selected = $("#project_"+i)[0].value
+            $("#project_"+i+" option").detach()
+            for (var j=0; j<DODO.projectList.length; j++) {
+                var from = DODO.projectList[j].project.from;
+                var to = DODO.projectList[j].project.to;
+                if (date >= from && date <= to) {
+                    $("#project_"+i).append($("<option>").text(DODO.projectList[j].project.name).attr("value", DODO.projectList[j].project.id));
+                } 
+                else if (to == null && date>=from) {
+                    $("#project_"+i).append($("<option>").text(DODO.projectList[j].project.name).attr("value", DODO.projectList[j].project.id));
+                }
+                
+            }
+            $("#project_"+i)[0].value=selected;
+        }
+    },
+    
+    //~ This method relys on update unit, car and project selector methods.
+    //~ It goes through journals table rows and gets selected value. Then it 
+    //~ deletes values from selector and adds filtered values depending on the
+    //~ journal date. Finaly it restores selected value if possible. 
+    
+    filterSelectos : function () {
+            journals.updateUnitSel();
+            journals.updateCarSel();
+            journals.updateProjectSel();
+    },
+        
 }
