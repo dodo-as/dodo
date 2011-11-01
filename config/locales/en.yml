@@ -259,6 +259,7 @@ en:
     payment_terms: Payment terms
     result_accounts: Result accounts
     shares: Shares
+    interest: Interest
   vat_chunks:
     vat_chunks: Vat chunks
   address:

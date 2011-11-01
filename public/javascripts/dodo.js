@@ -237,18 +237,21 @@ $(function()
 	message: "Invalid field value"
     };
 
+    // Integer number
     var valIntOpt = {
 	regExpMatch:/^-?[0-9 ]*$/, 
 	processValid:function(str){return str.replace(/ /g,"");},
 	message: "Not a valid whole number"
     };
-    
+
+    // Floating point number
     var valFloatOpt = {
 	regExpMatch:/^-?[0-9 ]*([,.])?[0-9 ]*$/, 
 	processValid:function(str){return str.replace(/ /g,"").replace(",",".");},
 	message: "Not a valid decimal number"
     };
     
+    // Data validation
     var valDateOpt = {
 	message: "Not a valid date",
 	regExpMatch: /^[12][0-9]{3}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/

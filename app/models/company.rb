@@ -8,6 +8,11 @@ class Company < ActiveRecord::Base
   has_many :journal_type_counters
   has_many :vat_chunks
 
+  validates :name, :presence=> true
+  validates :share_count, :numericality => true
+  validates :share_value, :numericality => true
+  
+
   belongs_to :visiting_address, :class_name =>'Address'
   belongs_to :billing_address, :class_name =>'Address'
   belongs_to :delivery_address, :class_name =>'Address'
