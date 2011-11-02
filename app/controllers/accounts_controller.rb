@@ -1,7 +1,11 @@
 # chart of accounts
 class AccountsController < ApplicationController
+  
   filter_resource_access
-
+  
+  attr_accessor :account
+  around_filter Log.log(:account), :only => [:update, :create]
+  
   # GET /accounts
   # GET /accounts.xml
   def index

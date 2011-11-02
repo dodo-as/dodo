@@ -331,6 +331,11 @@ en:
     editing_order: Edit order
     destroy: Delete
   access_denied: Sorry, you are not allowed to perform that action.
+  logs:
+    field: Field
+    before: Before
+    after: after
+    unset: "<no value>"
   bills:
     listing_bills: Listing bills
     save: Save

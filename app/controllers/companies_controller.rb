@@ -1,11 +1,7 @@
 
 class CompaniesController < ApplicationController
 
-  before_filter :find_company
-
-  def find_company
-    @company = @me.current_company
-  end
+  around_filter Log.log(:company), :only => :update
 
   # GET /companies/1
   # GET /companies/1.xml
@@ -18,12 +14,12 @@ class CompaniesController < ApplicationController
 
   # GET /companies/1/edit
   def edit
+    3.times {@company.assignments.build }
   end
 
   # PUT /companies/1
   # PUT /companies/1.xml
   def update
-
     respond_to do |format|
       Company.transaction do
         if @company.update_attributes(params[:company]) and 
