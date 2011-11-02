@@ -18,7 +18,6 @@ class CompaniesController < ApplicationController
 
   # GET /companies/1/edit
   def edit
-    3.times { @company.assignments.build }
   end
 
   # PUT /companies/1

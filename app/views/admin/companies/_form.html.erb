@@ -196,12 +196,12 @@
                 <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, {:include_blank => "Select role"} %>
             <% end %>
       
-      <%= assignment.check_box '_destroy' %>
-      <%= assignment.label '_destroy' %>
+            <%= assignment.check_box '_destroy' %>
+            <%= assignment.label '_destroy' %>
+      <br />
         <% end %>
       <% end %>
       
-      <br />
 
       <% end %>
     </p>
