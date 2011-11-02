@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  table_name: MyString
+  old_value: MyString
+  new_value: MyString
+  user: MyString
+  created_at: MyString
+
+two:
+  table_name: MyString
+  old_value: MyString
+  new_value: MyString
+  user: MyString
+  created_at: MyString

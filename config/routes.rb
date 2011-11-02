@@ -1,5 +1,7 @@
 Dodo::Application.routes.draw do |map|
 
+  resources :logs
+
   resources :vat_chunks
 
 #  resources :weekly_sales
