@@ -174,9 +174,12 @@ en:
     ledger_saved: Ledger %{name} saved
   vat:
     listing_vat_accounts: "Listing vat accounts"
+    non_current_header: "VAT accounts not currently in use"
     account: "Account"
     percentage: "Percentage"
     overridable: "Overridable"
+    override_yes: "[x]"
+    override_no: "[ ]"
     code: "Code"
     valid_from: "Valid from"
     valid_to: "Valid to"
@@ -292,7 +295,7 @@ en:
     from: From
     to: To
   travel_logs:
-    new: New entry
+    new: Add entry
     header_index: Travel entries
     
   products:

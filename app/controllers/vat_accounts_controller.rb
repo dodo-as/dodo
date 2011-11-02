@@ -72,7 +72,7 @@ class VatAccountsController < ApplicationController
       else
 	if @vat_account.save!
 	  flash[:notice] = t(:update_success, :scope => :vat)
-	  format.html { redirect_to(@vat_account) }
+	  format.html { redirect_to(:controller=>'vat_accounts', :action=>'index') }
 	  format.xml  { head :ok }
 	else
 	  format.html { render :action => "edit" }
