@@ -2,9 +2,79 @@
 
 <table class='striped'>
   <tr>
-    <th><%= t(:code, :scope => :vat) -%></th>
+    <th><%= '@me' + t(:code, :scope => :vat) -%></th>
     <th><%= t(:account, :scope => :vat) -%></th>
     <th><%= t(:overridable, :scope => :vat) -%></th>
+    <th><%= t('vat.valid_from') -%></th>
+    <th></th>
+  </tr>
+
+<% for period in @me.current_company.get_current_vat_account_periods(Date.today) %>
+  <tr>
+    <td><%= period.vat_account.id %></td>
+    <td><%= period.vat_account.target_account.number %> -  <%= period.vat_account.target_account.name %></td>
+    <td><%= period.vat_account.overridable %></td>
+    <td><%= period.valid_from %></td>
+    <td>
+      <%= link_to t("global.show"), period.vat_account %>
+      <%= link_to t("global.edit"), edit_vat_account_path(period.vat_account) %>
+      <%= link_to t("global.destroy"), period.vat_account, :confirm => t(:confirm_destroy, :scope => :vat, :code => period.vat_account.id), :method => :delete %>
+    </td>
+  </tr>
+<% end %>
+
+  <tr>
+    <th colspan="5"><%= t('vat.non_current_header') %></th>
+  </tr>
+
+<% for period in @me.current_company.get_noncurrent_vat_account_periods(Date.today) %>
+  <tr>
+    <td><%= period.vat_account.id %></td>
+    <td><%= period.vat_account.target_account.number %> -  <%= period.vat_account.target_account.name %></td>
+    <td><%= period.vat_account.overridable %></td>
+    <td><%= period.valid_from %></td>
+    <td>
+      <%= link_to t("global.show"), period.vat_account %>
+      <%= link_to t("global.edit"), edit_vat_account_path(period.vat_account) %>
+      <%= link_to t("global.destroy"), period.vat_account, :confirm => t(:confirm_destroy, :scope => :vat, :code => period.vat_account.id), :method => :delete %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+
+<table class='striped'>
+  <tr>
+    <th><%= 'where/' + t(:code, :scope => :vat) -%></th>
+    <th><%= t(:account, :scope => :vat) -%></th>
+    <th><%= t(:overridable, :scope => :vat) -%></th>
+    <th><%= t('vat.valid_from') -%></th>
+    <th></th>
+  </tr>
+
+<%# for period in @me.current_company.get_current_vat_account_periods('2011-09-09') %>
+<%= debug @vat_accounts %>
+<% for period in VatAccountPeriod.where(:vat_account_id => @me.current_company.vat_accounts) %>
+  <tr>
+    <td><%= period.vat_account.id %></td>
+    <td><%= period.vat_account.target_account.number %> -  <%= period.vat_account.target_account.name %></td>
+    <td><%= period.vat_account.overridable %></td>
+    <td><%= period.valid_from %></td>
+    <td>
+      <%= link_to t("global.show"), period.vat_account %>
+      <%= link_to t("global.edit"), edit_vat_account_path(period.vat_account) %>
+      <%= link_to t("global.destroy"), period.vat_account, :confirm => t(:confirm_destroy, :scope => :vat, :code => period.vat_account.id), :method => :delete %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+
+<table class='striped'>
+  <tr>
+    <th><%= t('vat.code') -%></th>
+    <th><%= t('vat.account') -%></th>
+    <th><%= t('vat.overridable') -%></th>
     <th></th>
   </tr>
 

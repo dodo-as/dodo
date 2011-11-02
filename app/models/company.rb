@@ -154,4 +154,31 @@ class Company < ActiveRecord::Base
     
   end
 
+  # find the correct periods based on their valid_from
+  def get_current_vat_account_periods curdate
+
+    ar = []
+    vat_accounts.each do |a|
+      # potential valid periods
+      p = VatAccountPeriod.where(:vat_account_id => a).where("valid_from <= ?", curdate).sort_by(&:valid_from)
+      unless p.empty?
+        ar.push(p.last)
+      end
+    end
+
+    ar
+      
+  end
+
+  # find the rest of the periods
+  def get_noncurrent_vat_account_periods curdate
+
+    VatAccountPeriod.where(:vat_account_id => vat_accounts) - get_current_vat_account_periods('1999-01-01')
+      
+  end
+
+  def meh
+    get_current_vat_account_periods('91234-11-11')
+  end
+
 end

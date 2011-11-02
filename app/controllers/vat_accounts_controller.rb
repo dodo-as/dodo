@@ -12,15 +12,6 @@ class VatAccountsController < ApplicationController
     end
   end
 
-  # GET /vat_accounts/1
-  # GET /vat_accounts/1.xml
-  def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @vat_account }
-    end
-  end
-
   # GET /vat_accounts/new
   # GET /vat_accounts/new.xml
   def new
@@ -91,6 +82,7 @@ class VatAccountsController < ApplicationController
     end
   end
 
+#vat accounts should be indestructible
   # DELETE /vat_accounts/1
   # DELETE /vat_accounts/1.xml
   def destroy
@@ -101,4 +93,5 @@ class VatAccountsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
 end
