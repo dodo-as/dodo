@@ -6,7 +6,10 @@ class ApplicationController < ActionController::Base
   before_filter :company_required, :if => proc { current_user }
   
   helper :all # include all helpers, all the time
-
+  
+  attr_accessor :me
+  attr_accessor :company
+  
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   # protect_from_forgery # :secret => 'fd4b65ee1595df77234ee4ea6a277542'
@@ -27,6 +30,7 @@ class ApplicationController < ActionController::Base
     Authorization.current_user = current_user
     @me = current_user
     current_user.current_company_id = company_id if company_id
+    @company = @me.current_company
   end
 
   def company_required
@@ -74,6 +78,10 @@ class ApplicationController < ActionController::Base
     fn = "company_#{current_user.current_company.id.to_s}.#{controller_name}.#{name.to_s}"
     foo = search_param(String(name).split('.'), params) || current_user.get_property( fn ) || default
     current_user.set_property( fn, foo)
+  end
+
+  def to_s
+    self.class.to_s
   end
   
 end
