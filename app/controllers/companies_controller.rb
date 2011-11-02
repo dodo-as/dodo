@@ -1,9 +1,9 @@
 
 class CompaniesController < ApplicationController
 
-  before_filter :set_company
+  before_filter :find_company
 
-  def set_company
+  def find_company
     @company = @me.current_company
   end
 

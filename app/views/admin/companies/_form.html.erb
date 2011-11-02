@@ -150,12 +150,12 @@
 	  <h2><%= t("companies.result_accounts") %></h2>
 	  <p>
 	    <%= f.label :result_account_balance_id, t(:result_account_balance, :scope => :companies) %><br />
-	    <%= f.account_select_field :result_account_balance_id %>
+	    <%= f.account_select_field :result_account_balance_id, :company => @company %>
 	  </p>
 	  
 	  <p>
 	    <%= f.label :result_account_result_id, t(:result_account_result, :scope => :companies) %><br />
-	    <%= f.account_select_field :result_account_result_id %>
+	    <%= f.account_select_field :result_account_result_id, :company => @company %>
 	  </p>
 	</td>
       </tr>
