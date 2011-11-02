@@ -2,8 +2,8 @@
 
 <% if @county.is_visible == true %>
     <%= render 'form' %>
-  <% else %>
-	THIS THING IS DELETED ERROR
+<% else %>
+    <%= t(:deleting_county_error, :scope => :counties) -%>	
 <% end %>
 
 <%= link_to 'Show', [:admin, @county] %> |
