@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
 	:trackable, :validatable, :lockable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :assignments_attributes
+  attr_accessible :email, :password, :password_confirmation, :assignments_attributes, :active
 
   self.per_page = 20
 
@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
   def role_symbols
     return @symbols if defined? @symbols
     if self.current_company
+        puts self.current_company
       @symbols = self.assignments.where("company_id is null or company_id = ?", self.current_company.id).map {|a| a.role.name.to_sym}
     else
       @symbols = self.assignments.where("company_id is null").map {|a| a.role.name.to_sym}
@@ -42,6 +43,18 @@ class User < ActiveRecord::Base
 
   def to_s
     return email
+  end
+  
+  def is_user_admin
+    # Get list of all rolles
+    @roles = self.role_symbols
+    if @roles.count(:user_admin) > 0
+        puts "TRUE!!!!!!!!!!!!!!!!!!!!!!!!!11111"
+        return true
+    else
+        puts "FALSE!!!!!!!!!!!!!!!!!!!!!!!!!11111"
+        return false
+    end
   end
 
 end

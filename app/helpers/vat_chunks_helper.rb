@@ -1,0 +1,2 @@
+module VatChunksHelper
+end

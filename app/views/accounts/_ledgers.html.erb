@@ -19,9 +19,7 @@
       <th><%= t(:credit_days, :scope => :accounts) -%></th>
       <th><%= t(:procenttrekk, :scope => :accounts) -%></th>
       <th><%= t(:tabelltrekk, :scope => :accounts) -%></th>
-<!--
-      <th><%= t(:auto_payment, :scope => :accounts) -%></th>
--->
+
       <th><%= t(:placement_top, :scope => :accounts) -%></th>
       <th><%= t(:unit, :scope => :accounts) -%></th>
       <th><%= t(:project, :scope => :accounts) -%></th>
@@ -33,7 +31,6 @@
     <tr class="ledger_item" id="ledger_id_<%= ledger.id %>">
       <td><%= ledger.number -%></td>
 <!--
-      <td><%= link_to ledger.name, edit_account_ledger_path(ledger.account, ledger) -%></td>
 -->
       <td><%= ledger.name -%></td>
       <td><%= ledger.id_number -%></td>
@@ -57,12 +54,11 @@
     <% end %>
 
   </table>
-    <%= javascript_tag "$(document).ready( accounts.makeRowsClickable() );" %>
+  <%# TODO comment this in when it actually does something, maybe %>
+  <%#= javascript_tag "$(document).ready( accounts.makeRowsClickable() );" %>
 
-    <button type="button" onclick="accounts.prepareFormForNewLedger();"><%= t(:new_ledger, :scope => :accounts) -%></button>
+    <a href="<%= new_ledger_path :account_id => @account.id.to_s %>">
+      <%= t(:new_ledger, :scope => :accounts) %>
+    </a>
 
-    <div id="ledger_form_wrapper">
-      <%= render :partial => "ledger_form" %>
-    </div>
-    
 </div>

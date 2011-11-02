@@ -12,14 +12,32 @@
   
   <% for user in @users %>
   <tr>
-    <td><%= user.email %></td>
+    <% if user.active == false %>
+        <td id="dodo-disabled-user">
+    <% else %>
+        <td>
+    <% end %>
+        <%= user.email %>
+    </td>
+    
     <td>
       <%= user.companies.collect{|c| link_to h(c.name), [:admin, c]}.join(", ").html_safe %>
     </td>
+    
     <td>
+    
+    <% permitted_to? :read, :admin_users do %>
       <%= link_to t("global.show"), [:admin, user] %>
+    <% end %>
+    
+    <% permitted_to? :edit, :admin_users do %>
       <%= link_to t("global.edit"), edit_admin_user_path(user) %>
-      <%= link_to t("global.destroy"), [:admin, user], :confirm => t(:delete_confirmation, :scope => :users, :name => user.email), :method => :delete %>
+    <% end %>
+    
+    <% permitted_to? :destroy, :admin_users do %>
+        <%= link_to t("global.destroy"), [:admin, user], :confirm => t(:delete_confirmation, :scope => :users, :name => user.email), :method => :delete %>
+    <% end %>
+    
     </td>
   </tr>
   <% end %>

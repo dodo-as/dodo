@@ -1,5 +1,7 @@
 Dodo::Application.routes.draw do |map|
 
+  resources :vat_chunks
+
 #  resources :weekly_sales
 
   resources :weekly_sale_setup_product_groups
@@ -36,6 +38,7 @@ Dodo::Application.routes.draw do |map|
 
   resources :payment_runs
   resources :cars
+  resources :travel_logs
   resources :units
   resources :projects
   resources :vat_accounts
@@ -47,16 +50,18 @@ Dodo::Application.routes.draw do |map|
   resources :journal_operations
   resources :journals
 
-  resources :companies
+#  match "/company" => "company#show"
+ # match "/company/edit" => "company#edit"
+  resource :company
 
   resources :periods do
     member do
       post :elevate_status
     end
   end
-  resources :accounts do
-    resources :ledgers
-  end
+  resources :accounts 
+  
+  resources :ledgers
   
   #Reports
   resources :reports, :only=>[:index] do

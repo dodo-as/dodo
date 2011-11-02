@@ -1,61 +1,213 @@
 
-<%= form_for([:admin, @company]) do |f| %>
+<%= form_for company, :url=>url do |f| %>
 <%= f.error_messages %>
 
 <div class="dodo-tab-group">
   <ul>
     <li><a href="#dodo-contact"><%= t('companies.contact') %></a></li>
     <li><a href="#dodo-accounting"><%= t('companies.accounting') %></a></li>
+    <li><a href="#dodo-other"><%= t('companies.other') %></a></li>
     <li><a href="#dodo-users"><%= t('companies.users') %></a></li>
   </ul>
 
   <div id="dodo-contact">
+
+    <table>
+      <tr>
+	<td>
     <% if @company.new_record? %>
     <p>
       <%= f.label :template_company_id %><br />
       <%= f.select :template_company_id, Company.all.map {|c| [c.name, c.id]}, :include_blank => t("admin.companies.select_template_company") %>
     </p>
     <% end %>
-
+    
     <p>
       <%= f.label :name, t(:name, :scope => :companies) %><br />
-      <%= f.text_field :name %>
+      <%= f.text_field :name, :class => "dodo-validate-mandatory" %>
     </p>
+
+    <h2><%= t('companies.visiting_address') %></h2>
+
+    <p>
+      <%= render :partial => "addresses/nested_form", :locals => { :parent => f, :field_name => :visiting_address } %>
+    </p>
+
     <p>
       <%= f.label :organization_number, t(:organization_number, :scope => :companies) %><br />
       <%= f.text_field :organization_number %>
     </p>
 
+</td><td>
+
+    <h2><%= t('companies.billing_address') %></h2>
+    <button type="button" onclick="dodo.copyAddress('company_visiting','company_billing')">
+      <%= t("companies.copy_from_visiting") %>
+    </button>
+
     <p>
-      <%= render :partial => "addresses/form", :locals => { :address => @company.visiting_address } %>
+      <%= render :partial => "addresses/nested_form", :locals => { :parent => f, :field_name => :billing_address } %>
+
     </p>
+
+    <p>
+      <%= f.check_box :show_turnover %><%= f.label :show_turnover, t(:show_turnover, :scope => :companies) %>
+    </p>
+    <p>
+      <%= f.label :bill_comment_top, t(:bill_comment_placement, :scope => :companies) %><br />
+      <%= f.select :bill_comment_top, { t("companies.top")=> true, t("companies.bottom")=> false }, :selected => @company.bill_comment_top %>
+    </p>
+
+    <p>
+      <%= f.label :bill_line_comment_top, t(:bill_line_comment_placement, :scope => :companies) %><br />
+      <%= f.select :bill_line_comment_top, { t("companies.bottom")=> false, t("companies.top")=> true  } %>
+    </p>
+</td><td>
+
+    <h2><%= t('companies.delivery_address') %></h2>
+    <button type="button" onclick="dodo.copyAddress('company_visiting','company_delivery')">
+      <%= t("companies.copy_from_visiting") %>
+    </button>
+
+    <p>
+      <%= render :partial => "addresses/nested_form", :locals => { :parent => f, :field_name => :delivery_address } %>
+    </p>
+</td><td>
+
+    <h2><%= t('companies.contact_information') %></h2>
+    <% [[:telephone_number, "dodo-validate-phone"], [:fax, "dodo-validate-phone"], [:mobile_number, "dodo-validate-phone"], [:email, "dodo-validate-email"], [:web_site] ].each{ |it|
+       sym = it[0]
+       cls = ""
+       if it.length > 1 
+         cls = it[1]
+       end
+       %>
+    <p>
+      <%= f.label sym, t(sym, :scope => :global) %><br />
+      <%= f.text_field sym, :class => cls %>
+    </p>
+    <% } %>
+</td>
+</tr>
+</table>
+
   </div>
+
   <div id="dodo-accounting">
-    baberiba
+    <table>
+      <tr>
+	<td>
+    <h2><%= t("companies.accounts") %></h2>
+    <p>
+      <%= f.label :bank_account, t(:bank_account, :scope => :companies) %><br />
+      <%= f.text_field :bank_account %>
+    </p>
+    
+    <h2><%= t("companies.interest") %></h2>
+    <p>
+      <%= f.label :interest_rate, t(:interest_rate, :scope => :companies) %><br />
+      <%= f.text_field :interest_rate, :class => "dodo-validate-float" %>
+    </p>
+    <p>
+      <%= f.label :late_fee, t(:late_fee, :scope => :companies) %><br />
+      <%= f.text_field :late_fee, :class => "dodo-validate-float" %>
+    </p>
+
+    <h2><%= t("companies.shares") %></h2>
+    <p>
+      <%= f.label :share_value, t(:share_value, :scope => :companies) %><br />
+      <%= f.text_field :share_value, :class => "dodo-validate-float" %>
+    </p>
+    <p>
+      <%= f.label :share_count, t(:share_count, :scope => :companies) %><br />
+      <%= f.text_field :share_count, :class => "dodo-validate-integer" %>
+    </p>
+    <p>
+      <%= f.label :incorporation_date, t(:incorporation_date, :scope => :companies) %><br />
+      <%= f.text_field :incorporation_date, :class => "datepicker dodo-validate-date" %>
+    </p>
+	</td>
+	<td>
+    <h2><%= t("companies.accounting") %></h2>
+    <%
+       JournalType.all.each {
+       |type|
+       nam = "journal_type["+type.id.to_s+ "]"
+       cnt = type.counter(@company)
+       %>
+    <%= hidden_field nam, :id, :value => cnt.id %>
+    <p>
+      <%= label nam, :counter, type.name %><br>
+      <%= text_field nam, :counter, :value => cnt.counter %>
+      <%= check_box(nam, :adjust_outside_of_sequence, :checked => cnt.adjust_outside_of_sequence) %>
+      <%= label nam, :adjust_outside_of_sequence, t("companies.adjust_outside_of_sequence") %>
+    </p>
+    <%
+       } 
+       %>
+	</td>
+	<td>    
+	  <h2><%= t("companies.result_accounts") %></h2>
+	  <p>
+	    <%= f.label :result_account_balance_id, t(:result_account_balance, :scope => :companies) %><br />
+	    <%= f.account_select_field :result_account_balance_id, :company => @company %>
+	  </p>
+	  
+	  <p>
+	    <%= f.label :result_account_result_id, t(:result_account_result, :scope => :companies) %><br />
+	    <%= f.account_select_field :result_account_result_id, :company => @company %>
+	  </p>
+	</td>
+      </tr>
+    </table>
+  </div>
+  
+  <div id="dodo-other">
+    <h2><%= t("companies.other") %></h2>
+    <p>
+      <%= f.label :information, t("companies.information") %><br />
+      <%= f.text_area :information %>
+    </p>
+
+    <p>
+      <%= f.label :deliver_terms, t("companies.deliver_terms") %><br />
+      <%= f.text_field :deliver_terms %>
+    </p>
+
+    <p>
+      <%= f.label :payment_terms, t("companies.payment_terms") %><br />
+      <%= f.text_field :payment_terms %>
+    </p>
   </div>
 
   <div id="dodo-users">
+    
     <p>
       <%= t(:users, :scope => :companies) %><br />
-
       <%= f.fields_for :assignments do |assignment| %>
-
-      <%= assignment.select :user_id, User.all.map {|p| [p.email, p.id]}, :include_blank => "Add user" %>
-      <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, :include_blank => "Select role" %>
-
+    
       <% unless assignment.object.new_record? %>
-      <%= assignment.check_box '_destroy' %>
-      <%= assignment.label '_destroy' %>
-      <% end %>
-
+        <% if assignment.object.user.active %>
+            <% if (assignment.object.user == current_user && assignment.object.role.name == "user_admin")%>
+                <%= assignment.select :user_id, company.users.where(:active => true).map {|p| [p.email, p.id]}, {:include_blank => "Add user"}, :disabled => "disabled" %>
+                <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, {:include_blank => "Select role"}, :disabled => "disabled" %>
+            <% else %>
+                <%= assignment.select :user_id, company.users.where(:active => true).uniq.map {|p| [p.email, p.id]}, {:include_blank => "Add user"} %>
+                <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, {:include_blank => "Select role"} %>
+            <% end %>
+      
+            <%= assignment.check_box '_destroy' %>
+            <%= assignment.label '_destroy' %>
       <br />
+        <% end %>
+      <% end %>
+      
 
       <% end %>
     </p>
   </div>
 
-
   <p>
-    <%= f.submit t(:save, :scope => :companies) %>
+    <%= f.submit t(:save, :scope => :global), :class => "dodo-validate-submit" %>
   </p>
   <% end %>

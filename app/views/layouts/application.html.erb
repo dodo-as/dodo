@@ -12,9 +12,12 @@
   <%= stylesheet_link_tag 'jquery-ui' %>
   <%= javascript_include_tag :defaults %>
   <%= javascript_include_tag "dodo" %>
+  <%= javascript_include_tag "date" %>
   <%= javascript_include_tag "journals" %>
   <%= javascript_include_tag "payment_runs" %>
   <%= javascript_include_tag "jquery-ui" %>
+  <%= javascript_include_tag "submitaction" %>
+  <%= javascript_include_tag "validateField" %>
 </head>
 <body>
   <div class='main_menu'>
@@ -39,9 +42,9 @@
       <li><%= link_to t(:chart_of_accounts, :scope => :layout), accounts_path %></li>
       <li><%= link_to t(:vat_plan, :scope => :layout), vat_accounts_path %></li>
       <li><%= link_to t(:journals, :scope => :layout), journals_path %></li>
-      <li><%= link_to t(:projects, :scope => :layout), projects_path %></li>
-      <li><%= link_to t(:cars, :scope => :layout), cars_path %></li>
       <li><%= link_to t(:units, :scope => :layout), units_path %></li>
+      <li><%= link_to t(:cars, :scope => :layout), cars_path %></li>
+      <li><%= link_to t(:projects, :scope => :layout), projects_path %></li>
       <li><%= link_to t(:products, :scope => :layout), products_path %></li>
       <li><%= link_to t(:orders, :scope => :layout), orders_path %></li>
       <li><%= link_to t(:bills, :scope => :layout), bills_path %></li>
@@ -52,11 +55,13 @@
       <li><%= link_to t(:paycheck_periods, :scope => :layout), paycheck_periods_path %></li>
       <li><%= link_to t(:weekly_sales, :scope => :layout), weekly_sales_path %></li>
       <li><%= link_to t(:reports, :scope => :layout), reports_path %></li>
+      <li><%= link_to t("vat_chunks.vat_chunks"), vat_chunks_path %></li>
       <li>
 	<%= t(:logged_in_as, :scope => :layout) -%> <%= current_user.email %> (<%= link_to t(:log_out, :scope => :layout), destroy_user_session_path %>)
       </li>
 
       <li><%= link_to t(:payment_run, :scope => :layout), payment_runs_path %></li>
+      
       
       <li class="change_company_form">
       <%= form_tag change_company_path, :method => :put do -%>
@@ -65,7 +70,14 @@
                                                               if current_user.current_company.nil? then 0 else current_user.current_company.id end ) %>
         <% end %>
         <script>submitAction.registerSubmitAction('#current_company', 'change', '.change_company_form form');</script>
+         (<%= link_to "#{t(:edit, :scope => :global)}", edit_company_path %>)
       </li>
+      
+<!--
+      <% %>#if current_user.is_user_admin %>
+        <li><%= %># link_to t(:user_administration, :scope => :layout), admin_users_path %></li>
+      <% %> #end %>
+-->
       
       <% else %>
       <li><%= link_to "Til forsiden", root_path  %></li>

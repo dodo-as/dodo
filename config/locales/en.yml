@@ -41,6 +41,12 @@ en:
       delimiter: ","
 
   global:
+    "yes": "Yes"
+    telephone_number: "Telephone"
+    fax: "Fax"
+    mobile_number: "Mobile"
+    email: "Email"
+    web_site: "Web site"
     show: Show
     edit: Edit
     update: Update
@@ -59,6 +65,8 @@ en:
     filter: Filter
     description: Description
     amount: Amount
+    "no": "No"
+    unknown_date: '?'
   admin:
     companies:
       select_template_company: Select company as template
@@ -80,7 +88,7 @@ en:
     log_out: "Log out"
     active_company: "Active company"
     vat_plan: "VAT plan"
-    weekly_sales: "Weekly Sales"
+    weekly_sales: "Weekly sales"
     tax_zones: Tax zones
     tax_zone_taxes: Tax rates
     counties: Counties
@@ -141,15 +149,13 @@ en:
     editing_account: "Editing account"
     save: "Save"
     ledger_accounts: "Ledger accounts"
-    telephone_number: "Telephone"
-    mobile_number: "Mobile"
-    email: "Email"
     credit_days: "Credit days"
     auto_payment: "Auto payment"
     placement_top: "Placement top"
     unit: "Default unit"
     project: "Default project"
     new_ledger: "New ledger"
+    add_ledger: "Add ledger"
     ledger_bank_number: "Bank number"
     foreign_bank_number: "Foreign bank number"
     net_bank: "Net bank"
@@ -164,7 +170,6 @@ en:
     tabelltrekk: "Tax, table"
     work_start: "Employment start date"
     work_stop: "Employment termination date"
-    add_ledger: "Add ledger"
   ledgers:
     ledger_saved: Ledger %{name} saved
   vat:
@@ -198,23 +203,27 @@ en:
     destroy: "Destroy"
     new_journal: "New %{type} journal"
     back: "Back"
-    new_journal_operation: "Ny postering"
-    vat: "Mva"
-    details: "Detaljer"
-    account: "Konto"
-    debit: "Debet"
-    credit: "Kredit"
-    balance: "Saldo"
-    in: "Inn"
-    out: "Ut"
-    unit: "Avdeling"
-    due_date: "Forfallsdato"
+    new_journal_operation: "New operation"
+    vat: "VAT"
+    details: "Details"
+    account: "Account"
+    debit: "Debit"
+    credit: "Credit"
+    balance: "Balance"
+    in: "In"
+    out: "Out"
+    unit: "Unit"
+    due_date: "Due date"
     kid: "KID"
-    invoice: "Faktura?"
-    text: "Tekst"
-    save: "Lagre"
+    invoice: "Invoice?"
+    text: "Text"
+    save: "Save"
     editing_journals: "Editing journal entry"
+    defaults: Defaults
   companies:
+    visiting_address: Visiting address
+    billing_address: Billing address
+    delivery_address: Delivery address
     users: "Users"
     contact: Contact
     accounting: Accounting
@@ -223,14 +232,36 @@ en:
     organization_number: "Org. number"
     address: "Address"
     show: "Show"
-    edit: "Edit"
-    destroy: "Destroy"
     new_company: "New company"
     destroy_confirmation: "Confirm deleting the company %{name}"
-    back: "Back"
     editing_company: "Editing company"
-    save: "Save"
     accounts: "Chart of accounts"
+    show_turnover: Show turnover
+    bill_comment_placement: Bill comment placement
+    bill_line_comment_placement: Bill line comment placement
+    top: Top
+    bottom: Bottom      
+    copy_from_visiting: Copy visiting address
+    contact_information: Contact information
+    bank_account: Bank account
+    accounts: Accounts
+    adjust_outside_of_sequence: Adjust outside of sequence
+    other: Other
+    interest_rate: Interest rate
+    late_fee: Late fee
+    share_value: Share value
+    share_count: Share count
+    incorporation_date: Incorporation date
+    result_account_balance: Result account balance
+    result_account_result: Result account result
+    information: Information	 
+    deliver_terms: Delivery terms
+    payment_terms: Payment terms
+    result_accounts: Result accounts
+    shares: Shares
+    interest: Interest
+  vat_chunks:
+    vat_chunks: Vat chunks
   address:
     address: "Address"
     name: Name
@@ -240,6 +271,7 @@ en:
     town: City
     country: Country
   units:
+    unit: Unit
     header_index: Listing units
     header_edit: Editing unit
     new: New unit
@@ -247,6 +279,7 @@ en:
     address: Address
     comments: Comments
   cars:
+    car: Car
     header_edit: Edit car
     header_new: New car
     header_index: Listing cars
@@ -257,6 +290,9 @@ en:
     new: New car
     from: From
     to: To
+  travel_logs:
+    new: New entry
+    header_index: Travel entries
     
   products:
     listing_products: Listing products
@@ -430,9 +466,6 @@ en:
     expenses: Expenses
     ledger_balance_period: Ledger Balance Period
 
-  cars:
-    car: Car
-
   projects:
     edit_project: Editing project
     new_project: New project
@@ -443,5 +476,9 @@ en:
     login: Log in as a regular user
     maintainance: Log in in the administration backend
     welcome: Welcome to Dodo
+
+  period_picker: 
+    first_period: First period
+    last_period: Last period
 
 

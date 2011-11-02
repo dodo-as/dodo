@@ -23,17 +23,22 @@ class LedgersController < ApplicationController
   
   def create
     @ledger = Ledger.new(params[:ledger])
-    @ledger.account_id = params[:account_id]
     raise "account does not belong to active company" if @ledger.account.company != @me.current_company
-    if @ledger.save
-      respond_to do |format|
-        format.json { render :json => @ledger.to_json(:include => {:unit => {}, :project => {} }) }
-        format.html { redirect_to @ledger.account }
-        format.xml { head :ok }
-      end
-    else
-      flash[:ledger] = @ledger
-      raise @ledger.errors.full_messages.join(", ")
+    if @ledger.credit_days.blank?
+        @ledger.credit_days = 0
+    end
+    respond_to do |format|
+        if @ledger.save
+            format.json { render :json => @ledger.to_json(:include => {:unit => {}, :project => {} }) }
+            format.html { redirect_to @ledger.account, :notice => "Ledger created" }
+            format.xml { head :ok }
+        else
+        puts @ledger.errors
+        
+          #~ flash[:ledger] = @account
+          #~ raise @ledger.errors.full_messages.join(", ")
+            format.html { render :action => 'edit'}
+        end
     end
   end
 
@@ -54,14 +59,9 @@ class LedgersController < ApplicationController
     @ledger = Ledger.new(:account => @account)
     @ledger.address = Address.new
     respond_to do |format|
-      format.json { render :json => @ledger.to_json(:include => [:account,
-                                                                 :address,
-                                                                 :unit,
-                                                                 :project]
-                                                    )
-      }
-      @account = @ledger.account
-      format.html { render :partial => "accounts/ledger_form", :locals => {:account => @account, :ledger => @ledger} }
+      #~ format.html { render :partial => "accounts/ledger_form", :locals => {:account => @account, :ledger => @ledger} }
+              format.html { render :action => 'edit', :locals => {:account => @account, :ledger => @ledger} }
+
     end
   end
 
@@ -74,7 +74,7 @@ class LedgersController < ApplicationController
                                                     )
       }
       @account = @ledger.account
-      format.html { render :partial => "accounts/ledger_form", :locals => {:account => @account, :ledger => @ledger} }
+      format.html { render :partial => "form", :locals => {:account => @account, :ledger => @ledger} }
     end
   end
 

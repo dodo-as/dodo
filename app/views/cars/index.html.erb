@@ -3,6 +3,8 @@
 <table>
   <tr>
     <th><%= t('cars.name') %></th>
+    <th><%= t('cars.car_type') %></th>
+    <th><%= t('global.valid_for') %></th>
     <th><%= t('cars.comments') %></th>
     <th></th>
   </tr>
@@ -10,6 +12,8 @@
 <% @cars.each do |car| %>
   <tr>
     <td><%= car.name %></td>
+    <td><%= car.car_type %></td>
+    <td><%= car.from || t('global.unknown_date') %> - <%= car.to || t('global.unknown_date') %></td>
     <td><%= car.comments %></td>
     <td>
       <%= link_to t("global.show"), car %>

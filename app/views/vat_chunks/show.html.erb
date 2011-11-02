@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Number:</b>
+  <%= @vat_chunk.number %>
+</p>
+
+<p>
+  <b>Start date:</b>
+  <%= @vat_chunk.start_date %>
+</p>
+
+<p>
+  <b>Stop date:</b>
+  <%= @vat_chunk.stop_date %>
+</p>
+
+<p>
+  <b>Account:</b>
+  <%= @vat_chunk.account %>
+</p>
+
+
+<%= link_to 'Edit', edit_vat_chunk_path(@vat_chunk) %> |
+<%= link_to 'Back', vat_chunks_path %>

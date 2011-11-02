@@ -4,6 +4,7 @@
   */
   var DODO = {
     carList: <%= raw(@cars_all.all.to_json) %>,
+    unitList: <%= raw(@units_all.all.to_json) %>,
     projectList: <%= raw(@projects_all.all.to_json) %>,
     accountList: <%= raw(@accounts_all.to_json) %>,
     journalOperationList: <%= raw(@journal.journal_operations.all.to_json) %>,
@@ -87,15 +88,6 @@
 </p>
 
 <p>
-  <%= f.label :unit_id, t("journals.unit") %><br />
-  <%= if @readonly then
-       @journal.unit
-     else 
-       f.select :unit_id, @me.current_company.units.collect {|p| [ p, p.id ] } 
-     end %>
-</p>
-
-<p>
 <% if !@readonly %>
   <button onClick='journals.addAccountLine();' type='button'><%= t(:new_journal_operation, :scope => :journals) -%></button>
 <% end %>
@@ -104,6 +96,29 @@
   <input type='checkbox' id='details' onchange='journals.toggleVisibility();'/><label for='details'><%= t(:details, :scope => :journals) -%></label>
 
 </p>
+
+<b><%= t('journals.defaults') %></b>
+<p>
+  <table id='defaults_table'>
+    <tr>
+      <th>
+        <%= t('units.unit') %>
+      </th>
+      <th>
+        <%= t('cars.car') %>
+      </th>
+      <th>
+        <%= t('projects.project') %>
+      </th>
+    </tr>
+    <tr>
+        <td><%= f.select :default_unit, Unit.where(:company_id => current_user.current_company.id).map { |p| [p.name, p.id] } %>
+        <td><%= f.select :default_car, Car.where(:company_id => current_user.current_company.id).map { |p| [p.name, p.id] } %>
+        <td><%= f.select :default_project, Project.where(:company_id => current_user.current_company.id).map { |p| [p.name, p.id] } %>
+    </tr>
+  </table>
+</p>
+
 <p>
   <table class='striped' id='operations_table'>
     <thead>
@@ -134,6 +149,9 @@
 	</th>
 	<th>
 	  <%= t(:vat, :scope => :journals) %>
+	</th>
+	<th>
+	  <%= t(:unit, :scope => :units) %>
 	</th>
 	<th>
 	  <%= t(:car, :scope => :cars) %>

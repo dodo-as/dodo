@@ -9,6 +9,21 @@ body
     margin: 0%;
 }
 
+#dodo-disabled-user
+{
+    background: gray;
+}
+
+.dodo-validate-mandatory 
+{
+    background: yellow;
+}
+.field_with_errors
+{
+    color: red;
+    font-weight: bold;
+}
+
 body
 {
     font-size: 80%;
@@ -513,3 +528,6 @@ iframe
 #operations_table input {
     width: 5em;
 }
+
+
+

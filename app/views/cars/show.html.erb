@@ -10,7 +10,7 @@
 
 <p>
   <b><%= t('global.valid_for') %>:</b>
-  <%= @car.from %> - <%= @car.to %>
+  <%= @car.from || t('global.unknown_date') %> - <%= @car.to || t('global.unknown_date') %>
 </p>
 
 <p>
@@ -18,10 +18,8 @@
   <%= @car.comments %>
 </p>
 
-<p>
-  <b><%= t('cars.odometer') %>:</b>
-  <%= @car.odometer %>
-</p>
+<%= render :partial => "/travel_logs/index", :locals => { :travel_logs => @car.travel_logs, :readonly => @readonly }  %>
+
 
 <% if permitted_to? :edit, @car %>
   <%= link_to t('global.edit'), edit_car_path(@car) %> |

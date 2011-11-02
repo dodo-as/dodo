@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  number: 1
+  start_date: 2011-10-28
+  stop_date: 2011-10-28
+  company: 1
+  account: 1
+
+two:
+  number: 1
+  start_date: 2011-10-28
+  stop_date: 2011-10-28
+  company: 1
+  account: 1
