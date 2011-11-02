@@ -548,6 +548,7 @@ var journals = {
 	{
 	    journals.update();
 	}
+    journals.filterSelectors();
     },
 
     /**
@@ -566,9 +567,9 @@ var journals = {
             journals.update();
             }
         $("#journal_journal_date")[0].onchange = function (e) {
-            journals.filterSelectos();
+            journals.filterSelectors();
         }
-        journals.filterSelectos();
+        journals.filterSelectors();
     },
     
     columnOf: function(input)
@@ -688,7 +689,7 @@ var journals = {
     //~ deletes values from selector and adds filtered values depending on the
     //~ journal date. Finaly it restores selected value if possible. 
     
-    filterSelectos : function () {
+    filterSelectors : function () {
             journals.updateUnitSel();
             journals.updateCarSel();
             journals.updateProjectSel();

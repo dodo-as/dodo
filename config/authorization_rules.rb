@@ -4,7 +4,7 @@ authorization do
     has_permission_on :authorization_rules, :to => :manage
     has_permission_on :authorization_usages, :to => :manage
     has_permission_on :admin_companies, :to => :manage
-    has_permission_on :admin_users, :to => :manage
+    has_permission_on :admin_users, :to => [:create, :read, :update, :edit]
     has_permission_on :admin_admins, :to => :manage
     has_permission_on :admin_company, :to => :manage
     has_permission_on :admin_counties, :to => :manage

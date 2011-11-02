@@ -181,20 +181,27 @@
   </div>
 
   <div id="dodo-users">
+    
     <p>
       <%= t(:users, :scope => :companies) %><br />
-
       <%= f.fields_for :assignments do |assignment| %>
-
-      <%= assignment.select :user_id, User.all.map {|p| [p.email, p.id]}, :include_blank => "Add user" %>
-      <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, :include_blank => "Select role" %>
-
+    
       <% unless assignment.object.new_record? %>
-      <%= assignment.check_box '_destroy' %>
-      <%= assignment.label '_destroy' %>
+        <% if assignment.object.user.active %>
+            <% if (assignment.object.user == current_user && assignment.object.role.name == "user_admin")%>
+                <%= assignment.select :user_id, company.users.where(:active => true).map {|p| [p.email, p.id]}, {:include_blank => "Add user"}, :disabled => "disabled" %>
+                <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, {:include_blank => "Select role"}, :disabled => "disabled" %>
+            <% else %>
+                <%= assignment.select :user_id, company.users.where(:active => true).uniq.map {|p| [p.email, p.id]}, {:include_blank => "Add user"} %>
+                <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, {:include_blank => "Select role"} %>
+            <% end %>
+      
+            <%= assignment.check_box '_destroy' %>
+            <%= assignment.label '_destroy' %>
+      <br />
+        <% end %>
       <% end %>
       
-      <br />
 
       <% end %>
     </p>

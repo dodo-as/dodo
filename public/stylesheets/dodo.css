@@ -9,6 +9,10 @@ body
     margin: 0%;
 }
 
+#dodo-disabled-user
+{
+    background: gray;
+}
 
 .dodo-validate-mandatory 
 {
