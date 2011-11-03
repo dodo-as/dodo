@@ -158,7 +158,7 @@ class Company < ActiveRecord::Base
   def get_current_vat_account_periods curdate
 
     ar = []
-    vat_accounts.each do |a|
+    vat_accounts.sort_by {|s| [s.code]}.each do |a|
       # potential valid periods
       p = VatAccountPeriod.where(:vat_account_id => a).where("valid_from <= ?", curdate).sort_by(&:valid_from)
       unless p.empty?
@@ -166,14 +166,14 @@ class Company < ActiveRecord::Base
       end
     end
 
-    ar.sort_by(&:id)
+    ar
       
   end
 
   # find the rest of the periods
   def get_noncurrent_vat_account_periods curdate
 
-    VatAccountPeriod.where(:vat_account_id => vat_accounts).sort_by { |p| [p.vat_account_id, p.valid_from] } - get_current_vat_account_periods(curdate)
+    VatAccountPeriod.where(:vat_account_id => vat_accounts).sort_by { |p| [VatAccount.where(:id => p.vat_account_id).last.code, p.valid_from] } - get_current_vat_account_periods(curdate)
       
   end
 

@@ -9,24 +9,27 @@
     <th><%= t('vat.overridable') -%></th>
     <th><%= t('vat.valid_from') -%></th>
     <th></th>
+    <th></th>
   </tr>
 
-<% tempdate = '1997-01-01' %>
+<% tempdate = '2997-01-01' %>
 
 <% for @period in @me.current_company.get_current_vat_account_periods(tempdate) %>
   <%= form_for @period do |f| %>
     <tr>
-      <td><%= @period.vat_account.id %></td>
+      <%= f.fields_for :vat_account do |vf| %>
+        <td><%= vf.text_field :code, :size => 2 %></td>
+      <% end %>
+
       <td align="right"><%= @period.percentage %></td>
       <td>%</td>
+
       <%= f.fields_for :vat_account do |vf| %>
+        <td><%= @period.vat_account.target_account.number %> -  <%= @period.vat_account.target_account.name %></td>
         <td><%= vf.check_box :overridable %></td>
-        <td><%= vf.text_field :id %></td>
       <% end %>
-      <td><%= f.text_field :percentage %></td>
-      <td><%= @period.vat_account.target_account.number %> -  <%= @period.vat_account.target_account.name %></td>
-      <td><%= @period.vat_account.overridable ? t('vat.override_yes') : t('vat.override_no') %></td>
-      <td><%= @period.valid_from %></td>
+
+      <td><%= f.text_field :valid_from, :class => :datepicker %></td>
       <td><%= f.submit t('global.save') %>
       <td>
         <%= link_to t("global.show"), @period.vat_account %>
@@ -43,7 +46,7 @@
 
 <% for period in @me.current_company.get_noncurrent_vat_account_periods(tempdate) %>
   <tr>
-    <td><%= period.vat_account.id %></td>
+    <td><%= period.vat_account.code %></td>
     <td align="right"><%= period.percentage %></td>
     <td>%</td>
     <td><%= period.vat_account.target_account.number %> -  <%= period.vat_account.target_account.name %></td>

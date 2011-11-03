@@ -26,7 +26,7 @@ class VatAccountPeriodsController < ApplicationController
         format.xml  { head :ok }
       else
         format.html { render :text => "omg strange period update" }#:action => "edit" }
-        format.xml  { render :xml => @vat_account.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @period.errors, :status => :unprocessable_entity }
       end
     end
   end
