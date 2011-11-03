@@ -72,7 +72,9 @@
         <script>submitAction.registerSubmitAction('#current_company', 'change', '.change_company_form form');</script>
          (<%= link_to "#{t(:edit, :scope => :global)}", edit_company_path %>)
       </li>
-      
+      <% permitted_to? :manage, :users do %>
+        <li><%= link_to t(:manage_users, :scope => :global), users_path %></li>
+      <% end %>
 <!--
       <% %>#if current_user.is_user_admin %>
         <li><%= %># link_to t(:user_administration, :scope => :layout), admin_users_path %></li>
