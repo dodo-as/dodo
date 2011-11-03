@@ -4,6 +4,9 @@
     <p>
       <%= f.label :vat_id, t('vat.code') %>: <%= @vat_account.id.to_s %>
     </p>
+    <p>
+    <%= debug @vat_account %>
+    </p>
   <% end %>
   <p>
     <%= f.label :target_account_id, t(:account, :scope => :vat) %><br />

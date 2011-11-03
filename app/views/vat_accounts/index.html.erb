@@ -1,26 +1,36 @@
 <h1><%= t(:listing_vat_accounts, :scope => :vat) -%></h1>
 
+<%= @period = VatAccountPeriod.where(:vat_account_id => @vat_accounts).first %>
+<%= debug @period %>
+<%= form_for (:vat_account_period) do |f| %>
+  <p>meh</p>
+<% end %>
+
 <table class='striped'>
   <tr>
-    <th><%= '@me' + t(:code, :scope => :vat) -%></th>
-    <th><%= t(:account, :scope => :vat) -%></th>
-    <th><%= t(:overridable, :scope => :vat) -%></th>
+    <th><%= t('vat.code') -%></th>
+    <th><%= t('vat.percentage') -%></th>
+    <th></th>
+    <th><%= t('vat.account') -%></th>
+    <th><%= t('vat.overridable') -%></th>
     <th><%= t('vat.valid_from') -%></th>
     <th></th>
   </tr>
 
 <% tempdate = '1997-01-01' %>
 
-<% for period in @me.current_company.get_current_vat_account_periods(tempdate) %>
+<% for @period in @me.current_company.get_current_vat_account_periods(tempdate) %>
   <tr>
-    <td><%= period.vat_account.id %></td>
-    <td><%= period.vat_account.target_account.number %> -  <%= period.vat_account.target_account.name %></td>
-    <td><%= period.vat_account.overridable ? t('vat.override_yes') : t('vat.override_no') %></td>
-    <td><%= period.valid_from %></td>
+    <td><%= @period.vat_account.id %></td>
+    <td align="right"><%= @period.percentage %></td>
+    <td>%</td>
+    <td><%= @period.vat_account.target_account.number %> -  <%= @period.vat_account.target_account.name %></td>
+    <td><%= @period.vat_account.overridable ? t('vat.override_yes') : t('vat.override_no') %></td>
+    <td><%= @period.valid_from %></td>
     <td>
-      <%= link_to t("global.show"), period.vat_account %>
-      <%= link_to t("global.edit"), edit_vat_account_path(period.vat_account) %>
-      <%= link_to t("global.destroy"), period.vat_account, :confirm => t(:confirm_destroy, :scope => :vat, :code => period.vat_account.id), :method => :delete %>
+      <%= link_to t("global.show"), @period.vat_account %>
+      <%= link_to t("global.edit"), edit_vat_account_path(@period.vat_account) %>
+      <%= link_to t("global.destroy"), @period.vat_account, :confirm => t(:confirm_destroy, :scope => :vat, :code => @period.vat_account.id), :method => :delete %>
     </td>
   </tr>
 <% end %>
@@ -32,6 +42,8 @@
 <% for period in @me.current_company.get_noncurrent_vat_account_periods(tempdate) %>
   <tr>
     <td><%= period.vat_account.id %></td>
+    <td align="right"><%= period.percentage %></td>
+    <td>%</td>
     <td><%= period.vat_account.target_account.number %> -  <%= period.vat_account.target_account.name %></td>
     <td><%= period.vat_account.overridable ? t('vat.override_yes') : t('vat.override_no') %></td>
     <td><%= period.valid_from %></td>

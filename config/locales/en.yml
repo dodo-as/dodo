@@ -176,7 +176,7 @@ en:
     listing_vat_accounts: "Listing vat accounts"
     non_current_header: "VAT accounts not currently in use"
     account: "Account"
-    percentage: "Percentage"
+    percentage: "VAT"
     overridable: "Overridable"
     override_yes: "[x]"
     override_no: "[ ]"

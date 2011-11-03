@@ -50,7 +50,8 @@ class VatAccountsController < ApplicationController
       else
 	if @vat_account.save
 	  flash[:notice] = t(:create_success, :scope => :vat)
-	  format.html { redirect_to(@vat_account) }
+	  #format.html { redirect_to(@vat_account) }
+	  format.html { redirect_to(:controller=>'vat_accounts', :action=>'index') }
 	  format.xml  { render :xml => @vat_account, :status => :created, :location => @vat_account }
 	else
 	  format.html { render :action => "new" }
