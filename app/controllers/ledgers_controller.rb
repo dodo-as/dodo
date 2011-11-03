@@ -1,10 +1,11 @@
 class LedgersController < ApplicationController
+
   before_filter :load_ledger, :only => [:show, :edit, :update, :destroy]
   before_filter :right_company, :only => [:show, :edit, :update, :destroy]
-
+  
   attr_accessor :ledger
   around_filter Log.log(:ledger), :only => [:update, :create]
-
+  
   def load_ledger
     @ledger = Ledger.find(params[:id])
 

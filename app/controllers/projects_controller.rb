@@ -1,6 +1,9 @@
 class ProjectsController < ApplicationController
   filter_resource_access
 
+  attr_accessor :project
+  around_filter Log.log(:project), :only => [:update, :create]
+
 
   # GET /projects
   # GET /projects.xml
