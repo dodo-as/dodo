@@ -1,6 +1,10 @@
 <h1>Editing county</h1>
 
-<%= render 'form' %>
+<% if @county.is_visible == true %>
+    <%= render 'form' %>
+<% else %>
+    <%= t(:deleting_county_error, :scope => :counties) -%>	
+<% end %>
 
 <%= link_to 'Show', [:admin, @county] %> |
 <%= link_to 'Back', admin_counties_path %>

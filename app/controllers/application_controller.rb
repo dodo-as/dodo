@@ -30,7 +30,9 @@ class ApplicationController < ActionController::Base
     Authorization.current_user = current_user
     @me = current_user
     current_user.current_company_id = company_id if company_id
-    @company = @me.current_company
+    if @me!=nil
+        @company = @me.current_company
+    end
   end
 
   def company_required
