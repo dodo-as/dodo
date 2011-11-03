@@ -1,7 +1,8 @@
 class VatChunk < ActiveRecord::Base
+  
   belongs_to :company
   belongs_to :account
-
+  
   validates :start_date, :presence=> true
   validates :company_id, :presence=> true
   validates :account_id, :presence=> true

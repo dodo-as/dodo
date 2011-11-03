@@ -1,6 +1,8 @@
 class UnitsController < ApplicationController
   filter_resource_access
 
+  attr_accessor :unit
+  around_filter Log.log(:unit), :only => [:update, :create]
 
   # GET /units
   # GET /units.xml
