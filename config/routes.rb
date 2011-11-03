@@ -1,5 +1,19 @@
 Dodo::Application.routes.draw do |map|
 
+  get "vat_account_periods/index"
+
+  get "vat_account_periods/create"
+
+  get "vat_account_periods/new"
+
+  get "vat_account_periods/edit"
+
+  get "vat_account_periods/show"
+
+  get "vat_account_periods/update"
+
+  get "vat_account_periods/destroy"
+
   resources :vat_chunks
 
 #  resources :weekly_sales
@@ -42,6 +56,7 @@ Dodo::Application.routes.draw do |map|
   resources :units
   resources :projects
   resources :vat_accounts
+  resources :vat_account_periods
   resources :bills
   resources :bill_items
   resources :orders

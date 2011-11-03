@@ -67,18 +67,19 @@ class VatAccountsController < ApplicationController
     @vat_account.attributes = params[:vat_account]
 
     respond_to do |format|
+      # this is pretty ugly isn't it
       if params[:commit] == 'Add period'
-	self.add_period
-	format.html { render :action => "edit" }
-      else
-	if @vat_account.save!
-	  flash[:notice] = t(:update_success, :scope => :vat)
-	  format.html { redirect_to(:controller=>'vat_accounts', :action=>'index') }
-	  format.xml  { head :ok }
-	else
-	  format.html { render :action => "edit" }
-	  format.xml  { render :xml => @vat_account.errors, :status => :unprocessable_entity }
-	end
+        self.add_period
+        format.html { render :action => "edit" }
+          else
+        if @vat_account.save!
+          flash[:notice] = t(:update_success, :scope => :vat)
+          format.html { redirect_to(:controller=>'vat_accounts', :action=>'index') }
+          format.xml  { head :ok }
+        else
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @vat_account.errors, :status => :unprocessable_entity }
+        end
       end
     end
   end

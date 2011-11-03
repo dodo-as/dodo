@@ -194,6 +194,9 @@ en:
     save: "Save"
     create_success: VAT entry created
     update_success: VAT entry updated
+  vat_period:
+    update_success: VAT period created
+    update_success: VAT period updated
   journals:
     viewing_journal: "Journal %{number}"
     editing_journal: "Journal %{number}"
