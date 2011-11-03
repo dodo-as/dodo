@@ -486,4 +486,8 @@ en:
     first_period: First period
     last_period: Last period
 
+  counties:
+    deleting_county_error: This county mustn't be deleted !
+   
+
 
