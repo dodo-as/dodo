@@ -11,6 +11,7 @@ authorization do
     has_permission_on :admin_tax_zones, :to => :manage
     has_permission_on :admin_tax_zone_taxes, :to => :manage
     has_permission_on :admin_county_tax_zones, :to => :manage
+    has_permission_on :admin_admin_logs, :to => :manage
 
     has_permission_on :weekly_sale_setups, :to => :manage do
       if_attribute :company_id => is {user.current_company.id}

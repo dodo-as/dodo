@@ -13,6 +13,7 @@ class Admin::BaseController < ApplicationController
 
   def init_admin_auth
     Authorization.current_user = current_admin
+    @me = current_admin
   end
   #~ 
   #~ def

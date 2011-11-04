@@ -1,6 +1,6 @@
 <h1>Listing logs</h1>
 
-<%= will_paginate @logs %>
+<%= will_paginate @admin_logs %>
 
 <table>
   <tr>
@@ -10,10 +10,10 @@
     <th>Changes</th>
   </tr>
 
-<% @logs.each do |log| %>
+<% @admin_logs.each do |log| %>
   <tr>
     <td><%= log.table_name %></td>
-    <td><%= log.user %></td>
+    <td><%= log.admin %></td>
     <td><%= log.created_at %></td>
     <td>
       <table>

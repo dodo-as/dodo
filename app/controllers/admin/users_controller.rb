@@ -1,5 +1,8 @@
 class Admin::UsersController < Admin::BaseController
 
+  attr_accessor :user
+  around_filter AdminLog.log(:user), :only => [:update, :create]
+
   def new
     @user = User.new
 
@@ -44,7 +47,6 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def update
-    @user = User.find(params[:id])
 
     respond_to do |format|
       # don't update password if blank
