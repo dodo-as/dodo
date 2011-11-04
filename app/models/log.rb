@@ -44,26 +44,37 @@ class Log < ActiveRecord::Base
   end
 
   def changes
+    return self.diff self.old_value, self.new_value
+  end
 
-    def my_flatten_internal source, destination, prefix
+  def self.diff old_value, new_value
+    
+    def self.my_flatten_internal source, destination, prefix
       source.each { |key, value|
         if key != "updated_at"
           if value.class == Hash
             my_flatten_internal value, destination, prefix + key + " "
-          else
-            destination[prefix+key] = value
+          else 
+            if value.class == Array
+              valhash = Hash[value.map {|it| ["element" + it["id"].to_s, it] }]
+              puts "WEEE", value, "=>", valhash, "YAY"
+              my_flatten_internal valhash, destination, prefix + key + " "
+ #             puts destination
+            else
+              destination[prefix+key] = value
+            end
           end
         end
       }
       return destination
     end
-
-    def my_flatten source
+    
+    def self.my_flatten source
       return my_flatten_internal source, {}, ""
     end
 
-    before = ActiveSupport::JSON.decode(self.old_value)
-    after = ActiveSupport::JSON.decode(self.new_value)
+    before = ActiveSupport::JSON.decode(old_value)
+    after = ActiveSupport::JSON.decode(new_value)
 
     if before
         before = my_flatten before.values.first
@@ -77,7 +88,7 @@ class Log < ActiveRecord::Base
       after = {}
     end
     
-    def my_filter k1, k2
+    def self.my_filter k1, k2
       if !k1 && !k2
         return false
       end

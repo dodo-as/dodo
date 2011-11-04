@@ -1,4 +1,8 @@
 class Admin::TaxZonesController < Admin::BaseController
+
+  attr_accessor :tax_zone
+  around_filter AdminLog.log(:tax_zone), :only => [:update, :create]
+  
   # GET /tax_zones
   # GET /tax_zones.xml
   def index

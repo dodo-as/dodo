@@ -1,4 +1,8 @@
 class Admin::CountiesController < Admin::BaseController
+
+  attr_accessor :county
+  around_filter AdminLog.log(:county), :only => [:update, :create]
+
   # GET /counties
   # GET /counties.xml
   def index

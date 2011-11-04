@@ -10,5 +10,9 @@ class Unit < ActiveRecord::Base
     return name
   end
 
+  def log_include
+    [:address]
+  end
+
 end
 

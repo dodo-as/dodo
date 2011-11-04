@@ -29,6 +29,7 @@ Dodo::Application.routes.draw do |map|
   # Sample resource route within a namespace:
 
   namespace :admin do
+    resources :admin_logs
     resources :companies
     resources :users
     resources :admins

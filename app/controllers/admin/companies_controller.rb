@@ -3,6 +3,9 @@ class Admin::CompaniesController < Admin::BaseController
 
   before_filter :find_company, :only => [:show, :edit, :update, :destroy]
 
+  attr_accessor :company
+  around_filter AdminLog.log(:company), :only => [:update, :create]
+
   def find_company
     @company = Company.find(params[:id])
     @company.validate_fields
@@ -17,10 +20,6 @@ class Admin::CompaniesController < Admin::BaseController
       c.validate_fields
     end
     
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @companies }
-    end
   end
 
   # GET /companies/1
@@ -38,11 +37,6 @@ class Admin::CompaniesController < Admin::BaseController
     @company = Company.new
     @company.validate_fields
     3.times { @company.assignments.build }
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @company }
-    end
   end
 
   # GET /companies/1/edit
