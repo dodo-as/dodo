@@ -16,10 +16,7 @@
     
 <% end %>
     <% permitted_to? :manage, :users do %>
-    <p>
-        <%= f.label :active %><br />
-        <%= f.check_box :active %>
-    </p>
+    
     <p>
     <%= t(:companies, :scope => :users) %><br />
     
