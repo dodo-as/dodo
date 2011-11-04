@@ -128,7 +128,7 @@ end %>
     <p>
       <b><%= t(:users, :scope => :companies) -%>:</b>
       <ul>
-	<% @company.users.each do |c| %>
+	<% @company.users.uniq.each do |c| %>
         <% if c.active %>
             <li><%= link_to c.email, admin_user_path(c)%> </li>
         <% end %>

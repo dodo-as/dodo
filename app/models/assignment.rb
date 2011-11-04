@@ -5,5 +5,6 @@ class Assignment < ActiveRecord::Base
 
   validates :role_id, :uniqueness => {:scope => [:user_id, :company_id]}
   accepts_nested_attributes_for :user
+  accepts_nested_attributes_for :role
 
 end

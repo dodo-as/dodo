@@ -77,6 +77,7 @@ Dodo::Application.routes.draw do |map|
     end
   end
 
+  resources :users
 
   match 'welcome/current_company' => 'welcome#current_company', :as => :change_company
   

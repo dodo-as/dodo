@@ -37,7 +37,6 @@ class LedgersController < ApplicationController
             format.html { redirect_to @ledger.account, :notice => "Ledger created" }
             format.xml { head :ok }
         else
-        puts @ledger.errors
         
           #~ flash[:ledger] = @account
           #~ raise @ledger.errors.full_messages.join(", ")

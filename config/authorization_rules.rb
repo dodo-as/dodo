@@ -141,16 +141,18 @@ authorization do
     end
   end
   
-  #~ role :user_admin do
-        #~ has_permission_on :admin_users, :to => :manage
-    #~ # authorization for the admin ui
-  #~ end
+  role :user_admin do
+    includes :user, :accountant, :employee
+    
+        has_permission_on :users, :to => :manage    #~ # authorization for the admin ui
+
+  end
 end
 
 privileges do
 
   # default privs
-  privilege :manage, :includes => [:create, :read, :update, :delete]
+  privilege :manage, :includes => [:create, :read, :update]
   privilege :read,   :includes => [:index, :show]
   privilege :create, :includes => :new
   privilege :update, :includes => :edit

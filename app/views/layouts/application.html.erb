@@ -58,7 +58,7 @@
       <li><%= link_to t("vat_chunks.vat_chunks"), vat_chunks_path %></li>
       <li><%= link_to t("logs.logs"), logs_path %></li>
       <li>
-	<%= t(:logged_in_as, :scope => :layout) -%> <%= current_user.email %> (<%= link_to t(:log_out, :scope => :layout), destroy_user_session_path %>)
+	<%= t(:logged_in_as, :scope => :layout) -%> <%= link_to current_user.email, edit_user_path(current_user) %> (<%= link_to t(:log_out, :scope => :layout), destroy_user_session_path %>)
       </li>
 
       <li><%= link_to t(:payment_run, :scope => :layout), payment_runs_path %></li>
@@ -73,7 +73,9 @@
         <script>submitAction.registerSubmitAction('#current_company', 'change', '.change_company_form form');</script>
          (<%= link_to "#{t(:edit, :scope => :global)}", edit_company_path %>)
       </li>
-      
+      <% permitted_to? :manage, :users do %>
+        <li><%= link_to t(:manage_users, :scope => :global), users_path %></li>
+      <% end %>
 <!--
       <% %>#if current_user.is_user_admin %>
         <li><%= %># link_to t(:user_administration, :scope => :layout), admin_users_path %></li>
