@@ -1,5 +1,7 @@
 <h1><%= t(:listing_vat_accounts, :scope => :vat) -%></h1>
 
+<% tempdate = '2969-01-01' %>
+
 <table class='striped'>
   <tr>
     <th><%= t('vat.code') -%></th>
@@ -12,39 +14,15 @@
     <th></th>
   </tr>
 
-<% tempdate = '2997-01-01' %>
-
 <% for @period in @me.current_company.get_current_vat_account_periods(tempdate) %>
-  <%= form_for @period do |f| %>
-    <tr>
-      <%= f.fields_for :vat_account do |vf| %>
-        <td><%= vf.text_field :code, :size => 2 %></td>
-      <% end %>
-
-      <td align="right"><%= @period.percentage %></td>
-      <td>%</td>
-
-      <%= f.fields_for :vat_account do |vf| %>
-        <td><%= @period.vat_account.target_account.number %> -  <%= @period.vat_account.target_account.name %></td>
-        <td><%= vf.check_box :overridable %></td>
-      <% end %>
-
-      <td><%= f.text_field :valid_from, :class => :datepicker %></td>
-      <td><%= f.submit t('global.save') %>
-      <td>
-        <%= link_to t("global.show"), @period.vat_account %>
-        <%= link_to t("global.edit"), edit_vat_account_path(@period.vat_account) %>
-        <%= link_to t("global.destroy"), @period.vat_account, :confirm => t(:confirm_destroy, :scope => :vat, :code => @period.vat_account.id), :method => :delete %>
-      </td>
-    </tr>
-  <% end %>
+  <%= render :partial => 'period_line' %>
 <% end %>
 
   <tr>
     <th colspan="999" style="text-align:center"><%= t('vat.non_current_header') %></th>
   </tr>
 
-<% for period in @me.current_company.get_noncurrent_vat_account_periods(tempdate) %>
+  <% for period in @me.current_company.get_noncurrent_vat_account_periods(tempdate) %>}
   <tr>
     <td><%= period.vat_account.code %></td>
     <td align="right"><%= period.percentage %></td>
