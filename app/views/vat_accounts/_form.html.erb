@@ -9,8 +9,8 @@
     </p>
   <% end %>
   <p>
-    <%= f.label :target_account_id, t(:account, :scope => :vat) %><br />
-    <%= f.select :target_account_id, @me.current_company.accounts.sort_by {|a| a.number}.collect {|p| [ p.number.to_s + " - " + p.name, p.id ] } %>
+    <%= f.label :target_sales_account_id, t(:account, :scope => :vat) %><br />
+    <%= f.select :target_sales_account_id, @me.current_company.accounts.sort_by {|a| a.number}.collect {|p| [ p.number.to_s + " - " + p.name, p.id ] } %>
   </p>
   <p>
     <%= f.check_box :overridable %>     <%= f.label :overridable, t(:overridable, :scope => :vat) %>

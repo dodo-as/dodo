@@ -74,7 +74,7 @@ class Company < ActiveRecord::Base
       attrs.delete(:created_at)
       attrs.delete(:updated_at)
       attrs.update(:company_id => self.id)
-      attrs.update(:target_account_id => accounts[acc.target_account_id].id)
+      attrs.update(:target_sales_account_id => accounts[acc.target_account_id].id)
       vat_accounts[acc.id] = VatAccount.create!(attrs)
 
       # copy vat_account_periods
@@ -158,7 +158,7 @@ class Company < ActiveRecord::Base
   def get_current_vat_account_periods curdate
 
     ar = []
-    vat_accounts.sort_by {|s| [s.code]}.each do |a|
+    vat_accounts.sort_by {|s| [s.sales_code]}.each do |a|
       # potential valid periods
       p = VatAccountPeriod.where(:vat_account_id => a).where("valid_from <= ?", curdate).sort_by(&:valid_from)
       unless p.empty?
@@ -173,7 +173,7 @@ class Company < ActiveRecord::Base
   # find the rest of the periods
   def get_noncurrent_vat_account_periods curdate
 
-    VatAccountPeriod.where(:vat_account_id => vat_accounts).sort_by { |p| [VatAccount.where(:id => p.vat_account_id).last.code, p.valid_from] } - get_current_vat_account_periods(curdate)
+    VatAccountPeriod.where(:vat_account_id => vat_accounts).sort_by { |p| [VatAccount.where(:id => p.vat_account_id).last.sales_code, p.valid_from] } - get_current_vat_account_periods(curdate)
       
   end
 

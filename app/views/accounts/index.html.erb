@@ -12,7 +12,7 @@
   <tr>
     <td><%= account.number %></td>
     <td><%= account.name %></td>
-    <td><%= (account.vat_account ? account.vat_account.target_account.name : "") %></td>
+    <td><%= (account.vat_account ? account.vat_account.target_sales_account.name : "") %></td>
     <td>
       <%
 	 first=true

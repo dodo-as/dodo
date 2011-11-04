@@ -1,10 +1,12 @@
 class VatAccount < ActiveRecord::Base
   has_many :accounts
   belongs_to :company
-  belongs_to :target_account, :class_name => 'Account'
+  belongs_to :target_sales_account, :class_name => 'Account'
+  belongs_to :target_purchase_account, :class_name => 'Account'
   has_many :vat_account_periods
   
-  validates :code, :uniqueness => true
+  validates :sales_code, :uniqueness => true
+  validates :purchase_code, :uniqueness => true
 
   def vat_account_period_from_date(date)
     (self.vat_account_periods.find_all do |vat_account_period|

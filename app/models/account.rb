@@ -7,8 +7,8 @@ class Account < ActiveRecord::Base
 
   def vat_description
     if self.vat_account
-      if self.vat_account.target_account
-        return self.vat_account.target_account.name
+      if self.vat_account.target_sales_account
+        return self.vat_account.target_sales_account.name
       end
       return "has vat, but invalid"
     end
