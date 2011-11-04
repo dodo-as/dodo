@@ -26,12 +26,9 @@
     </td>
     
     <td>
-    
-      <%= link_to t("global.show"), user %>
-    
-      <%= link_to t("global.edit"), edit_user_path(user) %>
-    
-        <%= link_to t("global.destroy"), user, :method => :delete %>
+        <% permitted_to? :manage, :users do %>
+            <%= link_to t("global.edit"), edit_user_path(user) %>
+        <% end %>
     
     </td>
   </tr>
