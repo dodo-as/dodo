@@ -15,8 +15,10 @@ class UsersController < ApplicationController
     def create
         @user = User.new(params[:user])
         @user.password = RandSmartPass()
+        @user.current_company = @me.current_company
         respond_to do |format|
       if @user.save
+        UserNotifier.send_mail(@user).deliver
         assignment = Assignment.new
         assignment.role = Role.where( :name => "none")[0]
         assignment.user = @user
