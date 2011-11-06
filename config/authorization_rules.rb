@@ -117,6 +117,11 @@ authorization do
     end
 
      has_permission_on :journal_types, :to => :read
+     
+     has_permission_on :users, :to => :edit do
+        if_attribute :id => is {user.id}
+     end
+     
   end
 
   role :accountant do
@@ -147,6 +152,13 @@ authorization do
         has_permission_on :users, :to => :manage    #~ # authorization for the admin ui
 
   end
+  
+  role :none do
+   has_permission_on :users, :to => :edit do
+        if_attribute :id => is {user.id}
+     end
+  end
+  
 end
 
 privileges do
