@@ -78,7 +78,7 @@ Dodo::Application.routes.draw do |map|
   end
 
   resources :users
-
+  resources :assignments
   match 'welcome/current_company' => 'welcome#current_company', :as => :change_company
   
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
