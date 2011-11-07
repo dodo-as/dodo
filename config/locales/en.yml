@@ -67,6 +67,7 @@ en:
     amount: Amount
     "no": "No"
     unknown_date: '?'
+    manage_users: "Manage users"
   admin:
     companies:
       select_template_company: Select company as template
@@ -488,6 +489,7 @@ en:
 
   counties:
     deleting_county_error: This county mustn't be deleted !
-   
-
+  
+  assignment:
+    assignment_apply: "Apply to new company"
 
