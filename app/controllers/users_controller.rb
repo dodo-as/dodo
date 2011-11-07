@@ -1,3 +1,5 @@
+require "random_pass_generator"
+
 class UsersController < ApplicationController
         
     filter_resource_access
@@ -12,9 +14,16 @@ class UsersController < ApplicationController
     
     def create
         @user = User.new(params[:user])
-
+        @user.password = RandSmartPass()
+        @user.current_company = @me.current_company
         respond_to do |format|
       if @user.save
+        UserNotifier.send_mail(@user).deliver
+        assignment = Assignment.new
+        assignment.role = Role.where( :name => "none")[0]
+        assignment.user = @user
+        assignment.company = @me.current_company
+        assignment.save
         flash[:notice] = "User created"
         format.html { redirect_to users_path }
         format.xml { render :xml => @user}
@@ -25,7 +34,7 @@ class UsersController < ApplicationController
     end
     end
 
-def index
+    def index
     @users = @company.users.order(:email).includes(:companies).paginate({:page => params[:page]})
     respond_to do |format|
       format.html # index.html.erb
@@ -33,7 +42,7 @@ def index
     end
   end
   
-  def update
+    def update
   @user = User.find(params[:id])
 
     respond_to do |format|
@@ -44,7 +53,7 @@ def index
       end
       if @user.update_attributes(params[:user])
         flash[:notice] = t(:update_success, :scope => :users)
-        format.html { render :show }
+        format.html { redirect_to users_path }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -63,8 +72,7 @@ def index
   end
     
     def edit
-    @user = User.find(params[:id])
-    
+        @user = User.find(params[:id])
+        3.times { @user.assignments.build }
     end
-
 end

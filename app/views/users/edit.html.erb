@@ -1,62 +1,63 @@
-<h1><%= t(:editing, :scope => :users, :name => @user.email) -%></h1>
+<% if @company.users.where( :email => @user.email).count == 0 %>
+
+    <h1><%= t(:non_member, :scope => :users) %></h1>
+
+<% else %>
+
+    <h1><%= t(:editing, :scope => :users, :name => @user.email) -%></h1>
+
+    <%= form_for @user do |f| %>
+      <%= f.error_messages %>
+      <% if @user == @me %> 
+      <p>
+      <%= f.label :password %><br />
+        <%= f.text_field :password %>
+      </p>
+
+      <p>
+      <%= f.label :password_confirmation %><br />
+        <%= f.text_field :password_confirmation %>
+      </p>
+        
+    <% end %>
+        <% permitted_to? :manage, :users do %>
+        
+        <p>
+        <%= t(:companies, :scope => :users) %><br />
+        
+        <%= f.fields_for :assignments do |assignment| %>
+        
+        <% if assignment.object.role != nil %>
+            <% name = assignment.object.role[:name] %>
+        <% else %>
+            <% name = "" %>
+        <% end %>
+        <% if assignment.object.company == @company  || assignment.object.company == nil %>
+        <% if (assignment.object.user == current_user && name == "user_admin")%>
+          <%= assignment.select :company_id, [[@company.name, @company.id]], {:include_blank => "Select company"}, :disabled => "disabled" %>
+          <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, {:include_blank => "Select role"}, :disabled => "disabled" %>
+        <% else %>
+          <%= assignment.select :company_id, [[@company.name, @company.id]], :include_blank => "Select company" %>
+          <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, :include_blank => "Select role" %>
+            <%= assignment.check_box '_destroy' %>
+            <%= assignment.label '_destroy' %>
+        <% end %>
+          <br />
+        <% end %>
+        <% end %>
+      </p>
+        
+        <% end %>
 
 
-<%= form_for @user do |f| %>
-  <%= f.error_messages %>
-  <% if @user == @me %> 
-  <p>
-  <%= f.label :password %><br />
-    <%= f.text_field :password %>
-  </p>
 
-  <p>
-  <%= f.label :password_confirmation %><br />
-    <%= f.text_field :password_confirmation %>
-  </p>
-    
+
+
+      <p>
+        <%= f.submit t(:update, :scope => :users) %>
+      </p>
+    <% end %>
+
+    <%= link_to t(:show, :scope => :users), [:admin, @user] %> |
+    <%= link_to t(:list, :scope => :users), admin_users_path %>
 <% end %>
-    <% permitted_to? :manage, :users do %>
-    <p>
-        <%= f.label :active %><br />
-        <%= f.check_box :active %>
-    </p>
-    <p>
-    <%= t(:companies, :scope => :users) %><br />
-    
-    <%= f.fields_for :assignments do |assignment| %>
-    
-    <% if assignment.object.role != nil %>
-        <% name = assignment.object.role[:name] %>
-    <% else %>
-        <% name = "" %>
-    <% end %>
-    <% if assignment.object.company == @company  || assignment.object.company == nil %>
-    <% if (assignment.object.user == current_user && name == "user_admin")%>
-      <%= assignment.select :company_id, [[@company.name, @company.id]], {:include_blank => "Select company"}, :disabled => "disabled" %>
-      <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, {:include_blank => "Select role"}, :disabled => "disabled" %>
-        <%= assignment.check_box '_destroy' %>
-        <%= assignment.label '_destroy' %>
-    <% else %>
-      <%= assignment.select :company_id, [[@company.name, @company.id]], :include_blank => "Select company" %>
-      <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, :include_blank => "Select role" %>
-        <%= assignment.check_box '_destroy' %>
-        <%= assignment.label '_destroy' %>
-    <% end %>
-      <br />
-    <% end %>
-    <% end %>
-  </p>
-    
-    <% end %>
-
-
-
-
-
-  <p>
-    <%= f.submit t(:update, :scope => :users) %>
-  </p>
-<% end %>
-
-<%= link_to t(:show, :scope => :users), [:admin, @user] %> |
-<%= link_to t(:list, :scope => :users), admin_users_path %>
