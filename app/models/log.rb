@@ -44,7 +44,8 @@ class Log < ActiveRecord::Base
   end
 
   def changes
-    return self.diff self.old_value, self.new_value
+  puts "AAAAAAAA", self[0]
+    return Log.diff self.old_value, self.new_value
   end
 
   def self.diff old_value, new_value
