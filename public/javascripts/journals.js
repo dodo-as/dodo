@@ -108,13 +108,14 @@ var journals = {
 	    var account = journals.getAccount($('#account_'+i)[0].value);
 	    var vat_account;
         var vat_account_id;
-        console.log(account);
         if (account.vat_account != undefined) {
         //if (false) {
-            vat_account_id = account.vat_account.id;
-            vat_account = account.vat_account.target_sales_account;
+            vat_account_id = account.vat_account.vat_account.id; // wow this is ugly
+            vat_account_tmp = DODO.vatAccountList[vat_account_id];
+            // TODO might be purchase
+            vat_account = DODO.hashedAccountList[vat_account_tmp.vat_account.target_sales_account_id];
             console.log('meh');
-            console.log(account.vat_account);
+            console.log(vat_account);
             console.log('bah');
         } else {
             vat_account_id = '';

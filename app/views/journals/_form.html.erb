@@ -7,6 +7,8 @@
     unitList: <%= raw(@units_all.all.to_json) %>,
     projectList: <%= raw(@projects_all.all.to_json) %>,
     accountList: <%= raw(@accounts_all.to_json) %>,
+    hashedAccountList: <%= raw(@hashed_accounts_all.to_json) %>,
+    vatAccountList: <%= raw(@vat_accounts_all.to_json) %>,
     journalOperationList: <%= raw(@journal.journal_operations.all.to_json) %>,
     readOnly: <%= @readonly?"true":"false" %>
   };
