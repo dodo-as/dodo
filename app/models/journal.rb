@@ -13,7 +13,7 @@ class Journal < ActiveRecord::Base
   end
 
   def open?
-   return (not self.closed)
+    return (not self.closed)
   end
 
   def editable?
@@ -21,10 +21,11 @@ class Journal < ActiveRecord::Base
   end
 
   def self.report_ledger_balance(periods_to_balance, periods_to_balance_previous, 
-            periods_to_balance_last, periods_to_balance_last_previous,
-            periods_to_result, periods_to_result_last,
-            company, unit, project, show_last_period, show_only_active_accounts)
+      periods_to_balance_last, periods_to_balance_last_previous,
+      periods_to_result, periods_to_result_last,
+      company, unit, project,car, show_only_active_accounts)
 
+    #preparing periods to string fromat for sql query.
     unless periods_to_balance.blank?
       _periods_to_balance = periods_to_balance.collect { |p| p.id }.join(",") 
     end
@@ -40,12 +41,15 @@ class Journal < ActiveRecord::Base
     end
 
     unless periods_to_result.blank?
-     _periods_to_result = periods_to_result.collect { |p| p.id }.join(",")
+      _periods_to_result = periods_to_result.collect { |p| p.id }.join(",")
     end
     unless periods_to_result_last.blank?
-     _periods_to_result_last = periods_to_result_last.collect { |p| p.id }.join(",")
+      _periods_to_result_last = periods_to_result_last.collect { |p| p.id }.join(",")
     end
 
+    ###############################
+    ##### calculating balance #####
+    ###############################
     sql = "select id as account_id,  
           max(account_number) as account_number, 
           max(account_name) as account_name, 
@@ -70,13 +74,16 @@ class Journal < ActiveRecord::Base
             where journals.company_id = #{company.id}
             and periods.id in (#{_periods_to_balance}) 
             and accounts.is_result_account = false"
-        unless unit.blank?
-          sql += " and journal_operations.unit_id = #{unit.id}"
-        end  
-        unless project.blank?
-          sql += " and journal_operations.project_id = #{project.id}"
-        end  
-        sql +=" group by accounts.id "
+      unless unit.blank?
+        sql += " and journal_operations.unit_id = #{unit.id}"
+      end
+      unless project.blank?
+        sql += " and journal_operations.project_id = #{project.id}"
+      end
+      unless car.blank?
+        sql += " and journal_operations.car_id = #{car.id}"
+      end
+      sql +=" group by accounts.id "
     end
     unless _periods_to_balance_last.blank?           
       sql += " -- last period, account balance
@@ -98,7 +105,10 @@ class Journal < ActiveRecord::Base
       end  
       unless project.blank?
         sql += " and journal_operations.project_id = #{project.id}"
-      end  
+      end
+      unless car.blank?
+        sql += " and journal_operations.car_id = #{car.id}"
+      end
       sql +=" group by accounts.id "
     end   
     unless _periods_to_balance_previous.blank?  
@@ -121,7 +131,10 @@ class Journal < ActiveRecord::Base
       end  
       unless project.blank?
         sql += " and journal_operations.project_id = #{project.id}"
-      end  
+      end
+      unless car.blank?
+        sql += " and journal_operations.car_id = #{car.id}"
+      end
       sql +=" group by accounts.id "
     end
     unless _periods_to_balance_last_previous.blank?
@@ -144,7 +157,10 @@ class Journal < ActiveRecord::Base
       end  
       unless project.blank?
         sql += " and journal_operations.project_id = #{project.id}"
-      end  
+      end
+      unless car.blank?
+        sql+= " and journal_operations.car_id = #{car.id}"
+      end
       sql +=" group by accounts.id "
     end
     if show_only_active_accounts.blank?
@@ -178,7 +194,7 @@ class Journal < ActiveRecord::Base
     total_accounts_2000 = 0
 
     balance.each do |row|      
-      row["balance_period"] = row.total_last_period.to_f + row.total_period_previous.to_f
+      row["balance_period"] = row.total_period.to_f + row.total_period_previous.to_f
       row["balance_last_period"] = row.total_last_period.to_f + row.total_last_period_previous.to_f
       total_period_previous += row["total_period_previous"].to_f
       total_period += row["total_period"].to_f
@@ -186,11 +202,13 @@ class Journal < ActiveRecord::Base
       total_last_period_previous += row["total_last_period_previous"].to_f
       total_last_period += row["total_last_period"].to_f
       total_balance_last_period += row["balance_last_period"]
-      total_accounts_1000 += row["balance_period"] if row["account_number"][0,1] == '1'
-      total_accounts_2000 += row["balance_period"] if row["account_number"][0,1] == '2'
+      case row["account_number"].to_i
+      when 1000..1999 then total_accounts_1000 += row["balance_period"]
+      when 2000..2999 then total_accounts_2000 += row["balance_period"]
+      end
     end
     total_balance =  Hash.new 
-    total_balance["total_period_previos"]=total_period_previous
+    total_balance["total_period_previous"]=total_period_previous
     total_balance["total_period"]=total_period
     total_balance["total_balance_period"] = total_balance_period
     total_balance["total_last_period_previous"] = total_last_period_previous
@@ -199,6 +217,10 @@ class Journal < ActiveRecord::Base
     total_balance["total_accounts_1000"] = total_accounts_1000
     total_balance["total_accounts_2000"] = total_accounts_2000
 
+
+    ###############################
+    ##### calculating result ######
+    ###############################
     sql = "
         -- accounts results
         select id as account_id,  
@@ -223,7 +245,10 @@ class Journal < ActiveRecord::Base
       end  
       unless project.blank?
         sql += " and journal_operations.project_id = #{project.id}"
-      end  
+      end
+      unless car.blank?
+        sql += " and journal_perations.car_id = #{car.id}"
+      end
       sql +=" group by accounts.id "
     end
     unless _periods_to_result_last.blank?
@@ -244,7 +269,10 @@ class Journal < ActiveRecord::Base
       end  
       unless project.blank?
         sql += " and journal_operations.project_id = #{project.id}"
-      end  
+      end
+      unless car.blank?
+        sql += " and journal_perations.car_id = #{car.id}"
+      end
       sql +=" group by accounts.id "
     end
     if show_only_active_accounts.blank?
@@ -279,16 +307,18 @@ class Journal < ActiveRecord::Base
     result.each do |row|      
       total_period += row["total_period"].to_f
       total_last_period += row["total_last_period"].to_f
-      puts "account number = "+row["account_number"]
-      puts "account number first digit = "+row["account_number"][0,1]
-      puts "amount  = "+row["total_last_period"]
-      total_accounts_3000 += row["total_period"].to_f if row["account_number"][0,1] == '3'
-      total_accounts_4000 += row["total_period"].to_f if row["account_number"][0,1] == '4'
-      total_accounts_5000 += row["total_period"].to_f if row["account_number"][0,1] == '5'
-      total_accounts_6000 += row["total_period"].to_f if row["account_number"][0,1] == '6'
-      total_accounts_7000 += row["total_period"].to_f if row["account_number"][0,1] == '7'
-      total_accounts_8000 += row["total_period"].to_f if row["account_number"][0,1] == '8'
-      total_accounts_9000 += row["total_period"].to_f if row["account_number"][0,1] == '9'
+      #      puts "account number = "+row["account_number"]
+      #      puts "account number first digit = "+row["account_number"][0,1]
+      #      puts "amount  = "+row["total_last_period"]
+      case row["account_number"].to_i
+      when 3000..3999 then total_accounts_3000 += row["total_period"].to_f
+      when 4000..4999 then total_accounts_4000 += row["total_period"].to_f
+      when 5000..5999 then total_accounts_4000 += row["total_period"].to_f
+      when 6000..6999 then total_accounts_4000 += row["total_period"].to_f
+      when 7000..7999 then total_accounts_4000 += row["total_period"].to_f
+      when 8000..8999 then total_accounts_4000 += row["total_period"].to_f
+      when 9000..9999 then total_accounts_4000 += row["total_period"].to_f
+      end
     end
     total_result =  Hash.new 
     total_result["total_period"]=total_period

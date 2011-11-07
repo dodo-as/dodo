@@ -35,7 +35,7 @@
   <%= if @readonly then
        @journal.period
      else 
-       f.select :period_id, @me.open_periods.collect {|p| [ p, p.id ] } 
+       f.select :period_id, @me.open_periods.reverse.collect {|p| [ p, p.id ] }
      end %>
 </p>
 <p>

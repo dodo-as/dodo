@@ -440,6 +440,7 @@ en:
     from_period: From Period
     to_period: To Period
     unit: Department
+    car: Car
     show_only_active_accounts: Show Only Active Acount
     last_year_figures: Last Year Figures
     result_from_period: Results From

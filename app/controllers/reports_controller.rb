@@ -3,9 +3,10 @@ require 'benchmark'
 class ReportsController < ApplicationController
 
   def index
-    @periods = Period.with_permissions_to(:index).order('year, nr')
+    @periods = Period.with_permissions_to(:index).order('year, nr').reverse
     @units = Unit.with_permissions_to(:index)
     @projects = Project.with_permissions_to(:index)
+    @cars = Car.with_permissions_to(:index)
     @journal_types = JournalType.with_permissions_to(:index).order('name')
     @accounts = Account.with_permissions_to(:index).order('number')
   end
@@ -18,6 +19,7 @@ class ReportsController < ApplicationController
 
     @unit = Unit.find(params[:unit_id]) unless params[:unit_id].blank?    
     @project = Project.find(params[:project_id]) unless params[:project_id].blank?
+    @car = Car.find(params[:car_id]) unless params[:car_id].blank?
     @journal_type = JournalType.find(params[:journal_type_id]) unless params[:journal_type_id].blank?
     
     @show_only_active_accounts = params[:show_only_active_accounts]
@@ -116,28 +118,40 @@ class ReportsController < ApplicationController
       @last_period_to_result_last = periods_to_result_last.last
     end
 
-    puts "========== periods to balance "
-    periods_to_balance.each do |p|
-      puts "year " + p.year.to_s
-      puts "nr " + p.nr.to_s
-    end
-    puts "========== periods to balance previous "
-    periods_to_balance_previous.each do |p|
-      puts "year " + p.year.to_s
-      puts "nr " + p.nr.to_s
-    end
-
-    puts "========== periods to balance last "
-    periods_to_balance_last.each do |p|
-      puts "year " + p.year.to_s
-      puts "nr " + p.nr.to_s
-    end
-
-    puts "========== periods to balance last previous"
-    periods_to_balance_last_previous.each do |p|
-      puts "year " + p.year.to_s
-      puts "nr " + p.nr.to_s
-    end
+#    puts "========== periods to balance "
+#    periods_to_balance.each do |p|
+#      puts "year " + p.year.to_s
+#      puts "nr " + p.nr.to_s
+#    end
+#    puts "========== periods to balance previous "
+#    periods_to_balance_previous.each do |p|
+#      puts "year " + p.year.to_s
+#      puts "nr " + p.nr.to_s
+#    end
+#
+#    puts "========== periods to balance last "
+#    periods_to_balance_last.each do |p|
+#      puts "year " + p.year.to_s
+#      puts "nr " + p.nr.to_s
+#    end
+#
+#    puts "========== periods to balance last previous"
+#    periods_to_balance_last_previous.each do |p|
+#      puts "year " + p.year.to_s
+#      puts "nr " + p.nr.to_s
+#    end
+#
+#    puts "========== periods to result"
+#    periods_to_result.each do |p|
+#      puts "year " + p.year.to_s
+#      puts "nr " + p.nr.to_s
+#    end
+#
+#    puts "========== periods to result last"
+#    periods_to_result_last.each do |p|
+#      puts "year " + p.year.to_s
+#      puts "nr " + p.nr.to_s
+#    end
 
     @balance, @total_balance, @result, @total_result = 
             Journal.report_ledger_balance(periods_to_balance, 
@@ -147,7 +161,7 @@ class ReportsController < ApplicationController
                                           periods_to_result, 
                                           periods_to_result_last,
                                           current_user.current_company, 
-                                          @unit, @project, @show_last_period,
+                                          @unit, @project,@car,
                                           @show_only_active_accounts)
 
   end
