@@ -333,6 +333,7 @@ en:
     destroy: Delete
   access_denied: Sorry, you are not allowed to perform that action.
   logs:
+    logs: Logs
     field: Field
     before: Before
     after: after
