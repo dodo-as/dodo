@@ -107,17 +107,20 @@ var journals = {
 	for (var i=0; i < DODO.journalLines; i++) {
 	    var account = journals.getAccount($('#account_'+i)[0].value);
 	    var vat_account;
-            var vat_account_id;
-            console.log(account);
-            //removing until we fix this
-            //if (account.vat_account != undefined) {
-            if (false) {
-                vat_account_id = account.vat_account.id;
-                vat_account = account.vat_account.target_account;
-            } else {
-                vat_account_id = '';
-                vat_account = {'name': '&lt;No VAT account&gt;', 'overridable': 0, 'id': ''};  
-             }
+        var vat_account_id;
+        if (account.vat_account != undefined) {
+        //if (false) {
+            vat_account_id = account.vat_account.vat_account.id; // wow this is ugly
+            vat_account_tmp = DODO.vatAccountList[vat_account_id];
+            // TODO might be purchase
+            vat_account = DODO.hashedAccountList[vat_account_tmp.vat_account.target_sales_account_id];
+            console.log('meh');
+            console.log(vat_account);
+            console.log('bah');
+        } else {
+            vat_account_id = '';
+            vat_account = {'name': '&lt;No VAT account&gt;', 'overridable': 0, 'id': ''};  
+        }
 
 	    $('#vat1_account_'+i)[0].innerHTML = journals.getAccount($('#account_'+i)[0].value).name;
 	    $('#vat2_account_'+i)[0].innerHTML = vat_account.name;

@@ -150,6 +150,7 @@ class JournalsController < ApplicationController
     tmp =
       Account.where(:company_id => @me.current_company.id).order(:number)
     @accounts_all = []
+    @vat_accounts_all = Hash[@me.current_company.vat_accounts.map {|it| [it.id, it] }]
     tmp.each do
       |a|
       if a.has_ledger then
@@ -161,6 +162,7 @@ class JournalsController < ApplicationController
         @accounts_all << {:name => "#{a.number} #{a.name}", :value => a.id, :vat_account => a.vat_account}
       end
     end
+    @hashed_accounts_all = Hash[@me.current_company.accounts.map {|it| [it.id, it] }]
   end
   
   def find_units_all
