@@ -42,6 +42,7 @@ en:
 
   global:
     "yes": "Yes"
+    "null": "Null"
     telephone_number: "Telephone"
     fax: "Fax"
     mobile_number: "Mobile"
@@ -188,6 +189,7 @@ en:
     destroy: "Delete"
     confirm_destroy: "Confirm deletion of vat-account %{code}"
     new_vat_account: "Create new"
+    periods_index: "Periods"
     add_period: "Add period"
     editing_vat_account: "Editing vat account"
     back: "Back"

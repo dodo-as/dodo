@@ -2,10 +2,7 @@
   <%= f.error_messages %>
   <% if not @vat_account.id.nil? %>
     <p>
-      <%= f.label :vat_id, t('vat.code') %>: <%= @vat_account.id.to_s %>
-    </p>
-    <p>
-    <%= debug @vat_account %>
+      <%= f.label :vat_id, t('vat.code') %>: <%= @vat_account.sales_code %> / <%= @vat_account.purchase_code %>
     </p>
   <% end %>
   <p>
@@ -16,7 +13,8 @@
     <%= f.check_box :overridable %>     <%= f.label :overridable, t(:overridable, :scope => :vat) %>
   </p>
 
-  <div>
+  <%= t('vat.periods_index') %>
+  <div style="border: 1px black solid">
     <table class='striped'>
       <tr>
 	<th><%= t('vat.valid_from') %></th>

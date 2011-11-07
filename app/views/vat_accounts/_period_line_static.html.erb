@@ -1,23 +1,19 @@
 <%= form_for @period do |f| %>
   <tr>
-    <%= f.fields_for :vat_account do |vf| %>
-      <td><%= vf.text_field :code, :size => 2 %></td>
-    <% end %>
+    <td><%= sales ? @period.vat_account.sales_code : @period.vat_account.purchase_code %></td>
 
-    <td align="right"><%= f.text_field :percentage, :size => 4 %></td>
+    <td align="right"><%= @period.percentage %></td>
     <td>%</td>
 
-    <%= f.fields_for :vat_account do |vf| %>
-      <td><%= @period.vat_account.target_account.number %> -  <%= @period.vat_account.target_account.name %></td>
-      <td><%= vf.check_box :overridable %></td>
+    <% if sales %>
+      <td><%= @period.vat_account.target_sales_account.number %> -  <%= @period.vat_account.target_sales_account.name %></td>
+    <% else %>
+      <td><%= @period.vat_account.target_purchase_account.nil? ? t('global.null') : @period.vat_account.target_purchase_account.number.to_s + ' - ' + @period.vat_account.target_purchase_account.name %></td>
     <% end %>
 
-    <td><%= f.text_field :valid_from, :class => :datepicker %></td>
-    <td><%= f.submit t('global.save') %>
-    <td>
-      <%= link_to t("global.show"), @period.vat_account %>
-      <%= link_to t("global.edit"), edit_vat_account_path(@period.vat_account) %>
-      <%= link_to t("global.destroy"), @period.vat_account, :confirm => t(:confirm_destroy, :scope => :vat, :code => @period.vat_account.id), :method => :delete %>
-    </td>
+    <td><%= @period.vat_account.overridable ? t('vat.override_yes') : t('vat.override_no') %></td>
+    <td><%= @period.valid_from %></td>
+    <td></td>
+    <td></td>
   </tr>
 <% end %>

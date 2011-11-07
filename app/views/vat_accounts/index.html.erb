@@ -14,32 +14,23 @@
     <th></th>
   </tr>
 
-<% for @period in @me.current_company.get_current_vat_account_periods(tempdate) %>
-  <%= render :partial => 'period_line', :locals => {:sales => true } %>
-<% end %>
-<% for @period in @me.current_company.get_current_vat_account_periods(tempdate) %>
-  <%= render :partial => 'period_line', :locals => {:sales => false } %>
-<% end %>
+  <% for @period in @me.current_company.get_current_vat_account_periods(tempdate) %>
+    <%= render :partial => 'period_line', :locals => {:sales => true } %>
+  <% end %>
+  <% for @period in @me.current_company.get_current_vat_account_periods(tempdate) %>
+    <%= render :partial => 'period_line', :locals => {:sales => false } %>
+  <% end %>
 
   <tr>
     <th colspan="999" style="text-align:center"><%= t('vat.non_current_header') %></th>
   </tr>
 
-  <% for period in @me.current_company.get_noncurrent_vat_account_periods(tempdate) %>
-  <tr>
-    <td><%= period.vat_account.sales_code %></td>
-    <td align="right"><%= period.percentage %></td>
-    <td>%</td>
-    <td><%= period.vat_account.target_sales_account.number %> -  <%= period.vat_account.target_sales_account.name %></td>
-    <td><%= period.vat_account.overridable ? t('vat.override_yes') : t('vat.override_no') %></td>
-    <td><%= period.valid_from %></td>
-    <td>
-      <%= link_to t("global.show"), period.vat_account %>
-      <%= link_to t("global.edit"), edit_vat_account_path(period.vat_account) %>
-      <%= link_to t("global.destroy"), period.vat_account, :confirm => t(:confirm_destroy, :scope => :vat, :code => period.vat_account.id), :method => :delete %>
-    </td>
-  </tr>
-<% end %>
+  <% for @period in @me.current_company.get_noncurrent_vat_account_periods(tempdate) %>
+    <%= render :partial => 'period_line_static', :locals => {:sales => true } %>
+  <% end %>
+  <% for @period in @me.current_company.get_noncurrent_vat_account_periods(tempdate) %>
+    <%= render :partial => 'period_line_static', :locals => {:sales => false } %>
+  <% end %>
 </table>
 
 <br />

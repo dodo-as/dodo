@@ -4,20 +4,20 @@
       <td><%= vf.text_field (sales ? :sales_code : :purchase_code), :size => 2 %></td>
     <% end %>
 
-    <td align="right"><%= f.text_field :percentage, :size => 4 %></td>
+    <td><%= f.text_field :percentage, :size => 4, :style => 'text-align: right' %></td>
     <td>%</td>
 
     <%= f.fields_for :vat_account do |vf| %>
       <% if sales %>
         <td><%= @period.vat_account.target_sales_account.number %> -  <%= @period.vat_account.target_sales_account.name %></td>
       <% else %>
-        <td><%= @period.vat_account.target_purchase_account.nil? ? 'Fisk.' : @period.vat_account.target_purchase_account.number.to_s + ' - ' + @period.vat_account.target_purchase_account.name %></td>
+        <td><%= @period.vat_account.target_purchase_account.nil? ? t('global.null') : @period.vat_account.target_purchase_account.number.to_s + ' - ' + @period.vat_account.target_purchase_account.name %></td>
       <% end %>
       <td><%= vf.check_box :overridable %></td>
     <% end %>
 
     <td><%= f.text_field :valid_from, :class => :datepicker %></td>
-    <td><%= f.submit t('global.save') %>
+    <td><%= f.submit t('global.save') %></td>
     <td>
       <%= link_to t("global.show"), @period.vat_account %>
       <%= link_to t("global.edit"), edit_vat_account_path(@period.vat_account) %>
