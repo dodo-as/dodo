@@ -247,7 +247,7 @@ class Journal < ActiveRecord::Base
         sql += " and journal_operations.project_id = #{project.id}"
       end
       unless car.blank?
-        sql += " and journal_perations.car_id = #{car.id}"
+        sql += " and journal_operations.car_id = #{car.id}"
       end
       sql +=" group by accounts.id "
     end
@@ -271,7 +271,7 @@ class Journal < ActiveRecord::Base
         sql += " and journal_operations.project_id = #{project.id}"
       end
       unless car.blank?
-        sql += " and journal_perations.car_id = #{car.id}"
+        sql += " and journal_operations.car_id = #{car.id}"
       end
       sql +=" group by accounts.id "
     end
