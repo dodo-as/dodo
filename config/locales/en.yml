@@ -221,6 +221,9 @@ en:
     save: "Save"
     editing_journals: "Editing journal entry"
     defaults: Defaults
+    select_unit: "Select unit"
+    select_car: "Select car"
+    select_project : "Select project"
   companies:
     visiting_address: Visiting address
     billing_address: Billing address
