@@ -154,6 +154,12 @@ class Company < ActiveRecord::Base
     
   end
 
+  def get_all_vat_account_periods
+
+    VatAccountPeriod.where(:vat_account_id => vat_accounts).sort_by { |p| [VatAccount.where(:id => p.vat_account_id).last.sales_code, p.valid_from] } 
+
+  end
+
   # find the correct periods based on their valid_from
   def get_current_vat_account_periods curdate
 
