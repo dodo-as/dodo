@@ -185,7 +185,6 @@ var journals = {
 			       DODO.accountList[i].value), null);
 	}
 	var line = DODO.journalLines;
-	
 	sel.updateFields = function(){
 		vals = sel.value.split(".");
 		if(vals.length > 1){
@@ -229,6 +228,7 @@ var journals = {
     if (def.selectedIndex >= 0) {
         def = def.options[def.selectedIndex].value;
     }
+    $(sel).append($("<option>").text("none").attr('value',''))
 	for (var i=0; i<DODO.unitList.length; i++) {
         $(sel).append($("<option>").text(DODO.unitList[i].unit.name).attr("value", DODO.unitList[i].unit.id).attr("selected", DODO.unitList[i].unit.id == def));
 	}
@@ -250,6 +250,7 @@ var journals = {
     if (def.selectedIndex >= 0) {
         def = def.options[def.selectedIndex].value;
     }
+    $(sel).append($("<option>").text("none").attr('value',''))
 	for (var i=0; i<DODO.carList.length; i++) {
         $(sel).append($("<option>").text(DODO.carList[i].car.name).attr("value", DODO.carList[i].car.id).attr("selected", DODO.carList[i].car.id == def));
 	}
@@ -268,11 +269,11 @@ var journals = {
 	sel.name = "journal_operations[" + DODO.journalLines+"][project_id]";
 	sel.id = "project_"+ DODO.journalLines;
     var def = $('#journal_default_project')[0]; 
-
     if (def.selectedIndex >= 0) {
         def = def.options[def.selectedIndex].value;
     }
 	
+    $(sel).append($("<option>").text("none").attr('value',''))
 	for (var i=0; i<DODO.projectList.length; i++) {
         $(sel).append($("<option>").text(DODO.projectList[i].project.name).attr("value", DODO.projectList[i].project.id).attr("selected", DODO.projectList[i].project.id == def));
 	}
@@ -627,8 +628,9 @@ var journals = {
     updateUnitSel : function () {
         var date = $("#journal_journal_date")[0].value;
         for (var i=0; i<DODO.journalLines; i++) {
-            selected = $("#unit_"+i)[0].value
+            var selected = $("#unit_"+i)[0].value
             $("#unit_"+i+" option").detach()
+            $("#unit_"+i).append($("<option>").text("none").attr("value", ""))
             for (var j=0; j<DODO.unitList.length; j++) {
                 var from = DODO.unitList[j].unit.from;
                 var to = DODO.unitList[j].unit.to;
@@ -647,8 +649,9 @@ var journals = {
     updateCarSel : function () {
         var date = $("#journal_journal_date")[0].value;
         for (var i=0; i<DODO.journalLines; i++) {
-            selected = $("#car_"+i)[0].value
+            var selected = $("#car_"+i)[0].value
             $("#car_"+i+" option").detach()
+            $("#car_"+i).append($("<option>").text("none").attr("value", ""))
             for (var j=0; j<DODO.carList.length; j++) {
                 var from = DODO.carList[j].car.from;
                 var to = DODO.carList[j].car.to;
@@ -667,8 +670,9 @@ var journals = {
     updateProjectSel : function () {
         var date = $("#journal_journal_date")[0].value;
         for (var i=0; i<DODO.journalLines; i++) {
-            selected = $("#project_"+i)[0].value
+            var selected = $("#project_"+i)[0].value
             $("#project_"+i+" option").detach()
+            $("#project_"+i).append($("<option>").text("none").attr("value", ""))
             for (var j=0; j<DODO.projectList.length; j++) {
                 var from = DODO.projectList[j].project.from;
                 var to = DODO.projectList[j].project.to;
