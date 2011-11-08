@@ -16,4 +16,5 @@ class VatAccount < ActiveRecord::Base
       a.valid_from <=> b.valid_from
     end
   end
+
 end

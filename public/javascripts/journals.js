@@ -41,7 +41,7 @@ var journals = {
 		return DODO.accountList[i];
 	    }
 	}
-	console.log("Failed");
+	console.log("Failed finding account");
 	return null;
     },
     
@@ -109,17 +109,21 @@ var journals = {
 	    var vat_account;
         var vat_account_id;
         if (account.vat_account != undefined) {
-        //if (false) {
-            vat_account_id = account.vat_account.vat_account.id; // wow this is ugly
-            vat_account_tmp = DODO.vatAccountList[vat_account_id];
+            // wow this is all ugly, shorten it imo by fixing the model probably
+            vat_account_id = account.vat_account.vat_account.id; 
+            crash();
             // TODO might be purchase
-            vat_account = DODO.hashedAccountList[vat_account_tmp.vat_account.target_sales_account_id];
-            console.log('meh');
+            vat_account = DODO.hashedAccountList[DODO.vatAccountList[vat_account_id].vat_account.target_sales_account_id].account;
+            vat_account_wrapper = DODO.vatAccountList[vat_account_id].vat_account;
+            console.log('we have a wrapper');
+            console.log(vat_account_wrapper);
+            //vat_account = DODO.hashedAccountList[vat_account_wrapper.vat_account.target_sales_account_id].account;
+            console.log('we have a vat account');
             console.log(vat_account);
-            console.log('bah');
         } else {
             vat_account_id = '';
             vat_account = {'name': '&lt;No VAT account&gt;', 'overridable': 0, 'id': ''};  
+            console.log(vat_account);
         }
 
 	    $('#vat1_account_'+i)[0].innerHTML = journals.getAccount($('#account_'+i)[0].value).name;
@@ -135,6 +139,7 @@ var journals = {
 	    var credit2 = $('#vat2_credit_'+i)[0];
 	    credit1.innerHTML =debet1.innerHTML =credit2.innerHTML =debet2.innerHTML ='';
 	    
+        // is this really what we want
 	    var overridable = vat_account.overridable || account.vat_overridable;
 	    
 	    inputs.vat.readOnly=!overridable;
@@ -178,6 +183,7 @@ var journals = {
     a_id.id = "acct_split_" + DODO.journalLines;
 	a_id.value=null;
 	
+    // TODO seems like ledger accounts are missing from the select :\
 	var l_id = $("<input type='hidden' />")[0];
 	l_id.name = "journal_operations[" + DODO.journalLines+"][ledger_id]"; 
     l_id.id = "ledg_split_" + DODO.journalLines;
@@ -301,10 +307,16 @@ var journals = {
         if (current_date != '')
             current_date = Date.fromString(current_date);
 	
+        //if(false) {
         if (account.vat_account != undefined) {
+            // let's not have this crap in here unless we have to
             var current_vat_account_period;
             var current_vat_account_period_valid_from;
-            $.each(account.vat_account.vat_account_periods,
+            console.log('A V V');
+            console.log(account.vat_account.vat_account);
+            console.log('car');
+            console.log(DODO.carList);
+            $.each(account.vat_account.vat_account.vat_account_periods,
                	function (i, vat_account_period) {
                     var vat_account_period_valid_from = Date.fromString(vat_account_period.valid_from)
 
