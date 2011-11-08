@@ -133,6 +133,11 @@ authorization do
       if_attribute :period => { :status => [ Period::STATUSE_NAMES['Open'], Period::STATUSE_NAMES['Done'] ] }
     end
 
+    has_permission_on :journals, :to => :manage, :join_by => :and do
+      if_attribute :company_id => is {user.current_company.id}
+      if_attribute :period => { :status => [ Period::STATUSE_NAMES['Locked']] }
+    end
+
     has_permission_on :bills, :to => :manage, :join_by => :and do
       if_attribute :company_id => is {user.current_company.id}
       if_attribute :period => { :status => [ Period::STATUSE_NAMES['Open'], Period::STATUSE_NAMES['Done'] ] }
