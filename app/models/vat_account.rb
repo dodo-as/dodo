@@ -17,4 +17,7 @@ class VatAccount < ActiveRecord::Base
     end
   end
 
+  def as_json options
+    super(:include => [:vat_account_periods])
+  end
 end
