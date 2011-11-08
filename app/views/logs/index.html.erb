@@ -8,6 +8,7 @@
     <th>User</th>
     <th>Created at</th>
     <th>Changes</th>
+    <th></th>
   </tr>
 
 <% @logs.each do |log| %>
@@ -15,8 +16,9 @@
     <td><%= log.table_name %></td>
     <td><%= log.user %></td>
     <td><%= log.created_at %></td>
-    <td>
-      <table>
+    <td class="log-<%= log.id %>">
+
+      <table class="log-toggle">
 	<tr>
 	  <th><%= t('logs.field') %></th>
 	  <th><%= t('logs.before') %></th>
@@ -30,6 +32,25 @@
 	</tr>
 	<% end %>
       </table>
+
+      <table class="log-toggle" style="display: none;">
+	<tr>
+	  <th><%= t('logs.field') %></th>
+	  <th><%= t('logs.before') %></th>
+	  <th><%= t('logs.after') %></th>
+	</tr>
+	<% log.data.each do |change| %>
+	<tr>
+	  <td><%= change[:field] %></td>
+	  <td><%= change[:before] || t('logs.unset') %></td>
+	  <td><%= change[:after] || t('logs.unset') %></td>
+	</tr>
+	<% end %>
+      </table>
+
+    </td>
+    <td>
+      <button type='button' onclick="javascript:$('.log-<%= log.id %> .log-toggle').toggle()">Toggle full change</button>
     </td>
   </tr>
   <% end %>
