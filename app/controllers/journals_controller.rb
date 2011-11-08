@@ -150,16 +150,18 @@ class JournalsController < ApplicationController
     tmp =
       Account.where(:company_id => @me.current_company.id).order(:number)
     @accounts_all = []
+    @account_vat_mapping = {}
     @vat_accounts_all = Hash[@me.current_company.vat_accounts.map {|it| [it.id, it] }]
     tmp.each do
       |a|
+      @account_vat_mapping[a.id] = a.vat_account_id;
       if a.has_ledger then
         a.ledgers.each do
           |l|
           @accounts_all << {:name => "#{a.number} #{a.name} - #{l.name}", :value => "#{a.id}.#{l.id}"}
         end
       else
-        @accounts_all << {:name => "#{a.number} #{a.name}", :value => a.id, :vat_account => a.vat_account}
+        @accounts_all << {:name => "#{a.number} #{a.name}", :value => a.id}
       end
     end
     @hashed_accounts_all = Hash[@me.current_company.accounts.map {|it| [it.id, it] }]

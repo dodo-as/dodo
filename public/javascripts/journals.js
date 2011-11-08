@@ -33,8 +33,9 @@ var journals = {
        Return the account with the specified id
      */
     getAccount: function (id) {
-	//	console.log("Looking for account " + id);
+	console.log("Looking for account " + id);
 	for( var i =0; i<DODO.accountList.length; i++) {
+	    console.log(DODO.accountList[i]);
 	    if (DODO.accountList[i].value == id) {
 		//	console.log("Found it:");
 		//console.log(DODO.accountList[i]);
@@ -106,26 +107,20 @@ var journals = {
 	journals.sumColumn(2);
 	for (var i=0; i < DODO.journalLines; i++) {
 	    var account = journals.getAccount($('#account_'+i)[0].value);
+	    var vat_account_mapping = DODO.accountVatMapping[account.value];	    
 	    var vat_account;
-        var vat_account_id;
-        if (account.vat_account != undefined) {
-            // wow this is all ugly, shorten it imo by fixing the model probably
-            vat_account_id = account.vat_account.vat_account.id; 
-            crash();
-            // TODO might be purchase
-            vat_account = DODO.hashedAccountList[DODO.vatAccountList[vat_account_id].vat_account.target_sales_account_id].account;
-            vat_account_wrapper = DODO.vatAccountList[vat_account_id].vat_account;
-            console.log('we have a wrapper');
-            console.log(vat_account_wrapper);
-            //vat_account = DODO.hashedAccountList[vat_account_wrapper.vat_account.target_sales_account_id].account;
-            console.log('we have a vat account');
-            console.log(vat_account);
-        } else {
-            vat_account_id = '';
-            vat_account = {'name': '&lt;No VAT account&gt;', 'overridable': 0, 'id': ''};  
-            console.log(vat_account);
-        }
+	    var vat_account_id;
+	    if (vat_account_mapping) {
 
+		var vat_account_data = DODO.vatAccountList[vat_account_mapping].vat_account;
+		vat_account = journals.getAccount(vat_account_data.target_sales_account_id);
+		vat_account_id = vat_account.value;
+		    
+	    } else {
+		vat_account_id = '';
+		vat_account = {'name': '&lt;No VAT account&gt;', 'overridable': 0, 'id': ''};  
+	    }
+	    
 	    $('#vat1_account_'+i)[0].innerHTML = journals.getAccount($('#account_'+i)[0].value).name;
 	    $('#vat2_account_'+i)[0].innerHTML = vat_account.name;
 	    
@@ -151,7 +146,7 @@ var journals = {
 	    var vatAccountInput = $('#vat_account_'+i)[0];
 	    vatAccountInput.value = vat_account_id;
 	    
-	    if (debet > 0) {
+	    if (debet < 0) {
 		debet1.innerHTML = vatAmount;
 		credit2.innerHTML = vatAmount;
 	    } else {
