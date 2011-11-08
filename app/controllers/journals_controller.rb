@@ -152,8 +152,8 @@ class JournalsController < ApplicationController
     # TODO let's just pass each vat account once
     @accounts_all = []
     @account_vat_mapping = {}
-    @vat_accounts_all = Hash[@me.current_company.vat_accounts.map {|it| [it.id, it] }]
-    @vat_account_periods_all = Hash[@me.current_company.get_all_vat_account_periods.map {|it| [it.id, it] }]
+    @vat_accounts_all = Hash[@me.current_company.vat_accounts.map {|it| [it.id, it.to_json(:include => [:vat_account_periods]) ] }]
+#    @vat_account_periods_all = Hash[@me.current_company.get_all_vat_account_periods.map {|it| [it.id, it] }]
     tmp.each do
       |a|
       @account_vat_mapping[a.id] = a.vat_account_id;

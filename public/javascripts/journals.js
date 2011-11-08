@@ -137,7 +137,8 @@ var journals = {
 		var vat_account_data = DODO.vatAccountList[vat_account_mapping].vat_account;
 		vat_account = journals.getAccount(vat_account_data.target_sales_account_id);
 		vat_account_id = vat_account.value;
-		    
+		console.log("ABC");
+		console.log(vat_account_data);
 	    } else {
 		vat_account_id = '';
 		vat_account = {'name': '&lt;No VAT account&gt;', 'overridable': 0, 'id': ''};  
