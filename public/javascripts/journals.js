@@ -102,6 +102,29 @@ var journals = {
      */
     update: function ()
     {
+	/*
+=======
+        var vat_account_id;
+        if (account.vat_account != undefined) {
+            // wow this is all ugly, shorten it imo by fixing the model probably
+            vat_account_id = account.vat_account.vat_account.id; 
+            // TODO might be purchase
+            vat_account = DODO.hashedAccountList[DODO.vatAccountList[vat_account_id].vat_account.target_sales_account_id].account;
+            vat_account_wrapper = DODO.vatAccountList[vat_account_id].vat_account;
+            console.log('we have a wrapper');
+            console.log(vat_account_wrapper);
+            //vat_account = DODO.hashedAccountList[vat_account_wrapper.vat_account.target_sales_account_id].account;
+            console.log('we have a vat account');
+            console.log(vat_account);
+        } else {
+            vat_account_id = '';
+            vat_account = {'name': '&lt;No VAT account&gt;', 'overridable': 0, 'id': ''};  
+            console.log(vat_account);
+        }
+>>>>>>> 9adb6ce74498d20faa4aaa033bfe2b8f3e40cc79:public/javascripts/journals.js
+	*/
+
+
         journals.updateVat(false);
 	journals.sumColumn(1);
 	journals.sumColumn(2);
@@ -111,7 +134,6 @@ var journals = {
 	    var vat_account;
 	    var vat_account_id;
 	    if (vat_account_mapping) {
-
 		var vat_account_data = DODO.vatAccountList[vat_account_mapping].vat_account;
 		vat_account = journals.getAccount(vat_account_data.target_sales_account_id);
 		vat_account_id = vat_account.value;
@@ -304,27 +326,34 @@ var journals = {
 	
         //if(false) {
         if (account.vat_account != undefined) {
-            // let's not have this crap in here unless we have to
+            // let's not have this crap in here unless we have to which i guess we might carry on
             var current_vat_account_period;
             var current_vat_account_period_valid_from;
             console.log('A V V');
             console.log(account.vat_account.vat_account);
-            console.log('car');
-            console.log(DODO.carList);
-            $.each(account.vat_account.vat_account.vat_account_periods,
-               	function (i, vat_account_period) {
-                    var vat_account_period_valid_from = Date.fromString(vat_account_period.valid_from)
+            console.log('DODOVAPL');
+            console.log(DODO.vatAccountPeriodList);
+            // // find the correct period for this vat account and date
+            //$.each(account.vat_account.vat_account.vat_account_periods,
+            $.each(DODO.vatAccountPeriodList,
+               	function (i, vap_obj) {
+                    console.log('function');
+                    var vat_account_period_valid_from = Date.fromString(vap_obj.vat_account_period.valid_from)
+                    console.log('date');
 
                     if (   vat_account_period_valid_from < current_date
                         && (   current_vat_account_period_valid_from === undefined
                             || current_vat_account_period_valid_from < vat_account_period_valid_from)) {
-			current_vat_account_period = vat_account_period;
+			current_vat_account_period = vap_obj.vat_account_period;
 			current_vat_account_period_valid_from = vat_account_period_valid_from;
                     }
                 });
             console.log("SET",line, current_vat_account_period);
-            if (current_vat_account_period !== undefined)
+            if (current_vat_account_period !== undefined) {
                 percentage = current_vat_account_period.percentage;
+                console.log('%: ', percentage);
+            }
+
         }
 
 	$('#dynfield_4_'+line)[0].value = percentage;
