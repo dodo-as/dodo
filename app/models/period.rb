@@ -82,6 +82,10 @@ class Period < ActiveRecord::Base
     end
     self.status += 1
   end
+  
+  def append_only?
+    return self.status == STATUSE_NAMES['Locked']
+  end
 
   def to_s
     sprintf("%d %.2d", self.year, self.nr)

@@ -37,6 +37,7 @@ class JournalsController < ApplicationController
   # GET /journals/new.xml
   def new
     @journal = Journal.new :journal_type_id => params[:journal_type_id]
+    @append = false
     if !@journal.journal_type
       raise "No journal type specified"
     end
@@ -50,6 +51,7 @@ class JournalsController < ApplicationController
 
   # GET /journals/1/edit
   def edit
+    @append = @journal.period.append_only?
   end
 
   # POST /journals

@@ -8,13 +8,57 @@
     projectList: <%= raw(@projects_all.all.to_json) %>,
     accountList: <%= raw(@accounts_all.to_json) %>,
     journalOperationList: <%= raw(@journal.journal_operations.all.to_json) %>,
-    readOnly: <%= @readonly?"true":"false" %>
+    readOnly: <%= @readonly ? "true":"false" %>,
+    append: <%= @append ? "true":"false" %>
   };
 
 </script>
 
 <%= form_for(@journal) do |f| %>
 <%= f.error_messages %>
+
+
+<% if @readonly || @append then %>
+
+<p>
+  <%= f.label :journal_type, t(:type, :scope => :journals) %><br />
+  <%= @journal.journal_type %>
+</p>
+<p>
+  <%= f.label :number, t(:number, :scope => :journals) %><br />
+  <%= @journal.number %>
+
+</p>
+<p>
+  <%= f.label :period_id, "Period" %><br />
+  <%= @journal.period %>
+</p>
+<p>
+  <%= f.label :journal_date, t(:journal_date, :scope => :journals) %><br />
+  <%= f.hidden_field :journal_date, :class => :datepicker %>  
+  <%= @journal.journal_date %>  
+</p>
+
+<p>
+  <%= f.label :due_date, t(:due_date, :scope => :journals) %><br />
+  <%= @journal.due_date %>  
+</p>
+
+<p> 
+  <%= f.label :kid, t(:kid, :scope => :journals) %><br />
+  <%= @journal.kid %>
+
+</p>
+<p>
+  <%= f.label :bill_number, t(:bill_number, :scope => :bills) %><br />
+  <%= @journal.bill_number %>
+</p>
+<p>
+  <%= f.label :description, t(:description, :scope => :global) %><br />
+  <%= @journal.description %>
+</p>
+
+<% else %>
 
 <p>
   <%= f.label :journal_type, t(:type, :scope => :journals) %><br />
@@ -32,40 +76,21 @@
 </p>
 <p>
   <%= f.label :period_id, "Period" %><br />
-  <%= if @readonly then
-       @journal.period
-     else 
-       f.select :period_id, @me.open_periods.reverse.collect {|p| [ p, p.id ] }
-     end %>
+  <%= f.select :period_id, @me.open_periods.reverse.collect {|p| [ p, p.id ] } %>
 </p>
 <p>
   <%= f.label :journal_date, t(:journal_date, :scope => :journals) %><br />
-  <%= if @readonly then
-       @journal.journal_date
-       f.hidden_field :journal_date
-     else 
-       f.text_field :journal_date, :class => :datepicker
-     end %>  
+  <%= f.text_field :journal_date, :class => :datepicker %>  
 </p>
 
 <p>
   <%= f.label :due_date, t(:due_date, :scope => :journals) %><br />
-  <%= if @readonly then
-       @journal.due_date
-       f.hidden_field :due_date
-     else 
-       f.text_field :due_date, :class => :datepicker
-     end %>  
+  <%= f.text_field :due_date, :class => :datepicker %>  
 </p>
 
 <p> 
   <%= f.label :kid, t(:kid, :scope => :journals) %><br />
-  <%= if @readonly then
-       @journal.kid
-     else 
-       f.text_field :kid 
-     end 
-  %>
+  <%= f.text_field :kid %>
 
 </p>
 <p>
@@ -80,12 +105,10 @@
 </p>
 <p>
   <%= f.label :description, t(:description, :scope => :global) %><br />
-  <%= if @readonly then
-       @journal.description
-     else 
-       f.text_field :description 
-     end %>
+  <%= f.text_field :description %>
 </p>
+
+<% end %>
 
 <p>
 <% if !@readonly %>

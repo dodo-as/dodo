@@ -556,6 +556,8 @@ var journals = {
        Add all predefined journal_operation lines from the DODO.journalOperationList array.
      */
     addPredefined: function(){
+	var oldReadOnly = DODO.readOnly;
+	DODO.readOnly = DODO.append || oldReadOnly;
         lines = DODO.journalOperationList;
         for (var i=0; i<lines.length; i++) {
             line = lines[i]['journal_operation'];
@@ -571,6 +573,7 @@ var journals = {
             journals.filterSelectors();
         }
         journals.filterSelectors();
+	DODO.readOnly = oldReadOnly;
     },
     
     columnOf: function(input)
