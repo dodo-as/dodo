@@ -1,4 +1,8 @@
 class VatAccount < ActiveRecord::Base
+
+  SALES_CODE_RANGE = 100..199
+  PURCHASE_CODE_DIFF = 100 # = sales+diff
+
   has_many :accounts
   belongs_to :company
   belongs_to :target_sales_account, :class_name => 'Account'

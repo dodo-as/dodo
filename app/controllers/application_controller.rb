@@ -75,5 +75,9 @@ class ApplicationController < ActionController::Base
     foo = search_param(String(name).split('.'), params) || current_user.get_property( fn ) || default
     current_user.set_property( fn, foo)
   end
+
+  def to_s
+    'fish'
+  end
   
 end

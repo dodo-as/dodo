@@ -35,7 +35,7 @@ var journals = {
     getAccount: function (id) {
 	console.log("Looking for account " + id);
 	for( var i =0; i<DODO.accountList.length; i++) {
-	    console.log(DODO.accountList[i]);
+	    //console.log(DODO.accountList[i]);
 	    if (DODO.accountList[i].value == id) {
 		//	console.log("Found it:");
 		//console.log(DODO.accountList[i]);
@@ -130,6 +130,7 @@ var journals = {
 	journals.sumColumn(2);
 	for (var i=0; i < DODO.journalLines; i++) {
 	    var account = journals.getAccount($('#account_'+i)[0].value);
+        console.log(account);
 	    var vat_account_mapping = DODO.accountVatMapping[account.value];	    
 	    var vat_account;
 	    var vat_account_id;
@@ -327,7 +328,6 @@ var journals = {
 	
         //if(false) {
         if (account.vat_account != undefined) {
-            // let's not have this crap in here unless we have to which i guess we might carry on
             var current_vat_account_period;
             var current_vat_account_period_valid_from;
             console.log('A V V');
@@ -355,6 +355,10 @@ var journals = {
                 console.log('%: ', percentage);
             }
 
+        }
+        else {
+            console.log('account.vat_account is undefined');
+            console.log(account);
         }
 
 	$('#dynfield_4_'+line)[0].value = percentage;

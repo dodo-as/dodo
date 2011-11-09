@@ -1,6 +1,6 @@
 <h1><%= t(:listing_vat_accounts, :scope => :vat) -%></h1>
 
-<% tempdate = '2969-01-01' %>
+<% tempdate = '1969-01-01' %>
 
 <table class='striped'>
   <tr>
@@ -14,6 +14,7 @@
     <th></th>
   </tr>
 
+  <%# currently active periods, render editable %>
   <% for @period in @me.current_company.get_current_vat_account_periods(tempdate) %>
     <%= render :partial => 'period_line', :locals => {:sales => true } %>
   <% end %>
@@ -25,6 +26,7 @@
     <th colspan="999" style="text-align:center"><%= t('vat.non_current_header') %></th>
   </tr>
 
+  <%# inactive periods, render static mostly %>
   <% for @period in @me.current_company.get_noncurrent_vat_account_periods(tempdate) %>
     <%= render :partial => 'period_line_static', :locals => {:sales => true } %>
   <% end %>

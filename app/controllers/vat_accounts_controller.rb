@@ -37,6 +37,9 @@ class VatAccountsController < ApplicationController
     @vat_account = VatAccount.new(params[:vat_account])
     @vat_account.company_id = @me.current_company.id
 
+    # will be hard coded so let's set this here
+    @vat_account.purchase_code = @vat_account.sales_code + VatAccount::PURCHASE_CODE_DIFF
+
     if !params[:periods].nil?
       params[:periods].each do |period|
         @vat_account.vat_account_periods.push VatAccountPeriod.new(period)
