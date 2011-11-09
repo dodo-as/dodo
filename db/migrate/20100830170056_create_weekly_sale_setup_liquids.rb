@@ -10,7 +10,7 @@ class CreateWeeklySaleSetupLiquids < ActiveRecord::Migration
       t.integer :updated_by
       t.timestamps
     end
-    add_index :weekly_sale_setup_liquids, [:name, :weekly_sale_setup_id], :unique => true 
+    add_index :weekly_sale_setup_liquids, [:name, :weekly_sale_setup_id], :unique => true, :name => "weekly_sale_setup_liqs"
     execute "ALTER TABLE weekly_sale_setup_liquids ADD CONSTRAINT fk_weekly_sale_setup_liquids_account FOREIGN KEY (account_id)  REFERENCES accounts(id) "
     execute "ALTER TABLE weekly_sale_setup_liquids ADD CONSTRAINT fk_weekly_sale_setup_liquids_wueekly_sale_setup FOREIGN KEY (weekly_sale_setup_id)  REFERENCES weekly_sale_setups(id) "
     execute "ALTER TABLE weekly_sale_setup_liquids ADD CONSTRAINT fk_weekly_sale_setup_liquids_created_by FOREIGN KEY (created_by)  REFERENCES users(id) "

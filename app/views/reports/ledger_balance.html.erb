@@ -6,6 +6,9 @@
 <% unless @project.blank?%>
   <p><h2><%= t(:project, :scope=>:reports) %>: <%= @project %></h2></p>
 <% end %>
+<% unless @car.blank?%>
+  <p><h2><%= t(:car, :scope=>:reports) %>: <%= @car %></h2></p>
+<% end %>
 <% unless @journal_type.blank?%>
   <p><h2><%= t(:journal_type, :scope=>:reports) %>: <%= @journal_type %></h2></p>
 <% end %>
@@ -69,7 +72,7 @@
 <table class="report">
   <thead>
     <tr>
-      <th colspan="<%= @show_last_period ? '8' : '5' %>"><%= t(:unit, :scope=>:reports) %></th>
+      <th colspan="<%= @show_last_period ? '8' : '5' %>"><%= t(:result, :scope=>:reports) %></th>
     </tr>
     <tr>
       <th colspan="2"></th>
