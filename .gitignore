@@ -12,7 +12,6 @@
 /nbproject
 /tmp/**/*
 /*.patch
-!.gitignore
 /doc/plugins
 Gemfile.lock
 

@@ -201,4 +201,8 @@ class Company < ActiveRecord::Base
     options
   end
 
+  def log_include
+    [:visiting_address, :delivery_address, :billing_address]
+  end
+
 end

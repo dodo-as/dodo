@@ -1,0 +1,59 @@
+<h1>Listing logs</h1>
+
+<%= will_paginate @admin_logs %>
+
+<table>
+  <tr>
+    <th>Table name</th>
+    <th>User</th>
+    <th>Created at</th>
+    <th>Changes</th>
+    <th></th>
+  </tr>
+
+<% @admin_logs.each do |log| %>
+  <tr>
+    <td><%= log.table_name %></td>
+    <td><%= log.admin %></td>
+    <td><%= log.created_at %></td>
+    <td class="log-<%= log.id %>">
+
+      <table class="log-toggle">
+	<tr>
+	  <th><%= t('logs.field') %></th>
+	  <th><%= t('logs.before') %></th>
+	  <th><%= t('logs.after') %></th>
+	</tr>
+	<% log.changes.each do |change| %>
+	<tr>
+	  <td><%= change[:field] %></td>
+	  <td><%= change[:before] || t('logs.unset') %></td>
+	  <td><%= change[:after] || t('logs.unset') %></td>
+	</tr>
+	<% end %>
+      </table>
+
+      <table class="log-toggle" style="display: none;">
+	<tr>
+	  <th><%= t('logs.field') %></th>
+	  <th><%= t('logs.before') %></th>
+	  <th><%= t('logs.after') %></th>
+	</tr>
+	<% log.data.each do |change| %>
+	<tr>
+	  <td><%= change[:field] %></td>
+	  <td><%= change[:before] || t('logs.unset') %></td>
+	  <td><%= change[:after] || t('logs.unset') %></td>
+	</tr>
+	<% end %>
+      </table>
+    </td>
+    <td>
+      <button type='button' onclick="javascript:$('.log-<%= log.id %> .log-toggle').toggle()">Toggle full change</button>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<br />
+

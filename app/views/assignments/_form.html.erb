@@ -1,0 +1,18 @@
+<%= form_for(@assignment) do |f| %>
+  <%= f.error_messages %>
+    
+  <%= fields_for Company.new do |c| %>
+  <p>
+    <%= c.label :name, t(:name, :scope => :companies) %><br />
+    <%= c.text_field :name %>
+  </p>
+  <p>
+    <%= c.label :organization_number, t(:organization_number, :scope => :companies) %><br />
+    <%= c.text_field :organization_number %>
+  </p>
+  <% end %>
+  
+<%= f.submit  t(:save, :scope => :global) %>
+  <% end %>
+
+

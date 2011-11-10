@@ -39,7 +39,7 @@
   <%= if @readonly then
        @journal.period
      else 
-       f.select :period_id, @me.open_periods.collect {|p| [ p, p.id ] } 
+       f.select :period_id, @me.open_periods.reverse.collect {|p| [ p, p.id ] }
      end %>
 </p>
 <p>
@@ -116,9 +116,9 @@
       </th>
     </tr>
     <tr>
-        <td><%= f.select :default_unit, Unit.where(:company_id => current_user.current_company.id).map { |p| [p.name, p.id] } %>
-        <td><%= f.select :default_car, Car.where(:company_id => current_user.current_company.id).map { |p| [p.name, p.id] } %>
-        <td><%= f.select :default_project, Project.where(:company_id => current_user.current_company.id).map { |p| [p.name, p.id] } %>
+        <td><%= f.select :default_unit, Unit.where(:company_id => current_user.current_company.id).map { |p| [p.name, p.id]} , {:include_blank => t(:select_unit, :scope => :journals)} %>
+        <td><%= f.select :default_car, Car.where(:company_id => current_user.current_company.id).map { |p| [p.name, p.id] } , {:include_blank => t(:select_car, :scope => :journals)}%>
+        <td><%= f.select :default_project, Project.where(:company_id => current_user.current_company.id).map { |p| [p.name, p.id] } , {:include_blank => t(:select_project, :scope => :journals)}%>
     </tr>
   </table>
 </p>

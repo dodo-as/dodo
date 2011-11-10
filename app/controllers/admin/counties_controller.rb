@@ -1,8 +1,12 @@
 class Admin::CountiesController < Admin::BaseController
+
+  attr_accessor :county
+  around_filter AdminLog.log(:county), :only => [:update, :create]
+
   # GET /counties
   # GET /counties.xml
   def index
-    @counties = County.all
+    @counties = County.where(:is_visible => true)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -72,9 +76,10 @@ class Admin::CountiesController < Admin::BaseController
   # DELETE /counties/1
   # DELETE /counties/1.xml
   def destroy
-    @county = County.find(params[:id])
-    @county.destroy
-
+    @county = County.find(params[:id]) 
+    @county.is_visible = false  
+    state = @county.save  
+	puts "woops", @county, @county.is_visible, state
     respond_to do |format|
       format.html { redirect_to(admin_counties_url) }
       format.xml  { head :ok }

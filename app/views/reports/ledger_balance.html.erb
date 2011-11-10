@@ -23,8 +23,8 @@
     <% end %>
     </tr>
     <tr>
-      <th><%= t(:account_name, :scope=>:reports) %></th>
       <th><%= t(:account_number, :scope=>:reports) %></th>
+      <th><%= t(:account_name, :scope=>:reports) %></th>
       <th><%= t(:old_balance, :scope=>:reports) %></th>
       <th><%= t(:period, :scope=>:reports) %></th>
       <th><%= t(:new_balance, :scope=>:reports) %></th>
@@ -38,8 +38,8 @@
   <tbody>
   <% @balance.each do |row| %>
     <tr class="detail1">
-      <td> <%= row.account_name %> </td>
       <td> <%= row.account_number %> </td>
+      <td> <%= row.account_name %> </td>
       <td style="text-align:right"> <%= number_with_precision(row.total_period_previous, :locale =>I18n.locale) %> </td>
       <td style="text-align:right"> <%= number_with_precision(row.total_period, :locale =>I18n.locale) %> </td>
       <td style="text-align:right"> <%= number_with_precision(row.balance_period, :locale =>I18n.locale) %> </td>

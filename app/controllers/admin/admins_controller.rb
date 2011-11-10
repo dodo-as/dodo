@@ -1,5 +1,8 @@
 class Admin::AdminsController < Admin::BaseController
 
+  attr_accessor :admin
+  around_filter AdminLog.log(:admin), :only => [:update, :create]
+
   # GET /admin_admins
   # GET /admin_admins.xml
   def index

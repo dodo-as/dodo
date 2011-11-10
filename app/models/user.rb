@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
 	:trackable, :validatable, :lockable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :assignments_attributes
+  attr_accessible :email, :password, :password_confirmation, :assignments_attributes, :active
 
   self.per_page = 20
 

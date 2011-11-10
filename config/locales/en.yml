@@ -68,6 +68,7 @@ en:
     amount: Amount
     "no": "No"
     unknown_date: '?'
+    manage_users: "Manage users"
   admin:
     companies:
       select_template_company: Select company as template
@@ -229,6 +230,9 @@ en:
     save: "Save"
     editing_journals: "Editing journal entry"
     defaults: Defaults
+    select_unit: "Select unit"
+    select_car: "Select car"
+    select_project : "Select project"
   companies:
     visiting_address: Visiting address
     billing_address: Billing address
@@ -340,6 +344,12 @@ en:
     editing_order: Edit order
     destroy: Delete
   access_denied: Sorry, you are not allowed to perform that action.
+  logs:
+    logs: Logs
+    field: Field
+    before: Before
+    after: after
+    unset: "<no value>"
   bills:
     listing_bills: Listing bills
     save: Save
@@ -444,6 +454,7 @@ en:
     from_period: From Period
     to_period: To Period
     unit: Department
+    car: Car
     show_only_active_accounts: Show Only Active Acount
     last_year_figures: Last Year Figures
     result_from_period: Results From
@@ -490,4 +501,9 @@ en:
     first_period: First period
     last_period: Last period
 
+  counties:
+    deleting_county_error: This county mustn't be deleted !
+  
+  assignment:
+    assignment_apply: "Apply to new company"
 

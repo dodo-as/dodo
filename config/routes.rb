@@ -14,6 +14,8 @@ Dodo::Application.routes.draw do |map|
 
   get "vat_account_periods/destroy"
 
+  resources :logs
+
   resources :vat_chunks
 
 #  resources :weekly_sales
@@ -41,6 +43,7 @@ Dodo::Application.routes.draw do |map|
   # Sample resource route within a namespace:
 
   namespace :admin do
+    resources :admin_logs
     resources :companies
     resources :users
     resources :admins
@@ -89,7 +92,8 @@ Dodo::Application.routes.draw do |map|
     end
   end
 
-
+  resources :users
+  resources :assignments
   match 'welcome/current_company' => 'welcome#current_company', :as => :change_company
   
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.

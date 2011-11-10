@@ -12,7 +12,7 @@ class CreateWeeklySaleSetupProductGroups < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index :weekly_sale_setup_product_groups, [:name, :weekly_sale_setup_id], :unique => true 
+    add_index :weekly_sale_setup_product_groups, [:name, :weekly_sale_setup_id], :unique => true , :name => "weekly_sale_setup_prod_groups"
     execute "ALTER TABLE weekly_sale_setup_product_groups ADD CONSTRAINT fk_weekly_sale_setup_product_groups_project FOREIGN KEY (project_id)  REFERENCES projects(id) "
     execute "ALTER TABLE weekly_sale_setup_product_groups ADD CONSTRAINT fk_weekly_sale_setup_product_groups_account FOREIGN KEY (account_id)  REFERENCES accounts(id) "
     execute "ALTER TABLE weekly_sale_setup_product_groups ADD CONSTRAINT fk_weekly_sale_setup_product_groups_wueekly_sale_setup FOREIGN KEY (weekly_sale_setup_id)  REFERENCES weekly_sale_setups(id) "
