@@ -639,10 +639,16 @@ var journals = {
             for (var j=0; j<DODO.unitList.length; j++) {
                 var from = DODO.unitList[j].unit.from;
                 var to = DODO.unitList[j].unit.to;
-                if (date >= from && date <= to) {
+                if (from === null && to === null) {
+                    $("#unit_"+i).append($("<option>").text(DODO.unitList[j].unit.name).attr("value", DODO.unitList[j].unit.id));
+                } 
+                else if (date >= from && date <= to) {
                     $("#unit_"+i).append($("<option>").text(DODO.unitList[j].unit.name).attr("value", DODO.unitList[j].unit.id));
                 } 
                 else if (to == null && date>=from) {
+                    $("#unit_"+i).append($("<option>").text(DODO.unitList[j].unit.name).attr("value", DODO.unitList[j].unit.id));
+                }
+                else if (date == "") {
                     $("#unit_"+i).append($("<option>").text(DODO.unitList[j].unit.name).attr("value", DODO.unitList[j].unit.id));
                 }
                 
@@ -660,10 +666,16 @@ var journals = {
             for (var j=0; j<DODO.carList.length; j++) {
                 var from = DODO.carList[j].car.from;
                 var to = DODO.carList[j].car.to;
-                if (date >= from && date <= to) {
+                if (from === null && to === null) {
+                    $("#car_"+i).append($("<option>").text(DODO.carList[j].car.name).attr("value", DODO.carList[j].car.id));
+                } 
+                else if (date >= from && date <= to) {
                     $("#car_"+i).append($("<option>").text(DODO.carList[j].car.name).attr("value", DODO.carList[j].car.id));
                 } 
                 else if (to == null && date>=from) {
+                    $("#car_"+i).append($("<option>").text(DODO.carList[j].car.name).attr("value", DODO.carList[j].car.id));
+                }
+                else if (date == "") {
                     $("#car_"+i).append($("<option>").text(DODO.carList[j].car.name).attr("value", DODO.carList[j].car.id));
                 }
                 
@@ -681,10 +693,16 @@ var journals = {
             for (var j=0; j<DODO.projectList.length; j++) {
                 var from = DODO.projectList[j].project.from;
                 var to = DODO.projectList[j].project.to;
-                if (date >= from && date <= to) {
+                if (from === null && to === null) {
+                    $("#project_"+i).append($("<option>").text(DODO.projectList[j].project.name).attr("value", DODO.projectList[j].project.id));
+                }
+                else if (date >= from && date <= to) {
                     $("#project_"+i).append($("<option>").text(DODO.projectList[j].project.name).attr("value", DODO.projectList[j].project.id));
                 } 
                 else if (to == null && date>=from) {
+                    $("#project_"+i).append($("<option>").text(DODO.projectList[j].project.name).attr("value", DODO.projectList[j].project.id));
+                }
+                else if (date == '') {
                     $("#project_"+i).append($("<option>").text(DODO.projectList[j].project.name).attr("value", DODO.projectList[j].project.id));
                 }
                 
