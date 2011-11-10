@@ -1,5 +1,8 @@
 class AssignmentsController < ApplicationController
     
+    attr_accessor :assignment
+    around_filter Log.log(:assignment), :only => [:update, :create]
+    
     def new
         @assignment = Assignment.new
         @other_info = {:comp => nil, :num => nil}

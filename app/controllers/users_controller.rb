@@ -3,13 +3,15 @@ require "random_pass_generator"
 class UsersController < ApplicationController
         
     filter_resource_access
-        
+    
+    attr_accessor :user
+    around_filter Log.log(:user), :only => [:update, :create]
     def new
-    @user = User.new
+      @user = User.new
           respond_to do |format|
           format.html # new.html.erb
           format.xml  { render :xml => @journal }
-        end
+      end
     end
     
     def create
@@ -43,8 +45,6 @@ class UsersController < ApplicationController
   end
   
     def update
-  @user = User.find(params[:id])
-
     respond_to do |format|
       # don't update password if blank
       if params[:user][:password].blank?
@@ -63,8 +63,6 @@ class UsersController < ApplicationController
   end
 
     def show
-    @user = User.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @user }
@@ -72,7 +70,6 @@ class UsersController < ApplicationController
   end
     
     def edit
-        @user = User.find(params[:id])
         3.times { @user.assignments.build }
     end
 end

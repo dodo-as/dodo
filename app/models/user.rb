@@ -10,7 +10,12 @@ class User < ActiveRecord::Base
   has_many :assignments, :include => [:company, :role], :order => "companies.name"
   accepts_nested_attributes_for :assignments, :allow_destroy => true,
     :reject_if => proc { |attrs| attrs["company_id"].blank? || attrs["role_id"].blank? }
+    
   
+  def log_include
+    [:assignments]
+  end
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable, :timeoutable and :activatable, :registerable
   devise :database_authenticatable, :recoverable, :rememberable,
