@@ -67,9 +67,12 @@ class JournalsController < ApplicationController
           params[:journal_operations].each do
             |key, value|
             op = JournalOperation.new(value)
-            op.company = @me.current_company
-            @journal.journal_operations.push op 
+            if op.amount != 0.0 && op.amount != nil
+              op.company = @me.current_company
+              @journal.journal_operations.push op 
+            end
           end
+
           @journal.save!
 
           cnt = @journal.journal_type.counter(@me.current_company)
@@ -102,10 +105,11 @@ class JournalsController < ApplicationController
               |key, value|
               if !value[:old]
                 op = JournalOperation.new(value)
-                op.company = @me.current_company
-                @journal.journal_operations.push op 
+                if op.amount != 0.0 && op.amount != nil
+                  op.company = @me.current_company
+                  @journal.journal_operations.push op 
+                end
               end
-              
             end          
             @journal.save!
           else
@@ -125,8 +129,10 @@ class JournalsController < ApplicationController
             params[:journal_operations].each do
               |key, value|
               op = JournalOperation.new(value)
-              op.company = @me.current_company
-              @journal.journal_operations.push op 
+              if op.amount != 0.0 && op.amount != nil
+                op.company = @me.current_company
+                @journal.journal_operations.push op 
+              end
             end
             @journal.save!
           
