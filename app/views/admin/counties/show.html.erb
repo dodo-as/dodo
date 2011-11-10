@@ -5,12 +5,11 @@
       <%= @county.name %>
     </p> 
 
-    <!-- <p>
+    <p>
       <b>Tax zone :</b> <br/>
-      Number : <%= @number %> <br/>   
-      Effective date : <%= @from %> <br/>   
-    </p> 
-    -->     
+      Number : <%= @tax_zone.number %> <br/>   
+      Effective date : <%= @county_tax_zone.from %> <br/>   
+    </p>         
 
 <%= link_to 'Edit', edit_admin_county_path(@county) %> |
 <%= link_to 'Back', admin_counties_path %>

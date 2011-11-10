@@ -18,6 +18,11 @@ class Admin::CountiesController < Admin::BaseController
   # GET /counties/1.xml
   def show
     @county = County.find(params[:id])
+    @county_tax_zone = CountyTaxZone.where(:county_id => @county.id)[0]   
+    puts "***********************", @county_tax_zone.class, @county_tax_zone.id, "****************************************"
+    # TO-DO : check whether @county_tax_zone is not nil : CountyTaxZone must contain a row that has a county_id available
+    @tax_zone = @county_tax_zone.tax_zone
+    @tax_zones = TaxZone.find(:all)
 
     respond_to do |format|
       format.html # show.html.erb
