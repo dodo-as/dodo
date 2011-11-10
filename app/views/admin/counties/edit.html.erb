@@ -2,15 +2,14 @@
 
 <% if @county.is_visible == true %> 
 
-  <% if @county_tax_zone.nil? %>
-   <div id="editing_error_explanation">
-     <h2> This county should not be edited ! </h2>    
-   </div>
-  <% end %> 
+  <% if @county_tax_zone == nil %>
+    <%= t(:editing_county_error, :scope => :counties) %>
 
-  <%= form_for([:admin,@county]) do |f| %>
+  <% else %>
 
-   <% if @county.errors.any? %>
+   <%= form_for([:admin,@county]) do |f| %>
+
+    <% if @county.errors.any? %>
      <div id="error_explanation">
       <h2><%= pluralize(@county.errors.count, "error") %> prohibited this county from being saved:</h2>
       <ul>
@@ -19,7 +18,7 @@
       <% end %>
       </ul>
      </div>
-   <% end %>       
+    <% end %>  
 
    <div class="field">
     <p>      
@@ -34,7 +33,7 @@
     <%= f.fields_for :tax_zone do |tax_zone| %>  
       <p>              
         <%= tax_zone.label :number  %>       
-        <%= tax_zone.select :tax_zone_id, @tax_zones.collect {|p| [p.number, p.id]} %>     
+        <%= tax_zone.select :tax_zone_id, TaxZone.all.collect {|p| [p.number, p.id]} %>     
       </p>  
     <% end %>
   </div>
@@ -44,11 +43,13 @@
   <div class="actions">
    <%= f.submit %>
   </div>
+ 
+ <% end %>
 
 <% end %>
 
 <% else %>
-    <%= t(:deleting_county_error, :scope => :counties) -%>	
+    <%= t(:deleting_county_error, :scope => :counties) %>	
 <% end %>
 
 <br/>
