@@ -67,9 +67,12 @@ class JournalsController < ApplicationController
           params[:journal_operations].each do
             |key, value|
             op = JournalOperation.new(value)
-            op.company = @me.current_company
-            @journal.journal_operations.push op 
+            if op.amount != 0.0 && op.amount != nil
+              op.company = @me.current_company
+              @journal.journal_operations.push op 
+            end
           end
+
           @journal.save!
 
           cnt = @journal.journal_type.counter(@me.current_company)
@@ -95,34 +98,51 @@ class JournalsController < ApplicationController
     respond_to do |format|
       Journal.transaction do
         begin
+          append = @journal.period.append_only?
 
-          @journal.journal_operations.each do
-            |op|
-            if op.closed_operation then
-              op.closed_operation.journal_operations.each do
-                |op2|
-                op2.closed_operation = nil
-                op2.save
+          if append
+            params[:journal_operations].each do
+              |key, value|
+              if !value[:old]
+                op = JournalOperation.new(value)
+                if op.amount != 0.0 && op.amount != nil
+                  op.company = @me.current_company
+                  @journal.journal_operations.push op 
+                end
               end
+            end          
+            @journal.save!
+          else
+            @journal.journal_operations.each do
+              |op|
+              if op.closed_operation then
+                op.closed_operation.journal_operations.each do
+                  |op2|
+                  op2.closed_operation = nil
+                  op2.save
+                end
+              end
+            end
+            
+            @journal.update_attributes(params[:journal]) or raise ActiveRecord::Rollback
+            @journal.journal_operations.clear
+            params[:journal_operations].each do
+              |key, value|
+              op = JournalOperation.new(value)
+              if op.amount != 0.0 && op.amount != nil
+                op.company = @me.current_company
+                @journal.journal_operations.push op 
+              end
+            end
+            @journal.save!
+          
+            cnt = @journal.journal_type.counter(@me.current_company)
+            if cnt.adjust_outside_of_sequence
+              cnt.counter = @journal.number+1
+              cnt.save
             end
           end
 
-          @journal.update_attributes(params[:journal]) or raise ActiveRecord::Rollback
-          @journal.journal_operations.clear
-          params[:journal_operations].each do
-            |key, value|
-            op = JournalOperation.new(value)
-            op.company = @me.current_company
-            @journal.journal_operations.push op 
-          end
-          @journal.save!
-          
-          cnt = @journal.journal_type.counter(@me.current_company)
-          if cnt.adjust_outside_of_sequence
-            cnt.counter = @journal.number+1
-            cnt.save
-          end
-          
           flash[:notice] = 'Journal was successfully updated.'
           format.html { redirect_to(@journal) }
           format.xml  { head :ok }

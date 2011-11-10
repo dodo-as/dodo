@@ -468,7 +468,7 @@ var journals = {
 	var opTable = $('#operations')[0];
 	
 	var row = opTable.insertRow(opTable.rows.length);
-
+	
 	var ac = function (content, className) {
 	    var c = this.insertCell(this.cells.length);
 	    if (className) {
@@ -479,8 +479,7 @@ var journals = {
 	};
 
 	row.addCell = ac;
-
-
+	
 	var row2 = opTable.insertRow(opTable.rows.length);
 	row2.addCell = ac;
 	
@@ -559,9 +558,12 @@ var journals = {
 	var oldReadOnly = DODO.readOnly;
 	DODO.readOnly = DODO.append || oldReadOnly;
         lines = DODO.journalOperationList;
+	var form = $("form.edit_journal");
         for (var i=0; i<lines.length; i++) {
             line = lines[i]['journal_operation'];
             journals.addAccountLine(line);
+	    form.append($("<input type='hidden' value='1'>").attr("name", "journal_operations[" + i + "][old]"));
+	    
         }
         journals.updateVat(false);
         journals.update();
