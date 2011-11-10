@@ -129,6 +129,7 @@ class JournalsController < ApplicationController
             @journal.journal_operations.clear
             params[:journal_operations].each do
               |key, value|
+              value.delete(:old)
               op = JournalOperation.new(value)
               if op.amount != 0.0 && op.amount != nil
                 op.company = @me.current_company
