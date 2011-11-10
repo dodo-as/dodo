@@ -1,10 +1,57 @@
 <h1>Editing county</h1>
 
-<% if @county.is_visible == true %>
-    <%= render 'form' %>
+<% if @county.is_visible == true %> 
+
+  <% if @county_tax_zone.nil? %>
+   <div id="editing_error_explanation">
+     <h2> This county should not be edited ! </h2>    
+   </div>
+  <% end %> 
+
+  <%= form_for([:admin,@county]) do |f| %>
+
+   <% if @county.errors.any? %>
+     <div id="error_explanation">
+      <h2><%= pluralize(@county.errors.count, "error") %> prohibited this county from being saved:</h2>
+      <ul>
+      <% @county.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+     </div>
+   <% end %>       
+
+   <div class="field">
+    <p>      
+      <%= @county.name %>   
+    </p>
+    <%= f.fields_for :county_tax_zone do |county_tax_zone| %> 
+      <p>
+        <%= county_tax_zone.label :from %>
+        <%= county_tax_zone.text_field :from, :value => @from, :class=> :datepicker %>
+      <p>      
+    <% end %>
+    <%= f.fields_for :tax_zone do |tax_zone| %>  
+      <p>              
+        <%= tax_zone.label :number  %>       
+        <%= tax_zone.select :tax_zone_id, @tax_zones.collect {|p| [p.number, p.id]} %>     
+      </p>  
+    <% end %>
+  </div>
+  
+  <br />
+  
+  <div class="actions">
+   <%= f.submit %>
+  </div>
+
+<% end %>
+
 <% else %>
     <%= t(:deleting_county_error, :scope => :counties) -%>	
 <% end %>
+
+<br/>
 
 <%= link_to 'Show', [:admin, @county] %> |
 <%= link_to 'Back', admin_counties_path %>
