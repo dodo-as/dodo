@@ -1,8 +1,12 @@
 class CarsController < ApplicationController
-
+  
   before_filter :set_readonly
-
+  
   filter_resource_access
+
+  attr_accessor :car
+  around_filter Log.log(:car), :only => [:update, :create]
+  
 
   # GET /cars
   # GET /cars.xml

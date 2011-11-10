@@ -11,6 +11,7 @@ authorization do
     has_permission_on :admin_tax_zones, :to => :manage
     has_permission_on :admin_tax_zone_taxes, :to => :manage
     has_permission_on :admin_county_tax_zones, :to => :manage
+    has_permission_on :admin_admin_logs, :to => :manage
 
     has_permission_on :weekly_sale_setups, :to => :manage do
       if_attribute :company_id => is {user.current_company.id}
@@ -116,6 +117,11 @@ authorization do
     end
 
      has_permission_on :journal_types, :to => :read
+     
+     has_permission_on :users, :to => :edit do
+        if_attribute :id => is {user.id}
+     end
+     
   end
 
   role :accountant do
@@ -125,6 +131,11 @@ authorization do
     has_permission_on :journals, :to => :manage, :join_by => :and do
       if_attribute :company_id => is {user.current_company.id}
       if_attribute :period => { :status => [ Period::STATUSE_NAMES['Open'], Period::STATUSE_NAMES['Done'] ] }
+    end
+
+    has_permission_on :journals, :to => :manage, :join_by => :and do
+      if_attribute :company_id => is {user.current_company.id}
+      if_attribute :period => { :status => [ Period::STATUSE_NAMES['Locked']] }
     end
 
     has_permission_on :bills, :to => :manage, :join_by => :and do
@@ -140,16 +151,25 @@ authorization do
     end
   end
   
-  #~ role :user_admin do
-        #~ has_permission_on :admin_users, :to => :manage
-    #~ # authorization for the admin ui
-  #~ end
+  role :user_admin do
+    includes :user, :accountant, :employee
+    
+        has_permission_on :users, :to => :manage    #~ # authorization for the admin ui
+
+  end
+  
+  role :none do
+   has_permission_on :users, :to => :edit do
+        if_attribute :id => is {user.id}
+     end
+  end
+  
 end
 
 privileges do
 
   # default privs
-  privilege :manage, :includes => [:create, :read, :update, :delete]
+  privilege :manage, :includes => [:create, :read, :update]
   privilege :read,   :includes => [:index, :show]
   privilege :create, :includes => :new
   privilege :update, :includes => :edit

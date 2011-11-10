@@ -10,5 +10,9 @@ class Car < ActiveRecord::Base
     return name
   end
 
+  def log_include
+    [:travel_logs]
+  end
+
 end
 

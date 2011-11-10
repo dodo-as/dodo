@@ -187,25 +187,24 @@
       <%= f.fields_for :assignments do |assignment| %>
     
       <% if assignment.object.new_record? %>
-                <%= assignment.select :user_id, company.users.where(:active => true).uniq.map {|p| [p.email, p.id]}, {:include_blank => "Add user"} %>
+                <%= assignment.select :user_id, @company.users.where(:active => true).uniq.map {|p| [p.email, p.id]}, {:include_blank => "Add user"} %>
                 <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, {:include_blank => "Select role"} %>
               <br />
       <% else %>
-        <% if assignment.object.user.active %>
+        <% if assignment.object.user != nil && assignment.object.user.active %>
             <% if (assignment.object.user == current_user && assignment.object.role.name == "user_admin")%>
-                <%= assignment.select :user_id, company.users.where(:active => true).map {|p| [p.email, p.id]}, {:include_blank => "Add user"}, :disabled => "disabled" %>
+                <%= assignment.select :user_id, @company.users.where(:active => true).map {|p| [p.email, p.id]}, {:include_blank => "Add user"}, :disabled => "disabled" %>
                 <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, {:include_blank => "Select role"}, :disabled => "disabled" %>
             <% else %>
-                <%= assignment.select :user_id, company.users.where(:active => true).uniq.map {|p| [p.email, p.id]}, {:include_blank => "Add user"} %>
+                <%= assignment.select :user_id, @company.users.where(:active => true).uniq.map {|p| [p.email, p.id]}, {:include_blank => "Add user"} %>
                 <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, {:include_blank => "Select role"} %>
+                <%= assignment.check_box '_destroy' %>
+                <%= assignment.label '_destroy' %>
             <% end %>
       
-            <%= assignment.check_box '_destroy' %>
-            <%= assignment.label '_destroy' %>
             <br />
         <% end %>
       <% end %>
-      
 
       <% end %>
     </p>

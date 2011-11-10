@@ -1,10 +1,11 @@
 class LedgersController < ApplicationController
+
   before_filter :load_ledger, :only => [:show, :edit, :update, :destroy]
   before_filter :right_company, :only => [:show, :edit, :update, :destroy]
-
+  
   attr_accessor :ledger
   around_filter Log.log(:ledger), :only => [:update, :create]
-
+  
   def load_ledger
     @ledger = Ledger.find(params[:id])
 
@@ -36,7 +37,6 @@ class LedgersController < ApplicationController
             format.html { redirect_to @ledger.account, :notice => "Ledger created" }
             format.xml { head :ok }
         else
-        puts @ledger.errors
         
           #~ flash[:ledger] = @account
           #~ raise @ledger.errors.full_messages.join(", ")
