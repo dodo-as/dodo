@@ -187,17 +187,18 @@ class Company < ActiveRecord::Base
     get_current_vat_account_periods('91234-11-11')
   end
 
-  def available_vat_codes va
+  def available_vat_codes using_code
 
     options = {}
 
-    # populate with unused codes
+    # populate with unused codes + the one used by this account
     for code in VatAccount::SALES_CODE_RANGE
-      if vat_accounts.where(:sales_code => code).first.nil?
+      if vat_accounts.where(:sales_code => code).first.nil? or code == using_code
         # inelegant but the va-controller will take care of the purchase code
         options[code.to_s + ' / ' + (code + VatAccount::PURCHASE_CODE_DIFF).to_s] = code
       end
     end
+    logger.info options
     options
   end
 

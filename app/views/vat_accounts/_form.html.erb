@@ -2,9 +2,9 @@
 
 <%= form_for(@vat_account) do |f| %>
   <%= f.error_messages %>
-  <%#= debug f %>
+  <%= debug @vat_account %>
   <p>
-    <%= f.label :vat_id, 'Unused code' || t('vat.code') %>: <%= f.select :sales_code, @me.current_company.available_vat_codes('hi') %>
+    <%= f.label :vat_id, 'Unused code' || t('vat.code') %>: <%= f.select :sales_code, @me.current_company.available_vat_codes(@vat_account.sales_code), :selected => @vat_account.sales_code %>
   </p>
   <p>
     <table class='naked'>
