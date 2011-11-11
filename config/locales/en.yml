@@ -176,6 +176,7 @@ en:
     ledger_saved: Ledger %{name} saved
   vat:
     listing_vat_accounts: "Listing vat accounts"
+    current_header: "VAT accounts in use"
     non_current_header: "VAT accounts not currently in use"
     account: "Account"
     percentage: "VAT"

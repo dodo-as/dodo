@@ -1,7 +1,7 @@
 <%= form_for @period do |f| %>
   <tr>
     <%= f.fields_for :vat_account do |vf| %>
-      <td><%= vf.text_field (sales ? :sales_code : :purchase_code), :size => 2 %></td>
+      <!-- <td><%#= vf.text_field (sales ? :sales_code : :purchase_code), :size => 2 %></td> -->
       <td><%= (sales ? @period.vat_account.sales_code : @period.vat_account.purchase_code) %></td>
     <% end %>
 

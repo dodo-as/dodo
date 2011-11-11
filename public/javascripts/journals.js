@@ -92,7 +92,8 @@ var journals = {
 
     updateVat: function (reset_all) {
         for (var i=0; i < DODO.journalLines; i++)
-            if (reset_all || journals.getVat(i).value == "-1")
+            if (true) // let setDefaultVat handle it all
+            //if (reset_all || journals.getVat(i).value == "-1")
                 journals.setDefaultVat(i);
     },
 
@@ -101,6 +102,8 @@ var journals = {
      */
     update: function ()
     {
+        console.log('UP DATING')
+        console.log('')
 
     journals.updateVat(false);
 	journals.sumColumn(1);
@@ -108,7 +111,7 @@ var journals = {
 	for (var i=0; i < DODO.journalLines; i++) {
 	    var account = journals.getAccount($('#account_'+i)[0].value);
 	    var vat_account_mapping = DODO.accountVatMapping[account.value];	    
-        console.log(vat_account_mapping);
+        console.log('va_map:', vat_account_mapping);
 	    var vat_account;
 	    var vat_account_id;
 	    if (vat_account_mapping) { // has vat account
@@ -330,8 +333,8 @@ var journals = {
         var current_vat_account_period_valid_from;
         console.log('DODOVAPL');
         console.log(vat_account_data.vat_account_periods);
-        // // find the correct period for this vat account and date
-        //$.each(account.vat_account.vat_account.vat_account_periods,
+
+        // find the correct period for this vat account and date
         $.each(vat_account_data.vat_account_periods,   
             function (i, vap) {
                 var vat_account_period_valid_from = Date.fromString(vap.valid_from)
@@ -349,13 +352,14 @@ var journals = {
             console.log('%: ', percentage);
         }
 
-        $('#dynfield_4_'+line)[0].value = percentage;
-
     }
     else {
-        console.log('no mapping for this account:');
-        console.log(account);
+        console.log('no mapping for this account, thus:');
+        percentage = '';
+        console.log('%: ', percentage);
     }
+
+    $('#dynfield_4_'+line)[0].value = percentage;
 
     },
 
@@ -598,7 +602,6 @@ var journals = {
             line = lines[i]['journal_operation'];
             journals.addAccountLine(line);
         }
-        journals.updateVat(false);
         journals.update();
 
         // update VAT on date change, is also updated elsewhere
