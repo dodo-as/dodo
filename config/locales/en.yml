@@ -494,6 +494,7 @@ en:
 
   counties:
     deleting_county_error: This county mustn't be deleted !
+    editing_county_error: This county can't be edited ! Check your database !
   
   assignment:
     assignment_apply: "Apply to new company"

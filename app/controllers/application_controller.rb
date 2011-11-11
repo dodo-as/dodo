@@ -3,8 +3,8 @@
 
 class ApplicationController < ActionController::Base
   before_filter :set_locale_now, :authenticate_user!, :init_auth
+  before_filter  :deactivated, :except => [:sign_out]
   before_filter :company_required, :if => proc { current_user }
-  
   helper :all # include all helpers, all the time
   
   attr_accessor :me
@@ -20,10 +20,20 @@ class ApplicationController < ActionController::Base
   # filter_parameter_logging :password
 
   protected
+  
 
+  
+  
   def set_locale_now
     I18n.locale = session[:locale] = params[:locale] || session[:locale] || I18n.default_locale
   end
+
+
+    def deactivated
+        if self.class != Devise::SessionsController && current_user && !current_user.active
+          return redirect_to destroy_user_session_path
+        end
+    end
 
   def init_auth   
     company_id = session[:company_id]

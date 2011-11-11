@@ -6,7 +6,7 @@ class CreateJournalTypes < ActiveRecord::Migration
       t.timestamps
     end
 
-    JournalType.create!(:name=>'Weekly Sale')
+   # JournalType.create!(:name=>'Weekly Sale')
   end
 
   def self.down

@@ -167,26 +167,30 @@ class ReportsController < ApplicationController
   end
 
   def ledger_journal
-
+ 
     accounts = nil
     periods = nil
-    journal_operations = nil
     params[:offset] ||= 0    
     
     @journal_operations = []
     @count = 0;
     where = nil
+    #if specified accounts range is taken between from_account_number and to_account_number
     if !params[:from_account_number].blank? && !params[:to_account_number].blank?
       where = ["number BETWEEN ? AND ?", params[:from_account_number], params[:to_account_number]]
     elsif !params[:from_account_number].blank?
+      #from_account specified but not to_account
       where = ["number >= ?", params[:from_account_number]]
     elsif !params[:to_account_number].blank?
+      #to_account specified but not from_account
       where = ["number <= ?", params[:to_account_number]]
     end
-
+    
     if where.nil?
+      #if no accounts specified
       where = ["is_result_account = ?"]
-    else 
+    else
+      #if one of the accounts at least is specified
       where[0] += " AND is_result_account = ?"
     end
     where << false
@@ -235,6 +239,9 @@ class ReportsController < ApplicationController
       unless params[:unit_id].blank?
         where[0] += " AND unit_id = ?"
         where << params[:unit_id]
+      end
+      unless params[:car_id].blank?
+        where[0] += " AND car_id = ?"
       end
 
       @journal_operations = JournalOperation.joins(:journal).joins(:account).where(where).order(

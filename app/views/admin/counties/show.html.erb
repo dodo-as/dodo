@@ -1,10 +1,26 @@
 <p id="notice"><%= notice %></p>
-  
+
+  <% if @county_tax_zone.nil? %>
+    
     <p>
-      <b>Name:</b>
+      <b>Name :</b>
       <%= @county.name %>
-    </p>  
-    <%= @county.is_visible %>  
+    </p> 
+
+  <% else %>
+
+    <p>
+      <b>Name :</b>
+      <%= @county.name %>
+    </p> 
+
+    <p>
+      <b>Tax zone :</b> <br/>
+      Number : <%= @tax_zone.number %> <br/>   
+      Effective date : <%= @county_tax_zone.from %> <br/>   
+    </p>    
+
+  <% end %>     
 
 <%= link_to 'Edit', edit_admin_county_path(@county) %> |
 <%= link_to 'Back', admin_counties_path %>

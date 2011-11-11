@@ -7,7 +7,6 @@ class Admin::CountiesController < Admin::BaseController
   # GET /counties.xml
   def index
     @counties = County.where(:is_visible => true)
-
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @counties }
@@ -18,7 +17,10 @@ class Admin::CountiesController < Admin::BaseController
   # GET /counties/1.xml
   def show
     @county = County.find(params[:id])
-
+    @county_tax_zone = CountyTaxZone.where(:county_id => @county.id)[0]     
+    unless @county_tax_zone.nil?
+       @tax_zone = @county_tax_zone.tax_zone
+    end
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @county }
@@ -29,7 +31,6 @@ class Admin::CountiesController < Admin::BaseController
   # GET /counties/new.xml
   def new
     @county = County.new
-
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @county }
@@ -39,13 +40,20 @@ class Admin::CountiesController < Admin::BaseController
   # GET /counties/1/edit
   def edit
     @county = County.find(params[:id])
+    @county_tax_zone = CountyTaxZone.where(:county_id => @county.id)[0]     
+    unless  @county_tax_zone.nil? 
+        @from = @county_tax_zone.from
+	@tax_zone = @county_tax_zone.tax_zone        
+        unless @tax_zone.nil?
+           @number = @tax_zone.number
+        end
+    end       
   end
 
   # POST /counties
   # POST /counties.xml
   def create
     @county = County.new(params[:county])
-
     respond_to do |format|
       if @county.save
         format.html { redirect_to([:admin, @county], :notice => 'County was successfully created.') }
@@ -60,10 +68,10 @@ class Admin::CountiesController < Admin::BaseController
   # PUT /counties/1
   # PUT /counties/1.xml
   def update
-    @county = County.find(params[:id])
-
+    @county = County.find(params[:id])    
+    county_tax_zone = CountyTaxZone.where(:county_id => @county.id)[0]   
     respond_to do |format|
-      if @county.update_attributes(params[:county])
+      if county_tax_zone.update_attributes(params[:county]["county_tax_zone"]) and county_tax_zone.update_attributes(params[:county]["tax_zone"])
         format.html { redirect_to([:admin, @county], :notice => 'County was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -78,8 +86,7 @@ class Admin::CountiesController < Admin::BaseController
   def destroy
     @county = County.find(params[:id]) 
     @county.is_visible = false  
-    state = @county.save  
-	puts "woops", @county, @county.is_visible, state
+    state = @county.save  	
     respond_to do |format|
       format.html { redirect_to(admin_counties_url) }
       format.xml  { head :ok }

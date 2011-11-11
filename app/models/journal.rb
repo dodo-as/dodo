@@ -72,7 +72,7 @@ class Journal < ActiveRecord::Base
             inner join journal_operations on journals.id = journal_operations.journal_id
             inner join accounts on journal_operations.account_id = accounts.id 
             where journals.company_id = #{company.id}
-            and periods.id in (#{_periods_to_balance}) 
+            and periods.id in (#{_periods_to_balance})
             and accounts.is_result_account = false"
       unless unit.blank?
         sql += " and journal_operations.unit_id = #{unit.id}"
@@ -98,7 +98,7 @@ class Journal < ActiveRecord::Base
             inner join journal_operations on journals.id = journal_operations.journal_id
             inner join accounts on journal_operations.account_id = accounts.id
             where journals.company_id = #{company.id}
-            and periods.id in (#{_periods_to_balance_last}) 
+            and periods.id in (#{_periods_to_balance_last})
             and accounts.is_result_account = false"
       unless unit.blank?
         sql += " and journal_operations.unit_id = #{unit.id}"

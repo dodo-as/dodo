@@ -10,7 +10,12 @@ class User < ActiveRecord::Base
   has_many :assignments, :include => [:company, :role], :order => "companies.name"
   accepts_nested_attributes_for :assignments, :allow_destroy => true,
     :reject_if => proc { |attrs| attrs["company_id"].blank? || attrs["role_id"].blank? }
+    
   
+  def log_include
+    [:assignments]
+  end
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable, :timeoutable and :activatable, :registerable
   devise :database_authenticatable, :recoverable, :rememberable,
@@ -33,7 +38,8 @@ class User < ActiveRecord::Base
   end
   
   def open_periods(company = self.current_company)
-    Period.where(:company_id => company.id, :status => Period::STATUSE_NAMES['Open'])
+    
+    Period.where(:company_id => company.id, :status => [1,2,3])
   end
   
   # declarative_auth wants a login attribute for the introspection ui

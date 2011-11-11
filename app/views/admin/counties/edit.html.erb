@@ -1,10 +1,78 @@
 <h1>Editing county</h1>
 
-<% if @county.is_visible == true %>
-    <%= render 'form' %>
-<% else %>
-    <%= t(:deleting_county_error, :scope => :counties) -%>	
+<% if @county.is_visible == true %> 
+
+  <% if @county_tax_zone == nil %>
+    <%= t(:editing_county_error, :scope => :counties) %>
+
+  <% else %>
+
+   <%= form_for([:admin,@county]) do |f| %>
+
+    <% if @county.errors.any? %>
+     <div id="error_explanation">
+      <h2><%= pluralize(@county.errors.count, "error") %> prohibited this county from being saved:</h2>
+      <ul>
+      <% @county.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+     </div>
+    <% end %>  
+
+   <div class="field">
+
+    <p>      
+      <%= @county.name %>   
+    </p>
+
+    <%= f.fields_for :county_tax_zone do |county_tax_zone| %> 
+
+     <% if @tax_zone.nil? %>
+      <p>
+        <%= county_tax_zone.label :from %>
+        <%= county_tax_zone.text_field :from, :class=> :datepicker %>
+      <p>      
+     <% else %>
+      <p>
+        <%= county_tax_zone.label :from %>
+        <%= county_tax_zone.text_field :from, :value => @from, :class=> :datepicker %>
+      <p>
+     <% end %>
+
+    <% end %>
+
+    <%= f.fields_for :tax_zone do |tax_zone| %>  
+     <% if @tax_zone.nil? %>
+      <p>              
+        <%= tax_zone.label :number  %>       
+        <%= tax_zone.select :tax_zone_id, TaxZone.all.collect {|p| [p.number, p.id]}, :include_blank => " " %>        
+      <p>   
+      </p>  
+     <% else %>       
+      <p>              
+        <%= tax_zone.label :number  %>       
+        <%= tax_zone.select :tax_zone_id, TaxZone.all.collect {|p| [p.number, p.id]} %>     
+      </p>  
+    <% end %>
+   <% end %>
+  </div>
+  
+  <br />
+  
+  <div class="actions">
+   <%= f.submit %>
+  </div>
+ 
+ <% end %>
+
 <% end %>
+
+<% else %>
+    <%= t(:deleting_county_error, :scope => :counties) %>	
+<% end %>
+
+<br/>
 
 <%= link_to 'Show', [:admin, @county] %> |
 <%= link_to 'Back', admin_counties_path %>

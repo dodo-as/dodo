@@ -34,10 +34,10 @@
         <% end %>
         <% if assignment.object.company == @company  || assignment.object.company == nil %>
         <% if (assignment.object.user == current_user && name == "user_admin")%>
-          <%= assignment.select :company_id, [[@company.name, @company.id]], {:include_blank => "Select company"}, :disabled => "disabled" %>
+          <%= assignment.select :company_id, [[@company.name, @company.id]], {:include_blank => false}, :disabled => "disabled" %>
           <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, {:include_blank => "Select role"}, :disabled => "disabled" %>
         <% else %>
-          <%= assignment.select :company_id, [[@company.name, @company.id]], :include_blank => "Select company" %>
+          <%= assignment.select :company_id, [[@company.name, @company.id]], :include_blank => false %>
           <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, :include_blank => "Select role" %>
             <%= assignment.check_box '_destroy' %>
             <%= assignment.label '_destroy' %>
