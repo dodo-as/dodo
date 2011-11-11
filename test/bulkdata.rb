@@ -7,7 +7,7 @@ raise "Set RAILS_ENV=test before loading blueprint" unless Rails.env != 'product
 USER_COUNT = 5
 #15000
 # Number of companies
-COMPANY_COUNT = 5
+COMPANY_COUNT = 7
 #10000
 # Average number of products for a company
 PRODUCT_COUNT = 20
@@ -33,6 +33,13 @@ EMPLOYEE_COUNT = 5
 CUSTOMER_COUNT = 20
 # Password used for _all_ users, including admins
 PASSWORD= "Secret123"
+# Number of users without priviledges in each company
+NONE_USERS_COUNT = 3
+# Number of users with user admin priviledges in each company
+USER_ADMINS_COUNT = 2
+#Date how many years ago from the current date
+YEARS_AGO = 10
+
 
 def print_time name, &block
   print "#{name}..."
@@ -77,6 +84,13 @@ Sham.car_name(:unique => true) {
   ["Prius", "Explorer", "Expander", "Canyanaro", "Punto","Sport","190","Skyline","Diabolo","M7","M5","M3","S3"].rand +
   [" S"," E"," XS"," SL"," Touring", "D", "X", ""].rand
 }
+Sham.web_site(:unique => false) { "www." + Faker::Internet.domain_name }
+Sham.bank_account { rand(30).to_s.rjust(2, "0") + rand(12).to_s.rjust(2,"0") + rand(99).to_s.rjust(2,"0") + rand(99999).to_s.rjust(5,"0") }
+Sham.date(:unique => false) {  Time.at(rand * (Time.now - YEARS_AGO.year.ago) + Time.now.years_ago(YEARS_AGO).to_f) }
+Sham.information(:unique => false) { Faker::Lorem.paragraph(2) }
+Sham.sentence(:unique => false) { Faker::Lorem.sentence }
+Sham.word(:unique => false) { Faker::Lorem.words.rand } 
+
 
 User.blueprint do
   email { Sham.email }
@@ -100,8 +114,31 @@ end
 
 Company.blueprint do
   name { Sham.company_name }
-  address { Address.make }
+  organization_number { (850 + rand(100)).to_s + rand(100).to_s+ (rand(800) + 100).to_s  } 
+  visiting_address { Address.make }
+  billing_address { Address.make if rand(10) < 3 }
+  delivery_address { Address.make if rand(10) < 3 }
   next_invoice_number { 0 }
+  bill_comment_top { rand(10) < 5 }
+  bill_line_comment_top { rand(10) < 5 }
+  show_turnover { rand(10) < 5 }
+  telephone_number { Sham.phone }
+  fax { Sham.phone if rand(10) < 7 }
+  mobile_number { Sham.phone }
+  email { Sham.email }
+  web_site { Sham.web_site }
+  bank_account { Sham.bank_account }
+  interest_rate { rand * 20 }
+  late_fee { rand * 150 }
+  share_value { rand * 1000}
+  share_count { 1000+ rand(500)}
+  incorporation_date { Sham.date }
+  # result_account_balance_id
+  # result_account_result_id
+  information { Sham.information }
+  payment_terms { Sham.sentence }
+  deliver_terms { Sham.sentence }
+  sector { Sham.word }
 end
 
 Unit.blueprint do
@@ -185,6 +222,7 @@ roles=nil
 ActiveRecord::Base.transaction do
 
   if not $BULK_APPEND
+  
     print_time "Creating users" do
       
       USER_COUNT.times {|i| user = User.make }
