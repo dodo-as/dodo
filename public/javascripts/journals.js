@@ -101,23 +101,8 @@ var journals = {
      */
     update: function ()
     {
-	/*
-=======
-        var vat_account_id;
-        if (account.vat_account != undefined) {
-            vat_account_id = account.vat_account.vat_account.id; 
-            vat_account = DODO.hashedAccountList[DODO.vatAccountList[vat_account_id].vat_account.target_sales_account_id].account;
-            vat_account_wrapper = DODO.vatAccountList[vat_account_id].vat_account;
-        } else {
-            vat_account_id = '';
-            vat_account = {'name': '&lt;No VAT account&gt;', 'overridable': 0, 'id': ''};  
-            console.log(vat_account);
-        }
->>>>>>> 9adb6ce74498d20faa4aaa033bfe2b8f3e40cc79:public/javascripts/journals.js
-	*/
 
-
-        journals.updateVat(false);
+    journals.updateVat(false);
 	journals.sumColumn(1);
 	journals.sumColumn(2);
 	for (var i=0; i < DODO.journalLines; i++) {
@@ -159,9 +144,13 @@ var journals = {
 	    
 	    inputs.vat.readOnly=!overridable;
 	    
+        // calculate vat
+
+        console.log('karukurating vato');
 	    var vatFactor = 1.0 - 1.0/(1.0+0.01*parseFloatNazi(inputs.vat.value));
 	    var baseAmount = (credit > 0.0)?credit:debet;
 	    var vatAmount = toMoney(vatFactor * baseAmount);
+        console.log(vatFactor, baseAmount, vatAmount);
 
 	    var vatAccountInput = $('#vat_account_'+i)[0];
 	    vatAccountInput.value = vat_account_id;
@@ -343,11 +332,9 @@ var journals = {
         console.log(vat_account_data.vat_account_periods);
         // // find the correct period for this vat account and date
         //$.each(account.vat_account.vat_account.vat_account_periods,
-        $.each(vat_account_data.vat_account_periods,   // this is bad, or is it?
+        $.each(vat_account_data.vat_account_periods,   
             function (i, vap) {
-                console.log('function');
                 var vat_account_period_valid_from = Date.fromString(vap.valid_from)
-                console.log('date');
 
                 if (   vat_account_period_valid_from < current_date
                     && (   current_vat_account_period_valid_from === undefined
@@ -362,13 +349,13 @@ var journals = {
             console.log('%: ', percentage);
         }
 
+        $('#dynfield_4_'+line)[0].value = percentage;
+
     }
     else {
         console.log('no mapping for this account:');
         console.log(account);
     }
-
-	$('#dynfield_4_'+line)[0].value = percentage;
 
     },
 
@@ -614,7 +601,7 @@ var journals = {
         journals.updateVat(false);
         journals.update();
 
-        // VAT needs to be updated on change of date, other selectors are taken care of elsewhere
+        // update VAT on date change, is also updated elsewhere
         $('#journal_journal_date').change(function (e) {
             journals.updateVat(true);
             journals.update();

@@ -10,7 +10,6 @@
     accountList: <%= raw(@accounts_all.to_json) %>,
     hashedAccountList: <%= raw(@hashed_accounts_all.to_json) %>,
     vatAccountList: <%= raw(@vat_accounts_all.to_json) %>,
-    vatAccountPeriodList: <%= raw(@vat_account_periods_all.to_json) %>,
     journalOperationList: <%= raw(@journal.journal_operations.all.to_json) %>,
     readOnly: <%= @readonly?"true":"false" %>
   };
