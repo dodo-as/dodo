@@ -3,8 +3,19 @@ class Journal < ActiveRecord::Base
   belongs_to :company
   belongs_to :bill
   belongs_to :period
-  belongs_to :unit
+  
   belongs_to :journal_type 
+
+  scope :company, lambda {|company_id| where("company_id = ?", company_id)}
+  scope :in_periods, lambda {|periods| where("period_id in (#{periods})")}
+
+  def self.journal_type(journal_type)
+    if journal_type
+      where("journal_type_id = #{journal_type.id}")
+    else
+      scoped
+    end
+  end
 
   self.per_page = 200
 
@@ -22,8 +33,8 @@ class Journal < ActiveRecord::Base
 
   def self.report_ledger_balance(periods_to_balance, periods_to_balance_previous, 
       periods_to_balance_last, periods_to_balance_last_previous,
-      periods_to_result, periods_to_result_last,
-      company, unit, project,car, show_only_active_accounts)
+      periods_to_result, periods_to_result_previous, periods_to_result_last, periods_to_result_last_previous,
+      company, unit, project,car, show_only_active_accounts,journal_type)
 
     #preparing periods to string fromat for sql query.
     unless periods_to_balance.blank?
@@ -43,8 +54,14 @@ class Journal < ActiveRecord::Base
     unless periods_to_result.blank?
       _periods_to_result = periods_to_result.collect { |p| p.id }.join(",")
     end
+    unless periods_to_result_previous.blank?
+      _periods_to_result_previous = periods_to_result_previous.collect {|p| p.id}.join(",")
+    end
     unless periods_to_result_last.blank?
       _periods_to_result_last = periods_to_result_last.collect { |p| p.id }.join(",")
+    end
+    unless periods_to_result_last_previous.blank?
+      _periods_to_result_last_previous = periods_to_result_last_previous.collect {|p| p.id }.join(",")
     end
 
     ###############################
@@ -109,6 +126,9 @@ class Journal < ActiveRecord::Base
       unless car.blank?
         sql += " and journal_operations.car_id = #{car.id}"
       end
+      unless journal_type.blank?
+        sql += " and journals.journal_type_id = #{journal_type.id}"
+      end
       sql +=" group by accounts.id "
     end   
     unless _periods_to_balance_previous.blank?  
@@ -134,6 +154,9 @@ class Journal < ActiveRecord::Base
       end
       unless car.blank?
         sql += " and journal_operations.car_id = #{car.id}"
+      end
+      unless journal_type.blank?
+        sql += " and journals.journal_type_id = #{journal_type.id}"
       end
       sql +=" group by accounts.id "
     end
@@ -161,6 +184,9 @@ class Journal < ActiveRecord::Base
       unless car.blank?
         sql+= " and journal_operations.car_id = #{car.id}"
       end
+      unless journal_type.blank?
+        sql += " and journals.journal_type_id = #{journal_type.id}"
+      end
       sql +=" group by accounts.id "
     end
     if show_only_active_accounts.blank?
@@ -180,7 +206,6 @@ class Journal < ActiveRecord::Base
         ) as result 
         group by account_id
         order by account_number"
-
 
     balance = Journal.find_by_sql(sql)   
 
@@ -249,6 +274,9 @@ class Journal < ActiveRecord::Base
       unless car.blank?
         sql += " and journal_operations.car_id = #{car.id}"
       end
+      unless journal_type.blank?
+        sql += " and journals.journal_type_id = #{journal_type.id}"
+      end
       sql +=" group by accounts.id "
     end
     unless _periods_to_result_last.blank?
@@ -273,6 +301,9 @@ class Journal < ActiveRecord::Base
       unless car.blank?
         sql += " and journal_operations.car_id = #{car.id}"
       end
+      unless journal_type.blank?
+        sql += " and journals.journal_type_id = #{journal_type.id}"
+      end
       sql +=" group by accounts.id "
     end
     if show_only_active_accounts.blank?
@@ -291,7 +322,7 @@ class Journal < ActiveRecord::Base
         ) as result
         group by account_id
         order by account_number "
- 
+    
     result = Journal.find_by_sql(sql)   
     
     total_period = 0
@@ -307,9 +338,6 @@ class Journal < ActiveRecord::Base
     result.each do |row|      
       total_period += row["total_period"].to_f
       total_last_period += row["total_last_period"].to_f
-      #      puts "account number = "+row["account_number"]
-      #      puts "account number first digit = "+row["account_number"][0,1]
-      #      puts "amount  = "+row["total_last_period"]
       case row["account_number"].to_i
       when 3000..3999 then total_accounts_3000 += row["total_period"].to_f
       when 4000..4999 then total_accounts_4000 += row["total_period"].to_f
@@ -320,8 +348,61 @@ class Journal < ActiveRecord::Base
       when 9000..9999 then total_accounts_4000 += row["total_period"].to_f
       end
     end
-    total_result =  Hash.new 
-    total_result["total_period"]=total_period
+
+
+    #fix: calculating previous and pervious last periods for result accounts
+    ##################################################################
+    ##################  Previous periods result  #####################
+    ##################################################################s
+
+    previous_result = Hash.new
+    previous_last_result = Hash.new
+    previous_result[:total_result] = 0
+    previous_last_result[:total_result]= 0
+    accounts = Account.company(company.id).is_result_account
+    accounts.each do |account|
+      previous_result[:"#{account.number}"] = 0
+      previous_last_result[:"#{account.number}"] = 0
+      unless _periods_to_result_previous.blank?
+        journals = Journal.company(company.id).in_periods(_periods_to_result_previous).journal_type(journal_type)
+        journals.each do |journal|
+          journal_operations = journal.journal_operations.account(account.id).car(car).unit(unit).project(project)
+          journal_operations.each do |jo|
+            unless jo.amount.blank?
+              previous_result[:"#{account.number}"] += jo.amount
+            end
+          end
+        end
+      end
+      unless _periods_to_result_last_previous.blank?
+           journals = Journal.company(company.id).in_periods(_periods_to_result_last_previous).journal_type(journal_type)
+           journals.each do |journal|
+             journal_operations = journal.journal_operations.account(account.id).car(car).unit(unit).project(project)
+             journal_operations.each do |jo|
+               unless jo.amount.blank?
+                 previous_last_result[:"#{account.number}"] += jo.amount
+               end
+             end
+           end
+      end
+      previous_result[:total_result] += previous_result[:"#{account.number}"]
+      previous_last_result[:total_result] += previous_last_result[:"#{account.number}"]
+
+      case account.number
+      when 3000..3999 then total_accounts_3000 += previous_result[:"#{account.number}"]
+      when 4000..4999 then total_accounts_4000 += previous_result[:"#{account.number}"]
+      when 5000..5999 then total_accounts_4000 += previous_result[:"#{account.number}"]
+      when 6000..6999 then total_accounts_4000 += previous_result[:"#{account.number}"]
+      when 7000..7999 then total_accounts_4000 += previous_result[:"#{account.number}"]
+      when 8000..8999 then total_accounts_4000 += previous_result[:"#{account.number}"]
+      when 9000..9999 then total_accounts_4000 += previous_result[:"#{account.number}"]
+      end
+    end
+
+    ################################################################################
+
+    total_result =  Hash.new
+    total_result["total_period"] = total_period
     total_result["total_last_period"] = total_last_period
     total_result["total_accounts_3000"] = total_accounts_3000
     total_result["total_accounts_4000"] = total_accounts_4000
@@ -335,7 +416,7 @@ class Journal < ActiveRecord::Base
     total_result["total_diff"] = total_result["total_revenue"] + total_result["total_expenses"]
     total_result["total_result"] = total_accounts_8000 + total_result["total_diff"]
 
-    return balance, total_balance, result, total_result
+    return balance, total_balance, previous_result,previous_last_result,result, total_result
   end
 
   def set_number

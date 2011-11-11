@@ -99,13 +99,13 @@
     <tr class="detail2">
       <td> <%= row.account_name %> </td>
       <td> <%= row.account_number %> </td>
-      <td style="text-align:right"> <%= number_with_precision(0, :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"> <%= number_with_precision(@previous_result[:"#{row.account_number}"], :locale => I18n.locale) %> </td>
       <td style="text-align:right"> <%= number_with_precision(row.total_period, :locale =>I18n.locale) %> </td>
-      <td style="text-align:right"> <%= number_with_precision(row.total_period, :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"> <%= number_with_precision(@previous_result[:"#{row.account_number}"] + row.total_period.to_f,:locale => I18n.locale) %></td>
     <% if @show_last_period %>
-      <td style="text-align:right"> <%= number_with_precision(0, :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"> <%= number_with_precision(@previous_last_result[:"#{row.account_number}"], :locale => I18n.locale) %> </td>
       <td style="text-align:right"> <%= number_with_precision(row.total_last_period, :locale =>I18n.locale) %> </td>
-      <td style="text-align:right"> <%= number_with_precision(row.total_last_period, :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"> <%= number_with_precision(@previous_last_result[:"#{row.account_number}"] + row.total_last_period.to_f,:locale => I18n.locale) %> </td>
     <% end %>
     </tr>
   <% end %>
@@ -113,13 +113,13 @@
   <tfoot>
     <tr>
       <td colspan="2"></td>
-      <td style="text-align:right"><%= number_with_precision(0.00, :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@previous_result[:total_result],:locale =>I18n.locale) %></td>
       <td style="text-align:right"><%= number_with_precision(@total_result["total_period"], :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_period"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@previous_result[:total_result]+@total_result["total_period"].to_f,:loacale => I18n.locale) %></td>
     <% if @show_last_period %>
-      <td style="text-align:right"><%= number_with_precision(0.00, :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@previous_last_result[:total_result],:locale =>I18n.locale)%></td>
       <td style="text-align:right"><%= number_with_precision(@total_result["total_last_period"], :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_last_period"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@previous_last_result[:total_result]+@total_result["total_last_period"].to_f,:locale => I18n.locale) %></td>
     <% end %>
     </tr>
   </tfoot>
