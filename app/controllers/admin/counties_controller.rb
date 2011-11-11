@@ -18,7 +18,9 @@ class Admin::CountiesController < Admin::BaseController
   def show
     @county = County.find(params[:id])
     @county_tax_zone = CountyTaxZone.where(:county_id => @county.id)[0]     
-    @tax_zone = @county_tax_zone.tax_zone
+    unless @county_tax_zone.nil?
+       @tax_zone = @county_tax_zone.tax_zone
+    end
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @county }
@@ -38,11 +40,13 @@ class Admin::CountiesController < Admin::BaseController
   # GET /counties/1/edit
   def edit
     @county = County.find(params[:id])
-    @county_tax_zone = CountyTaxZone.where(:county_id => @county.id)[0]      
+    @county_tax_zone = CountyTaxZone.where(:county_id => @county.id)[0]     
     unless  @county_tax_zone.nil? 
-	@tax_zone = @county_tax_zone.tax_zone
         @from = @county_tax_zone.from
-        @number = @tax_zone.number
+	@tax_zone = @county_tax_zone.tax_zone        
+        unless @tax_zone.nil?
+           @number = @tax_zone.number
+        end
     end       
   end
 

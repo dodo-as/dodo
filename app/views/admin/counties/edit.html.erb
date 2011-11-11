@@ -21,21 +21,41 @@
     <% end %>  
 
    <div class="field">
+
     <p>      
       <%= @county.name %>   
     </p>
+
     <%= f.fields_for :county_tax_zone do |county_tax_zone| %> 
+
+     <% if @tax_zone.nil? %>
+      <p>
+        <%= county_tax_zone.label :from %>
+        <%= county_tax_zone.text_field :from, :class=> :datepicker %>
+      <p>      
+     <% else %>
       <p>
         <%= county_tax_zone.label :from %>
         <%= county_tax_zone.text_field :from, :value => @from, :class=> :datepicker %>
-      <p>      
+      <p>
+     <% end %>
+
     <% end %>
+
     <%= f.fields_for :tax_zone do |tax_zone| %>  
+     <% if @tax_zone.nil? %>
+      <p>              
+        <%= tax_zone.label :number  %>       
+        <%= tax_zone.select :tax_zone_id, TaxZone.all.collect {|p| [p.number, p.id]}, :include_blank => " " %>        
+      <p>   
+      </p>  
+     <% else %>       
       <p>              
         <%= tax_zone.label :number  %>       
         <%= tax_zone.select :tax_zone_id, TaxZone.all.collect {|p| [p.number, p.id]} %>     
       </p>  
     <% end %>
+   <% end %>
   </div>
   
   <br />
