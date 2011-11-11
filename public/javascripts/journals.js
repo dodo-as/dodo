@@ -114,8 +114,13 @@ var journals = {
         console.log('va_map:', vat_account_mapping);
 	    var vat_account;
 	    var vat_account_id;
+        var overridable = false;
 	    if (vat_account_mapping) { // has vat account
             var vat_account_data = DODO.vatAccountList[vat_account_mapping].vat_account;
+
+            // is this really what we want
+            overridable = vat_account_data.overridable || account.vat_overridable;
+	    
             console.log(account);
             console.log('has a wrapper/data:');
             console.log(vat_account_data);
@@ -141,9 +146,6 @@ var journals = {
 	    var credit1 = $('#vat1_credit_'+i)[0];
 	    var credit2 = $('#vat2_credit_'+i)[0];
 	    credit1.innerHTML =debet1.innerHTML =credit2.innerHTML =debet2.innerHTML ='';
-	    
-        // is this really what we want
-	    var overridable = vat_account.overridable || account.vat_overridable;
 	    
 	    inputs.vat.readOnly=!overridable;
 	    
