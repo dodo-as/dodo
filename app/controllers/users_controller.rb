@@ -53,7 +53,11 @@ class UsersController < ApplicationController
       end
       if @user.update_attributes(params[:user])
         flash[:notice] = t(:update_success, :scope => :users)
-        format.html { redirect_to users_path }
+        if @user.role_symbols.count(:user_admin) > 0
+            format.html { redirect_to users_path }
+        else
+            format.html { redirect_to root_path }
+        end
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
