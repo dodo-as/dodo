@@ -47,10 +47,16 @@ class UsersController < ApplicationController
     def update
     respond_to do |format|
       # don't update password if blank
+
+       params["user"]["assignments_attributes"].each_value {|it|
+         it["company_id"] = @me.current_company.id.to_s if it.key? "role_id"
+        }
+
       if params[:user][:password].blank?
         params[:user].delete :password
         params[:user].delete :password_confirmation
-      end
+      end      
+     
       if @user.update_attributes(params[:user])
         flash[:notice] = t(:update_success, :scope => :users)
         if @me.role_symbols.count(:user_admin) > 0
