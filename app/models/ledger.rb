@@ -5,6 +5,8 @@ class Ledger < ActiveRecord::Base
   belongs_to :project
   belongs_to :address, :dependent => :destroy
   has_many :paycheck_line_templates , :foreign_key => "employee_id"
+  has_many :county_tax_zones
+  accepts_nested_attributes_for :county_tax_zones, :allow_destroy => false
   validates :number, :uniqueness => {:scope => [:account_id]},  :presence => true
 
   validates :name, :presence => true

@@ -73,7 +73,16 @@
     <%= f.label :work_stop, t(:work_stop, :scope => :accounts) -%><br />
     <%= f.text_field :work_stop, :class => :datepicker  %>
   </p>
-  
+
+  <p>
+    <%= f.label :county, t(:county, :scope => :accounts) -%>
+    <%= f.select :county_id, County.all.collect {|p| [p.name, p.id]} %>  
+    <%= f.fields_for :county_tax_zone do |county_tax_zone| %>         
+      <%= county_tax_zone.label :from %>
+      <%= county_tax_zone.text_field :from, :class=> :datepicker %>        
+    <% end %>  
+  </p>  
+
   <p>
     <%= f.label :placement_top, t(:placement_top, :scope => :accounts) -%><br />
     <%= f.check_box :placement_top %>

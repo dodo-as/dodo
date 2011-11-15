@@ -171,6 +171,8 @@ en:
     tabelltrekk: "Tax, table"
     work_start: "Employment start date"
     work_stop: "Employment termination date"
+    county: "County"
+    from: "From"
   ledgers:
     ledger_saved: Ledger %{name} saved
   vat:
