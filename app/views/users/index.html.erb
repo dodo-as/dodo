@@ -11,11 +11,7 @@
 
   <% for user in @users.uniq %>
   <tr>
-    <% if user.active == false %>
-        <td id="dodo-disabled-user">
-    <% else %>
-        <td>
-    <% end %>
+    <td>
         <%= user.email %>
     </td>
     

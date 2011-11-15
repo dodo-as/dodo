@@ -5,6 +5,10 @@ class Account < ActiveRecord::Base
   belongs_to :activatable
   belongs_to :vat_account
 
+  scope :company, lambda {|company_id| where("company_id = ?", company_id)}
+  scope :is_result_account, where(:is_result_account => true)
+  scope :is_balance_account, where(:is_result_account => false)
+
   def vat_description
     if self.vat_account
       if self.vat_account.target_account
