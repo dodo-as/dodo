@@ -53,10 +53,9 @@ class PaychecksController < ApplicationController
   # GET /paychecks/new
   # GET /paychecks/new.xml
   def new
-    @paycheck = Paycheck.new
-    @paycheck.employee_id = @employee.id
-    @paycheck.paycheck_period_id = user_company_property("paycheck.paycheck_period_id", nil)
-    @paycheck.period_id = user_company_property("paycheck.period_id", nil)
+    @paycheck = Paycheck.new(:employee_id => @employee.id,
+ 			     :paycheck_period_id => user_company_property("paycheck.paycheck_period_id", nil),
+			     :period_id => user_company_property("paycheck.period_id", nil))
     
     # TO-DO : Here we must get the tax zone to which the employee depends and the current tax zone for the county selected 
     # So having a county and an employee
