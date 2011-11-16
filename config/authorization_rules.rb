@@ -8,8 +8,8 @@ authorization do
     has_permission_on :admin_admins, :to => :manage
     has_permission_on :admin_company, :to => :manage
     has_permission_on :admin_counties, :to => [:manage,:delete]                               
-    has_permission_on :admin_tax_zones, :to => :manage
-    has_permission_on :admin_tax_zone_taxes, :to => :manage
+    has_permission_on :admin_tax_zones, :to => [:manage,:delete] 
+    has_permission_on :admin_tax_zone_taxes, :to => [:manage,:delete] 
     has_permission_on :admin_county_tax_zones, :to => [:manage,:delete] 
     has_permission_on :admin_admin_logs, :to => :manage
 

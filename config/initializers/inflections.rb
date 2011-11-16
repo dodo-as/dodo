@@ -1,3 +1,7 @@
+ActiveSupport::Inflector.inflections do |inflect|
+  inflect.irregular 'tax_zone_tax', 'tax_zone_taxes'
+end
+
 # Be sure to restart your server when you modify this file.
 
 # Add new inflection rules using the following format 

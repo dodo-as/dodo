@@ -30,12 +30,12 @@
 
   <%= f.fields_for :tax_zone do |tax_zone| %>
    <%= tax_zone.label :tax_zone %>
-   <%= tax_zone.text_field :tax_zone_id, :value => @tax_zone %> 
+   <%= tax_zone.text_field :tax_zone_id, :value => @tax_zone , :disabled => true%> 
   <% end %> 
   <br/>
-  <%= f.fields_for :tax_zone_tax do |tax_zone_tax| %>
+  <%= f.fields_for :tax_zone_tax do |tax_zone_tax| %> <br/>
    <%= tax_zone_tax.label :tax_rate %>
-   <%= tax_zone_tax.text_field :tax_rate, :value => @tax_rate %> 
+   <%= tax_zone_tax.text_field :tax_rate, :value => @tax_rate , :disabled => true %> 
   <% end %>
 
  </p>
