@@ -12,6 +12,23 @@ class Period < ActiveRecord::Base
   STATUSES = {0 => 'New', 1 => 'Open', 2 => 'Done', 3 => 'Locked', 4 => 'Closed'}
   STATUSE_NAMES = {'New' => 0, 'Open' => 1, 'Done' => 2, 'Locked' => 3, 'Closed' => 4}
 
+  #period p1 should be before or equal to p2, returns true also if at least one the periods are nil
+  def self.ordred_periods?(p1,p2)
+
+    if p1.blank? or p2.blank?
+        true
+    elsif p1.year < p2.year
+        true
+    elsif p1.year == p2.year && p1.nr <= p2.nr
+        true
+    else
+      false
+    end
+
+  end
+
+
+
   # options: from_year, from_nr, to_year, to_nr, company_id 
   # if (from_year, to_year) are nil, it will return all periods of the company from year 1900 to year 3999
   # if (to_year) is nil, it will return all periods until last period of the company until year 3999

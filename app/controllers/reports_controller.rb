@@ -17,6 +17,11 @@ class ReportsController < ApplicationController
     to_period = Period.find(params[:to_period_id]) unless params[:to_period_id].blank?
     from_period_result_accounts = Period.find(params[:result_from_period_id]) unless params[:result_from_period_id].blank?
 
+    unless Period.ordred_periods?(from_period,to_period)
+      flash[:warning] = t(:before_period_should_not_be_greater_than_to_period, :scope => :reports)
+      from_period = to_period = nil
+    end
+
     @unit = Unit.find(params[:unit_id]) unless params[:unit_id].blank?    
     @project = Project.find(params[:project_id]) unless params[:project_id].blank?
     @car = Car.find(params[:car_id]) unless params[:car_id].blank?
