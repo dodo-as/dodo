@@ -72,8 +72,9 @@ class Admin::CountyTaxZonesController < Admin::BaseController
   # DELETE /county_tax_zones/1
   # DELETE /county_tax_zones/1.xml
   def destroy
-    @county_tax_zone = CountyTaxZone.find(params[:id])
-    @county_tax_zone.destroy
+    @county_tax_zone = CountyTaxZone.find(params[:id])    
+    @county_tax_zone.is_visible = false
+    state = @county_tax_zone.save
 
     respond_to do |format|
       format.html { redirect_to(admin_county_tax_zones_url) }
