@@ -11,13 +11,37 @@
 <% end %>
 
 <div class="field">
-  <%= f.label :paycheck_period_id %>:<br />
-  <%= f.select :paycheck_period_id, current_user.current_company.paycheck_periods.map {|p| [ p, p.id ] } %>
-</div>
-<div class="field">
-  <%= f.label :period_id %>:<br />
-  <%= f.select :period_id, current_user.open_periods.map {|p| [ p, p.id ] } %>
-</div>
+
+ <p>
+  <%= f.label :paycheck_period_id %>
+  <%= f.select :paycheck_period_id, current_user.current_company.paycheck_periods.map {|p| [ p, p.id ] } %> 
+  <%= f.label :period_id %>
+  <%= f.select :period_id, current_user.open_periods.map {|p| [ p, p.id ] } %>    
+ </p> 
+
+ <p>
+
+  <%= f.label :county %>
+  <%= f.select :county_id, County.all.collect {|p| [p.name, p.id]} %>  
+
+ </p>
+
+ <p>
+
+  <%= f.fields_for :tax_zone do |tax_zone| %>
+   <%= tax_zone.label :tax_zone %>
+   <%= tax_zone.text_field :tax_zone_id, :value => @tax_zone %> 
+  <% end %> 
+  <br/>
+  <%= f.fields_for :tax_zone_tax do |tax_zone_tax| %>
+   <%= tax_zone_tax.label :tax_rate %>
+   <%= tax_zone_tax.text_field :tax_rate, :value => @tax_rate %> 
+  <% end %>
+
+ </p>
+
+</div> </br>
+
 <%= f.hidden_field :employee_id %>
 
 <table>

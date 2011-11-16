@@ -18,7 +18,7 @@ class PaychecksController < ApplicationController
     @units = current_user.current_company.units
     @projects = current_user.current_company.projects
 
-#    @periods = current_user.current_company.periods.select {|p| p.open?}
+    #    @periods = current_user.current_company.periods.select {|p| p.open?}
   end
 
   def period_total_type line
@@ -57,6 +57,12 @@ class PaychecksController < ApplicationController
     @paycheck.employee_id = @employee.id
     @paycheck.paycheck_period_id = user_company_property("paycheck.paycheck_period_id", nil)
     @paycheck.period_id = user_company_property("paycheck.period_id", nil)
+    
+    # TO-DO : Here we must get the tax zone to which the employee depends and the current tax zone for the county selected 
+    # So having a county and an employee
+    # @tax_rate = ?
+    # @tax_zone ?
+    
     
     @employee.paycheck_line_templates.each do |line| 
       l = {}

@@ -4,6 +4,8 @@ ActiveRecord::Base.transaction do
 Role.create!(:name => "user") if Role.find_by_name("user").nil?
 Role.create!(:name => "accountant") if Role.find_by_name("accountant").nil?
 Role.create!(:name => "employee") if Role.find_by_name("employee").nil?
+Role.create!(:name => "user_admin") if Role.find_by_name("user_admin").nil?
+Role.create!(:name => "none") if Role.find_by_name("none").nil?
 
 # load tax rate data for 2010
 if TaxRate.find(:first, :conditions => {:year => 2010}).nil?

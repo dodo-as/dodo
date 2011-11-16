@@ -10,7 +10,7 @@ authorization do
     has_permission_on :admin_counties, :to => [:manage,:delete]                               
     has_permission_on :admin_tax_zones, :to => :manage
     has_permission_on :admin_tax_zone_taxes, :to => :manage
-    has_permission_on :admin_county_tax_zones, :to => :manage
+    has_permission_on :admin_county_tax_zones, :to => [:manage,:delete] 
     has_permission_on :admin_admin_logs, :to => :manage
 
     has_permission_on :weekly_sale_setups, :to => :manage do
@@ -35,6 +35,9 @@ authorization do
   end
 
   role :user do
+  
+    includes :none
+    
     has_permission_on :authorization_rules, :to => :read
     has_permission_on :authorization_usages, :to => :read
 
@@ -118,10 +121,7 @@ authorization do
 
      has_permission_on :journal_types, :to => :read
      
-     has_permission_on :users, :to => :edit do
-        if_attribute :id => is {user.id}
-     end
-     
+
   end
 
   role :accountant do
@@ -146,6 +146,9 @@ authorization do
   end
 
   role :employee do
+  
+    includes :none
+  
     has_permission_on :salaries, :to => :read do
       if_attribute :employee_id => is {user.id}
     end
@@ -154,12 +157,12 @@ authorization do
   role :user_admin do
     includes :user, :accountant, :employee
     
-        has_permission_on :users, :to => :manage    #~ # authorization for the admin ui
+        has_permission_on :users, :to => :manage
 
   end
   
   role :none do
-   has_permission_on :users, :to => :edit do
+   has_permission_on :users, :to => [:update] do
         if_attribute :id => is {user.id}
      end
   end

@@ -4,8 +4,7 @@ class Paycheck < ActiveRecord::Base
   belongs_to :paycheck_period
   belongs_to :journal
   has_many :paycheck_lines
+  has_many :county_tax_zones
   accepts_nested_attributes_for :paycheck_lines
-  
-  
-  
+  accepts_nested_attributes_for :county_tax_zones, :allow_destroy => false  
 end

@@ -11,19 +11,19 @@
       <% if @user == @me %> 
       <p>
       <%= f.label :password %><br />
-        <%= f.text_field :password %>
+        <%= f.password_field :password %>
       </p>
 
       <p>
       <%= f.label :password_confirmation %><br />
-        <%= f.text_field :password_confirmation %>
+        <%= f.password_field :password_confirmation %>
       </p>
         
     <% end %>
         <% permitted_to? :manage, :users do %>
         
         <p>
-        <%= t(:companies, :scope => :users) %><br />
+        <%= t(:roles, :scope => :users) + " in " + @company.name %><br />
         
         <%= f.fields_for :assignments do |assignment| %>
         
@@ -33,15 +33,19 @@
             <% name = "" %>
         <% end %>
         <% if assignment.object.company == @company  || assignment.object.company == nil %>
-        <% if (assignment.object.user == current_user && name == "user_admin")%>
-          <%= assignment.select :company_id, [[@company.name, @company.id]], {:include_blank => false}, :disabled => "disabled" %>
-          <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, {:include_blank => "Select role"}, :disabled => "disabled" %>
-        <% else %>
-          <%= assignment.select :company_id, [[@company.name, @company.id]], :include_blank => false %>
-          <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, :include_blank => "Select role" %>
-            <%= assignment.check_box '_destroy' %>
-            <%= assignment.label '_destroy' %>
-        <% end %>
+            <% if assignment.object.new_record? %>
+                    <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, :include_blank => "Select role" %>
+                    <%= assignment.check_box '_destroy' %>
+                    <%= assignment.label '_destroy' %>
+            <% else %>
+                <% if (assignment.object.user == current_user && name == "user_admin")%>
+                    <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, {:include_blank => "Select role"}, :disabled => "disabled" %>
+                <% else %>
+                    <%= assignment.select :role_id, Role.all.map {|r| [r.name, r.id]}, {:include_blank => "Select role"}, :disabled => "disabled" %>
+                    <%= assignment.check_box '_destroy' %>
+                    <%= assignment.label '_destroy' %>
+                <% end %>
+            <% end %>
           <br />
         <% end %>
         <% end %>

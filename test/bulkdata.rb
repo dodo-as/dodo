@@ -7,7 +7,7 @@ raise "Set RAILS_ENV=test before loading blueprint" unless Rails.env != 'product
 USER_COUNT = 5
 #15000
 # Number of companies
-COMPANY_COUNT = 7
+COMPANY_COUNT = 3
 #10000
 # Average number of products for a company
 PRODUCT_COUNT = 20
@@ -85,8 +85,10 @@ Sham.car_name(:unique => true) {
   [" S"," E"," XS"," SL"," Touring", "D", "X", ""].rand
 }
 Sham.web_site(:unique => false) { "www." + Faker::Internet.domain_name }
-Sham.bank_account { rand(30).to_s.rjust(2, "0") + rand(12).to_s.rjust(2,"0") + rand(99).to_s.rjust(2,"0") + rand(99999).to_s.rjust(5,"0") }
+Sham.personal_number { rand(30).to_s.rjust(2, "0") + rand(12).to_s.rjust(2,"0") + rand(99).to_s.rjust(2,"0") + rand(99999).to_s.rjust(5,"0") }
+Sham.bank_account { (10 + rand(89)).to_s.rjust(2, "0") + rand(99).to_s.rjust(2,"0") + rand(99).to_s.rjust(2,"0") + rand(99999).to_s.rjust(5,"0") }
 Sham.date(:unique => false) {  Time.at(rand * (Time.now - YEARS_AGO.year.ago) + Time.now.years_ago(YEARS_AGO).to_f) }
+Sham.date_of_birth(:unique => false) {  Time.at(rand * (Time.now - YEARS_AGO.year.ago) + Time.now.years_ago(YEARS_AGO).to_f) }
 Sham.information(:unique => false) { Faker::Lorem.paragraph(2) }
 Sham.sentence(:unique => false) { Faker::Lorem.sentence }
 Sham.word(:unique => false) { Faker::Lorem.words.rand } 
@@ -96,6 +98,7 @@ User.blueprint do
   email { Sham.email }
   password { PASSWORD }
   password_confirmation { password }
+  active { true if rand(10) < 7 }
 end
 
 Admin.blueprint do
@@ -143,17 +146,27 @@ end
 
 Unit.blueprint do
   name { Sham.company_name + " (unit)" }
-  address
+  address { Address.make }
+  comments { Sham.information }
+  from  { Sham.date }
+  to { from.months_since(1 + rand(35)) }
 end
 
 Car.blueprint do
   name { Sham.car_name}
+  comments { Sham.information }
+  company_id { Company.all.rand.id }
+  from  { Sham.date }
+  to { from.months_since(1 + rand(35)) }
 end
 
 Project.blueprint do
   name { Sham.bs + " (project)" }
+  address { Address.make }
   comments { Sham.catch_phrase }
-  address
+  company_id { Company.all.rand.id }
+  from  { Sham.date }
+  to { from.months_since(1 + rand(35)) }
 end
 
 Product.blueprint do
@@ -198,7 +211,7 @@ end
 
 Ledger.blueprint do
   name {Sham.name}
-  address
+  address { Address.make }
   telephone_number {Sham.phone}  
   mobile_number {Sham.phone}  
   email {Sham.email}  
@@ -242,7 +255,7 @@ ActiveRecord::Base.transaction do
 
   users = User.all
   roles = Role.all
-  
+  puts "Users: ", users
   print_time "Attaching users to companies" do
     # attach users to companies
     (COMPANY_COUNT * 5).times do
@@ -285,6 +298,12 @@ ActiveRecord::Base.transaction do
   print_time "Creating projects" do
     (companies.size * PROJECT_COUNT).times do
       Project.make(:company => companies.rand)
+    end
+  end
+
+  print_time "Creating cars" do
+    (companies.size * CAR_COUNT).times do
+      Car.make(:company => companies.rand)
     end
   end
 
@@ -396,7 +415,9 @@ ActiveRecord::Base.transaction do
       end
 
       EMPLOYEE_COUNT.times do |i| 
-        emp = Ledger.make :account_id => emp_account.id, :number => i+1, :account_type_id => 0
+        emp = Ledger.make( :account_id => emp_account.id, :number => i+1, :account_type_id => 0, :credit_days => rand(30),
+                            :procenttrekk => rand(45), :date_of_birth => Time.now.months_ago( 240 + rand(240)),
+                            :id_number => Sham.personal_number , :foreign_bank_number => Sham.bank_account)
         
         emp_pay_temp.each do |t| 
           PaycheckLineTemplate.make(
@@ -426,7 +447,9 @@ ActiveRecord::Base.transaction do
     companies.each do |c|
       cust_account = Account.where(:company_id => c.id, :number => 1500).first
       CUSTOMER_COUNT.times do |i| 
-        c = Ledger.make :account_id => cust_account.id, :number => i+1, :account_type_id => 0
+        c = Ledger.make( :account_id => cust_account.id, :number => i+1, :account_type_id => 0, :credit_days => rand(30),
+                            :procenttrekk => rand(45), :date_of_birth => Time.now.months_ago( 240 + rand(240)),
+                            :id_number => Sham.personal_number , :foreign_bank_number => Sham.bank_account)
       end       
     end
   end
@@ -439,7 +462,9 @@ ActiveRecord::Base.transaction do
     companies.each do |c|
       cust_account = Account.where(:company_id => c.id, :number => 2400).first
       CUSTOMER_COUNT.times do |i|
-        c = Ledger.make :account_id => cust_account.id, :number => i+1, :account_type_id => 0
+        c = Ledger.make( :account_id => cust_account.id, :number => i+1, :account_type_id => 0, :credit_days => rand(30),
+                            :procenttrekk => rand(45), :date_of_birth => Time.now.months_ago( 240 + rand(240)),
+                            :id_number => Sham.personal_number , :foreign_bank_number => Sham.bank_account)
       end
     end
   end
