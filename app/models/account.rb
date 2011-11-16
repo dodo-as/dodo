@@ -9,6 +9,10 @@ class Account < ActiveRecord::Base
   scope :is_result_account, where(:is_result_account => true)
   scope :is_balance_account, where(:is_result_account => false)
 
+  def is_result_account?
+    self.is_result_account
+  end
+
   def vat_description
     if self.vat_account
       if self.vat_account.target_account
