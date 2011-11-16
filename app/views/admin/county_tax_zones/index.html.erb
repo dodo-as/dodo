@@ -11,6 +11,7 @@
   </tr>
 
 <% @county_tax_zones.each do |county_tax_zone| %>
+ <% if county_tax_zone.is_visible == true %>
   <tr>
     <td><%= county_tax_zone.county_id %></td>
     <td><%= county_tax_zone.tax_zone_id %></td>
@@ -19,6 +20,7 @@
     <td><%= link_to 'Edit', edit_admin_county_tax_zone_path(county_tax_zone) %></td>
     <td><%= link_to 'Destroy', [:admin, county_tax_zone], :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
+ <% end %>
 <% end %>
 </table>
 
