@@ -74,7 +74,8 @@ class Admin::TaxZoneTaxesController < Admin::BaseController
   # DELETE /tax_zone_taxes/1.xml
   def destroy
     @tax_zone_tax = TaxZoneTax.find(params[:id])
-    @tax_zone_tax.destroy
+    @tax_zone_tax.is_visible = false
+    @tax_zone_tax.save    
 
     respond_to do |format|
       format.html { redirect_to(admin_tax_zone_taxes_url) }

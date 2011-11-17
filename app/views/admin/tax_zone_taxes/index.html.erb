@@ -12,16 +12,18 @@
 
 <% @tax_zone_taxes.each do |tax_zone_tax| %>
   <tr>
+   <% if tax_zone_tax.is_visible == true %>
     <td><%= tax_zone_tax.tax_zone_id %></td>
     <td><%= tax_zone_tax.tax_rate %></td>
     <td><%= tax_zone_tax.from %></td>
     <td><%= link_to 'Show', [:admin, tax_zone_tax] %></td>
-    <td><%= link_to 'Edit', edit_admin_tax_zone_taxis_path(tax_zone_tax) %></td>
+    <td><%= link_to 'Edit', edit_admin_tax_zone_tax_path(tax_zone_tax) %></td>
     <td><%= link_to 'Destroy', [:admin, tax_zone_tax], :confirm => 'Are you sure?', :method => :delete %></td>
+   <% end %>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Tax zone tax', new_admin_tax_zone_taxis_path %>
+<%= link_to 'New Tax zone tax', new_admin_tax_zone_tax_path %>

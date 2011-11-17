@@ -2,7 +2,7 @@ class Admin::CountyTaxZonesController < Admin::BaseController
   # GET /county_tax_zones
   # GET /county_tax_zones.xml
   def index
-    @county_tax_zones = CountyTaxZone.all
+    @county_tax_zones = CountyTaxZone.all     
 
     respond_to do |format|
       format.html # index.html.erb

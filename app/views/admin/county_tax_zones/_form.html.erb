@@ -12,12 +12,12 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :county_id %><br />
-    <%= f.text_field :county_id %>
+    <%= f.label :county_id %>
+    <%= f.select :county_id, County.all.collect {|p| [p.name, p.id]}, :include_blank => " " %>     
   </div>
   <div class="field">
-    <%= f.label :tax_zone_id %><br />
-    <%= f.text_field :tax_zone_id %>
+    <%= f.label :tax_zone_id %>
+    <%= f.select :tax_zone_id, TaxZone.all.collect {|p| [p.number, p.id]}, :include_blank => " " %>     
   </div>
   <div class="field">
     <%= f.label :from %><br />
