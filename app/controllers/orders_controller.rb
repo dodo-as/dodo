@@ -46,7 +46,8 @@ class OrdersController < ApplicationController
   def new
     @order = Order.new
     @order.delivery_address = Address.new
-    @products_all = (Account.find(@me.current_company.accounts, :include => [ :products ]
+    puts "AAAAAAAAAAAAAA", @me, @me.current_company.accounts
+    @products_all = (Account.find(@me.current_company.account_ids, :include => [ :products ]
 			          ).collect { |account| account.products}).flatten
 
     respond_to do |format|
@@ -57,7 +58,7 @@ class OrdersController < ApplicationController
 
   # GET /orders/1/edit
   def edit
-    @products_all = (Account.find(@me.current_company.accounts, :include => [ :products ]
+    @products_all = (Account.find(@me.current_company.account_ids, :include => [ :products ]
 			          ).collect { |account| account.products}).flatten
   end
   
@@ -72,14 +73,16 @@ class OrdersController < ApplicationController
         begin
           @order.save!
           @order.delivery_address.save!
-          params[:products].each {
-            |key, value|
-	    item = OrderItem.new(value)
-            if item.amount > 0
-	      @order.order_items << item
-              item.save!
-            end
-          }
+          if params[:products]
+              params[:products].each {
+                |key, value|
+            item = OrderItem.new(value)
+                if item.amount > 0
+              @order.order_items << item
+                  item.save!
+                end
+              }
+          end
           flash[:notice] = 'Order was successfully created.'
           format.html { redirect_to(@order) }
           format.xml  { render :xml => @order, :status => :created, :location => @order }
@@ -102,28 +105,28 @@ class OrdersController < ApplicationController
           flash[:notice] = 'Save order.'
           @order.update_attributes(params[:order]) or raise ActiveRecord::Rollback
           @order.delivery_address.update_attributes(params[:address]) or raise ActiveRecord::Rollback
-
-          params[:products].each {
-            |key, value|
-            value[:order_id] = @order.id
-            if value[:id] != nil
-              op = OrderItem.find(value[:id])
-              if op.amount > 0
-                flash[:notice] = 'Update item.'
-                op.update_attributes(value) or raise ActiveRecord::Rollback
-              else
-                flash[:notice] = 'DESTROY THE UNBELIVERS!!!'
-                op.destroy
-              end
-            else
-              op = OrderItem.new(value)
-              if op.amount > 0
-                flash[:notice] = 'Save new item.'
-                op.save or raise ActiveRecord::Rollback
-              end
+            if params[:products]
+              params[:products].each {
+                |key, value|
+                value[:order_id] = @order.id
+                if value[:id] != nil
+                  op = OrderItem.find(value[:id])
+                  if op.amount > 0
+                    flash[:notice] = 'Update item.'
+                    op.update_attributes(value) or raise ActiveRecord::Rollback
+                  else
+                    flash[:notice] = 'DESTROY THE UNBELIVERS!!!'
+                    op.destroy
+                  end
+                else
+                  op = OrderItem.new(value)
+                  if op.amount > 0
+                    flash[:notice] = 'Save new item.'
+                    op.save or raise ActiveRecord::Rollback
+                  end
+                end
+              }
             end
-          }
-          
           flash[:notice] = 'Order was successfully updated.'
           format.html { redirect_to(@order) }
           format.xml  { head :ok }

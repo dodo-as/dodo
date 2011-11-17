@@ -55,7 +55,7 @@
   </p>
   <p>
     <%= f.label :customer_id, t(:customer, :scope => :orders) %><br />
-    <%= f.select :customer_id, (Account.find(@me.current_company.accounts).collect {|a| a.ledgers }).flatten.collect {|p| [ p.name, p.id ]} %>
+    <%= f.select :customer_id, (Account.find(@me.current_company.account_ids).collect {|a| a.ledgers }).flatten.collect {|p| [ p.name, p.id ]} %>
   </p>
   <p>
     <%= f.label :delivery_address_id, t(:delivery_address, :scope => :orders) -%><br />
