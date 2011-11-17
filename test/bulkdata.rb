@@ -4,10 +4,10 @@
 raise "Set RAILS_ENV=test before loading blueprint" unless Rails.env != 'production'
 
 # Number of users
-USER_COUNT = 5
+USER_COUNT = 10
 #15000
 # Number of companies
-COMPANY_COUNT = 3
+COMPANY_COUNT = 5
 #10000
 # Average number of products for a company
 PRODUCT_COUNT = 20
@@ -33,13 +33,10 @@ EMPLOYEE_COUNT = 5
 CUSTOMER_COUNT = 20
 # Password used for _all_ users, including admins
 PASSWORD= "Secret123"
-# Number of users without priviledges in each company
-NONE_USERS_COUNT = 3
-# Number of users with user admin priviledges in each company
-USER_ADMINS_COUNT = 2
-#Date how many years ago from the current date
+# Date how many years ago from the current date
 YEARS_AGO = 10
-
+# Number of vat chunks 
+VAT_CHUNKS_COUNT = 50
 
 def print_time name, &block
   print "#{name}..."
@@ -88,17 +85,22 @@ Sham.web_site(:unique => false) { "www." + Faker::Internet.domain_name }
 Sham.personal_number { rand(30).to_s.rjust(2, "0") + rand(12).to_s.rjust(2,"0") + rand(99).to_s.rjust(2,"0") + rand(99999).to_s.rjust(5,"0") }
 Sham.bank_account { (10 + rand(89)).to_s.rjust(2, "0") + rand(99).to_s.rjust(2,"0") + rand(99).to_s.rjust(2,"0") + rand(99999).to_s.rjust(5,"0") }
 Sham.date(:unique => false) {  Time.at(rand * (Time.now - YEARS_AGO.year.ago) + Time.now.years_ago(YEARS_AGO).to_f) }
-Sham.date_of_birth(:unique => false) {  Time.at(rand * (Time.now - YEARS_AGO.year.ago) + Time.now.years_ago(YEARS_AGO).to_f) }
+Sham.date_of_birth(:unique => false) {  Time.at(rand * (Time.now - 62.year.ago) + Time.now.years_ago(62).to_f).years_ago(18) }
 Sham.information(:unique => false) { Faker::Lorem.paragraph(2) }
 Sham.sentence(:unique => false) { Faker::Lorem.sentence }
 Sham.word(:unique => false) { Faker::Lorem.words.rand } 
-
+Sham.number { rand(1000) }
 
 User.blueprint do
   email { Sham.email }
   password { PASSWORD }
   password_confirmation { password }
-  active { true if rand(10) < 7 }
+  active {  if rand(10)>2
+                true 
+            else
+                false
+            end
+  }
 end
 
 Admin.blueprint do
@@ -219,6 +221,14 @@ Ledger.blueprint do
   placement_top {false}
   debit_text {"debit"}
   credit_text {"credit"}
+end
+
+VatChunk.blueprint do
+   number { Sham.number }
+   start_date { Sham.date }
+   stop_date { start_date.months_since( 3 + rand(21)) }
+   company { Company.all.rand }
+   account { company.accounts.rand }
 end
 
 bob = nil
@@ -416,7 +426,7 @@ ActiveRecord::Base.transaction do
 
       EMPLOYEE_COUNT.times do |i| 
         emp = Ledger.make( :account_id => emp_account.id, :number => i+1, :account_type_id => 0, :credit_days => rand(30),
-                            :procenttrekk => rand(45), :date_of_birth => Time.now.months_ago( 240 + rand(240)),
+                            :procenttrekk => rand(45), :date_of_birth => Sham.date_of_birth,
                             :id_number => Sham.personal_number , :foreign_bank_number => Sham.bank_account)
         
         emp_pay_temp.each do |t| 
@@ -448,7 +458,7 @@ ActiveRecord::Base.transaction do
       cust_account = Account.where(:company_id => c.id, :number => 1500).first
       CUSTOMER_COUNT.times do |i| 
         c = Ledger.make( :account_id => cust_account.id, :number => i+1, :account_type_id => 0, :credit_days => rand(30),
-                            :procenttrekk => rand(45), :date_of_birth => Time.now.months_ago( 240 + rand(240)),
+                            :procenttrekk => rand(45), :date_of_birth => Sham.date_of_birth,
                             :id_number => Sham.personal_number , :foreign_bank_number => Sham.bank_account)
       end       
     end
@@ -463,7 +473,7 @@ ActiveRecord::Base.transaction do
       cust_account = Account.where(:company_id => c.id, :number => 2400).first
       CUSTOMER_COUNT.times do |i|
         c = Ledger.make( :account_id => cust_account.id, :number => i+1, :account_type_id => 0, :credit_days => rand(30),
-                            :procenttrekk => rand(45), :date_of_birth => Time.now.months_ago( 240 + rand(240)),
+                            :procenttrekk => rand(45), :date_of_birth => Sham.date_of_birth,
                             :id_number => Sham.personal_number , :foreign_bank_number => Sham.bank_account)
       end
     end
@@ -640,3 +650,24 @@ where p.employee_id = #{emp.id}
   end
 end
 
+print_time "Setting companies for users" do
+    User.all.each do |u|
+        u.current_company = u.companies.first if u.companies.count > 0
+        u.save
+    end
+end
+
+print_time "Creating vat chunks" do
+    VAT_CHUNKS_COUNT.times do 
+        VatChunk.make
+    end
+end
+
+# Check if user bob@bobsdomain.com is active
+# and if not make him active
+# Also this should be 
+bob = User.where(:email => "bob@bobsdomain.com").first
+if !bob.active
+    bob.active = true
+    bob.save
+end
