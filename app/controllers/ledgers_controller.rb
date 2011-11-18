@@ -26,13 +26,15 @@ class LedgersController < ApplicationController
   end
   
   def create
-    @ledger = Ledger.new(params[:ledger])
+
+    @ledger = Ledger.new(params[:ledger])   
+
     raise "account does not belong to active company" if @ledger.account.company != @me.current_company
     if @ledger.credit_days.blank?
       @ledger.credit_days = 0
     end
     respond_to do |format|
-        if @ledger.save
+        if @ledger.save  
             format.json { render :json => @ledger.to_json(:include => {:unit => {}, :project => {} }) }
             format.html { redirect_to @ledger.account, :notice => "Ledger created" }
             format.xml { head :ok }
@@ -60,7 +62,8 @@ class LedgersController < ApplicationController
   def new
     @account = Account.find(params[:account_id])
     @ledger = Ledger.new(:account => @account)
-    @ledger.address = Address.new
+    @ledger.county_ledgers.build
+    # @ledger.address = Address.new
     respond_to do |format|
       #~ format.html { render :partial => "accounts/ledger_form", :locals => {:account => @account, :ledger => @ledger} }
               format.html { render :action => 'edit', :locals => {:account => @account, :ledger => @ledger} }

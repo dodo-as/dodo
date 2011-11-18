@@ -56,7 +56,15 @@ class PaychecksController < ApplicationController
     @paycheck = Paycheck.new(:employee_id => @employee.id,
  			     :paycheck_period_id => user_company_property("paycheck.paycheck_period_id", nil),
 			     :period_id => user_company_property("paycheck.period_id", nil))
-    
+    @all_counties = County.all
+    @all_counties.each  do |c|
+	c[2] = @allcounties
+	c[3] = 
+   	4.times do |i|
+		puts "             "+c[i].to_s
+	end
+    end
+ 
     # TO-DO : Here we must get the tax zone to which the employee depends and the current tax zone for the county selected 
     # So having a county and an employee
     # @tax_rate = ?
