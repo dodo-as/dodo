@@ -22,9 +22,14 @@
  <p>
 
   <%= f.label :county %>
-  <%= f.select :county_id, County.all.collect {|p| [p.name, p.id]} %>  
+  <%= f.select :county_id, @all_counties.collect {|p| [p.name, p.id]} %>  
 
  </p>
+
+ <SCRIPT language = "JAVASCRIPT">
+
+
+ </SCRIPT>
 
  <p>
 

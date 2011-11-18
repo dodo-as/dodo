@@ -74,12 +74,14 @@
     <%= f.text_field :work_stop, :class => :datepicker  %>
   </p>
 
-  <p>
-    <%= f.label :county, t(:county, :scope => :accounts) -%>
-    <%= f.select :county_id, County.all.collect {|p| [p.name, p.id]} %>  
-    <%= f.fields_for :county_tax_zone do |county_tax_zone| %>         
-      <%= county_tax_zone.label :from %>
-      <%= county_tax_zone.text_field :from, :class=> :datepicker %>        
+  <p> 
+    <%= f.fields_for :county_ledgers do |county_ledger| %>
+  
+      <%= county_ledger.label "county", t(:county, :scope => :accounts) -%>
+      <%= county_ledger.select :county_id, County.all.collect {|p| [p.name, p.id]} %> 
+       
+      <%= county_ledger.label :from %>
+      <%= county_ledger.text_field :from, :class=> :datepicker %>        
     <% end %>  
   </p>  
 

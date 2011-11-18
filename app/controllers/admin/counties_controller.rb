@@ -2,6 +2,7 @@ class Admin::CountiesController < Admin::BaseController
 
   attr_accessor :county
   around_filter AdminLog.log(:county), :only => [:update, :create]
+  before_filter :set_readonly
 
   # GET /counties
   # GET /counties.xml
@@ -16,6 +17,7 @@ class Admin::CountiesController < Admin::BaseController
   # GET /counties/1
   # GET /counties/1.xml
   def show
+    @readonly = true
     @county = County.find(params[:id])
     @county_tax_zone = CountyTaxZone.where(:county_id => @county.id)[0]     
     unless @county_tax_zone.nil?
@@ -41,6 +43,7 @@ class Admin::CountiesController < Admin::BaseController
   def edit
     @county = County.find(params[:id])
     @county_tax_zone = CountyTaxZone.where(:county_id => @county.id)[0]     
+    @county_tax_zones = @county.county_tax_zones
     unless  @county_tax_zone.nil? 
         @from = @county_tax_zone.from
 	@tax_zone = @county_tax_zone.tax_zone        
@@ -71,7 +74,7 @@ class Admin::CountiesController < Admin::BaseController
     @county = County.find(params[:id])    
     county_tax_zone = CountyTaxZone.where(:county_id => @county.id)[0]   
     respond_to do |format|
-      if county_tax_zone.update_attributes(params[:county]["county_tax_zone"]) and county_tax_zone.update_attributes(params[:county]["tax_zone"])
+      if county_tax_zone.update_attributes(params[:county][:county_tax_zone]) and county_tax_zone.update_attributes(params[:county][:tax_zone])
         format.html { redirect_to([:admin, @county], :notice => 'County was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -92,4 +95,9 @@ class Admin::CountiesController < Admin::BaseController
       format.xml  { head :ok }
     end
   end
+
+ def set_readonly    
+    @readonly=false
+ end
+
 end
