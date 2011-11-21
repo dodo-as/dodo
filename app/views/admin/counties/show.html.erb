@@ -24,3 +24,6 @@
 
 <%= link_to 'Edit', edit_admin_county_path(@county) %> |
 <%= link_to 'Back', admin_counties_path %>
+<p>
+  <%= render :partial => "/admin/counties/county_tax_zones_form", :locals => { :county_tax_zones => @county.county_tax_zones }  %>
+</p>

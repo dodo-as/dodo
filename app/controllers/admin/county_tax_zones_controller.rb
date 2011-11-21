@@ -44,7 +44,7 @@ class Admin::CountyTaxZonesController < Admin::BaseController
 
     respond_to do |format|
       if @county_tax_zone.save
-        format.html { redirect_to([:admin, @county_tax_zone], :notice => 'County tax zone was successfully created.') }
+        format.html { redirect_to admin_county_path(@county_tax_zone.county) }
         format.xml  { render :xml => @county_tax_zone, :status => :created, :location => @county_tax_zone }
       else
         format.html { render :action => "new" }
