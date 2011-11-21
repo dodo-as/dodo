@@ -31,37 +31,34 @@ class Journal < ActiveRecord::Base
     return (self.period.open? and self.open? and self.bill_id.nil?)
   end
 
-  def self.report_ledger_balance(periods_to_balance, periods_to_balance_previous, 
-      periods_to_balance_last, periods_to_balance_last_previous,
-      periods_to_result, periods_to_result_previous, periods_to_result_last, periods_to_result_last_previous,
-      company, unit, project,car, show_only_active_accounts,journal_type)
+  def self.report_ledger_balance(periods, company, unit, project,car, show_only_active_accounts,journal_type)
 
     #preparing periods to string fromat for sql query.
-    unless periods_to_balance.blank?
-      _periods_to_balance = periods_to_balance.collect { |p| p.id }.join(",") 
+    unless periods[:periods_to_balance].blank?
+      _periods_to_balance = periods[:periods_to_balance].collect { |p| p.id }.join(",")
     end
-    unless periods_to_balance_previous.blank?
-      _periods_to_balance_previous = periods_to_balance_previous.collect { |p| p.id }.join(",") 
-    end
-
-    unless periods_to_balance_last.blank?
-      _periods_to_balance_last = periods_to_balance_last.collect { |p| p.id }.join(",")
-    end
-    unless periods_to_balance_last_previous.blank?
-      _periods_to_balance_last_previous = periods_to_balance_last_previous.collect { |p| p.id }.join(",")
+    unless periods[:periods_to_balance_previous].blank?
+      _periods_to_balance_previous = periods[:periods_to_balance_previous].collect { |p| p.id }.join(",")
     end
 
-    unless periods_to_result.blank?
-      _periods_to_result = periods_to_result.collect { |p| p.id }.join(",")
+    unless periods[:periods_to_balance_last].blank?
+      _periods_to_balance_last = periods[:periods_to_balance_last].collect { |p| p.id }.join(",")
     end
-    unless periods_to_result_previous.blank?
-      _periods_to_result_previous = periods_to_result_previous.collect {|p| p.id}.join(",")
+    unless periods[:periods_to_balance_last_previous].blank?
+      _periods_to_balance_last_previous = periods[:periods_to_balance_last_previous].collect { |p| p.id }.join(",")
     end
-    unless periods_to_result_last.blank?
-      _periods_to_result_last = periods_to_result_last.collect { |p| p.id }.join(",")
+
+    unless periods[:periods_to_result].blank?
+      _periods_to_result = periods[:periods_to_result].collect { |p| p.id }.join(",")
     end
-    unless periods_to_result_last_previous.blank?
-      _periods_to_result_last_previous = periods_to_result_last_previous.collect {|p| p.id }.join(",")
+    unless periods[:periods_to_result_previous].blank?
+      _periods_to_result_previous = periods[:periods_to_result_previous].collect {|p| p.id}.join(",")
+    end
+    unless periods[:periods_to_result_last].blank?
+      _periods_to_result_last = periods[:periods_to_result_last].collect { |p| p.id }.join(",")
+    end
+    unless periods[:periods_to_result_last_previous].blank?
+      _periods_to_result_last_previous = periods[:periods_to_result_last_previous].collect {|p| p.id }.join(",")
     end
 
     ###############################
