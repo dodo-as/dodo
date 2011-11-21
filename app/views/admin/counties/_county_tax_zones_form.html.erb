@@ -16,14 +16,12 @@
    <% else %>
     <td><%= county_tax_zone.tax_zone.number %></td>
     <td><%= county_tax_zone.from %></td>  
-    <% if !@readonly %>
      <td><%= link_to 'Destroy', [:admin, county_tax_zone], :confirm => 'Are you sure?', :method => :delete %></td>
-    <% end %>
    <% end %>
   </tr>
 <% end %>
 
-<% if !@readonly %>
+
   <tr>
     <% form_for([:admin,CountyTaxZone.new], :county => @county) do |f| %>
       <td><%= f.select :tax_zone_id, TaxZone.all.collect {|p| [p.number, p.id]}, :include_blank => " " %></td>
@@ -32,5 +30,4 @@
       <td><%= f.submit "New Tax Zone" %></td>
     <% end %>
   </tr>
-<% end %>
 </table>
