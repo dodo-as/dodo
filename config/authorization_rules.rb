@@ -120,6 +120,9 @@ authorization do
     end
 
      has_permission_on :journal_types, :to => :read
+     has_permission_on :ledgers, :to => :manage
+     has_permission_on :county_ledgers, :to => :manage
+     
      
 
   end
