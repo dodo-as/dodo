@@ -33,10 +33,10 @@ Dodo::Application.routes.draw do |map|
     resources :companies
     resources :users
     resources :admins
-    resources :tax_zone_taxes
     resources :county_tax_zones
     resources :counties
     resources :tax_zones
+    resources :tax_zone_taxes
   end
 
   resources :payment_runs
@@ -65,6 +65,7 @@ Dodo::Application.routes.draw do |map|
   resources :accounts 
   
   resources :ledgers
+  resources :county_ledgers
   
   #Reports
   resources :reports, :only=>[:index] do
