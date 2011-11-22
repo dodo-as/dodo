@@ -8,7 +8,7 @@
     <th></th>      
   </tr> 
 
-<% county_tax_zones.each do |county_tax_zone| %>
+<% county_tax_zones.order('"from" asc').each do |county_tax_zone| %>
   <tr>
    <% if county_tax_zone.tax_zone.nil? %>
 	
@@ -27,7 +27,7 @@
       <td><%= f.select :tax_zone_id, TaxZone.all.collect {|p| [p.number, p.id]}, :include_blank => " " %></td>
       <%= f.hidden_field :county_id, :value => @county.id %>
       <td><%= f.text_field :from, :class => :datepicker %></td>
-      <td><%= f.submit "New Tax Zone" %></td>
+      <td><%= f.submit t( :new_tax_zone, :scope => :counties) %></td>
     <% end %>
   </tr>
 </table>
