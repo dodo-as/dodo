@@ -12,7 +12,6 @@
   <tr>
    <% if county_tax_zone.tax_zone.nil? %>
 	
-     <%= t(:editing_county_error, :scope => :counties) %>
    <% else %>
     <td><%= county_tax_zone.tax_zone.number %></td>
     <td><%= county_tax_zone.from %></td>  

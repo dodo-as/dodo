@@ -175,6 +175,7 @@ en:
     from: "From"
   ledgers:
     ledger_saved: Ledger %{name} saved
+    showing_ledger: "Showing ledger:"
   vat:
     listing_vat_accounts: "Listing vat accounts"
     account: "Account"
@@ -498,7 +499,20 @@ en:
   counties:
     deleting_county_error: This county mustn't be deleted !
     editing_county_error: This county can't be edited ! Check your database !
+    new_tax_zone: New tax zone
+    from: From
+    county: "County"
+    add_county: Add county
+    listing_counties: Listing counties
   
   assignment:
     assignment_apply: "Apply to new company"
+    
+  tax_rates:
+    tax_rate: Tax rate
+    from: From
+    add_tax_rate: Add tax rate
+    
+  tax_zones:
+    listing_tax_zones: Listing tax zones
 

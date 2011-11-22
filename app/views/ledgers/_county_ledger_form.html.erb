@@ -1,7 +1,7 @@
 <table>
     <tr>
-        <th>t(:county, :scope => :counties</th>
-        <th>t(:from, :scope => :counties</th>
+        <th><%= t(:county, :scope => :counties) %></th>
+        <th><%= t(:from, :scope => :counties) %></th>
         <th></th>
     </tr>
     <% if !@ledger.county_ledgers.blank? %>
@@ -28,7 +28,7 @@
                     <%= county_ledger.text_field :from, :class=> :datepicker %>        
                 </td>
                 <td>
-                    <%= submit_tag t(:add_county, :scope => :conties ) %>
+                    <%= submit_tag t(:add_county, :scope => :counties ) %>
                 </td>
             
             <% end %>  
