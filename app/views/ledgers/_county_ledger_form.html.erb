@@ -1,0 +1,36 @@
+<table>
+    <tr>
+        <th>t(:county, :scope => :counties</th>
+        <th>t(:from, :scope => :counties</th>
+        <th></th>
+    </tr>
+    <% if !@ledger.county_ledgers.blank? %>
+        
+    <% @ledger.county_ledgers.order('"from" asc').each do |cl| %>
+        <tr>
+   
+                <td> <%= cl.county.name %></td>
+                <td><%= cl.from %></td>
+                <td> </td><%= %>
+<!--
+                link_to t(:destroy, :scope => :global), county_ledger_path, :confirm => 'Are you sure?', :method => :delete %></td>
+-->
+            <% end %>
+        </tr>
+    <% end %>
+        <tr>
+            <%= form_for ([CountyLedger.new]) do |county_ledger| %>
+                <%= county_ledger.hidden_field :ledger_id, :value => @ledger.id %>
+                <td>
+                    <%= county_ledger.select :county_id, County.all.collect {|p| [p.name, p.id]} %> 
+                </td>
+                <td>
+                    <%= county_ledger.text_field :from, :class=> :datepicker %>        
+                </td>
+                <td>
+                    <%= submit_tag t(:add_county, :scope => :conties ) %>
+                </td>
+            
+            <% end %>  
+    </tr>
+</table>

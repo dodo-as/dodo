@@ -36,7 +36,7 @@ class LedgersController < ApplicationController
     respond_to do |format|
         if @ledger.save  
             format.json { render :json => @ledger.to_json(:include => {:unit => {}, :project => {} }) }
-            format.html { redirect_to @ledger.account, :notice => "Ledger created" }
+            format.html { redirect_to @ledger, :notice => "Ledger created" }
             format.xml { head :ok }
         else
         
@@ -62,7 +62,7 @@ class LedgersController < ApplicationController
   def new
     @account = Account.find(params[:account_id])
     @ledger = Ledger.new(:account => @account)
-    @ledger.county_ledgers.build
+    #~ @ledger.county_ledgers.build
     # @ledger.address = Address.new
     respond_to do |format|
       #~ format.html { render :partial => "accounts/ledger_form", :locals => {:account => @account, :ledger => @ledger} }
@@ -73,14 +73,17 @@ class LedgersController < ApplicationController
 
   def show
     respond_to do |format|
-      format.json { render :json => @ledger.to_json(:include => [:account,
-                                                                 :address,
-                                                                 :unit,
-                                                                 :project]
-                                                    )
-      }
+      #~ format.json { render :json => @ledger.to_json(:include => [:account,
+                                                                 #~ :address,
+                                                                 #~ :unit,
+                                                                 #~ :project]
+                                                    #~ )
+      #~ }
       @account = @ledger.account
-      format.html { render :partial => "form", :locals => {:account => @account, :ledger => @ledger} }
+      #~ format.html { render :partial => "form", :locals => {:account => @account, :ledger => @ledger} }
+        format.html
+        format.xml  { render :xml => @ledger, :status => :created, :location => @ledger }
+
     end
   end
 

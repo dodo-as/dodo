@@ -74,17 +74,6 @@
     <%= f.text_field :work_stop, :class => :datepicker  %>
   </p>
 
-  <p> 
-    <%= f.fields_for :county_ledgers do |county_ledger| %>
-  
-      <%= county_ledger.label "county", t(:county, :scope => :accounts) -%>
-      <%= county_ledger.select :county_id, County.all.collect {|p| [p.name, p.id]} %> 
-       
-      <%= county_ledger.label :from %>
-      <%= county_ledger.text_field :from, :class=> :datepicker %>        
-    <% end %>  
-  </p>  
-
   <p>
     <%= f.label :placement_top, t(:placement_top, :scope => :accounts) -%><br />
     <%= f.check_box :placement_top %>
@@ -122,3 +111,5 @@
   <%= submit_tag t(:add_ledger, :scope => :accounts) %>
 
 <% end %>
+
+
