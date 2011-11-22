@@ -1,0 +1,32 @@
+<table>
+    <tr>
+        <th><%= t(:tax_rate, :scope => :tax_rates) %></th>
+        <th><%= t(:from, :scope => :tax_rates) %></th>
+        <th></th>
+    </tr>
+    <% if !@tax_zone.tax_zone_taxes.blank? %>
+        <% @tax_zone.tax_zone_taxes.order('"from" asc').each do |tz| %>
+            <tr>
+                <td><%= tz.tax_rate %></td>
+                <td><%= tz.from %></td>
+                <td></td>
+            </tr>
+        <% end %>
+    <% end %>
+    <tr>
+<% @tax_zone_tax = TaxZoneTax.new %>
+<%= form_for([:admin,@tax_zone_tax]) do |f| %>
+
+        <%= f.hidden_field :tax_zone_id, :value => @tax_zone.id %>
+        <td>
+        <%= f.text_field :tax_rate %>
+        </td>
+        <td>
+        <%= f.text_field :from, :class => :datepicker %>
+        </td>
+        <td>
+        <%= f.submit t( :add_tax_rate, :scope => :tax_rates) %>
+        </td>
+    </tr>
+<% end %>
+</table>

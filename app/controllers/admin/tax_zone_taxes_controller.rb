@@ -45,10 +45,10 @@ class Admin::TaxZoneTaxesController < Admin::BaseController
 
     respond_to do |format|
       if @tax_zone_tax.save
-        format.html { redirect_to([:admin,@tax_zone_tax], :notice => 'Tax zone tax was successfully created.') }
-        format.xml  { render :xml => @tax_zone_tax, :status => :created, :location => @tax_zone_tax }
+        format.html { redirect_to admin_tax_zone_path(@tax_zone_tax.tax_zone) }
+        #~ format.xml  { render :xml => @tax_zone_tax, :status => :created, :location => @tax_zone_tax }
       else
-        format.html { render :action => "new" }
+        #~ format.html { render :action => "new" }
         format.xml  { render :xml => @tax_zone_tax.errors, :status => :unprocessable_entity }
       end
     end
@@ -60,7 +60,7 @@ class Admin::TaxZoneTaxesController < Admin::BaseController
     @tax_zone_tax = TaxZoneTax.find(params[:id])
 
     respond_to do |format|
-      if @tax_zone_tax.update_attributes(params[:tax_zone_taxis])
+      if @tax_zone_tax.update_attributes(params[:tax_zone_taxes])
         format.html { redirect_to([:admin,@tax_zone_tax], :notice => 'Tax zone tax was successfully updated.') }
         format.xml  { head :ok }
       else
