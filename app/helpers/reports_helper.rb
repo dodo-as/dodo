@@ -14,8 +14,17 @@ module ReportsHelper
       title += "--"
     else
       title += to_period.year.to_s + "-" + to_period.nr.to_s + ""
-    end  
+    end
     return title
+  end
+
+  def result_from_date(options={})
+    result_from = options[:period]
+    title = ""
+    unless result_from.blank?
+      title = "#{t(:result_from_period,:scope => :reports)} #{result_from.year.to_s}-#{result_from.nr.to_s}"
+    end
+    title
   end
   
   def balance_less_to_period(account, year, nr)
