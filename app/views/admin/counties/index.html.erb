@@ -5,14 +5,11 @@
     <th>Name</th>
     <th></th>
     <th></th>
-    <th></th>
   </tr>
-
 <% @counties.each do |county| %>
   <tr>
     <td><%= county.name %></td>
     <td><%= link_to 'Show', [:admin, county] %></td>
-    <td><%= link_to 'Edit', edit_admin_county_path(county) %></td>
     <td><%= link_to 'Destroy', [:admin, county], :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
