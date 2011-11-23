@@ -1,35 +1,28 @@
-    CREATE FUNCTION accounts() RETURNS void AS $$
+    ---- this function generate report for balance or result accounts
+    ---- input parameters
+        --* periods
+        --* filtering options : car, unit, project, journal_type, show_only_active_accounts
+        --* is_result_report : determine which part of the report will be generated
+
+    CREATE FUNCTION report(
+                            is_result_report boolean ,
+                            company_id int ,
+                            car_id int,
+                            unit_id int,
+                            journal_type_id int,
+                            show_last_period boolean,
+                            show_only_active_accounts boolean,
+                            periods_to_balance varchar,
+                            periods_to_balance_previous varchar,
+                            periods_to_balance_last varchar,
+                            periods_to_balance_last_previous varchar )
+    RETURNS SETOF RECORD  AS $$
     DECLARE
-         userRecord record;
+
+          --declarations goes here
     BEGIN
-         FOR userRecord IN
-              SELECT * FROM tb_user u ORDER BY u.user_id
-         LOOP
-              SELECT INTO user_property_id nextval('sq_user_property');
 
-              -- user_property_id now has a value we can insert here
-              INSERT INTO tb_user_property VALUES(
-                        user_property_id ,
-                        'user_id',
-                        userRecord.id
-              ) ;
-
-              IF userRecord.email like 'user@domain.com' THEN
-
-                        update userRecord set email = 'user@other-domain.com' where id = userRecord.id;
-
-              ELSEIF userRecord.email is null THEN
-
-                        update userRecord set active = false where id = userRecord.id;
-
-              ELSE
-
-                        RAISE NOTICE 'didn\'t update any record';
-
-              END IF;
-
-
-         END LOOP;
-         RETURN;
+    
+    --RETURN result;
     END;
     $$ LANGUAGE plpgsql;

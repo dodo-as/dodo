@@ -9,6 +9,7 @@ class ReportsController < ApplicationController
     @cars = Car.with_permissions_to(:index)
     @journal_types = JournalType.with_permissions_to(:index).order('name')
     @accounts = Account.with_permissions_to(:index).order('number')
+
   end
 
   def ledger_balance
@@ -16,11 +17,6 @@ class ReportsController < ApplicationController
     from_period = Period.find(params[:from_period_id]) unless params[:from_period_id].blank?
     to_period = Period.find(params[:to_period_id]) unless params[:to_period_id].blank?
     from_period_result_accounts = Period.find(params[:result_from_period_id]) unless params[:result_from_period_id].blank?
-
-    unless Period.ordred_periods?(from_period,to_period)
-      flash[:warning] = t(:before_period_should_not_be_greater_than_to_period, :scope => :reports)
-      from_period = to_period = nil
-    end
 
     @unit = Unit.find(params[:unit_id]) unless params[:unit_id].blank?    
     @project = Project.find(params[:project_id]) unless params[:project_id].blank?
@@ -35,47 +31,47 @@ class ReportsController < ApplicationController
     
 
 #    puts "========== periods to balance "
-#    periods_to_balance.each do |p|
+#    periods[:periods_to_balance].each do |p|
 #       puts "year " + p.year.to_s + " nr " + p.nr.to_s
 #    end
 #    puts "========== periods to balance previous "
-#    periods_to_balance_previous.each do |p|
+#    periods[:periods_to_balance_previous].each do |p|
 #       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
+#    endtb_user_property
 #
 #    puts "========== periods to balance last "
-#    periods_to_balance_last.each do |p|
+#    periods[:periods_to_balance_last].each do |p|
 #       puts "year " + p.year.to_s + " nr " + p.nr.to_s
 #    end
 #
 #    puts "========== periods to balance last previous"
-#    periods_to_balance_last_previous.each do |p|
+#    periods[:periods_to_balance_last_previous].each do |p|
 #      puts "year " + p.year.to_s + " nr " + p.nr.to_s
 #    end
 #
 #    puts "========== periods to result"
-#    periods_to_result.each do |p|
+#    periods[:periods_to_result].each do |p|
 #      puts "year " + p.year.to_s + " nr " + p.nr.to_s
 #    end
 #
 #    puts "========= periods to result previous"
-#    periods_to_result_previous.each do |p|
+#    periods[:periods_to_result_previous].each do |p|
 #       puts "year " + p.year.to_s + " nr " + p.nr.to_s
 #    end
 #
 #    puts "========== periods to result last"
-#    periods_to_result_last.each do |p|
+#    periods[:periods_to_result_last].each do |p|
 #       puts "year " + p.year.to_s + " nr " + p.nr.to_s
 #    end
 #
 #    puts "========== periods to result last previous"
-#    periods_to_result_last_previous.each do |p|
+#    periods[:periods_to_result_last_previous].each do |p|
 #       puts "year " + p.year.to_s + " nr " + p.nr.to_s
 #    end
 
     @balance, @total_balance, @previous_result,@previous_last_result,@result, @total_result =
             Journal.report_ledger_balance(periods,current_user.current_company,@unit, @project,@car,
-                                          @show_only_active_accounts,@journal_type)
+            @show_only_active_accounts,@show_last_period,@journal_type)
 
   end
 
@@ -186,8 +182,15 @@ class ReportsController < ApplicationController
     
   end
 
+
+  private
   #determine all periods from the dates given
   def determine_periods(from_period,to_period,from_period_result_accounts)
+
+    #checks if reports dates are in logical order
+    unless Period.ordred_periods?(from_period,to_period)
+      from_period = to_period = nil
+    end
 
     periods = Hash.new
     balance_from_year = nil
@@ -265,7 +268,7 @@ class ReportsController < ApplicationController
                         :to_year=>balance_last_previous_to_year, :to_nr=>balance_last_previous_to_nr})
     end
 
-        if periods[:periods_to_balance].blank?
+    if periods[:periods_to_balance].blank?
       @first_period_to_balance = nil
       @last_period_to_balance =  nil
     else
@@ -299,6 +302,10 @@ class ReportsController < ApplicationController
 
     @result_from = periods[:periods_to_result_previous].first
     @result_from_last = periods[:periods_to_result_last_previous].first
+
+    periods.each do | key, value |
+      periods[:"#{key}"] = value.collect {|p| p.id }.join(",")
+    end
 
     periods
 
