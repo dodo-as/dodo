@@ -9,18 +9,21 @@
   </tr> 
 
 <% county_tax_zones.each do |county_tax_zone| %>
+
   <tr>
-   <% if county_tax_zone.tax_zone.nil? %>
-	
-     <%= t(:editing_county_error, :scope => :counties) %>
-   <% else %>
+
+   <% if !county_tax_zone.tax_zone.nil? %> 
+
     <td><%= county_tax_zone.tax_zone.number %></td>
     <td><%= county_tax_zone.from %></td>  
     <% if !@readonly %>
-     <td><%= link_to 'Destroy', [:admin, county_tax_zone], :confirm => 'Are you sure?', :method => :delete %></td>
+      <td><%= link_to 'Destroy', [:admin, county_tax_zone], :confirm => 'Are you sure?', :method => :delete %></td>
     <% end %>
+
    <% end %>
+
   </tr>
+
 <% end %>
 
 <% if !@readonly %>
