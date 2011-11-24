@@ -8,17 +8,19 @@
     <th></th>      
   </tr> 
 
-<% county_tax_zones.each do |county_tax_zone| %>
+
+<% county_tax_zones.order('"from" asc').each do |county_tax_zone| %>
 
   <tr>
 
-   <% if !county_tax_zone.tax_zone.nil? %> 
+   <% if county_tax_zone.tax_zone.nil? %>
+	
+   <% else %>
 
     <td><%= county_tax_zone.tax_zone.number %></td>
     <td><%= county_tax_zone.from %></td>  
-    <% if !@readonly %>
-      <td><%= link_to 'Destroy', [:admin, county_tax_zone], :confirm => 'Are you sure?', :method => :delete %></td>
-    <% end %>
+
+     <td><%= link_to 'Destroy', [:admin, county_tax_zone], :confirm => 'Are you sure?', :method => :delete %></td>
 
    <% end %>
 
@@ -26,14 +28,13 @@
 
 <% end %>
 
-<% if !@readonly %>
+
   <tr>
     <% form_for([:admin,CountyTaxZone.new], :county => @county) do |f| %>
       <td><%= f.select :tax_zone_id, TaxZone.all.collect {|p| [p.number, p.id]}, :include_blank => " " %></td>
       <%= f.hidden_field :county_id, :value => @county.id %>
       <td><%= f.text_field :from, :class => :datepicker %></td>
-      <td><%= f.submit "New Tax Zone" %></td>
+      <td><%= f.submit t( :new_tax_zone, :scope => :counties) %></td>
     <% end %>
   </tr>
-<% end %>
 </table>

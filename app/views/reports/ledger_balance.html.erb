@@ -1,5 +1,6 @@
 <p><h1><%= current_user.current_company.to_s %> - <%= current_user.to_s %> (<%= Date.today %>)</h1></p>
 <p><h1><%= t(:ledger_balance_period, :scope=>:reports) %><%= title_to_periods_range({:from_period=>@first_period_to_balance, :to_period=>@last_period_to_balance}) %>. Results period <%= title_to_periods_range({:from_period=>@first_period_to_result, :to_period=>@last_period_to_result})%></h1></p>
+<p><h1><%= result_from_date(:period => @result_from) %></h1></p>
 <% unless @unit.blank?%>
   <p><h2><%= t(:unit, :scope=>:reports) %>: <%= @unit %></h2></p>
 <% end %>

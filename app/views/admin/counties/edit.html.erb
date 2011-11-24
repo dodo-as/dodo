@@ -8,9 +8,10 @@
    </div>
 <% end %>
 
-<p>
-  <%= render :partial => "/admin/counties/index", :locals => { :county_tax_zones => @county.county_tax_zones }  %>
-</p>
+
+<%= link_to 'Show', [:admin, @county] %> |
+<%= link_to 'Back', admin_counties_path %>
+
 
 <%= link_to 'Back', admin_counties_path %>
 

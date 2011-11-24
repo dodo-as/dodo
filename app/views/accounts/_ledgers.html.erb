@@ -8,6 +8,7 @@
   <h2><%= t(:ledger_accounts, :scope => :accounts) -%></h2>
   <table id="ledger_table">
     <tr>
+      <th></th>  
       <th><%= t(:number, :scope => :accounts) -%></th>
       <th><%= t(:name, :scope => :accounts) -%></th>
       <th><%= t(:id_number, :scope => :accounts) -%></th>
@@ -29,6 +30,10 @@
     
     <% @account.ledgers.each do |ledger| %>
     <tr class="ledger_item" id="ledger_id_<%= ledger.id %>">
+      <td>
+          <%=link_to t(:edit, :scope => :global),  edit_ledger_path(ledger) %>
+          <%=link_to t(:show, :scope => :global),  ledger_path(ledger) %>
+      </td>
       <td><%= ledger.number -%></td>
       <td><%= ledger.name -%></td>
       <td><%= ledger.id_number -%></td>

@@ -6,7 +6,7 @@ class Ledger < ActiveRecord::Base
   belongs_to :address, :dependent => :destroy
   has_many :paycheck_line_templates , :foreign_key => "employee_id"  
   has_many :county_ledgers
-  accepts_nested_attributes_for :county_ledgers, :allow_destroy => false
+  #~ accepts_nested_attributes_for :county_ledgers, :allow_destroy => false
   validates :number, :uniqueness => {:scope => [:account_id]},  :presence => true
 
   validates :name, :presence => true
@@ -44,5 +44,20 @@ class Ledger < ActiveRecord::Base
   def last_name
     self.name.split(' ',2)[1]
   end
+  
+  
+    def county_at_date date
+        if !self.county_ledgers.blank?
+            c = self.county_ledgers.where('"from" <= ? ', date).order('"from" asc').first
+             if c != nil
+                return c.county 
+            else
+                return nil
+            end
+        else
+            []
+        end
+    end
+     
 
 end

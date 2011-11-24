@@ -1,0 +1,36 @@
+<h1><%= t(:showing_ledger, :scope => :ledgers) %> <%= @ledger %></h1>
+
+<p>
+<%= @ledger.number %>
+</p>
+<p>
+<%= @ledger.name %>
+</p>
+<p>
+<%= @ledger.account %>
+</p>
+<p>
+<%= @ledger.email %>
+</p>
+<p>
+<%= @ledger.address.street1 %>
+</p>
+<p>
+<%= @ledger.mobile_number %>
+</p>
+<p>
+<%= @ledger.customer_number %>
+</p>
+<p>
+<%= @ledger.ledger_bank_number %>
+</p>
+<p>
+</p>
+
+<p>
+    <%= render :partial => "ledgers/county_ledger_form" %>
+</p>
+
+
+<%= link_to t(:edit, :scope => :global), edit_ledger_path(@ledger) %> |
+<%= link_to t(:back, :scope => :global), edit_account_path(@ledger.account) %>
