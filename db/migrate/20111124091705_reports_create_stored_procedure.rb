@@ -1,23 +1,20 @@
 class ReportsCreateStoredProcedure < ActiveRecord::Migration
 
-  # This is a migration of a basic stored procedure to check the feasibility of stored procedures with Rails
   def self.up
-
-    sql=<<-END_OF_SQL_CODE
-
-    CREATE FUNCTION n_rows_counties(x int, OUT y int) AS $$
-    BEGIN
-    y = x * 10;
-    END;
-    $$ LANGUAGE plpgsql;  
-
-    END_OF_SQL_CODE
-    execute sql    
-
+    procedure_creation = File.read("db/stored_procedures.sql")
+    ActiveRecord::Base.connection.execute("#{procedure_creation}")
   end
 
   def self.down
-    execute 'DROP FUNCTION IF EXISTS stored_proc_test'
+    ActiveRecord::Base.connection.execute("    DROP FUNCTION IF EXISTS report_balance(
+                            is_result_report boolean ,
+                            company int ,
+                            car int,
+                            unit int,
+                            project int,
+                            journal_type int,
+                            periods_to_balance TEXT ) ;")
+    ActiveRecord::Base.connection.execute(" DROP TYPE IF EXISTS  acc ;")
   end
 
 end
