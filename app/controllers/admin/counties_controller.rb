@@ -4,6 +4,8 @@ class Admin::CountiesController < Admin::BaseController
   around_filter AdminLog.log(:county), :only => [:update, :create]
   before_filter :set_readonly
 
+  around_filter AdminLog.log(:county), :only => [:update, :create]
+
   # GET /counties
   # GET /counties.xml
   def index
