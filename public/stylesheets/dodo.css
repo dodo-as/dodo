@@ -529,5 +529,7 @@ iframe
     width: 5em;
 }
 
-
+.debug_dump {
+    font-size: 13px;
+}
 
