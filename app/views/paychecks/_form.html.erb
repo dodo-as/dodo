@@ -1,3 +1,6 @@
+<%= javascript_include_tag 'paychecks' %>
+
+
 <%= form_for(@paycheck) do |f| %>
 <% if @paycheck.errors.any? %>
 <div id="error_explanation">
@@ -19,31 +22,36 @@
   <%= f.select :period_id, current_user.open_periods.map {|p| [ p, p.id ] } %>    
  </p> 
 
- <p>
-
-  <%= f.label :county %>
-  <%= f.select :county_id, @all_counties.collect {|p| [p.name, p.id]} %>  
-
- </p>
-
- <SCRIPT language = "JAVASCRIPT">
 
 
- </SCRIPT>
+ 
+   
 
- <p>
+ <script>
+     var DODO = {
+            employee: <%= raw(@employee.to_json)%>,
+            countiesList: <%= raw(@employee.county_ledgers.order('"from" asc').map{ |cl| [cl.from, cl.county.name] if cl != nil}.to_json) %>,
+            taxZonesList: <%= raw(@employee.county_ledgers.order('"from" asc').map{ |cl| cl.county.county_tax_zones.order('"from" asc').where('is_visible is true').map{|a| [a.from, a.tax_zone.number] if (a != nil && a.tax_zone !=nil )} if cl != nil}.to_json) %>,
+            taxRatesList: <%= raw(@employee.county_ledgers.order('"from" asc').map{ |cl| cl.county.county_tax_zones.order('"from" asc').where('is_visible is true').map{|a| a.tax_zone.tax_zone_taxes.order('"from" asc').where('is_visible is true').map{ |b| [b.from, b.tax_rate]} if a.tax_zone != nil} if cl != nil}.to_json) %>,
+        };
+ </script>
 
-  <%= f.fields_for :tax_zone do |tax_zone| %>
-   <%= tax_zone.label :tax_zone %>
-   <%= tax_zone.text_field :tax_zone_id, :value => @tax_zone , :disabled => true%> 
-  <% end %> 
-  <br/>
-  <%= f.fields_for :tax_zone_tax do |tax_zone_tax| %> <br/>
-   <%= tax_zone_tax.label :tax_rate %>
-   <%= tax_zone_tax.text_field :tax_rate, :value => @tax_rate , :disabled => true %> 
-  <% end %>
+<table>
+    <tr>
+        <th><%= t(:county, :scope => :paychecks) %></th>
+        <td class="dodo_county"></td>
+    </tr>
+    <tr>
+        <th><%= t(:zone, :scope => :paychecks) %></th>
+        <td class="dodo_zone"></td>
+    </tr>
+    <tr>
+        <th><%= t(:rate, :scope => :paychecks) %></th>
+        <td class="dodo_rate"></td>
+    </tr>
 
- </p>
+</table>
+ 
 
 </div> </br>
 
