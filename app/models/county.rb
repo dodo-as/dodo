@@ -7,7 +7,7 @@ class County < ActiveRecord::Base
   
   def tax_zone_at_date date
     if !self.county_tax_zones.blank?
-        tz = self.county_tax_zones.where('"from" <= ? ', date).where('is_visible is true').order('"from" asc').first
+        tz = self.county_tax_zones.where('"from" <= ? ', date).where('is_visible is true').order('"from" asc').last
         if tz != nil
             return tz.tax_zone
         else

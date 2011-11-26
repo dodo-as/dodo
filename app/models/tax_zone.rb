@@ -7,7 +7,7 @@ class TaxZone < ActiveRecord::Base
   def tax_zone_rate_at_date date
     tr = nil
     if !self.tax_zone_taxes.blank?
-        tr = self.tax_zone_taxes.where('"from" <= ? ', date).where('is_visible is true').order('"from" asc').first
+        tr = self.tax_zone_taxes.where('"from" <= ? ', date).where('is_visible is true').order('"from" asc').last
     end
     
     if tr != nil

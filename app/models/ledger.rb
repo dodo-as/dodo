@@ -48,9 +48,9 @@ class Ledger < ActiveRecord::Base
   
     def county_at_date date
         if !self.county_ledgers.blank?
-            c = self.county_ledgers.where('"from" <= ? ', date).order('"from" asc').first
-             if c != nil
-                return c.county 
+            c = self.county_ledgers.order('"from" asc').where('"from" <= ? ', date).last
+            if c != nil
+                return c.county
             else
                 return nil
             end
