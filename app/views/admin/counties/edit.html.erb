@@ -1,31 +1,18 @@
 <h1>Editing county</h1>
 
-<% if @county.is_visible == true %> 
-
-  <% if @county_tax_zone == nil %>
-
-    <%= t(:editing_county_error, :scope => :counties) %>
-
-  <% else %>
-
-   <%= form_for([:admin,@county]) do |f| %>
-    <div class="field">
-     <p>      
+<%= form_for([:admin,@county]) do |f| %>
+ <div class="field">
+   <p>      
       <%= @county.name %>   
-     </p>
-    </div>
-   <% end %>
-
+   </p>
+   </div>
 <% end %>
 
-<% else %>
-
-    <%= t(:deleting_county_error, :scope => :counties) %>
-	
-<% end %>
 
 <%= link_to 'Show', [:admin, @county] %> |
 <%= link_to 'Back', admin_counties_path %>
 
+
+<%= link_to 'Back', admin_counties_path %>
 
 

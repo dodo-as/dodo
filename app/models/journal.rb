@@ -188,8 +188,8 @@ class Journal < ActiveRecord::Base
         order by account_number"
 
 ###########################################
-    # TODO: replace find_by_sql method by stored procedure method
-    #balance = DbStoredProcedure.fetch_db_records("report(#{parameters})")
+
+
     balance = Journal.find_by_sql(sql)   
 
     total_period_previous = 0
@@ -331,6 +331,29 @@ class Journal < ActiveRecord::Base
       when 9000..9999 then total_accounts_4000 += row["total_period"].to_f
       end
     end
+
+
+    # TODO: replace find_by_sql method by stored procedure method
+    #for balance part
+   company_id = company.blank? ? 'null' : "#{company.id}"
+   car_id = car.blank? ? 'null' : "#{car.id}"
+   unit_id = unit.blank? ? 'null' : "#{unit.id}"
+   project_id = project.blank? ? 'null' : "#{project.id}"
+   journal_type_id = journal_type.blank? ? 'null' : "#{journal_type.id}"
+#    _periods_to_balance =  _periods_to_balance.blank?  ? 'null' :  "'#{periods[:periods_to_balance]}'"
+#    _periods_to_balance_previous = _periods_to_balance_previous.blank? ?  'null' : "'#{periods[:periods_to_balance_previous]}"
+#    _periods_to_balance_last = _periods_to_balance_last.blank? ?  'null' : "'#{periods[:periods_to_balance_last]}'"
+#    _periods_to_balance_last_previous = _periods_to_balance_last_previous.blank? ? 'null'  :  "'#{periods[:periods_to_balance_last_previous]}'"
+
+
+    #TO DO: calculate each of the column with DbStoredProcedure 
+    some_result1 = DbStoredProcedure.fetch_db_records("report_balance(true,#{company_id},#{car_id},#{unit_id},#{project_id},#{journal_type_id},#{periods[:periods_to_result_previous].blank? ? 'null' : "'#{periods[:periods_to_result_previous]}'"})")
+    some_result2 = DbStoredProcedure.fetch_db_records("report_balance(true,#{company_id},#{car_id},#{unit_id},#{project_id},#{journal_type_id},#{periods[:periods_to_result_last_previous].blank? ? 'null' : "'#{periods[:periods_to_result_last_previous]}'"})")
+
+    puts ""; puts ""; puts ""; puts ""; puts ""; puts ""; puts "";
+    puts some_result1
+    puts ""; puts ""; puts ""; puts ""; puts ""; puts ""; puts "";
+    puts some_result2
 
 
     #fix: calculating previous and pervious last periods for result accounts

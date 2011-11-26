@@ -3,7 +3,7 @@ class DbStoredProcedure < ActiveRecord::Base
 
   #Method returning many rows
   def self.fetch_db_records(proc_name_with_parameters)
-    connection.select_all("select #{proc_name_with_parameters}")
+    connection.select_all("select * from #{proc_name_with_parameters}")
   end
 
   #Method altering the data

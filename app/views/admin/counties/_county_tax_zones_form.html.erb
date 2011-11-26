@@ -8,16 +8,24 @@
     <th></th>      
   </tr> 
 
+
 <% county_tax_zones.order('"from" asc').each do |county_tax_zone| %>
+
   <tr>
+
    <% if county_tax_zone.tax_zone.nil? %>
 	
    <% else %>
+
     <td><%= county_tax_zone.tax_zone.number %></td>
     <td><%= county_tax_zone.from %></td>  
+
      <td><%= link_to 'Destroy', [:admin, county_tax_zone], :confirm => 'Are you sure?', :method => :delete %></td>
+
    <% end %>
+
   </tr>
+
 <% end %>
 
 
