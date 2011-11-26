@@ -2,6 +2,10 @@ class Admin::TaxZoneTaxesController < Admin::BaseController
  
   # GET /tax_zone_taxes
   # GET /tax_zone_taxes.xml
+  
+  attr_accessor :tax_zone_tax
+  around_filter AdminLog.log(:tax_zone_tax), :only => [:update, :create]
+  
   def index
     @tax_zone_taxes = TaxZoneTax.all
 

@@ -1,6 +1,10 @@
 class Admin::CountyTaxZonesController < Admin::BaseController
   # GET /county_tax_zones
   # GET /county_tax_zones.xml
+  
+  attr_accessor :county_tax_zone
+  around_filter AdminLog.log(:county_tax_zone), :only => [:update, :create]
+  
   def index
     @county_tax_zones = CountyTaxZone.all     
 
