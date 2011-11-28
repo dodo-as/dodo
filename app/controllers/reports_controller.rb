@@ -69,8 +69,7 @@ class ReportsController < ApplicationController
 #       puts "year " + p.year.to_s + " nr " + p.nr.to_s
 #    end
 
-    @balance, @total_balance, @previous_result,@previous_last_result,@result, @total_result =
-            Journal.report_ledger_balance(periods,current_user.current_company,@unit, @project,@car,
+    @balance, @result, @total_accounts = Journal.report_ledger_balance(periods,current_user.current_company,@unit, @project,@car,
             @show_only_active_accounts,@show_last_period,@journal_type)
 
   end
