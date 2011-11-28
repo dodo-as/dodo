@@ -23,8 +23,8 @@ class ReportsController < ApplicationController
     @car = Car.find(params[:car_id]) unless params[:car_id].blank?
     @journal_type = JournalType.find(params[:journal_type_id]) unless params[:journal_type_id].blank?
     
-    @show_only_active_accounts = params[:show_only_active_accounts]
-    @show_last_period = params[:last_year_figures]
+    @show_only_active_accounts = params[:show_only_active_accounts].blank? ? false : true
+    @show_last_period = params[:last_year_figures].blank? ? false : true
 
     periods = Hash.new
     periods = determine_periods(from_period,to_period,from_period_result_accounts)

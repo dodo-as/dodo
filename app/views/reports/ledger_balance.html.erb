@@ -40,17 +40,17 @@
     </tr>
   </thead>
   <tbody>
-  <% @balance.each do |row| %>
+  <% (@balance - [@balance.last]).each do |row| %>
     <tr class="detail1">
-      <td> <%= row.account_number %> </td>
-      <td> <%= row.account_name %> </td>
-      <td style="text-align:right"> <%= number_with_precision(row.total_period_previous, :locale =>I18n.locale) %> </td>
-      <td style="text-align:right"> <%= number_with_precision(row.total_period, :locale =>I18n.locale) %> </td>
-      <td style="text-align:right"> <%= number_with_precision(row.balance_period, :locale =>I18n.locale) %> </td>
+      <td> <%= row["acc_number"] %> </td>
+      <td> <%= row["acc_name"] %> </td>
+      <td style="text-align:right"> <%= number_with_precision(row["acc_pb"], :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"> <%= number_with_precision(row["acc_b"], :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"> <%= number_with_precision(row["acc_nb"] , :locale =>I18n.locale) %> </td>
     <% if @show_last_period %>
-      <td style="text-align:right"> <%= number_with_precision(row.total_last_period_previous, :locale =>I18n.locale) %> </td>
-      <td style="text-align:right"> <%= number_with_precision(row.total_last_period, :locale =>I18n.locale) %> </td>
-      <td style="text-align:right"> <%= number_with_precision(row.balance_last_period, :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"> <%= number_with_precision(row["acc_lpb"], :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"> <%= number_with_precision(row["acc_lb"], :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"> <%= number_with_precision(row["acc_lnb"], :locale =>I18n.locale) %> </td>
     <% end %>
     </tr>
   <% end %>
@@ -58,13 +58,13 @@
   <tfoot>
     <tr>
       <td colspan="2"></td>
-      <td style="text-align:right"><%= number_with_precision(@total_balance["total_period_previous"], :locale=>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_balance["total_period"], :locale=>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_balance["total_balance_period"], :locale=>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@balance.last["acc_pb"], :locale=>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@balance.last["acc_b"], :locale=>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@balance.last["acc_nb"], :locale=>I18n.locale) %></td>
     <% if @show_last_period %>
-      <td style="text-align:right"><%= number_with_precision(@total_balance["total_last_period_previous"], :locale=>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_balance["total_last_period"], :locale=>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_balance["total_balance_last_period"], :locale=>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@balance.last["acc_lpb"], :locale=>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@balance.last["acc_lb"], :locale=>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@balance.last["acc_lnb"], :locale=>I18n.locale) %></td>
     <% end %>
     </tr>
   </tfoot>
@@ -96,31 +96,30 @@
     </tr>
   </thead>
   <tbody>
-  <% @result.each do |row| %>  
+  <% (@result - [@result.last]).each do |row| %>
     <tr class="detail2">
-      <td> <%= row.account_name %> </td>
-      <td> <%= row.account_number %> </td>
-      <td style="text-align:right"> <%= number_with_precision(@previous_result[:"#{row.account_number}"], :locale => I18n.locale) %> </td>
-      <td style="text-align:right"> <%= number_with_precision(row.total_period, :locale =>I18n.locale) %> </td>
-      <td style="text-align:right"> <%= number_with_precision(@previous_result[:"#{row.account_number}"] + row.total_period.to_f,:locale => I18n.locale) %></td>
+      <td> <%= row["acc_number"] %> </td>
+      <td> <%= row["acc_name"] %> </td>
+      <td style="text-align:right"> <%= number_with_precision(row["acc_pb"], :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"> <%= number_with_precision(row["acc_b"], :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"> <%= number_with_precision(row["acc_nb"] , :locale =>I18n.locale) %> </td>
     <% if @show_last_period %>
-      <td style="text-align:right"> <%= number_with_precision(@previous_last_result[:"#{row.account_number}"], :locale => I18n.locale) %> </td>
-      <td style="text-align:right"> <%= number_with_precision(row.total_last_period, :locale =>I18n.locale) %> </td>
-      <td style="text-align:right"> <%= number_with_precision(@previous_last_result[:"#{row.account_number}"] + row.total_last_period.to_f,:locale => I18n.locale) %> </td>
-    <% end %>
+      <td style="text-align:right"> <%= number_with_precision(row["acc_lpb"], :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"> <%= number_with_precision(row["acc_lb"], :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"> <%= number_with_precision(row["acc_lnb"], :locale =>I18n.locale) %> </td>   <% end %>
     </tr>
   <% end %>
   </tbody>
   <tfoot>
     <tr>
       <td colspan="2"></td>
-      <td style="text-align:right"><%= number_with_precision(@previous_result[:total_result],:locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_period"], :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@previous_result[:total_result]+@total_result["total_period"].to_f,:loacale => I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@result.last["acc_pb"], :locale=>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@result.last["acc_b"], :locale=>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@result.last["acc_nb"], :locale=>I18n.locale) %></td>
     <% if @show_last_period %>
-      <td style="text-align:right"><%= number_with_precision(@previous_last_result[:total_result],:locale =>I18n.locale)%></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_last_period"], :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@previous_last_result[:total_result]+@total_result["total_last_period"].to_f,:locale => I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@result.last["acc_lpb"], :locale=>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@result.last["acc_lb"], :locale=>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@result.last["acc_lnb"], :locale=>I18n.locale) %></td>
     <% end %>
     </tr>
   </tfoot>
@@ -143,15 +142,15 @@
   <tbody>
     <tr class="detail1">
       <td>1000</td>
-      <td style="text-align:right"><%= number_with_precision(@total_balance["total_accounts_1000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["1000"], :locale =>I18n.locale) %></td>
       <td style="text-align:right"><%= number_with_precision(0.00, :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_balance["total_accounts_1000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["1000"], :locale =>I18n.locale) %></td>
     </tr>
     <tr class="detail1">
       <td>2000</td>
-      <td style="text-align:right"><%= number_with_precision(@total_balance["total_accounts_2000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["2000"], :locale =>I18n.locale) %></td>
       <td style="text-align:right"><%= number_with_precision(0.00, :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_balance["total_accounts_2000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["2000"], :locale =>I18n.locale) %></td>
     </tr>
   </tbody>
   <thead>
@@ -162,63 +161,63 @@
   <tbody>
     <tr class="detail2">
       <td>3000</td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_accounts_3000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["3000"], :locale =>I18n.locale) %></td>
       <td style="text-align:right"><%= number_with_precision(0.00, :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_accounts_3000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["3000"], :locale =>I18n.locale) %></td>
     </tr>
     <tr class="detail2">
       <td>4000</td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_accounts_4000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["4000"], :locale =>I18n.locale) %></td>
       <td style="text-align:right"><%= number_with_precision(0.00, :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_accounts_4000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["4000"], :locale =>I18n.locale) %></td>
     </tr>
     <tr class="detail2">
       <td>5000</td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_accounts_5000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["5000"], :locale =>I18n.locale) %></td>
       <td style="text-align:right"><%= number_with_precision(0.00, :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_accounts_5000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["5000"], :locale =>I18n.locale) %></td>
     </tr>
     <tr class="detail2">
       <td>6000</td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_accounts_6000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["6000"], :locale =>I18n.locale) %></td>
       <td style="text-align:right"><%= number_with_precision(0.00, :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_accounts_6000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["6000"], :locale =>I18n.locale) %></td>
     </tr>
     <tr class="detail2">
       <td>7000</td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_accounts_7000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["7000"], :locale =>I18n.locale) %></td>
       <td style="text-align:right"><%= number_with_precision(0.00, :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_accounts_7000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["7000"], :locale =>I18n.locale) %></td>
     </tr>
     <tr class="detail3">
       <td><%= t(:revenue, :scope=>:reports) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_revenue"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["total_revenue"], :locale =>I18n.locale) %></td>
       <td style="text-align:right"><%= number_with_precision(0.00, :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_revenue"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["total_revenue"], :locale =>I18n.locale) %></td>
     </tr>
     <tr class="detail3">
       <td><%= t(:expenses, :scope=>:reports) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_expenses"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["total_expenses"], :locale =>I18n.locale) %></td>
       <td style="text-align:right"><%= number_with_precision(0.00, :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_expenses"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["total_expenses"], :locale =>I18n.locale) %></td>
     </tr>
     <tr class="detail3">
       <td><%= t(:diff, :scope=>:reports) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_diff"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["total_diff"], :locale =>I18n.locale) %></td>
       <td style="text-align:right"><%= number_with_precision(0.00, :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_diff"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["total_diff"], :locale =>I18n.locale) %></td>
     </tr>
     <tr class="detail3">
       <td>8000</td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_accounts_8000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["8000"], :locale =>I18n.locale) %></td>
       <td style="text-align:right"><%= number_with_precision(0.00, :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_accounts_8000"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["8000"], :locale =>I18n.locale) %></td>
     </tr>
     <tr class="detail3">
       <td><%= t(:result, :scope=>:reports) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_result"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["total_result"], :locale =>I18n.locale) %></td>
       <td style="text-align:right"><%= number_with_precision(0.00, :locale =>I18n.locale) %></td>
-      <td style="text-align:right"><%= number_with_precision(@total_result["total_result"], :locale =>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(@total_accounts["total_result"], :locale =>I18n.locale) %></td>
     </tr>
   </tbody>
 </table>

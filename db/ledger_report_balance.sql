@@ -121,7 +121,7 @@
 
                         --calculating last year period balance
                         sum_value := 0;
-			IF (show_last_year == TRUE AND periods_to_balance_last IS NOT NULL AND LENGTH(periods_to_balance_last) > 0) THEN
+			IF (show_last_year = TRUE AND periods_to_balance_last IS NOT NULL AND LENGTH(periods_to_balance_last) > 0) THEN
 				FOR journalRecord IN
 						SELECT * FROM journals
 						Where journals.company_id = company
@@ -152,7 +152,7 @@
 
                         --calculating last year previous period balance
 			sum_value := 0;
-                        IF (show_last_year == TRUE AND periods_to_balance_last_previous IS NOT NULL AND LENGTH(periods_to_balance_last_previous) > 0) THEN
+                        IF (show_last_year = TRUE AND periods_to_balance_last_previous IS NOT NULL AND LENGTH(periods_to_balance_last_previous) > 0) THEN
 				FOR journalRecord IN
 						SELECT * FROM journals
 						Where journals.company_id = company
@@ -196,7 +196,7 @@
 
 
                         --return only active accounts if specified
-                        IF NOT show_only_active_accounts OR active_acc == TRUE THEN
+                        IF (NOT show_only_active_accounts OR active_acc = TRUE) THEN
                                 RETURN NEXT period_balance;
                         END IF;
 
@@ -204,9 +204,13 @@
 		END LOOP;
 
 
-                total_nb   := total_b  + total_pb;
-                total_lnb  := total_lb + total_lpb;
-                period_balance.acc_name := "total";
+                period_balance.acc_nb   := total_b  + total_pb;
+                period_balance.acc_lnb  := total_lb + total_lpb;
+                period_balance.acc_b := total_b;
+                period_balance.acc_pb   := total_pb  ;
+                period_balance.acc_lb  := total_lb;
+                period_balance.acc_lpb  := total_lpb ;
+                period_balance.acc_name := 'total';
                 period_balance.acc_number := 0;
 
 
