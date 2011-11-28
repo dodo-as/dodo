@@ -121,7 +121,7 @@
 
                         --calculating last year period balance
                         sum_value := 0;
-			IF (show_last_year = TRUE AND periods_to_balance_last IS NOT NULL AND LENGTH(periods_to_balance_last) > 0) THEN
+			IF (show_last_year IS TRUE AND periods_to_balance_last IS NOT NULL AND LENGTH(periods_to_balance_last) > 0) THEN
 				FOR journalRecord IN
 						SELECT * FROM journals
 						Where journals.company_id = company
@@ -152,7 +152,7 @@
 
                         --calculating last year previous period balance
 			sum_value := 0;
-                        IF (show_last_year = TRUE AND periods_to_balance_last_previous IS NOT NULL AND LENGTH(periods_to_balance_last_previous) > 0) THEN
+                        IF (show_last_year IS TRUE AND periods_to_balance_last_previous IS NOT NULL AND LENGTH(periods_to_balance_last_previous) > 0) THEN
 				FOR journalRecord IN
 						SELECT * FROM journals
 						Where journals.company_id = company

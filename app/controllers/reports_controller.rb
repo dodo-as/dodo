@@ -228,44 +228,40 @@ class ReportsController < ApplicationController
                     
     if from_period.blank?
         periods[:periods_to_balance_previous] = []
+        periods[:periods_to_balance_last] = []
+        periods[:periods_to_balance_last_previous] = []
+        periods[:periods_to_result_previous] = []
+        periods[:periods_to_result_last] = []
+        periods[:periods_to_result_last_previous] = []
     else
       periods[:periods_to_balance_previous] = Period.get_range(current_user.current_company.id,
                         {:from_year=>nil, :from_nr=>nil,
                         :to_year=>balance_previous_to_year, :to_nr=>balance_previous_to_nr})
-    end
 
-    periods[:periods_to_balance_last] = Period.get_range(current_user.current_company.id,
+      periods[:periods_to_balance_last] = Period.get_range(current_user.current_company.id,
                         {:from_year=>balance_last_from_year, :from_nr=>balance_from_nr,
                         :to_year=>balance_last_to_year, :to_nr=>balance_to_nr})
 
-
-    if from_period.blank?
-        periods[:periods_to_balance_last_previous] = []
-    else
-        periods[:periods_to_balance_last_previous] = Period.get_range(current_user.current_company.id,
+      periods[:periods_to_balance_last_previous] = Period.get_range(current_user.current_company.id,
                         {:from_year=>nil, :from_nr=>nil,
                         :to_year=>balance_last_previous_to_year, :to_nr=>balance_last_previous_to_nr})
-    end
 
-    periods[:periods_to_result] = periods[:periods_to_balance]
-    
-    if from_period.blank?
-        periods[:periods_to_result_previous] = []
-    else
-        periods[:periods_to_result_previous] = Period.get_range(current_user.current_company.id,
+      periods[:periods_to_result_previous] = Period.get_range(current_user.current_company.id,
                         {:from_year=> result_from_year, :from_nr=>result_from_nr,
                         :to_year=>balance_previous_to_year, :to_nr=>balance_previous_to_nr})
-    end
 
-    periods[:periods_to_result_last] = periods[:periods_to_balance_last]
-
-    if from_period.blank?
-      periods[:periods_to_result_last_previous] = []
-    else
       periods[:periods_to_result_last_previous] = Period.get_range(current_user.current_company.id,
                         {:from_year=>result_last_from_year, :from_nr=> result_from_nr,
                         :to_year=>balance_last_previous_to_year, :to_nr=>balance_last_previous_to_nr})
+
+      
+
     end
+
+    periods[:periods_to_result] = periods[:periods_to_balance]    
+    periods[:periods_to_result_last] = periods[:periods_to_balance_last]
+
+
 
     if periods[:periods_to_balance].blank?
       @first_period_to_balance = nil
