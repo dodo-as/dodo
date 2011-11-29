@@ -30,52 +30,15 @@ class ReportsController < ApplicationController
     periods = determine_periods(from_period,to_period,from_period_result_accounts)
     
 
-#    puts "========== periods to balance "
-#    periods[:periods_to_balance].each do |p|
-#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
-#    puts "========== periods to balance previous "
-#    periods[:periods_to_balance_previous].each do |p|
-#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    endtb_user_property
-#
-#    puts "========== periods to balance last "
-#    periods[:periods_to_balance_last].each do |p|
-#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
-#
-#    puts "========== periods to balance last previous"
-#    periods[:periods_to_balance_last_previous].each do |p|
-#      puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
-#
-#    puts "========== periods to result"
-#    periods[:periods_to_result].each do |p|
-#      puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
-#
-#    puts "========= periods to result previous"
-#    periods[:periods_to_result_previous].each do |p|
-#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
-#
-#    puts "========== periods to result last"
-#    periods[:periods_to_result_last].each do |p|
-#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
-#
-#    puts "========== periods to result last previous"
-#    periods[:periods_to_result_last_previous].each do |p|
-#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
-
     @balance, @result, @total_accounts = Journal.report_ledger_balance(periods,current_user.current_company,@unit, @project,@car,
             @show_only_active_accounts,@show_last_period,@journal_type)
 
   end
 
   def ledger_journal
- 
+
+    
+
     accounts = nil
     periods = nil
     params[:offset] ||= 0    
@@ -156,16 +119,19 @@ class ReportsController < ApplicationController
       #       of the journal and taking into consideration only rows with actual operations on it
       where[0] += " AND journal_operations.amount IS NOT NULL"
 
-
-      @journal_operations = JournalOperation.joins(:journal).joins(:account).where(where).order(
+      
+     @journal_operations = JournalOperation.joins(:journal).joins(:account).where(where).order(
         "account_id, journals.period_id, journal_operations.created_at").includes(
         :journal, :account).limit(500).offset(params[:offset])
+
+     puts ledger_journal_x
 
       if params[:offset]==0
         @count = JournalOperation.count(
           :joins=>" INNER JOIN journals ON journal_operations.journal_id = journals.id 
                     INNER JOIN accounts ON journal_operations.account_id = accounts.id",
           :conditions=>where)
+        
       end
     end
     
@@ -181,16 +147,46 @@ class ReportsController < ApplicationController
     
   end
 
+  # TODO: Replace ledger_journal method by the new method ledger_journalx
+  def ledger_journal_x
+    
+    from_period = Period.find(params[:from_period_id]) unless params[:from_period_id].blank?
+    to_period = Period.find(params[:to_period_id]) unless params[:to_period_id].blank?
+    result_from = Period.find(params[:result_from_period_id]) unless params[:result_from_period_id].blank?
+
+    from_account_number = params[:from_account_number]
+    to_account_number = params[:to_account_number]
+
+    @unit = Unit.find(params[:unit_id]) unless params[:unit_id].blank?
+    @project = Project.find(params[:project_id]) unless params[:project_id].blank?
+    @car = Car.find(params[:car_id]) unless params[:car_id].blank?
+    @journal_type = JournalType.find(params[:journal_type_id]) unless params[:journal_type_id].blank?
+
+    periods = Hash.new
+    periods = determine_periods(from_period,to_period,result_from)
+
+    journal_operations = Report.report_ledger_journal(periods, from_account_number, to_account_number,current_user.current_company, @car, @unit, @project, @journal_type)
+    journal_operations
+  end
 
   private
+
   #determine all periods from the dates given
   def determine_periods(from_period,to_period,from_period_result_accounts)
+    # TODO: Rearrange this method ( determine periods depending on report type)
+    # method is now called by all the reports in the same way (redundant calculations)
+    # Period.getRange method is not well written (possible dangerous behaviour when nil params supplied)
 
     #checks if reports dates are in logical order
     unless Period.ordred_periods?(from_period,to_period)
       from_period = to_period = nil
     end
 
+    if to_period.blank?
+        to_period = Period.with_permissions_to(:index).order('year, nr').last
+        puts to_period.to_s
+    end
+    
     periods = Hash.new
     balance_from_year = nil
     balance_from_nr = nil
@@ -254,8 +250,6 @@ class ReportsController < ApplicationController
                         {:from_year=>result_last_from_year, :from_nr=> result_from_nr,
                         :to_year=>balance_last_previous_to_year, :to_nr=>balance_last_previous_to_nr})
 
-      
-
     end
 
     periods[:periods_to_result] = periods[:periods_to_balance]    
@@ -298,6 +292,47 @@ class ReportsController < ApplicationController
     @result_from = periods[:periods_to_result_previous].first
     @result_from_last = periods[:periods_to_result_last_previous].first
 
+
+#
+#    puts "========== periods to balance "
+#    periods[:periods_to_balance].each do |p|
+#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
+#    puts "========== periods to balance previous "
+#    periods[:periods_to_balance_previous].each do |p|
+#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
+#
+#    puts "========== periods to balance last "
+#    periods[:periods_to_balance_last].each do |p|
+#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
+#
+#    puts "========== periods to balance last previous"
+#    periods[:periods_to_balance_last_previous].each do |p|
+#      puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
+#
+#    puts "========== periods to result"
+#    periods[:periods_to_result].each do |p|
+#      puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
+#
+#    puts "========= periods to result previous"
+#    periods[:periods_to_result_previous].each do |p|
+#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
+#
+#    puts "========== periods to result last"
+#    periods[:periods_to_result_last].each do |p|
+#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
+#
+#    puts "========== periods to result last previous"
+#    periods[:periods_to_result_last_previous].each do |p|
+#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
+
     periods.each do | key, value |
       periods[:"#{key}"] = value.collect {|p| p.id }.join(",")
     end
@@ -306,4 +341,5 @@ class ReportsController < ApplicationController
 
    
   end
+  
 end
