@@ -27,7 +27,7 @@ class ReportsController < ApplicationController
     @show_last_period = params[:last_year_figures].blank? ? false : true
 
     periods = Hash.new
-    periods = determine_periods(from_period,to_period,from_period_result_accounts)
+    periods = determine_periods(from_period,to_period,from_period_result_accounts,@show_last_period)
     
 
     @balance, @result, @total_accounts = Journal.report_ledger_balance(periods,current_user.current_company,@unit, @project,@car,
@@ -163,7 +163,7 @@ class ReportsController < ApplicationController
     @journal_type = JournalType.find(params[:journal_type_id]) unless params[:journal_type_id].blank?
 
     periods = Hash.new
-    periods = determine_periods(from_period,to_period,result_from)
+    periods = determine_periods(from_period,to_period,result_from,false)
 
     journal_operations = Report.report_ledger_journal(periods, from_account_number, to_account_number,current_user.current_company, @car, @unit, @project, @journal_type)
     journal_operations
@@ -172,166 +172,120 @@ class ReportsController < ApplicationController
   private
 
   #determine all periods from the dates given
-  def determine_periods(from_period,to_period,from_period_result_accounts)
-    # TODO: Rearrange this method ( determine periods depending on report type)
-    # method is now called by all the reports in the same way (redundant calculations)
-    # Period.getRange method is not well written (possible dangerous behaviour when nil params supplied)
+  def determine_periods(from_period,to_period,result_from,determine_last_year)
 
-    #checks if reports dates are in logical order
-    unless Period.ordred_periods?(from_period,to_period)
-      from_period = to_period = nil
-    end
-
-    if to_period.blank?
-        to_period = Period.with_permissions_to(:index).order('year, nr').last
-        puts to_period.to_s
-    end
-    
     periods = Hash.new
-    balance_from_year = nil
-    balance_from_nr = nil
-    balance_to_year = nil
-    balance_to_nr = nil
-    balance_previous_to_year = nil
-    balance_previous_to_nr = nil
-    balance_last_from_year = nil
-    balance_last_to_year = nil
-    balance_last_previous_to_year = nil
-    balance_last_previous_to_nr = nil
+    
+    #company must have periods to proceed
+    return periods if current_user.current_company.periods.count == 0
+    company_id = current_user.current_company.id
 
-    balance_from_year = from_period.year unless from_period.blank?
-    balance_from_nr = from_period.nr unless from_period.blank?
-
-    balance_to_year = to_period.year unless to_period.blank?
-    balance_to_nr = to_period.nr unless to_period.blank?
-
-    balance_previous_to_year = balance_to_year unless balance_to_year.blank?
-    balance_previous_to_nr = balance_from_nr-1 unless balance_from_nr.blank?
-
-    balance_last_from_year = from_period.year-1 unless from_period.blank?
-    balance_last_to_year = to_period.year-1 unless to_period.blank?
-
-    balance_last_previous_to_year = balance_last_from_year unless balance_last_from_year.blank?
-    balance_last_previous_to_nr = balance_from_nr-1 unless balance_from_nr.blank?
-
-    result_from_year = from_period_result_accounts.year unless from_period_result_accounts.blank?
-    result_from_nr = from_period_result_accounts.nr unless from_period_result_accounts.blank?
-    result_last_from_year = from_period_result_accounts.year-1 unless from_period_result_accounts.blank?
-
-    periods[:periods_to_balance] = Period.get_range(current_user.current_company.id,
-                        {:from_year=>balance_from_year, :from_nr=>balance_from_nr,
-                        :to_year=>balance_to_year, :to_nr=>balance_to_nr})
-                    
-    if from_period.blank?
-        periods[:periods_to_balance_previous] = []
-        periods[:periods_to_balance_last] = []
-        periods[:periods_to_balance_last_previous] = []
-        periods[:periods_to_result_previous] = []
-        periods[:periods_to_result_last] = []
-        periods[:periods_to_result_last_previous] = []
-    else
-      periods[:periods_to_balance_previous] = Period.get_range(current_user.current_company.id,
-                        {:from_year=>nil, :from_nr=>nil,
-                        :to_year=>balance_previous_to_year, :to_nr=>balance_previous_to_nr})
-
-      periods[:periods_to_balance_last] = Period.get_range(current_user.current_company.id,
-                        {:from_year=>balance_last_from_year, :from_nr=>balance_from_nr,
-                        :to_year=>balance_last_to_year, :to_nr=>balance_to_nr})
-
-      periods[:periods_to_balance_last_previous] = Period.get_range(current_user.current_company.id,
-                        {:from_year=>nil, :from_nr=>nil,
-                        :to_year=>balance_last_previous_to_year, :to_nr=>balance_last_previous_to_nr})
-
-      periods[:periods_to_result_previous] = Period.get_range(current_user.current_company.id,
-                        {:from_year=> result_from_year, :from_nr=>result_from_nr,
-                        :to_year=>balance_previous_to_year, :to_nr=>balance_previous_to_nr})
-
-      periods[:periods_to_result_last_previous] = Period.get_range(current_user.current_company.id,
-                        {:from_year=>result_last_from_year, :from_nr=> result_from_nr,
-                        :to_year=>balance_last_previous_to_year, :to_nr=>balance_last_previous_to_nr})
-
+    #checks if reports dates are in logical order result_from <= from_date <= to_date
+    unless Period.ordred_periods?(from_period,to_period)
+      to_period = from_period
+    end
+    unless Period.ordred_periods?(result_from,from_period)
+      result_from = from_period
     end
 
-    periods[:periods_to_result] = periods[:periods_to_balance]    
-    periods[:periods_to_result_last] = periods[:periods_to_balance_last]
+    #inplicit starting period of the company
+    start_period = Period.company_start_period(company_id)
 
+    #Assign default periods if boundries have nil values
+    from_period ||= start_period
+    result_from ||= start_period
+    to_period ||= Period.company_last_period(company_id)
+
+    #determining periods
+    #periods to result are the same as periods to balance
+    periods[:periods_to_balance] = Period.get_range(company_id,from_period, to_period, true)  
+    periods[:periods_to_balance_previous] = Period.get_range(company_id,start_period, from_period, false)
+    periods[:periods_to_result] = periods[:periods_to_balance]
+    periods[:periods_to_result_previous] = Period.get_range(company_id,result_from, from_period, false)
 
 
     if periods[:periods_to_balance].blank?
       @first_period_to_balance = nil
       @last_period_to_balance =  nil
-    else
-      @first_period_to_balance = periods[:periods_to_balance].first
-      @last_period_to_balance =  periods[:periods_to_balance].last
-    end
-
-    if periods[:periods_to_balance_last].blank?
-      @first_period_to_balance_last = nil
-      @last_period_to_balance_last = nil
-    else
-      @first_period_to_balance_last = periods[:periods_to_balance_last].first
-      @last_period_to_balance_last = periods[:periods_to_balance_last].last
-    end
-
-    if periods[:periods_to_result].blank?
       @first_period_to_result = nil
       @last_period_to_result = nil
     else
-      @first_period_to_result = periods[:periods_to_result].first
-      @last_period_to_result = periods[:periods_to_result].last
+      @first_period_to_balance = periods[:periods_to_balance].first
+      @last_period_to_balance =  periods[:periods_to_balance].last
+      @first_period_to_result = @first_period_to_balance
+      @last_period_to_result = @last_period_to_balance
     end
-
-    if periods[:periods_to_result_last].blank?
-      @first_period_to_result_last = nil
-      @last_period_to_result_last = nil
+    if periods[:periods_to_result_previous].blank?
+      @result_from = nil
     else
-      @first_period_to_result_last = periods[:periods_to_result_last].first
-      @last_period_to_result_last = periods[:periods_to_result_last].last
+      @result_from = periods[:periods_to_result_previous].first
     end
 
-    @result_from = periods[:periods_to_result_previous].first
-    @result_from_last = periods[:periods_to_result_last_previous].first
+    #determining last year periods if needed
+    if determine_last_year
+      periods[:periods_to_balance_last] = Period.get_range_of_last_year(company_id,from_period, to_period, true)
+      periods[:periods_to_balance_last_previous] = Period.get_range_of_last_year(company_id,start_period, from_period, false)
+      periods[:periods_to_result_last] = periods[:periods_to_balance_last]
+      periods[:periods_to_result_last_previous] = Period.get_range_of_last_year(company_id,result_from, from_period, false)
+
+      if periods[:periods_to_balance_last].blank?
+        @first_period_to_balance_last = nil
+        @last_period_to_balance_last = nil
+        @first_period_to_result_last = nil
+        @last_period_to_result_last = nil
+      else
+        @first_period_to_balance_last = periods[:periods_to_balance_last].first
+        @last_period_to_balance_last = periods[:periods_to_balance_last].last
+        @first_period_to_result_last = @first_period_to_balance_last
+        @last_period_to_result_last = @last_period_to_balance_last
+      end
+
+      if periods[:periods_to_result_last_previous].blank?
+        @result_from_last = nil
+      else
+        @result_from_last = periods[:periods_to_result_last_previous].first
+      end
+    end  
 
 
-#
-#    puts "========== periods to balance "
-#    periods[:periods_to_balance].each do |p|
-#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
-#    puts "========== periods to balance previous "
-#    periods[:periods_to_balance_previous].each do |p|
-#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
-#
-#    puts "========== periods to balance last "
-#    periods[:periods_to_balance_last].each do |p|
-#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
-#
-#    puts "========== periods to balance last previous"
-#    periods[:periods_to_balance_last_previous].each do |p|
-#      puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
-#
-#    puts "========== periods to result"
-#    periods[:periods_to_result].each do |p|
-#      puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
-#
-#    puts "========= periods to result previous"
-#    periods[:periods_to_result_previous].each do |p|
-#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
-#
-#    puts "========== periods to result last"
-#    periods[:periods_to_result_last].each do |p|
-#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
-#
-#    puts "========== periods to result last previous"
-#    periods[:periods_to_result_last_previous].each do |p|
-#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-#    end
+    puts "========== periods to balance "
+    periods[:periods_to_balance].each do |p|
+       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+    end
+    puts "========== periods to balance previous "
+    periods[:periods_to_balance_previous].each do |p|
+       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+    end
+
+    puts "========== periods to balance last "
+    periods[:periods_to_balance_last].each do |p|
+       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+    end
+
+    puts "========== periods to balance last previous"
+    periods[:periods_to_balance_last_previous].each do |p|
+      puts "year " + p.year.to_s + " nr " + p.nr.to_s
+    end
+
+    puts "========== periods to result"
+    periods[:periods_to_result].each do |p|
+      puts "year " + p.year.to_s + " nr " + p.nr.to_s
+    end
+
+    puts "========= periods to result previous"
+    periods[:periods_to_result_previous].each do |p|
+       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+    end
+
+    puts "========== periods to result last"
+    periods[:periods_to_result_last].each do |p|
+       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+    end
+
+    puts "========== periods to result last previous"
+    periods[:periods_to_result_last_previous].each do |p|
+       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+    end
 
     periods.each do | key, value |
       periods[:"#{key}"] = value.collect {|p| p.id }.join(",")
@@ -339,7 +293,6 @@ class ReportsController < ApplicationController
 
     periods
 
-   
   end
   
 end
