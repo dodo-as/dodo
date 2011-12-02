@@ -1,0 +1,30 @@
+
+<tr id="ledger_account_selector">
+  <td class="report_title" rowspan="4">
+    <%= t(:balance, :scope=>:reports) %>
+  </td>
+  <td class="title">
+    <%= t(:ledger_by_account_number, :scope=>:reports) %>
+  </td>
+  <td>
+    <%= select_tag :ledger_account,
+        options_from_collection_for_select(@ledger_accounts, "id", "to_s", @selected_ledger_account.id),
+        {:onchange => remote_function(:url => reports_path, :with => "'id='+this.value")} %>
+  </td>
+  <td class="title">
+    <%= t(:ledger_from, :scope=>:reports) %>
+  </td>
+  <td>
+    <%= select_tag :ledger_from_id,
+      options_from_collection_for_select(@subsidiary_ledger_accounts, "id", "to_s"),
+      :include_blank => true %>
+  </td>
+  <td class="title">
+    <%= t(:ledger_to, :scope=>:reports) %>
+  </td>
+  <td>
+    <%= select_tag :ledger_to_id,
+      options_from_collection_for_select(@subsidiary_ledger_accounts, "id", "to_s"),
+      :include_blank => true %>
+  </td>
+</tr>

@@ -22,5 +22,22 @@ class Report < ActiveRecord::Base
     return journal_operations
   end
 
+  def self.report_subsidiary_ledger_balance(periods,ledger_account,from_ledger,to_ledger,car,unit,project,journal_type,show_only_active_accounts)
+      #prepare filters for sql procedure
+      car_id = car.blank? ? 'null' : "#{car.id}"
+      unit_id = unit.blank? ? 'null' : "#{unit.id}"
+      project_id = project.blank? ? 'null' : "#{project.id}"
+      j_type_id = journal_type.blank? ? 'null' : "#{journal_type.id}"
+
+      _from_ledger = from_ledger.blank? ? 'null': from_ledger.number
+      _to_ledger = to_ledger.blank? ? 'null' : to_ledger.id.number
+      _ledger_account = ledger_account.blank? ? 'null' : ledger_account.id
+
+      _periods = "#{periods[:periods_to_balance].blank? ? 'null' : "'#{periods[:periods_to_balance]}'" }"
+      _previous_periods = "#{periods[:periods_to_result_previous].blank? ? 'null' : "'#{periods[:periods_to_result_previous]}'"}"
+
+    result = DbStoredProcedure.fetch_db_records("report_subsidiary_ledger_balance(#{show_only_active_accounts},#{car_id},#{unit_id},#{project_id},#{j_type_id},#{_from_ledger},#{_to_ledger},#{_ledger_account},#{_periods},#{_previous_periods})")
+    return result
+  end
 
 end

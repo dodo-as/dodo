@@ -8,6 +8,7 @@ class Account < ActiveRecord::Base
   scope :company, lambda {|company_id| where("company_id = ?", company_id)}
   scope :is_result_account, where(:is_result_account => true)
   scope :is_balance_account, where(:is_result_account => false)
+  scope :has_ledger, where(:has_ledger => true)
 
   def is_result_account?
     self.is_result_account

@@ -9,6 +9,31 @@ class ReportsController < ApplicationController
     @cars = Car.with_permissions_to(:index)
     @journal_types = JournalType.with_permissions_to(:index).order('name')
     @accounts = Account.with_permissions_to(:index).order('number')
+    @ledger_accounts = Account.with_permissions_to(:index).has_ledger.order('number')
+
+    if params[:ledger_account_id]
+      @selected_ledger_account =  Account.find(params[:ledger_account_id])
+    else
+      @selected_ledger_account = @ledger_accounts.first
+    end
+
+    #TODO : ajax issue, fix or change behaviour to javascript in stead
+    #returning all subsidiary_ledger_accounts for now
+    #@subsidiary_ledger_accounts = @selected_ledger_account.ledgers
+    @subsidiary_ledger_accounts = []
+    @ledger_accounts.each do |acc|
+      ledgers =  acc.ledgers
+      @subsidiary_ledger_accounts += ledgers if ledgers.count > 0
+    end
+
+    respond_to do |format|
+      format.html
+      format.js {
+        render :update do |page|
+          page.replace 'ledger_account_selector', :partial => 'ledger_accounts_selector'
+        end
+      }
+    end
 
   end
 
@@ -81,18 +106,18 @@ class ReportsController < ApplicationController
     result_from_period = params[:result_from_period_id].blank? ? nil : Period.find(params[:result_from_period_id])
     result_from_year = result_from_period.nil? ? nil : result_from_period.year
     result_from_nr = result_from_period.nil? ? nil : result_from_period.nr
+
+    p = determine_periods(@from_period,@to_period,result_from_period,false)
+
+    periods = p[:periods_to_balance]
     
-    periods = Period.get_range(current_user.current_company.id, 
-      :from_year=>from_year, :from_nr=>from_nr, :to_year=>to_year, :to_nr=>to_nr)  
-      
-    result_periods = Period.get_range(current_user.current_company.id, 
-      :from_year=>result_from_year, :from_nr=>result_from_nr, :to_year=>to_year, :to_nr=>to_nr)  
+    result_periods = p[:periods_to_balance]
 
     unless (periods.empty? and result_periods.empty?) or ( accounts.empty? and result_accounts.empty? )
       _accounts = accounts.collect { |a| a.id }.join(",")
-      _periods = periods.collect { |p| p.id }.join(",")
+      _periods = periods
       _result_accounts = result_accounts.collect { |a| a.id }.join(",")
-      _result_periods = result_periods.collect { |p| p.id }.join(",")
+      _result_periods = result_periods
       where = ["((accounts.is_result_account = false AND account_id IN (#{_accounts}) AND journals.period_id IN (#{_periods}))"]
       if _result_accounts.blank? or _result_periods.blank?
         where[0] += ")"
@@ -144,6 +169,38 @@ class ReportsController < ApplicationController
       }
       format.xml  { render :xml => @unit }
     end
+    
+  end
+
+  def subsidiary_ledger_balance
+
+    from_period = Period.find(params[:from_period_id]) unless params[:from_period_id].blank?
+    to_period = Period.find(params[:to_period_id]) unless params[:to_period_id].blank?
+    result_from = Period.find(params[:result_from_period_id]) unless params[:result_from_period_id].blank?
+
+    from_ledger = Ledger.find(params[:from_ledger]) unless params[:from_ledger].blank?
+    to_ledger = Ledger.find(params[:to_ledger]) unless params[:to_account].blank?
+    ledger_account = Account.find(params[:ledger_account]) unless params[:ledger_account].blank?
+    
+    @unit = Unit.find(params[:unit_id]) unless params[:unit_id].blank?
+    @project = Project.find(params[:project_id]) unless params[:project_id].blank?
+    @car = Car.find(params[:car_id]) unless params[:car_id].blank?
+    @journal_type = JournalType.find(params[:journal_type_id]) unless params[:journal_type_id].blank?
+  
+    @show_only_active_accounts = params[:show_only_active_accounts].blank? ? false : true
+
+    periods = Hash.new
+    periods = determine_periods(from_period,to_period,result_from,false)
+
+    @result = Report.report_subsidiary_ledger_balance(periods, ledger_account,from_ledger, to_ledger, @car, @unit, @project, @journal_type, @show_only_active_accounts)
+    puts @result;
+  end
+
+  def subsidiary_ledger_journal
+    
+  end
+
+  def ledger_open
     
   end
 
@@ -247,45 +304,45 @@ class ReportsController < ApplicationController
       end
     end  
 
-
-    puts "========== periods to balance "
-    periods[:periods_to_balance].each do |p|
-       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-    end
-    puts "========== periods to balance previous "
-    periods[:periods_to_balance_previous].each do |p|
-       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-    end
-
-    puts "========== periods to balance last "
-    periods[:periods_to_balance_last].each do |p|
-       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-    end
-
-    puts "========== periods to balance last previous"
-    periods[:periods_to_balance_last_previous].each do |p|
-      puts "year " + p.year.to_s + " nr " + p.nr.to_s
-    end
-
-    puts "========== periods to result"
-    periods[:periods_to_result].each do |p|
-      puts "year " + p.year.to_s + " nr " + p.nr.to_s
-    end
-
-    puts "========= periods to result previous"
-    periods[:periods_to_result_previous].each do |p|
-       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-    end
-
-    puts "========== periods to result last"
-    periods[:periods_to_result_last].each do |p|
-       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-    end
-
-    puts "========== periods to result last previous"
-    periods[:periods_to_result_last_previous].each do |p|
-       puts "year " + p.year.to_s + " nr " + p.nr.to_s
-    end
+#
+#    puts "========== periods to balance "
+#    periods[:periods_to_balance].each do |p|
+#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
+#    puts "========== periods to balance previous "
+#    periods[:periods_to_balance_previous].each do |p|
+#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
+#
+#    puts "========== periods to balance last "
+#    periods[:periods_to_balance_last].each do |p|
+#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
+#
+#    puts "========== periods to balance last previous"
+#    periods[:periods_to_balance_last_previous].each do |p|
+#      puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
+#
+#    puts "========== periods to result"
+#    periods[:periods_to_result].each do |p|
+#      puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
+#
+#    puts "========= periods to result previous"
+#    periods[:periods_to_result_previous].each do |p|
+#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
+#
+#    puts "========== periods to result last"
+#    periods[:periods_to_result_last].each do |p|
+#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
+#
+#    puts "========== periods to result last previous"
+#    periods[:periods_to_result_last_previous].each do |p|
+#       puts "year " + p.year.to_s + " nr " + p.nr.to_s
+#    end
 
     periods.each do | key, value |
       periods[:"#{key}"] = value.collect {|p| p.id }.join(",")
