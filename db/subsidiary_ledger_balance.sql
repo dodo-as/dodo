@@ -21,7 +21,7 @@
             total_previous real;
             total_balance real;
             total_new real;
-            active boolean := false;
+            active boolean;
     BEGIN
 
 
@@ -36,10 +36,7 @@
                                         AND (to_ledger IS NULL OR ledgers.number <= to_ledger)
 					ORDER BY ledgers.number
               LOOP
-
-                        previous_balance := 0;
-                        balance := 0;
-                        new_balance := 0;
+                        active := FALSE;
 
                         IF (previous_periods IS NOT NULL AND LENGTH(previous_periods) > 0 ) THEN
                             SELECT SUM(jo.amount)
@@ -56,6 +53,11 @@
                             AND     (journal_type IS NULL OR j.journal_type_id = journal_type);
                         END IF;
 
+                        IF previous_balance IS NULL THEN
+                            previous_balance := 0;
+                        ELSE
+                            active := true;
+                        END IF;
 
                         IF (periods IS NOT NULL AND LENGTH(periods) > 0 ) THEN
                             SELECT SUM(jo.amount)
@@ -72,11 +74,13 @@
                             AND     (journal_type IS NULL OR j.journal_type_id = journal_type);
                         END IF;
 
-                        new_balance := previous_balance + balance;
+                        IF balance IS NULL THEN
+                            balance := 0;
+                        ELSE
+                            active := true;
+                        END IF;
 
-                        total_balance := total_balance + balance;
-                        total_previous := total_previous + previous_balance;
-                        total_new := total_new + new_balance;
+                        new_balance := previous_balance + balance;
 
                         temp.ledger_name := ledgerRecord.name;
                         temp.ledger_number := ledgerRecord.number;
@@ -84,8 +88,13 @@
                         temp.ledger_pb := previous_balance ;
                         temp.ledger_nb := new_balance;
 
-                        RETURN NEXT temp;
+                        total_balance := total_balance + balance;
+                        total_previous := total_previous + previous_balance;
+                        total_new := total_new + new_balance;
 
+                        IF show_only_active_accounts IS FALSE OR active IS TRUE THEN
+                            RETURN NEXT temp;
+                        END IF;
               END LOOP;
 
             --total row
@@ -93,7 +102,8 @@
             temp.ledger_number := 0;
             temp.ledger_b := total_balance;
             temp.ledger_pb := total_previous ;
-            temp.ledger_nb := total_balance;
+            temp.ledger_nb := total_new;
+            RETURN NEXT temp;
 
 
     END;

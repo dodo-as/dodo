@@ -1,0 +1,58 @@
+<p><h1><%= current_user.current_company.to_s %> - <%= current_user.to_s %> (<%= Date.today %>)</h1></p>
+<p><h1><%= t(:ledger_balance_period, :scope=>:reports) %><%= title_to_periods_range({:from_period=>@first_period_to_balance, :to_period=>@last_period_to_balance}) %></h1></p>
+<p><h1><%= result_from_date(:period => @result_from) %></h1></p>
+<p><h1><%= t(:ledgers_from_account, :scope=>:reports) %>: <%= @account %></h1></p>
+<% unless @unit.blank?%>
+  <p><h2><%= t(:unit, :scope=>:reports) %>: <%= @unit %></h2></p>
+<% end %>
+<% unless @project.blank?%>
+  <p><h2><%= t(:project, :scope=>:reports) %>: <%= @project %></h2></p>
+<% end %>
+<% unless @car.blank?%>
+  <p><h2><%= t(:car, :scope=>:reports) %>: <%= @car %></h2></p>
+<% end %>
+<% unless @journal_type.blank?%>
+  <p><h2><%= t(:journal_type, :scope=>:reports) %>: <%= @journal_type %></h2></p>
+<% end %>
+
+<table class="report">
+  <thead>
+    <tr>
+      <th colspan="6"><%= t(:balance, :scope=>:reports) %></th>
+    </tr>
+    <tr>
+      <th colspan="2"></th>
+      <th style="text-align:center" colspan="4"><%= title_to_periods_range({:from_period=>@first_period_to_balance, :to_period=>@last_period_to_balance}) %></th>
+    </tr>
+    <tr>
+      <th><%= t(:account_number, :scope=>:reports) %></th>
+      <th><%= t(:account_name, :scope=>:reports) %></th>
+      <th><%= t(:old_balance, :scope=>:reports) %></th>
+      <th><%= t(:period, :scope=>:reports) %></th>
+      <th><%= t(:new_balance, :scope=>:reports) %></th>
+      <th><%= t(:details, :scope => :reports) %></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% total = @result.last %>
+  <% (@result - [total]).each do |row| %>
+    <tr class="detail1">
+      <td> <%= row["ledger_number"] %> </td>
+      <td> <%= row["ledger_name"] %> </td>
+      <td style="text-align:right"> <%= number_with_precision(row["ledger_pb"], :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"> <%= number_with_precision(row["ledger_b"], :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"> <%= number_with_precision(row["ledger_nb"] , :locale =>I18n.locale) %> </td>
+      <td style="text-align:right"><%= link_to t(:details, :scope => :reports)%></td>
+    </tr>
+  <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="2"></td>
+      <td style="text-align:right"><%= number_with_precision(total["ledger_pb"], :locale=>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(total["ledger_b"], :locale=>I18n.locale) %></td>
+      <td style="text-align:right"><%= number_with_precision(total["ledger_nb"], :locale=>I18n.locale) %></td>
+      <td></td>
+    </tr>
+  </tfoot>
+</table>

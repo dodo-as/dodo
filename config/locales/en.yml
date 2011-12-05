@@ -479,7 +479,8 @@ en:
     revenue: Revenue
     expenses: Expenses
     ledger_balance_period: Ledger Balance Period
-    before_period_should_not_be_greater_than_to_period: before period should not be greater than to period
+    details: Details
+    ledgers_from_account: Ledgers from Account 
 
   projects:
     edit_project: Editing project

@@ -180,7 +180,7 @@ class ReportsController < ApplicationController
 
     from_ledger = Ledger.find(params[:from_ledger]) unless params[:from_ledger].blank?
     to_ledger = Ledger.find(params[:to_ledger]) unless params[:to_account].blank?
-    ledger_account = Account.find(params[:ledger_account]) unless params[:ledger_account].blank?
+    @account = Account.find(params[:ledger_account]) unless params[:ledger_account].blank?
     
     @unit = Unit.find(params[:unit_id]) unless params[:unit_id].blank?
     @project = Project.find(params[:project_id]) unless params[:project_id].blank?
@@ -192,8 +192,8 @@ class ReportsController < ApplicationController
     periods = Hash.new
     periods = determine_periods(from_period,to_period,result_from,false)
 
-    @result = Report.report_subsidiary_ledger_balance(periods, ledger_account,from_ledger, to_ledger, @car, @unit, @project, @journal_type, @show_only_active_accounts)
-    puts @result;
+    @result = Report.report_subsidiary_ledger_balance(periods, @account,from_ledger, to_ledger, @car, @unit, @project, @journal_type, @show_only_active_accounts)
+
   end
 
   def subsidiary_ledger_journal
@@ -230,7 +230,6 @@ class ReportsController < ApplicationController
 
   #determine all periods from the dates given
   def determine_periods(from_period,to_period,result_from,determine_last_year)
-
     periods = Hash.new
     
     #company must have periods to proceed
@@ -259,7 +258,7 @@ class ReportsController < ApplicationController
     periods[:periods_to_balance_previous] = Period.get_range(company_id,start_period, from_period, false)
     periods[:periods_to_result] = periods[:periods_to_balance]
     periods[:periods_to_result_previous] = Period.get_range(company_id,result_from, from_period, false)
-
+    
 
     if periods[:periods_to_balance].blank?
       @first_period_to_balance = nil
@@ -300,7 +299,7 @@ class ReportsController < ApplicationController
       end
     end  
 
-#
+
 #    puts "========== periods to balance "
 #    periods[:periods_to_balance].each do |p|
 #       puts "year " + p.year.to_s + " nr " + p.nr.to_s
@@ -309,7 +308,7 @@ class ReportsController < ApplicationController
 #    periods[:periods_to_balance_previous].each do |p|
 #       puts "year " + p.year.to_s + " nr " + p.nr.to_s
 #    end
-#
+
 #    puts "========== periods to balance last "
 #    periods[:periods_to_balance_last].each do |p|
 #       puts "year " + p.year.to_s + " nr " + p.nr.to_s
