@@ -272,12 +272,8 @@ class ReportsController < ApplicationController
       @first_period_to_result = @first_period_to_balance
       @last_period_to_result = @last_period_to_balance
     end
-    if periods[:periods_to_result_previous].blank?
-      @result_from = nil
-    else
-      @result_from = periods[:periods_to_result_previous].first
-    end
 
+    @result_from = result_from
     #determining last year periods if needed
     if determine_last_year
       periods[:periods_to_balance_last] = Period.get_range_of_last_year(company_id,from_period, to_period, true)

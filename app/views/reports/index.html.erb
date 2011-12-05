@@ -192,7 +192,8 @@
   <table>
     <%= form_tag subsidiary_ledger_balance_reports_path, :method=>:get do %>
       <tbody class="even">
-        <%=  render 'ledger_accounts_selector' %>
+        <%  @report_title = "balance"%>
+        <%=  render 'ledger_accounts_selector'%>
         <tr>
           <td class="title">
             <%= t(:from_period, :scope=>:reports) %>
@@ -221,25 +222,57 @@
         </tr>
         <tr>
           <td class="title">
+            <%= t(:unit, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :unit_id,
+              options_from_collection_for_select(@units, "id", "to_s"),
+              :include_blank => true %>
+          </td>
+          <td class="title">
+            <%= t(:project, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :project_id,
+              options_from_collection_for_select(@projects, "id", "to_s"),
+              :include_blank => true %>
+          </td>
+          <td class="title">
+            <%= t(:car, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :car_id,
+              options_from_collection_for_select(@cars, "id", "to_s"),
+              :include_blank => true %>
+          </td>
+        </tr>
+        <tr>
+          <td class="title">
             <%= t(:show_only_active_accounts, :scope=>:reports) %>
           </td>
           <td>
             <%= check_box_tag :show_only_active_accounts %>
           </td>
-          <td colspan="4">
+          <td class="title">
+          <%= t(:journal_type, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :journal_type_id,
+              options_from_collection_for_select(@journal_types, "id", "to_s"),
+              :include_blank => true %>
+          </td>
+          <td class="submit" colspan="6">
+            <%= submit_tag t(:run_report, :scope=>:reports) %>
           </td>
         </tr>
         <tr>
-          <td colspan="5">
-          </td>
-          <td class="submit">
-            <%= submit_tag t(:run_report, :scope=>:reports) %>
-          </td>
+
         </tr>
       </tbody>
     <% end %>
     <%= form_tag subsidiary_ledger_journal_reports_path, :method=>:get do %>
       <tbody class="odd">
+        <%  @report_title = "journal"%>
         <%=  render 'ledger_accounts_selector' %> 
         <tr>
           <td class="title">
@@ -284,13 +317,17 @@
               options_from_collection_for_select(@projects, "id", "to_s"),
               :include_blank => true %>
           </td>
-          <td colspan="2">
+          <td class="title">
+            <%= t(:car, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :car_id,
+              options_from_collection_for_select(@cars, "id", "to_s"),
+              :include_blank => true %>
           </td>
         </tr>
         <tr>
-          <td colspan="5">
-          </td>
-          <td class="submit">
+          <td class="submit" colspan="6">
             <%= submit_tag t(:run_report, :scope=>:reports) %>
           </td>
         </tr>
@@ -298,6 +335,7 @@
     <% end %>
     <%= form_tag ledger_open_reports_path, :method=>:get do %>
       <tbody class="even">
+        <%  @report_title = "open"%>
         <%=  render 'ledger_accounts_selector' %>
         <tr>
           <td class="title">
