@@ -1,6 +1,6 @@
     
     -- create account row type for returning
-    CREATE TYPE joperation AS (accnumber int, pid int, jdate date, oldb real, balance real, newb real, jid int, jnumber int);
+    CREATE TYPE joperation AS (accid int, pid int, jdate date, oldb real, balance real, newb real, jid int, jnumber int);
 
 
     CREATE OR REPLACE FUNCTION report_ledger_journal( company int,
@@ -85,7 +85,7 @@
                             AND   j.period_id = ANY (CAST (string_to_array(balance_periods, ',') AS int[] ))
                     LOOP
 
-                            jo_row.accnumber := accountRecord.number;
+                            jo_row.accid := accountRecord.id;
                             jo_row.pid := temp.pid;
                             jo_row.jdate := temp.jdate;
                             jo_row.balance := temp.balance;

@@ -27,20 +27,4 @@ module ReportsHelper
     title
   end
   
-  def balance_less_to_period(account, year, nr)
-    JournalOperation.sum(
-      'amount', 
-      :conditions =>[" account_id = ? AND ( periods.year < ? OR ( periods.year = ? AND periods.nr < ? ) ) ", account.id, year, year, nr], 
-      :joins => "INNER JOIN journals ON journal_operations.journal_id = journals.id 
-                 INNER JOIN periods ON journals.period_id = periods.id")
-  end
-  
-  def balance_less_or_equals_to_period(account, year, nr)
-    JournalOperation.sum(
-        'amount', 
-      :conditions =>[" account_id = ? AND ( periods.year < ? OR ( periods.year = ? AND periods.nr <= ? ) ) ", account.id, year, year, nr], 
-      :joins => "INNER JOIN journals ON journal_operations.journal_id = journals.id 
-                 INNER JOIN periods ON journals.period_id = periods.id")
-  end
-  
 end

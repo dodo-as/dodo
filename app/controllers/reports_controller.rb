@@ -62,114 +62,26 @@ class ReportsController < ApplicationController
 
   def ledger_journal
 
-    
+    from_period = Period.find(params[:from_period_id]) unless params[:from_period_id].blank?
+    to_period = Period.find(params[:to_period_id]) unless params[:to_period_id].blank?
+    result_from = Period.find(params[:result_from_period_id]) unless params[:result_from_period_id].blank?
 
-    accounts = nil
-    periods = nil
-    params[:offset] ||= 0    
-    
-    @journal_operations = []
-    @count = 0;
-    where = nil
-    #if specified accounts range is taken between from_account_number and to_account_number
-    if !params[:from_account_number].blank? && !params[:to_account_number].blank?
-      where = ["number BETWEEN ? AND ?", params[:from_account_number], params[:to_account_number]]
-    elsif !params[:from_account_number].blank?
-      #from_account specified but not to_account
-      where = ["number >= ?", params[:from_account_number]]
-    elsif !params[:to_account_number].blank?
-      #to_account specified but not from_account
-      where = ["number <= ?", params[:to_account_number]]
-    end
-    
-    if where.nil?
-      #if no accounts specified
-      where = ["is_result_account = ?"]
-    else
-      #if one of the accounts at least is specified
-      where[0] += " AND is_result_account = ?"
-    end
-    where << false
-      
-    accounts = Account.with_permissions_to(:read).where( where )
-    
-    where[where.length - 1] = true
-    result_accounts = Account.with_permissions_to(:read).where( where )
-    
-    @from_period = params[:from_period_id].blank? ? nil : Period.find(params[:from_period_id])
-    @to_period = params[:to_period_id].blank? ? nil : Period.find(params[:to_period_id])    
-    from_year = @from_period.nil? ? nil : @from_period.year
-    to_year = @to_period.nil? ? nil : @to_period.year
-    from_nr = @from_period.nil? ? nil : @from_period.nr
-    to_nr = @to_period.nil? ? nil : @to_period.nr
-    
-    result_from_period = params[:result_from_period_id].blank? ? nil : Period.find(params[:result_from_period_id])
-    result_from_year = result_from_period.nil? ? nil : result_from_period.year
-    result_from_nr = result_from_period.nil? ? nil : result_from_period.nr
+    from_account_number = params[:from_account_number]
+    to_account_number = params[:to_account_number]
 
-    p = determine_periods(@from_period,@to_period,result_from_period,false)
+    @unit = Unit.find(params[:unit_id]) unless params[:unit_id].blank?
+    @project = Project.find(params[:project_id]) unless params[:project_id].blank?
+    @car = Car.find(params[:car_id]) unless params[:car_id].blank?
+    @journal_type = JournalType.find(params[:journal_type_id]) unless params[:journal_type_id].blank?
 
-    periods = p[:periods_to_balance]
-    
-    result_periods = p[:periods_to_balance]
+    periods = Hash.new
+    periods = determine_periods(from_period,to_period,result_from,false)
 
-    unless (periods.empty? and result_periods.empty?) or ( accounts.empty? and result_accounts.empty? )
-      _accounts = accounts.collect { |a| a.id }.join(",")
-      _periods = periods
-      _result_accounts = result_accounts.collect { |a| a.id }.join(",")
-      _result_periods = result_periods
-      where = ["((accounts.is_result_account = false AND account_id IN (#{_accounts}) AND journals.period_id IN (#{_periods}))"]
-      if _result_accounts.blank? or _result_periods.blank?
-        where[0] += ")"
-      else
-        where[0] += " OR (accounts.is_result_account = true AND account_id IN (#{_result_accounts}) AND journals.period_id IN (#{_result_periods})))"
-      end
-      unless params[:journal_type_id].blank?
-        where[0] += " AND journal_type_id = ?"
-        where << params[:journal_type_id]
-      end
-      unless params[:project_id].blank?
-        where[0] += " AND project_id = ?"
-        where << params[:project_id]
-      end
-      unless params[:unit_id].blank?
-        where[0] += " AND unit_id = ?"
-        where << params[:unit_id]
-      end
-      unless params[:car_id].blank?
-        where[0] += " AND car_id = ?"
-      end
-
-      # TODO: optimise this query, some redendant journal operations are saved, this can be fixed by checking the saving process
-      #       of the journal and taking into consideration only rows with actual operations on it
-      where[0] += " AND journal_operations.amount IS NOT NULL"
-
-      
-     @journal_operations = JournalOperation.joins(:journal).joins(:account).where(where).order(
-        "account_id, journals.period_id, journal_operations.created_at").includes(
-        :journal, :account).limit(500).offset(params[:offset])
-
-     puts ledger_journal_x
-
-      if params[:offset]==0
-        @count = JournalOperation.count(
-          :joins=>" INNER JOIN journals ON journal_operations.journal_id = journals.id 
-                    INNER JOIN accounts ON journal_operations.account_id = accounts.id",
-          :conditions=>where)
-        
-      end
-    end
-    
-    respond_to do |format|
-      format.html
-      format.js {
-        render :update do |page|
-          page.<< "jQuery('tbody#data').append( '#{escape_javascript(render(:partial=>'ledger_journal_data', :locals=>{:params=>params}))}' )"
-        end
-      }
-      format.xml  { render :xml => @unit }
-    end
-    
+    @journal_operations = Report.report_ledger_journal(periods, from_account_number, to_account_number,current_user.current_company, @car, @unit, @project, @journal_type)
+    #journal_operations is an array containing hash generated by plpgsql procedure typed :
+    # accid int, pid int, jdate date, oldb real, balance real, newb real, jid int, jnumber int
+    puts @journal_operations
+    puts @journal_operations[0];
   end
 
   def subsidiary_ledger_balance
@@ -192,6 +104,8 @@ class ReportsController < ApplicationController
     periods = Hash.new
     periods = determine_periods(from_period,to_period,result_from,false)
 
+    #result is an array containing hash generated by plpgsql procedure
+    #ledger_name varchar, ledger_number int, ledger_b real, ledger_pb real, ledger_nb real
     @result = Report.report_subsidiary_ledger_balance(periods, @account,from_ledger, to_ledger, @car, @unit, @project, @journal_type, @show_only_active_accounts)
 
   end
@@ -202,28 +116,6 @@ class ReportsController < ApplicationController
 
   def ledger_open
     
-  end
-
-  # TODO: Replace ledger_journal method by the new method ledger_journalx
-  def ledger_journal_x
-    
-    from_period = Period.find(params[:from_period_id]) unless params[:from_period_id].blank?
-    to_period = Period.find(params[:to_period_id]) unless params[:to_period_id].blank?
-    result_from = Period.find(params[:result_from_period_id]) unless params[:result_from_period_id].blank?
-
-    from_account_number = params[:from_account_number]
-    to_account_number = params[:to_account_number]
-
-    @unit = Unit.find(params[:unit_id]) unless params[:unit_id].blank?
-    @project = Project.find(params[:project_id]) unless params[:project_id].blank?
-    @car = Car.find(params[:car_id]) unless params[:car_id].blank?
-    @journal_type = JournalType.find(params[:journal_type_id]) unless params[:journal_type_id].blank?
-
-    periods = Hash.new
-    periods = determine_periods(from_period,to_period,result_from,false)
-
-    journal_operations = Report.report_ledger_journal(periods, from_account_number, to_account_number,current_user.current_company, @car, @unit, @project, @journal_type)
-    journal_operations
   end
 
   private
