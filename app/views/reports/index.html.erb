@@ -1,3 +1,12 @@
+<script type="text/javascript">
+  $(function($) {
+    $("#ledger_account").change(function() {
+        $.ajax({url: '<%= reports_path %>',
+        data: 'id=' + this.value,
+        dataType: 'script'})
+    });
+  });
+</script>
 <h1>
   <%= t(:title_plural, :scope=>:reports) %>
 </h1>

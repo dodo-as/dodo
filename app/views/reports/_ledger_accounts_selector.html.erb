@@ -8,8 +8,7 @@
   </td>
   <td>
     <%= select_tag :ledger_account,
-        options_from_collection_for_select(@ledger_accounts, "id", "to_s", @selected_ledger_account.id),
-        {:onchange => remote_function(:url => reports_path, :with => "'id='+this.value")} %>
+        options_from_collection_for_select(@ledger_accounts, "id", "to_s", @selected_ledger_account.id)%>
   </td>
   <td class="title">
     <%= t(:ledger_from, :scope=>:reports) %>
