@@ -2,7 +2,7 @@
   $(function($) {
     $("#ledger_account").change(function() {
         $.ajax({url: '<%= reports_path %>',
-        data: 'id=' + this.value,
+        data: 'ledger_account_id=' + this.value,
         dataType: 'script'})
     });
   });
@@ -196,6 +196,7 @@
   </table>
 
   <div class="title">
+    <%=  image_tag("loading.gif", :class => "loading", :id => "loading_img", :style=>"display:none")%>
     <%= t(:subsidiary_ledger, :scope=>:reports) %>
   </div>
   <table>
@@ -377,4 +378,3 @@
     <% end %>
   </table>
 </div>
-

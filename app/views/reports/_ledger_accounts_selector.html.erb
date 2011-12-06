@@ -8,7 +8,8 @@
   </td>
   <td>
     <%= select_tag :ledger_account,
-        options_from_collection_for_select(@ledger_accounts, "id", "to_s", @selected_ledger_account.id)%>
+        options_from_collection_for_select(@ledger_accounts, "id", "to_s", @selected_ledger_account.id),
+        :onchange => '$(\'#loading_img\').show();'%>
   </td>
   <td class="title">
     <%= t(:ledger_from, :scope=>:reports) %>

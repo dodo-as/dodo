@@ -26,5 +26,45 @@ module ReportsHelper
     end
     title
   end
+
+  def change_select_options_for_ledger(subsidiary_ledger_accounts)
+    page = ""
+            if subsidiary_ledger_accounts.blank?
+            page << "$('#ledger_from_id')
+                    .find('option')
+                    .remove()
+                    .end()
+                    .append('<option value=\"\"></option>')
+                    .val('');
+                     $('#ledger_to_id')
+                    .find('option')
+                    .remove()
+                    .end()
+                    .append('<option value=\"\"></option>')
+                    .val('');"
+          else
+            page << "$('#ledger_from_id')
+                    .find('option')
+                    .remove()
+                    .end()"
+                    subsidiary_ledger_accounts.each do |ledger|
+                        page <<  ".append('<option value=\"#{ledger.id}\">#{ledger.name}</option>')"
+                    end
+                    page << ".val('#{subsidiary_ledger_accounts.first.id}')
+                    ;"
+            page << "$('#ledger_to_id')
+                    .find('option')
+                    .remove()
+                    .end()"
+                    subsidiary_ledger_accounts.each do |ledger|
+                        page <<  ".append('<option value=\"#{ledger.id}\">#{ledger.name}</option>')"
+                    end
+                    page << ".val('#{subsidiary_ledger_accounts.last.id}')
+                    ;"
+          end
+          page << "$(\'#loading_img\').hide();"
+          return page
+  end
+
   
 end
