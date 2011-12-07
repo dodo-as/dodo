@@ -1,6 +1,6 @@
 <script type="text/javascript">
   $(function($) {
-    $("#ledger_account").change(function() {
+    $(".ledger_account").change(function() {
         $.ajax({url: '<%= reports_path %>',
         data: 'ledger_account_id=' + this.value,
         dataType: 'script'})

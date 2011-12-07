@@ -9,7 +9,7 @@
   <td>
     <%= select_tag :ledger_account,
         options_from_collection_for_select(@ledger_accounts, "id", "to_s", @selected_ledger_account.id),
-        :onchange => '$(\'#loading_img\').show();'%>
+        {:onchange => '$(\'#loading_img\').show(); $(\'.ledger_account\').val(this.value);',:class => "ledger_account"}%>
   </td>
   <td class="title">
     <%= t(:ledger_from, :scope=>:reports) %>
@@ -17,7 +17,7 @@
   <td>
     <%= select_tag :ledger_from_id,
       options_from_collection_for_select(@subsidiary_ledger_accounts, "id", "to_s"),
-      :include_blank => true %>
+      {:include_blank => true,:class => "ledger_from"} %>
   </td>
   <td class="title">
     <%= t(:ledger_to, :scope=>:reports) %>
@@ -25,6 +25,6 @@
   <td>
     <%= select_tag :ledger_to_id,
       options_from_collection_for_select(@subsidiary_ledger_accounts, "id", "to_s"),
-      :include_blank => true %>
+      {:include_blank => true,:class => "ledger_to"} %>
   </td>
 </tr>

@@ -30,20 +30,20 @@ module ReportsHelper
   def change_select_options_for_ledger(subsidiary_ledger_accounts)
     page = ""
             if subsidiary_ledger_accounts.blank?
-            page << "$('#ledger_from_id')
+            page << "$('.ledger_from')
                     .find('option')
                     .remove()
                     .end()
                     .append('<option value=\"\"></option>')
                     .val('');
-                     $('#ledger_to_id')
+                     $('.ledger_to')
                     .find('option')
                     .remove()
                     .end()
                     .append('<option value=\"\"></option>')
                     .val('');"
           else
-            page << "$('#ledger_from_id')
+            page << "$('.ledger_from')
                     .find('option')
                     .remove()
                     .end()"
@@ -52,7 +52,7 @@ module ReportsHelper
                     end
                     page << ".val('#{subsidiary_ledger_accounts.first.id}')
                     ;"
-            page << "$('#ledger_to_id')
+            page << "$('.ledger_to')
                     .find('option')
                     .remove()
                     .end()"
