@@ -75,7 +75,8 @@
                             j.journal_id AS jid,
                             j.number AS jnumber
                             FROM  (journal_operations as jo
-                            JOIN journals as j (journal_id) USING (journal_id) )
+                            JOIN journals as j (journal_id) USING (journal_id)
+                            JOIN periods as p (period_id) USING (period_id)    )
                             WHERE (car IS NULL OR jo.car_id = car)
                             AND   (project IS NULL OR jo.project_id = project)
                             AND   (unit IS NULL OR jo.unit_id = unit)
@@ -83,6 +84,7 @@
                             AND   jo.account_id  = accountRecord.id
                             AND   jo.amount IS NOT NULL
                             AND   j.period_id = ANY (CAST (string_to_array(balance_periods, ',') AS int[] ))
+                            ORDER BY p.year,p.nr,j.journal_date
                     LOOP
 
                             jo_row.accid := accountRecord.id;
