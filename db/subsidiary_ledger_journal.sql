@@ -39,7 +39,7 @@
                         INTO old_balance
                         FROM  (journal_operations as jo
                         JOIN journals as j (journal_id) USING (journal_id) )
-                        WHERE   jo.account_id  = accountRecord.id
+                        WHERE   jo.ledger_id  = ledgerRecord.id
                         AND   jo.amount IS NOT NULL
                         AND  j.period_id = ANY (CAST (string_to_array(previous_periods, ',') AS int[] ))
                         AND   (car IS NULL OR jo.car_id = car)
@@ -47,6 +47,10 @@
                         AND   (unit IS NULL OR jo.unit_id = unit)
                         AND   (journal_type IS NULL OR j.journal_type_id = journal_type);
               END IF;
+
+              IF old_balance IS NULL THEN
+                    old_balance := 0;
+              END IF ;
 
              --current ledger journal operations
               IF (balance_periods IS NOT NULL AND LENGTH(balance_periods) > 0) THEN

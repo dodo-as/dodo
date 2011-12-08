@@ -64,6 +64,9 @@
                     END IF;
                 END IF;
 
+                IF old_balance IS NULL THEN
+                    old_balance := 0;
+                END IF;
 
                 --current account journal operations
                 IF (balance_periods IS NOT NULL AND LENGTH(balance_periods) > 0) THEN

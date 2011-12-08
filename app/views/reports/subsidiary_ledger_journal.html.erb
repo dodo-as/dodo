@@ -1,7 +1,117 @@
-<%unless @journal_operations.blank?%>
-  <%@journal_operations.each do |jo| %>
-    <%=jo%>
-    <br></br>
-  <%end%>
-<%end%>
+<p><h1><%= current_user.current_company.to_s %> - <%= current_user.to_s %> (<%= Date.today %>)</h1></p>
+<p><h1><%= t(:ledger_balance_period, :scope=>:reports) %><%= title_to_periods_range({:from_period=>@first_period_to_balance, :to_period=>@last_period_to_balance}) %></h1></p>
+<p><h1><%= result_from_date(:period => @result_from) %></h1></p>
+<p><h1><%= t(:ledgers_from_account, :scope=>:reports) %>: <%= @account %></h1></p>
+<% unless @unit.blank?%>
+  <p><h2><%= t(:unit, :scope=>:reports) %>: <%= @unit %></h2></p>
+<% end %>
+<% unless @project.blank?%>
+  <p><h2><%= t(:project, :scope=>:reports) %>: <%= @project %></h2></p>
+<% end %>
+<% unless @car.blank?%>
+  <p><h2><%= t(:car, :scope=>:reports) %>: <%= @car %></h2></p>
+<% end %>
+<% unless @journal_type.blank?%>
+  <p><h2><%= t(:journal_type, :scope=>:reports) %>: <%= @journal_type %></h2></p>
+<% end %>
 
+
+<%#ledgid int, pid int, jdate date, oldb real, balance real, newb real, jid int, jnumber int%>
+
+<table class="report">
+  <thead>
+    <tr>
+      <th>
+        <%= t(:date, :scope=>:reports) %>
+      </th>
+      <th>
+        <%= t(:journal_number, :scope=>:reports) %>
+      </th>
+      <th style="text-align: right">
+        <%= t(:credit, :scope=>:reports) %>
+      </th>
+      <th style="text-align: right">
+        <%= t(:debit, :scope=>:reports) %>
+      </th>
+      <th style="text-align: right">
+        <%= t(:balance, :scope=>:reports) %>
+      </th>
+      <th>
+      </th>
+    </tr>
+  </thead>
+  <tbody id="data">
+    <% unless @journal_operations.blank?
+        account_id = nil
+        period_id = nil
+        current = -1
+        diff = 0
+    end%>
+    <% @journal_operations.each do |jo| %>
+      <%current += 1 #current is index of current element on @journal_operations array%>
+      <% if account_id != jo["ledgid"]
+        account_id = jo["ledgid"]
+        period_id = 0
+        #calculate diff for each account
+        diff = 0
+        counter = current
+        while @journal_operations[counter] and @journal_operations[counter]["ledgid"] == account_id do
+            diff += @journal_operations[counter]["balance"].to_f
+            counter = counter + 1
+        end
+      %>
+        <tr class="section1">
+          <td colspan="6">
+            <%= Ledger.find(jo["ledgid"]).to_s %>
+          </td>
+        </tr>
+      <% end %>
+      <% if period_id != jo["pid"]
+        period_id = jo["pid"]  %>
+        <tr class="section2">
+          <td>
+            <%= Period.find(jo["pid"]).to_s %>
+          </td>
+          <td>
+            <%= t(:journal_number, :scope=>:reports) %>
+          </td>
+          <td style="text-align: right">
+            <%= t(:credit, :scope=>:reports) %>
+          </td>
+          <td style="text-align: right">
+            <%= t(:debit, :scope=>:reports) %>
+          </td>
+          <td class="balance" style="text-align: right">
+            <%= number_with_precision(jo["oldb"], :locale =>I18n.locale) %>
+          </td>
+          <td style="text-align: right">
+            <%= t(:diff , :scope => :reports) %>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td>
+          <%= jo["jdate"] %>
+        </td>
+        <td>
+          <%= link_to jo["jnumber"] , edit_journal_path(jo["jid"]) %>
+        </td>
+        <td style="text-align: right">
+          <%= jo["balance"] if jo["balance"].to_f >= 0 %>
+        </td>
+        <td style="text-align: right">
+          <%= jo["balance"] if jo["balance"].to_f < 0 %>
+        </td>
+        <td class="balance" style="text-align: right">
+          <%= number_with_precision(jo["newb"], :locale =>I18n.locale) %>
+        </td>
+        <td class="diff" style="text-align: right">
+          <%= number_with_precision(diff, :locale =>I18n.locale) %>
+        </td>
+      </tr>
+    <%end%>
+  </tbody>
+</table>
+
+<div style="height: 60px">
+</div>
