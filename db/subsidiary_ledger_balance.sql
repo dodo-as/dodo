@@ -1,5 +1,5 @@
    -- create account row type for returning
-    CREATE TYPE ledg AS (ledger_name varchar, ledger_number int, ledger_b real, ledger_pb real, ledger_nb real);
+    CREATE TYPE ledg AS (ledger_id int,ledger_name varchar, ledger_number int, ledger_b real, ledger_pb real, ledger_nb real);
 
     CREATE OR REPLACE FUNCTION report_subsidiary_ledger_balance(  show_only_active_accounts boolean,
                                                 car int,
@@ -82,6 +82,7 @@
 
                         new_balance := previous_balance + balance;
 
+                        temp.ledger_id := ledgerRecord.id;
                         temp.ledger_name := ledgerRecord.name;
                         temp.ledger_number := ledgerRecord.number;
                         temp.ledger_b := balance ;
@@ -98,6 +99,7 @@
               END LOOP;
 
             --total row
+            temp.ledger_id := 0;
             temp.ledger_name := 'total';
             temp.ledger_number := 0;
             temp.ledger_b := total_balance;

@@ -1,3 +1,16 @@
+
+<%  #shared options for each of ledger rows, in order to call report 4 
+  shared_options = {:action=>"subsidiary_ledger_journal",
+                    :controller=>"reports",
+                    :ledger_account => @account.id,
+                    :from_period_id => @first_period_to_balance.id,
+                    :to_period_id => @last_period_to_balance.id,
+                    :result_from_period_id => @result_from.id,
+                    :unit_id => @unit.blank? ?  nil : @unit.id ,
+                    :project_id => @project.blank? ?  nil : @project.id,
+                    :car_id => @car.blank? ? nil : @car.id,
+                    :journal_type_id => @journal_type.blank? ? nil : @journal_type.id}
+%>
 <p><h1><%= current_user.current_company.to_s %> - <%= current_user.to_s %> (<%= Date.today %>)</h1></p>
 <p><h1><%= t(:ledger_balance_period, :scope=>:reports) %><%= title_to_periods_range({:from_period=>@first_period_to_balance, :to_period=>@last_period_to_balance}) %></h1></p>
 <p><h1><%= result_from_date(:period => @result_from) %></h1></p>
@@ -42,7 +55,9 @@
       <td style="text-align:right"> <%= number_with_precision(row["ledger_pb"], :locale =>I18n.locale) %> </td>
       <td style="text-align:right"> <%= number_with_precision(row["ledger_b"], :locale =>I18n.locale) %> </td>
       <td style="text-align:right"> <%= number_with_precision(row["ledger_nb"] , :locale =>I18n.locale) %> </td>
-      <td style="text-align:right"><%= link_to t(:details, :scope => :reports)%></td>
+      <td style="text-align:right"> <%= link_to( t(:details, :scope => :reports),
+                                               shared_options.merge({ :ledger_from_id => row["ledger_id"],:ledger_to_id => row["ledger_id"] }) )%>
+      </td>
     </tr>
   <% end %>
   </tbody>

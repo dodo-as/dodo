@@ -105,7 +105,26 @@ class ReportsController < ApplicationController
   end
 
   def subsidiary_ledger_journal
-    
+
+    from_period = Period.find(params[:from_period_id]) unless params[:from_period_id].blank?
+    to_period = Period.find(params[:to_period_id]) unless params[:to_period_id].blank?
+    result_from = Period.find(params[:result_from_period_id]) unless params[:result_from_period_id].blank?
+
+
+    from_ledger = Ledger.find(params[:from_ledger]) unless params[:from_ledger].blank?
+    to_ledger = Ledger.find(params[:to_ledger]) unless params[:to_account].blank?
+    @account = Account.find(params[:ledger_account]) unless params[:ledger_account].blank?
+
+    @unit = Unit.find(params[:unit_id]) unless params[:unit_id].blank?
+    @project = Project.find(params[:project_id]) unless params[:project_id].blank?
+    @car = Car.find(params[:car_id]) unless params[:car_id].blank?
+    @journal_type = JournalType.find(params[:journal_type_id]) unless params[:journal_type_id].blank?
+
+    periods = Hash.new
+    periods = determine_periods(from_period,to_period,result_from,false)
+
+    @journal_operations =  Report.report_subsidiary_ledger_journal(periods, @account, from_ledger, to_ledger, @car, @unit, @project, @journal_type)
+
   end
 
   def ledger_open

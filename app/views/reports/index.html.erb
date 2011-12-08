@@ -302,11 +302,11 @@
               :include_blank => true %>
           </td>
           <td class="title">
-            <%= t(:journal_type, :scope=>:reports) %>
+            <%= t(:result_from_period, :scope=>:reports) %>
           </td>
           <td>
-            <%= select_tag :journal_type_id,
-              options_from_collection_for_select(@journal_types, "id", "to_s"),
+            <%= select_tag :result_from_period_id,
+              options_from_collection_for_select(@periods, "id", "to_s"),
               :include_blank => true %>
           </td>
         </tr>
@@ -337,6 +337,14 @@
           </td>
         </tr>
         <tr>
+          <td class="title">
+            <%= t(:journal_type, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :journal_type_id,
+              options_from_collection_for_select(@journal_types, "id", "to_s"),
+              :include_blank => true %>
+          </td>
           <td class="submit" colspan="6">
             <%= submit_tag t(:run_report, :scope=>:reports) %>
           </td>

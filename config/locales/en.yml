@@ -449,6 +449,7 @@ en:
     to_period: To Period
     unit: Department
     car: Car
+    project: Project
     show_only_active_accounts: Show Only Active Acount
     last_year_figures: Last Year Figures
     result_from_period: Results From
