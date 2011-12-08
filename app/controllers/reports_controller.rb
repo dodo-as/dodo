@@ -17,7 +17,9 @@ class ReportsController < ApplicationController
       @selected_ledger_account = @ledger_accounts.first
     end
 
-    @subsidiary_ledger_accounts = @selected_ledger_account.ledgers
+    #calling account.ledgers will get ledgers orderd by name
+    @subsidiary_ledger_accounts = Ledger.ledgers_sorted_with_number(@selected_ledger_account.id)
+    
 
     respond_to do |format|
       format.html
@@ -84,8 +86,8 @@ class ReportsController < ApplicationController
     to_period = Period.find(params[:to_period_id]) unless params[:to_period_id].blank?
     result_from = Period.find(params[:result_from_period_id]) unless params[:result_from_period_id].blank?
 
-    from_ledger = Ledger.find(params[:from_ledger]) unless params[:from_ledger].blank?
-    to_ledger = Ledger.find(params[:to_ledger]) unless params[:to_account].blank?
+    from_ledger = Ledger.find(params[:ledger_from_id]) unless params[:ledger_from_id].blank?
+    to_ledger = Ledger.find(params[:ledger_to_id]) unless params[:ledger_to_id].blank?
     @account = Account.find(params[:ledger_account]) unless params[:ledger_account].blank?
     
     @unit = Unit.find(params[:unit_id]) unless params[:unit_id].blank?
@@ -111,8 +113,8 @@ class ReportsController < ApplicationController
     result_from = Period.find(params[:result_from_period_id]) unless params[:result_from_period_id].blank?
 
 
-    from_ledger = Ledger.find(params[:from_ledger]) unless params[:from_ledger].blank?
-    to_ledger = Ledger.find(params[:to_ledger]) unless params[:to_account].blank?
+    from_ledger = Ledger.find(params[:ledger_from_id]) unless params[:ledger_from_id].blank?
+    to_ledger = Ledger.find(params[:ledger_to_id]) unless params[:ledger_to_id].blank?
     @account = Account.find(params[:ledger_account]) unless params[:ledger_account].blank?
 
     @unit = Unit.find(params[:unit_id]) unless params[:unit_id].blank?

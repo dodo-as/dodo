@@ -30,7 +30,7 @@ class Report < ActiveRecord::Base
       j_type_id = journal_type.blank? ? 'null' : "#{journal_type.id}"
 
       _from_ledger = from_ledger.blank? ? 'null': from_ledger.number
-      _to_ledger = to_ledger.blank? ? 'null' : to_ledger.id.number
+      _to_ledger = to_ledger.blank? ? 'null' : to_ledger.number
       _ledger_account = ledger_account.blank? ? 'null' : ledger_account.id
 
       _periods = "#{periods[:periods_to_balance].blank? ? 'null' : "'#{periods[:periods_to_balance]}'" }"
@@ -48,7 +48,7 @@ class Report < ActiveRecord::Base
       j_type_id = journal_type.blank? ? 'null' : "#{journal_type.id}"
 
       _from_ledger = from_ledger.blank? ? 'null': from_ledger.number
-      _to_ledger = to_ledger.blank? ? 'null' : to_ledger.id.number
+      _to_ledger = to_ledger.blank? ? 'null' : to_ledger.number
       _ledger_account = ledger_account.blank? ? 'null' : ledger_account.id
 
       _periods = "#{periods[:periods_to_balance].blank? ? 'null' : "'#{periods[:periods_to_balance]}'" }"

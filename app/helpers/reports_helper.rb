@@ -47,8 +47,9 @@ module ReportsHelper
                     .find('option')
                     .remove()
                     .end()"
+                    page << ".append('<option value=\"\"></option>')"
                     subsidiary_ledger_accounts.each do |ledger|
-                        page <<  ".append('<option value=\"#{ledger.id}\">#{ledger.name}</option>')"
+                        page <<  ".append('<option value=\"#{ledger.id}\">#{ledger.to_s_with_number}</option>')"
                     end
                     page << ".val('#{subsidiary_ledger_accounts.first.id}')
                     ;"
@@ -56,8 +57,9 @@ module ReportsHelper
                     .find('option')
                     .remove()
                     .end()"
+                    page << ".append('<option value=\"\"></option>')"
                     subsidiary_ledger_accounts.each do |ledger|
-                        page <<  ".append('<option value=\"#{ledger.id}\">#{ledger.name}</option>')"
+                        page <<  ".append('<option value=\"#{ledger.id}\">#{ledger.to_s_with_number}</option>')"
                     end
                     page << ".val('#{subsidiary_ledger_accounts.last.id}')
                     ;"

@@ -22,8 +22,16 @@ class Ledger < ActiveRecord::Base
   validates :procenttrekk, :presence => true, :if => Proc.new { |a| a.tabelltrekk.blank? }
   validates :tabelltrekk, :presence => true, :if => Proc.new { |a| a.procenttrekk.blank? }
 
-    validates_with LedgerValidator  # This is custom validator found in /lib/validators/
+  validates_with LedgerValidator  # This is custom validator found in /lib/validators/
 
+
+  def self.ledgers_sorted_with_number(account_id)
+    Ledger.where(:account_id => account_id).order("number")
+  end
+
+  def to_s_with_number
+    return number.to_s + " "  + name
+  end
 
   def to_s
     return name
