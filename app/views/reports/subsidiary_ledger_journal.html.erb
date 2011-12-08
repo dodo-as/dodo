@@ -1,10 +1,7 @@
-<%=  @journal_operations %>
+<%unless @journal_operations.blank?%>
+  <%@journal_operations.each do |jo| %>
+    <%=jo%>
+    <br></br>
+  <%end%>
+<%end%>
 
-
-
-
-
-
-
-
-<%= "subsidiary_ledger_journal.html" %>

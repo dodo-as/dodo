@@ -24,7 +24,7 @@
     BEGIN
 
 
-            --Upper part of the report (balance accounts)
+            
             FOR accountRecord IN
 					SELECT * FROM accounts
 					WHERE accounts.company_id = company
