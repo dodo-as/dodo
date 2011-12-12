@@ -37,6 +37,9 @@
 					ORDER BY ledgers.number
               LOOP
                         active := FALSE;
+                        previous_balance := NULL;
+                        balance := NULL;
+
 
                         IF (previous_periods IS NOT NULL AND LENGTH(previous_periods) > 0 ) THEN
                             SELECT SUM(jo.amount)
