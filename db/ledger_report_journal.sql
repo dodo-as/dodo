@@ -26,7 +26,7 @@
 
             
             FOR accountRecord IN
-					SELECT * FROM accounts
+					SELECT id,is_result_account FROM accounts
 					WHERE accounts.company_id = company
                                         AND ( from_number IS NULL OR accounts.number >= from_number)
                                         AND ( to_number IS NULL OR accounts.number <= to_number)
