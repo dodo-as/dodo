@@ -37,8 +37,6 @@
                         total_lnb real := 0;
                         sum_value real := 0;
 			accountRecord record;
-			journalRecord record;
-			journalOperationRecord record;
                         active_acc boolean;
 
     BEGIN
@@ -46,7 +44,7 @@
 
 
 		FOR accountRecord IN
-					SELECT * FROM accounts
+					SELECT id,name,number FROM accounts
 					WHERE accounts.company_id = company
 					AND accounts.is_result_account = is_result_report
 					ORDER BY accounts.number
@@ -56,127 +54,99 @@
                         active_acc := false;
 
                         --calculating period balance
-                        sum_value := 0;
+                        sum_value := NULL;
 			IF (periods_to_balance IS NOT NULL AND LENGTH(periods_to_balance) > 0) THEN
-				FOR journalRecord IN
-						SELECT * FROM journals
-						Where journals.company_id = company
-                                                AND journals.period_id = ANY (CAST (string_to_array(periods_to_balance, ',') AS int[] ))
-                                                AND ( journal_type IS NULL OR journals.journal_type_id = journal_type )
-				LOOP
+							SELECT SUM(amount)
+                                                        INTO sum_value
+                                                        FROM (journal_operations as jo
+                                                        JOIN  journals as j (journal_id) USING (journal_id) )
+							WHERE jo.account_id = accountRecord.id
+                                                        AND   j.company_id = company
+                                                        AND   j.period_id = ANY (CAST (string_to_array(periods_to_balance, ',') AS int[] ))
+							AND   (car IS NULL OR jo.car_id = car)
+                                                        AND   (project IS NULL OR jo.project_id = project)
+                                                        AND   (unit IS NULL OR jo.unit_id = unit)
+                                                        AND   (project IS NULL OR jo.project_id = project)
+                                                        AND   ( journal_type IS NULL OR j.journal_type_id = journal_type );
 
+                        END IF;
 
-        					FOR journalOperationRecord IN
-							SELECT * FROM journal_operations
-							WHERE journal_operations.account_id = accountRecord.id
-							AND   journal_operations.journal_id =  journalRecord.id
-							AND   (car IS NULL OR journal_operations.car_id = car)
-                                                        AND   (project IS NULL OR journal_operations.project_id = project)
-                                                        AND   (unit IS NULL OR journal_operations.unit_id = unit)
-                                                        AND   (project IS NULL OR journal_operations.project_id = project)
-						LOOP
-							IF journalOperationRecord.amount IS NOT NULL THEN
-                                                            sum_value := sum_value + journalOperationRecord.amount ;
-                                                            active_acc := true;
-							END IF;
-
-						END LOOP;
-
-				END LOOP;
+                        IF sum_value IS NULL THEN
+                            sum_value := 0;
+                        ELSE
+                            active_acc := true;
                         END IF;
                         period_balance.acc_b := sum_value;
 
-
                         --calculating period previous balance
-                        sum_value := 0;
+                        sum_value := NULL;
 			IF (periods_to_balance_previous IS NOT NULL AND LENGTH(periods_to_balance_previous) > 0) THEN
-				FOR journalRecord IN
-						SELECT * FROM journals
-						Where journals.company_id = company
-                                                AND journals.period_id = ANY (CAST (string_to_array(periods_to_balance_previous, ',') AS int[] ))
-                                                AND ( journal_type IS NULL OR journals.journal_type_id = journal_type )
-				LOOP
+                                                        SELECT SUM(amount)
+                                                        INTO sum_value
+                                                        FROM (journal_operations as jo
+                                                        JOIN  journals as j (journal_id) USING (journal_id) )
+							WHERE jo.account_id = accountRecord.id
+                                                        AND   j.company_id = company
+                                                        AND   j.period_id = ANY (CAST (string_to_array(periods_to_balance_previous, ',') AS int[] ))
+							AND   (car IS NULL OR jo.car_id = car)
+                                                        AND   (project IS NULL OR jo.project_id = project)
+                                                        AND   (unit IS NULL OR jo.unit_id = unit)
+                                                        AND   (project IS NULL OR jo.project_id = project)
+                                                        AND   ( journal_type IS NULL OR j.journal_type_id = journal_type );
+                        END IF;
 
-
-        					FOR journalOperationRecord IN
-							SELECT * FROM journal_operations
-							WHERE journal_operations.account_id = accountRecord.id
-							AND   journal_operations.journal_id =  journalRecord.id
-							AND   (car IS NULL OR journal_operations.car_id = car)
-                                                        AND   (project IS NULL OR journal_operations.project_id = project)
-                                                        AND   (unit IS NULL OR journal_operations.unit_id = unit)
-                                                        AND   (project IS NULL OR journal_operations.project_id = project)
-						LOOP
-							IF journalOperationRecord.amount IS NOT NULL THEN
-                                                            sum_value := sum_value + journalOperationRecord.amount ;
-                                                            active_acc := true;
-							END IF;
-
-						END LOOP;
-
-				END LOOP;
-                         END IF;
-                         period_balance.acc_pb := sum_value;
+                        IF sum_value IS NULL THEN
+                            sum_value := 0;
+                        ELSE
+                            active_acc := true;
+                        END IF;
+                        period_balance.acc_pb := sum_value;
 
 
                         --calculating last year period balance
-                        sum_value := 0;
+                        sum_value := NULL;
 			IF (show_last_year IS TRUE AND periods_to_balance_last IS NOT NULL AND LENGTH(periods_to_balance_last) > 0) THEN
-				FOR journalRecord IN
-						SELECT * FROM journals
-						Where journals.company_id = company
-                                                AND journals.period_id = ANY (CAST (string_to_array(periods_to_balance_last, ',') AS int[] ))
-                                                AND ( journal_type IS NULL OR journals.journal_type_id = journal_type )
-				LOOP
-
-        					FOR journalOperationRecord IN
-							SELECT * FROM journal_operations
-							WHERE journal_operations.account_id = accountRecord.id
-							AND   journal_operations.journal_id =  journalRecord.id
-							AND   (car IS NULL OR journal_operations.car_id = car)
-                                                        AND   (project IS NULL OR journal_operations.project_id = project)
-                                                        AND   (unit IS NULL OR journal_operations.unit_id = unit)
-                                                        AND   (project IS NULL OR journal_operations.project_id = project)
-						LOOP
-							IF journalOperationRecord.amount IS NOT NULL THEN
-                                                            sum_value := sum_value + journalOperationRecord.amount ;
-                                                            active_acc := true;
-							END IF;
-
-						END LOOP;
-
-				END LOOP;
+                                                        SELECT SUM(amount)
+                                                        INTO sum_value
+                                                        FROM (journal_operations as jo
+                                                        JOIN  journals as j (journal_id) USING (journal_id) )
+							WHERE jo.account_id = accountRecord.id
+                                                        AND   j.company_id = company
+                                                        AND   j.period_id = ANY (CAST (string_to_array(periods_to_balance_last, ',') AS int[] ))
+							AND   (car IS NULL OR jo.car_id = car)
+                                                        AND   (project IS NULL OR jo.project_id = project)
+                                                        AND   (unit IS NULL OR jo.unit_id = unit)
+                                                        AND   (project IS NULL OR jo.project_id = project)
+                                                        AND   ( journal_type IS NULL OR j.journal_type_id = journal_type );
+                        END IF;
+                        IF sum_value IS NULL THEN
+                            sum_value := 0;
+                        ELSE
+                            active_acc := true;
                         END IF;
                         period_balance.acc_lb := sum_value;
 
 
                         --calculating last year previous period balance
-			sum_value := 0;
+			sum_value := NULL;
                         IF (show_last_year IS TRUE AND periods_to_balance_last_previous IS NOT NULL AND LENGTH(periods_to_balance_last_previous) > 0) THEN
-				FOR journalRecord IN
-						SELECT * FROM journals
-						Where journals.company_id = company
-                                                AND journals.period_id = ANY (CAST (string_to_array(periods_to_balance_last_previous, ',') AS int[] ))
-                                                AND ( journal_type IS NULL OR journals.journal_type_id = journal_type )
-				LOOP
-
-        					FOR journalOperationRecord IN
-							SELECT * FROM journal_operations
-							WHERE journal_operations.account_id = accountRecord.id
-							AND   journal_operations.journal_id =  journalRecord.id
-							AND   (car IS NULL OR journal_operations.car_id = car)
-                                                        AND   (project IS NULL OR journal_operations.project_id = project)
-                                                        AND   (unit IS NULL OR journal_operations.unit_id = unit)
-                                                        AND   (project IS NULL OR journal_operations.project_id = project)
-						LOOP
-							IF journalOperationRecord.amount IS NOT NULL THEN
-                                                            sum_value := sum_value + journalOperationRecord.amount ;
-                                                            active_acc := true;
-							END IF;
-
-						END LOOP;
-
-				END LOOP;
+                                                        SELECT SUM(amount)
+                                                        INTO sum_value
+                                                        FROM (journal_operations as jo
+                                                        JOIN  journals as j (journal_id) USING (journal_id) )
+							WHERE jo.account_id = accountRecord.id
+                                                        AND   j.company_id = company
+                                                        AND   j.period_id = ANY (CAST (string_to_array(periods_to_balance_last_previous, ',') AS int[] ))
+							AND   (car IS NULL OR jo.car_id = car)
+                                                        AND   (project IS NULL OR jo.project_id = project)
+                                                        AND   (unit IS NULL OR jo.unit_id = unit)
+                                                        AND   (project IS NULL OR jo.project_id = project)
+                                                        AND   ( journal_type IS NULL OR j.journal_type_id = journal_type );
+                        END IF;
+                        IF sum_value IS NULL THEN
+                            sum_value := 0;
+                        ELSE
+                            active_acc := true;
                         END IF;
                         period_balance.acc_lpb := sum_value;
 
