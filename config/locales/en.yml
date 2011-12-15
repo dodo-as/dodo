@@ -481,7 +481,24 @@ en:
     expenses: Expenses
     ledger_balance_period: Ledger Balance Period
     details: Details
-    ledgers_from_account: Ledgers from Account 
+    ledgers_from_account: Ledgers from Account
+    dagbok: Dagbok
+    kid: KID
+    bill: Invoice
+    sort_by: Sort By
+    text: Text
+    from_date: Date From
+    mva_code: MVA Code
+    from_journal_number: Journal Number From
+    amount_from: Amount From
+    kid_from: KID From
+    invoice_number_from: Invoice Number From
+    to_date: Date To
+    mva_percentage: MVA Percentage
+    to_journal_number: Journal Number From
+    amount_to: Amount To
+    kid_to: KID To
+    invoice_number_to: Invoice Number To
 
   projects:
     edit_project: Editing project

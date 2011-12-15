@@ -9,6 +9,7 @@ class ReportsController < ApplicationController
     @cars = Car.with_permissions_to(:index)
     @journal_types = JournalType.with_permissions_to(:index).order('name')
     @accounts = Account.with_permissions_to(:index).order('number')
+    @ledgers = Ledger.with_permissions_to(:index).order('account_id,number')
     @ledger_accounts = Account.with_permissions_to(:index).has_ledger.order('number')
 
     if params[:ledger_account_id]
@@ -132,6 +133,10 @@ class ReportsController < ApplicationController
   end
 
   def ledger_open
+    
+  end
+
+  def dagbok
     
   end
 

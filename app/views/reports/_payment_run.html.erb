@@ -1,0 +1,16 @@
+<table class='striped'>
+  <tr>
+    <th><%= t(:number, :scope => :accounts) -%></th>
+    <th><%= t(:name, :scope => :accounts) -%></th>
+    <th></th>
+  </tr>
+<% for account in @ledger_accounts %>
+  <tr>
+    <td><%= account.number %></td>
+    <td><%= account.name %></td>
+    <td>
+      <%= button_to t(:run_report, :scope => :reports), edit_payment_run_path(account) %>
+    </td>
+  </tr>
+<% end %>
+</table>

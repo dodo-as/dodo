@@ -351,17 +351,66 @@
         </tr>
       </tbody>
     <% end %>
-    <%= form_tag ledger_open_reports_path, :method=>:get do %>
       <tbody class="even">
-        <%  @report_title = "open"%>
-        <%=  render 'ledger_accounts_selector' %>
         <tr>
+          <td class="report_title" rowspan="10">
+            <%= t(:open, :scope=>:reports) %>
+          </td>
+          <td colspan="5">
+            <%=  render 'payment_run'%>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+  </table>
+
+
+  <div class="title">
+    <%= t(:dagbok, :scope=>:reports) %>
+  </div>
+ <table>
+    <%= form_tag dagbok_reports_path, :method=>:get do %>
+      <tbody class="even">
+         <tr>
+          <td class="report_title" rowspan="9">
+            <%= t(:dagbok, :scope=>:reports) %>
+          </td>
+          <td class="title">
+            <%= t(:from_date, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= text_field_tag :from_date,nil, :class=> :datepicker %>
+          </td>
+          <td class="title">
+            <%= t(:to_date, :scope=>:reports) %>
+          </td>
+          <td>
+           <%= text_field_tag :to_date, nil,:class=> :datepicker %>
+          </td>
           <td class="title">
             <%= t(:unit, :scope=>:reports) %>
           </td>
           <td>
             <%= select_tag :unit_id,
               options_from_collection_for_select(@units, "id", "to_s"),
+              :include_blank => true %>
+          </td>
+        </tr>
+        <tr>
+          <td class="title">
+            <%= t(:from_period, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :from_period_id,
+              options_from_collection_for_select(@periods, "id", "to_s"),
+              :include_blank => true %>
+          </td>
+          <td class="title">
+            <%= t(:to_period, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :to_period_id,
+              options_from_collection_for_select(@periods, "id", "to_s"),
               :include_blank => true %>
           </td>
           <td class="title">
@@ -372,17 +421,149 @@
               options_from_collection_for_select(@projects, "id", "to_s"),
               :include_blank => true %>
           </td>
-          <td colspan="2">
+        </tr>
+        <tr>
+          <td class="title">
+            <%= t(:mva_code, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= text_field_tag :mva_code %>
+          </td>
+          <td class="title">
+            <%= t(:mva_percentage, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= text_field_tag :mva_percentage %> %
+          </td>
+          <td class="title">
+            <%= t(:car, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :car_id,
+              options_from_collection_for_select(@cars, "id", "to_s"),
+              :include_blank => true %>
           </td>
         </tr>
         <tr>
-          <td colspan="5">
+          <td class="title">
+            <%= t(:from_account, :scope=>:reports) %>
           </td>
-          <td class="submit">
+          <td>
+            <%= select_tag :from_account_id,
+              options_from_collection_for_select(@accounts, "id", "to_s"),
+              :include_blank => true %>
+          </td>
+          <td class="title">
+            <%= t(:to_account, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :to_account_id,
+              options_from_collection_for_select(@accounts, "id", "to_s"),
+              :include_blank => true %>
+          </td>
+            <td class="title">
+              <%= t(:journal_type, :scope=>:reports) %>
+            </td>
+            <td>
+              <%= select_tag :journal_type_id,
+                options_from_collection_for_select(@journal_types, "id", "to_s"),
+                :include_blank => true %>
+            </td>
+        </tr>
+        <tr>
+            <td class="title">
+              <%= t(:ledger_from, :scope=>:reports) %>
+            </td>
+            <td>
+              <%= select_tag :ledger_from_id,
+                options_from_collection_for_select(@ledgers, "id", "to_s_with_number"),
+                :include_blank => true %>
+            </td>
+            <td class="title">
+              <%= t(:ledger_to, :scope=>:reports) %>
+            </td>
+            <td>
+              <%= select_tag :ledger_to_id,
+                options_from_collection_for_select(@ledgers, "id", "to_s_with_number"),
+                :include_blank => true %>
+            </td>
+            <td class="title">
+            <%= t(:sort_by, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= select_tag :to_account_id,
+              options_for_select(["date","account number","journal number"]) %>
+          </td>
+        </tr>
+        <tr>
+          <td class="title">
+            <%= t(:from_journal_number, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= text_field_tag :from_journal_number %>
+          </td>
+          <td class="title">
+            <%= t(:to_journal_number, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= text_field_tag :to_journal_number %> 
+          </td>
+          <td class="title">
+            <%= t(:text, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= text_field_tag :text %> 
+          </td>
+        </tr>
+        <tr>
+          <td class="title">
+            <%= t(:amount_from, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= text_field_tag :amount_from %>
+          </td>
+          <td class="title">
+            <%= t(:amount_to, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= text_field_tag :amount_to %>
+          </td>
+          <td class="submit" rowspan="3" colspan="2">
             <%= submit_tag t(:run_report, :scope=>:reports) %>
           </td>
         </tr>
+        <tr>
+          <td class="title">
+            <%= t(:kid_from, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= text_field_tag :kid_from %>
+          </td>
+          <td class="title">
+            <%= t(:kid_to, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= text_field_tag :kid_to %>
+          </td>
+        </tr>
+        <tr>
+          <td class="title">
+            <%= t(:invoice_number_from, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= text_field_tag :invoice_number_from %>
+          </td>
+          <td class="title">
+            <%= t(:invoice_number_to, :scope=>:reports) %>
+          </td>
+          <td>
+            <%= text_field_tag :invoice_number_to %>
+          </td>
+        </tr>
       </tbody>
-    <% end %>
-  </table>
+    <%end%>
+ </table>
+  
+
+
 </div>
