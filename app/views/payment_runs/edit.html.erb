@@ -35,11 +35,15 @@
      ledger = ops[0].ledger
 %>
   <tr>
-    <th colspan='8'>
+    <th colspan='12'>
       <%= ledger.name %>
     </th>
   </tr>
   <tr>
+    <th> <%= t(:journal_type, :scope => :reports)%></th>
+    <th> <%= t(:journal_number, :scope => :reports) %></th>
+    <th> <%= t(:period, :scope => :reports) %> </th>
+    <th> <%= t(:date, :scope => :reports) %></th>
     <th>
       Debet
     </th>
@@ -73,6 +77,14 @@
 
 
   <tr class='<%= odd_str %>'>
+
+    <%  jrnl =  Journal.find(ops[0].journal_id)%>
+
+     <td> <%= jrnl.journal_type.to_s %> </td>
+     <td> <%= jrnl.number %> </td>
+     <td> <%= jrnl.period.to_s %> </td>
+     <td> <%= jrnl.journal_date.to_s %> </td>
+
     <td class='number'>
       <%= num_format(ops[0].amount > 0 ? ops[0].amount : "") %>
     </td>
@@ -108,6 +120,12 @@
 
   </tr>
   <tr class='<%= odd_str %>'>
+        <%  jrnl =  Journal.find(ops[1].journal_id)%>
+
+     <td> <%= jrnl.journal_type.to_s %> </td>
+     <td> <%= jrnl.number %> </td>
+     <td> <%= jrnl.period.to_s %> </td>
+     <td> <%= jrnl.journal_date.to_s %> </td>
     <td class='number'>
       <%= ops[1].amount > 0 ? ops[1].amount : "" %>
     </td>
@@ -155,7 +173,7 @@ end
    def footer
 %>
   <tr>
-    <th colspan='7'>
+    <th colspan='11'>
       <span class='amount'></span>
     </th>
     <th>
@@ -192,11 +210,16 @@ end
 <table>
     <input type='hidden' name='pay_id' value='<%= @pay_id %>'>
   <tr>
-    <th colspan='8'>
+    <th colspan='12'>
       <%= ledger.name %>
     </th>
   </tr>
   <tr>
+
+    <th> <%= t(:journal_type, :scope => :reports)%></th>
+    <th> <%= t(:journal_number, :scope => :reports) %></th>
+    <th> <%= t(:period, :scope => :reports) %> </th>
+    <th> <%= t(:date, :scope => :reports) %></th>
     <th>
       Debet
     </th>
@@ -227,6 +250,12 @@ end
 %>
 
   <tr>
+     <%  jrnl =  Journal.find(op.journal_id)%>
+     <% puts op.journal_id %>
+     <td> <%= jrnl.journal_type.to_s %> </td>
+     <td> <%= jrnl.number %> </td>
+     <td> <%= jrnl.period.to_s %> </td>
+     <td> <%= jrnl.journal_date.to_s %> </td>
     <td class='number'>
       <%= num_format(op.amount > 0 ? op.amount : "") %>
     </td>
