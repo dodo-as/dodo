@@ -251,7 +251,6 @@ end
 
   <tr>
      <%  jrnl =  Journal.find(op.journal_id)%>
-     <% puts op.journal_id %>
      <td> <%= jrnl.journal_type.to_s %> </td>
      <td> <%= jrnl.number %> </td>
      <td> <%= jrnl.period.to_s %> </td>

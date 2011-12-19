@@ -9,8 +9,10 @@ class ReportsController < ApplicationController
     @cars = Car.with_permissions_to(:index)
     @journal_types = JournalType.with_permissions_to(:index).order('name')
     @accounts = Account.with_permissions_to(:index).order('number')
-    @ledgers = Ledger.with_permissions_to(:index).order('account_id,number')
+    @ledgers = Ledger.get_ledgers_of_current_company
     @ledger_accounts = Account.with_permissions_to(:index).has_ledger.order('number')
+    
+
 
     if params[:ledger_account_id]
       @selected_ledger_account =  Account.find(params[:ledger_account_id])
@@ -132,12 +134,11 @@ class ReportsController < ApplicationController
 
   end
 
-  def ledger_open
-    
-  end
-
   def dagbok
-    
+      @journal_operations,@from_date,@to_date,@from_period,@to_period,@from_account_number,@to_account_number,
+      @from_journal_number,@to_journal_number,@ledger_from,@ledger_to,@unit,@project,@car,@journal_type,@mva_code,
+      @mva_percentage,@text,@amount_from,@amount_to,@kid_from,@kid_to,@invoice_number_from,@invoice_number_to,
+      @sorted_by = Report.report_dagbok(params,current_user.current_company.id)
   end
 
   private

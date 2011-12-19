@@ -24,9 +24,35 @@ class Ledger < ActiveRecord::Base
 
   validates_with LedgerValidator  # This is custom validator found in /lib/validators/
 
+  def self.get_ledgers_of_current_company
+    ledgers = []
+    Account.with_permissions_to(:index).has_ledger.order("number").each do |a|
+      ledgers += Ledger.ledgers_sorted_with_number(a.id)
+    end
+    return ledgers
+  end
+
+  #get ledger ids from range for filtering
+  def self.get_ids_of_range(from_ledger, to_ledger)
+    ledgers = Ledger.get_ledgers_of_current_company.collect {|p| p.id }
+    if from_ledger.blank? and to_ledger.blank?
+       ledgers = []
+    elsif from_ledger.blank? and !to_ledger.blank?
+      ledgers = ledgers[0,(ledgers.index(to_ledger.id) + 1)]
+    elsif !from_ledger.blank? and to_ledger.blank?
+      ledgers =  ledgers[ledgers.index(from_ledger.id),(ledgers.length - ledgers.index(from_ledger.id) )]
+    else
+      ledgers = ledgers[ledgers.index(from_ledger.id),(ledgers.index(to_ledger.id)- ledgers.index(from_ledger.id) + 1)]
+    end
+    return ledgers
+  end
 
   def self.ledgers_sorted_with_number(account_id)
     Ledger.where(:account_id => account_id).order("number")
+  end
+
+  def to_s_with_account
+    return account.number.to_s + " " + account.name.to_s + " " + number.to_s + " " + name
   end
 
   def to_s_with_number

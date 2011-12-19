@@ -449,16 +449,16 @@
             <%= t(:from_account, :scope=>:reports) %>
           </td>
           <td>
-            <%= select_tag :from_account_id,
-              options_from_collection_for_select(@accounts, "id", "to_s"),
+            <%= select_tag :from_account_number,
+              options_from_collection_for_select(@accounts, "number", "to_s"),
               :include_blank => true %>
           </td>
           <td class="title">
             <%= t(:to_account, :scope=>:reports) %>
           </td>
           <td>
-            <%= select_tag :to_account_id,
-              options_from_collection_for_select(@accounts, "id", "to_s"),
+            <%= select_tag :to_account_number,
+              options_from_collection_for_select(@accounts, "number", "to_s"),
               :include_blank => true %>
           </td>
             <td class="title">
@@ -476,7 +476,7 @@
             </td>
             <td>
               <%= select_tag :ledger_from_id,
-                options_from_collection_for_select(@ledgers, "id", "to_s_with_number"),
+                options_from_collection_for_select(@ledgers, "id", "to_s_with_account"),
                 :include_blank => true %>
             </td>
             <td class="title">
@@ -484,16 +484,16 @@
             </td>
             <td>
               <%= select_tag :ledger_to_id,
-                options_from_collection_for_select(@ledgers, "id", "to_s_with_number"),
+                options_from_collection_for_select(@ledgers, "id", "to_s_with_account"),
                 :include_blank => true %>
             </td>
             <td class="title">
-            <%= t(:sort_by, :scope=>:reports) %>
-          </td>
-          <td>
-            <%= select_tag :to_account_id,
-              options_for_select(["date","account number","journal number"]) %>
-          </td>
+              <%= t(:sort_by, :scope=>:reports) %>
+            </td>
+            <td>
+              <%= select_tag :to_account_id,
+                 options_for_select(["date","account","journal"]) %>
+            </td>
         </tr>
         <tr>
           <td class="title">

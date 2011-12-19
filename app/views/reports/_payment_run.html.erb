@@ -9,7 +9,7 @@
     <td><%= account.number %></td>
     <td><%= account.name %></td>
     <td>
-      <%= button_to t(:run_report, :scope => :reports), edit_payment_run_path(account) %>
+      <%= link_to t(:run_report, :scope => :reports), edit_payment_run_path(account) %>
     </td>
   </tr>
 <% end %>

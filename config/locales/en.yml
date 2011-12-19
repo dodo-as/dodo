@@ -492,13 +492,13 @@ en:
     from_journal_number: Journal Number From
     amount_from: Amount From
     kid_from: KID From
+    kid_to: KID To
     invoice_number_from: Invoice Number From
+    invoice_number_to: Invoice Number To
     to_date: Date To
     mva_percentage: MVA Percentage
-    to_journal_number: Journal Number From
+    to_journal_number: Journal Number To
     amount_to: Amount To
-    kid_to: KID To
-    invoice_number_to: Invoice Number To
 
   projects:
     edit_project: Editing project
