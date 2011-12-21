@@ -68,5 +68,23 @@ module ReportsHelper
           return page
   end
 
-  
+  def jtype(id)
+    JournalType.find(id).to_s unless id.blank?
+  end
+
+  def unit(id)
+    jo = JournalOperation.find(id)
+    jo.unit.to_s unless jo.unit_id.blank?
+  end
+
+  def project(id)
+    jo = JournalOperation.find(id)
+    jo.project.to_s unless jo.project_id.blank?
+  end
+
+  def car(id)
+    jo = JournalOperation.find(id)
+    jo.car.to_s unless jo.car_id.blank?
+  end
+
 end

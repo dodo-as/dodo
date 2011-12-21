@@ -1,4 +1,5 @@
 <p><h1><%= current_user.current_company.to_s %> - <%= current_user.to_s %> (<%= Date.today %>)</h1></p>
+<p><h1><%= t(:periods_shown, :scope => :reports) %>:<%= title_to_periods_range({:from_period=>@from_period, :to_period=>@to_period}) %></h1></p>
 <% unless @unit.blank?%>
   <p><h2><%= t(:unit, :scope=>:reports) %>: <%= @unit %></h2></p>
 <% end %>
@@ -11,13 +12,57 @@
 <% unless @journal_type.blank?%>
   <p><h2><%= t(:journal_type, :scope=>:reports) %>: <%= @journal_type %></h2></p>
 <% end %>
-<% unless @journal_type.blank?%>
-  <p><h2><%= t(:journal_type, :scope=>:reports) %>: <%= @journal_type %></h2></p>
-<% end %>
 
- <% @journal_operations.each do |jo|%>
+<table class="report">
+  <thead>
+    <tr>
+      <th><%= t(:journal_type, :scope=>:reports) %></th>
+      <th><%= t(:journal_number, :scope=>:reports) %></th>
+      <th><%= t(:journal_date, :scope=>:reports) %></th>
+      <th><%= t(:journal_period, :scope=>:reports) %></th>
+      <th><%= t(:account_number, :scope=>:reports) %></th>
+      <th><%= t(:debit, :scope => :reports) %></th>
+      <th><%= t(:credit, :scope => :reports) %></th>
+      <th><%= t(:mva_percentage, :scope => :reports) %></th>
+      <th><%= t(:mva_code, :scope => :reports) %></th>
+      <th><%= t(:unit, :scope => :reports) %></th>
+      <th><%= t(:project, :scope => :reports) %></th>
+      <th><%= t(:car, :scope => :reports) %></th>
+      <th><%= t(:kid, :scope => :reports) %></th>
+      <th><%= t(:invoice_number, :scope => :reports) %></th>
+      <th><%= t(:text, :scope => :reports) %></th>
+   </tr>
+  </thead>
 
-   <%= jo %>
-<br></br>
-<% end %>
-<%=@journal_operations.count%>
+  <% #  jkid varchar(255), invoice_number varchar(255), jdescription varchar(255) ); %>
+
+
+  <tbody>
+  <% (@journal_operations).each do |jo| %>
+    <tr class="detail1">
+      <td><%=  jtype(jo["jtypeid"]) %></td>
+      <td><%=  link_to jo["jnumber"] , edit_journal_path(jo["jid"]) %></td>
+      <td><%=  jo["jdate"]  %></td>
+      <td><%=  jo["jperiod"] %></td>
+      <td><%=  jo["accnumber"] %></td>
+      <td><%= number_with_precision((jo["joamount"] if jo["joamount"].to_f < 0), :locale =>I18n.locale) %></td>
+      <td><%= number_with_precision((jo["joamount"] if jo["joamount"].to_f >= 0), :locale =>I18n.locale) %></td>
+      <td><%=  %></td>
+      <td><%=  %></td>
+      <td><%= unit(jo["joid"]) %></td>
+      <td><%= project(jo["joid"]) %></td>
+      <td><%= car(jo["joid"]) %></td>
+      <td><%= jo["jkid"] %></td>
+      <td><%= jo["invoice_number"]%></td>
+      <td><%= jo["jdescription"] %></td>
+
+    </tr>
+  <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="15"></td>
+    </tr>
+  </tfoot>
+</table>
+

@@ -499,6 +499,10 @@ en:
     mva_percentage: MVA Percentage
     to_journal_number: Journal Number To
     amount_to: Amount To
+    periods_shown: Periods Shown
+    journal_date: Journal Date
+    journal_period: Journal Period
+    invoice_number: Invoice Number
 
   projects:
     edit_project: Editing project

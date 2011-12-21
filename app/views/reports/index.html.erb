@@ -491,8 +491,8 @@
               <%= t(:sort_by, :scope=>:reports) %>
             </td>
             <td>
-              <%= select_tag :to_account_id,
-                 options_for_select(["date","account","journal"]) %>
+              <%= select_tag :sort_by,
+                 options_for_select( ["date","account","journal"] ) %>
             </td>
         </tr>
         <tr>

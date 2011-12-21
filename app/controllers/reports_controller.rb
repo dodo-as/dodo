@@ -135,10 +135,13 @@ class ReportsController < ApplicationController
   end
 
   def dagbok
-      @journal_operations,@from_date,@to_date,@from_period,@to_period,@from_account_number,@to_account_number,
-      @from_journal_number,@to_journal_number,@ledger_from,@ledger_to,@unit,@project,@car,@journal_type,@mva_code,
-      @mva_percentage,@text,@amount_from,@amount_to,@kid_from,@kid_to,@invoice_number_from,@invoice_number_to,
-      @sorted_by = Report.report_dagbok(params,current_user.current_company.id)
+      @journal_operations,from_period,to_period,unit,project,car,journal_type = Report.report_dagbok(params,current_user.current_company.id)
+      @from_period = (from_period == 'null' ? nil : Period.find(from_period))
+      @to_period = (to_period == 'null' ? nil : Period.find(to_period))
+      @unit = (unit == 'null' ? nil : Unit.find(unit))
+      @project = ( project == 'null' ? nil : Project.find(project))
+      @car = ( car == 'null' ? nil : Car.find(car))
+      @journal_type = ( journal_type == 'null' ? nil : JournalType.find(journal_type))
   end
 
   private

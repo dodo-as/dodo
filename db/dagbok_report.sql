@@ -1,5 +1,5 @@
   -- create dagbok journal operations row type for returning
-    CREATE TYPE dagbokop AS (jtypeid int,jid int, jnumber int, jdate date, jperiod text,accnumber integer, joamount numeric(20,2), jkid varchar(255), invoice_number varchar(255), jdescription varchar(255) );
+    CREATE TYPE dagbokop AS (joid int, jtypeid int,jid int, jnumber int, jdate date, jperiod text,accnumber integer, joamount numeric(20,2), jkid varchar(255), invoice_number varchar(255), jdescription varchar(255) );
 
     CREATE OR REPLACE FUNCTION report_dagbok(  
                                                company int,  --
@@ -22,10 +22,10 @@
                                                description varchar, --
                                                amount_from real, --
                                                amount_to real, --
-                                               kid_from varchar,
-                                               kid_to varchar,
-                                               invoice_number_from varchar,
-                                               invoice_number_to varchar,
+                                               kid_from varchar, --
+                                               kid_to varchar, --
+                                               invoice_from varchar, --
+                                               invoice_to varchar, --
                                                sorted_by varchar
                                               )
     RETURNS setof dagbokop AS $$
@@ -49,9 +49,10 @@
                         SELECT periods.year,periods.nr INTO period_to_year,period_to_nr from periods where periods.id = to_period;
                     END IF;
 
-
-                     FOR temp IN
-                            SELECT  j.journal_type_id AS jtypeid,
+                    
+                   FOR temp IN
+                            SELECT  jo.id AS joid,
+                            j.journal_type_id AS jtypeid,
                             j.journal_id AS jid,
                             j.number AS jnumber,
                             j.journal_date AS jdate,
@@ -80,16 +81,25 @@
                             AND ( description IS NULL OR j.description LIKE '%'|| description ||'%')
                             AND ( amount_from IS NULL OR jo.amount >= amount_from )
                             AND ( amount_to IS NULL OR jo.amount <= amount_to )
-                            AND (car IS NULL OR jo.car_id = car)
-                            AND (project IS NULL OR jo.project_id = project)
-                            AND (unit IS NULL OR jo.unit_id = unit)
-                            AND (journal_type IS NULL OR j.journal_type_id = journal_type)
-                            AND jo.amount IS NOT NULL
-                            ORDER BY p.year,p.nr,j.journal_date
-                            LIMIT 1000
+                            AND ( kid_from IS NULL OR (j.kid >= kid_from AND j.kid <> ''))
+                            AND ( kid_to IS NULL OR (j.kid <= kid_to AND j.kid <> ''))
+                            AND ( invoice_from IS NULL OR (j.bill_number >= invoice_from AND j.bill_number <> ''))
+                            AND ( invoice_to IS NULL OR (j.bill_number <= invoice_to AND j.bill_number <> ''))
+                            AND ( car IS NULL OR jo.car_id = car)
+                            AND ( project IS NULL OR jo.project_id = project)
+                            AND ( unit IS NULL OR jo.unit_id = unit)
+                            AND ( journal_type IS NULL OR j.journal_type_id = journal_type)
+                            AND   jo.amount IS NOT NULL
+                            ORDER BY
+                                    CASE WHEN sorted_by = 'journal' THEN j.number END,
+                                    CASE WHEN sorted_by = 'date' THEN j.journal_date END,
+                                    CASE WHEN sorted_by = 'account' THEN a.number END
+
                       LOOP
                         RETURN NEXT temp;
                       END LOOP;
+
+ 
 
     END;
     $$ LANGUAGE plpgsql;

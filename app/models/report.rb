@@ -89,8 +89,7 @@ class Report < ActiveRecord::Base
       kid_to = options[:kid_to].blank? ? 'null' : "'#{options[:kid_to]}'" #determine how to do it
       invoice_number_from = options[:invoice_number_from].blank? ? 'null' : "'#{options[:invoice_number_from]}'" #determine how to do it
       invoice_number_to = options[:invoice_number_to].blank? ? 'null' : "'#{options[:invoice_number_to]}'" #determine how to do it
-
-      sorted_by = options[:sorted_by].blank? ? 'null' : "'#{options[:sort_by]}'"
+      sort_by = options[:sort_by].blank? ? "'date'" : "'#{options[:sort_by]}'"
                   func = "report_dagbok( #{company},"
                   func << "#{from_date},"
                   func << "#{to_date},"
@@ -115,13 +114,10 @@ class Report < ActiveRecord::Base
                   func << "#{kid_to},"
                   func << "#{invoice_number_from},"
                   func << "#{invoice_number_to},"
-                  func << "#{sorted_by})"
+                  func << "#{sort_by})"
       journal_operations = DbStoredProcedure.fetch_db_records(func)
 
-      return journal_operations,from_date,to_date,from_period,to_period,from_account_number,to_account_number,
-             from_journal_number,to_journal_number,ledger_from,ledger_to,unit,project,car,journal_type,mva_code,
-             mva_percentage,text,amount_from,amount_to,kid_from,kid_to,invoice_number_from,invoice_number_to,
-             sorted_by
+      return journal_operations,from_period,to_period,unit,project,car,journal_type
 
 
   end

@@ -29,8 +29,8 @@ class ReportsCreateDagbokProc < ActiveRecord::Migration
                                                amount_to real,
                                                kid_from varchar,
                                                kid_to varchar,
-                                               invoice_number_from varchar,
-                                               invoice_number_to varchar,
+                                               invoice_from varchar,
+                                               invoice_to varchar,
                                                sorted_by varchar  );")
 
     ActiveRecord::Base.connection.execute("DROP TYPE dagbokop ;")
