@@ -22,21 +22,14 @@
   <thead>
     <tr>
       <th>
-        <%= t(:date, :scope=>:reports) %>
+        <%= t(:period, :scope=>:reports) %>
       </th>
-      <th>
-        <%= t(:journal_number, :scope=>:reports) %>
-      </th>
-      <th style="text-align: right">
-        <%= t(:credit, :scope=>:reports) %>
-      </th>
-      <th style="text-align: right">
-        <%= t(:debit, :scope=>:reports) %>
+      <th colspan="3">
       </th>
       <th style="text-align: right">
         <%= t(:balance, :scope=>:reports) %>
       </th>
-      <th colspan="3">
+      <th colspan="4">
       </th>
     </tr>
   </thead>
@@ -61,14 +54,15 @@
         end
       %>
         <tr class="section1">
-          <td colspan="8">
-            <%= Ledger.find(jo["ledgid"]).to_s %>
+          <td colspan="9">
+            <%= Ledger.find(jo["ledgid"]).to_s_with_number %>
           </td>
         </tr>
       <% end %>
       <% if period_id != jo["pid"]
         period_id = jo["pid"]  %>
         <tr class="section2">
+          <td><%= t(:journal_type, :scope => :reports) %></td>
           <td>
             <%= Period.find(jo["pid"]).to_s %>
           </td>
@@ -96,6 +90,7 @@
         </tr>
       <% end %>
       <tr>
+        <td><%= jtype(jo["jtype"])%></td>
         <td>
           <%= jo["jdate"] %>
         </td>

@@ -36,7 +36,7 @@
 %>
   <tr>
     <th colspan='12'>
-      <%= ledger.name %>
+      <%=ledger.number.to_s + " " + ledger.name.to_s %>
     </th>
   </tr>
   <tr>
@@ -211,7 +211,7 @@ end
     <input type='hidden' name='pay_id' value='<%= @pay_id %>'>
   <tr>
     <th colspan='12'>
-      <%= ledger.name %>
+      <%= ledger.number.to_s + " "  +  ledger.name.to_s %>
     </th>
   </tr>
   <tr>

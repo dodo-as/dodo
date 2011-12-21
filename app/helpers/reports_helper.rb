@@ -69,7 +69,7 @@ module ReportsHelper
   end
 
   def jtype(id)
-    JournalType.find(id).to_s unless id.blank?
+    JournalType.find(id).abbreviation unless id.blank?
   end
 
   def unit(id)
