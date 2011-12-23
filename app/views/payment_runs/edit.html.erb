@@ -170,10 +170,14 @@ end
 
 <%
 
-   def footer
+   def footer(diff)
 %>
   <tr>
-    <th colspan='11'>
+    <th><%= t(:diff, :scope => :reports )%></th>
+    <th colspan='9'>
+      <%= diff %>
+    </th>
+    <th>
       <span class='amount'></span>
     </th>
     <th>
@@ -192,14 +196,13 @@ end
    ledger = nil
 
    
-
+    diff = 0
 
    @ops.each do
      |op| 
 
-
      if ledger != op.ledger and ledger != nil then
-       footer
+       footer(diff)
      end
 
      if ledger != op.ledger then
@@ -258,7 +261,7 @@ end
     <td class='number'>
       <%= num_format(op.amount > 0 ? op.amount : "") %>
     </td>
-    
+    <%     diff += op.amount  %>
     <td class='number'>
       <%= op.amount < 0 ? op.amount : "" %>
     </td>
@@ -289,7 +292,7 @@ end
 
    end
 
-  if ledger != nil then footer end
+  if ledger != nil then footer(diff) end
 
 %>
 
