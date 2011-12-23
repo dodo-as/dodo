@@ -20,6 +20,8 @@
     <%= javascript_include_tag "validateField" %>
     <%= javascript_include_tag "orders" %>
     <%= javascript_include_tag "bills" %>
+    <!-- dynamically load javascript files for  -->
+    <%= yield :head %>
     <%= favicon_link_tag %>
   </head>
   <body>

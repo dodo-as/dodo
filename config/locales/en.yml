@@ -503,6 +503,15 @@ en:
     journal_date: Journal Date
     journal_period: Journal Period
     invoice_number: Invoice Number
+    operation_status: Status
+    actions: Actions
+    closed_status: Closed
+    show_closed: Show Closed
+    open: Open
+    open_status: Open
+    show_same_kid: Show Same KID
+    show_same_invoice: Show Same Invoice
+
 
   projects:
     edit_project: Editing project

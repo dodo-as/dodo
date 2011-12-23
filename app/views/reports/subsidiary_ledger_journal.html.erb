@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'changecss' %>
+<% end %>
+
 <p><h1><%= current_user.current_company.to_s %> - <%= current_user.to_s %> (<%= Date.today %>)</h1></p>
 <p><h1><%= t(:ledger_balance_period, :scope=>:reports) %><%= title_to_periods_range({:from_period=>@first_period_to_balance, :to_period=>@last_period_to_balance}) %></h1></p>
 <p><h1><%= result_from_date(:period => @result_from) %></h1></p>
@@ -16,7 +20,6 @@
 <% end %>
 
 
-<%#ledgid int, pid int, jdate date, oldb real, balance real, newb real, jid int, jnumber int%>
 
 <table class="report">
   <thead>
@@ -29,7 +32,7 @@
       <th style="text-align: right">
         <%= t(:balance, :scope=>:reports) %>
       </th>
-      <th colspan="4">
+      <th colspan="7">
       </th>
     </tr>
   </thead>
@@ -37,24 +40,24 @@
     <% unless @journal_operations.blank?
         account_id = nil
         period_id = nil
-        current = -1
-        diff = 0
+        #current = -1
+        #diff = 0
     end%>
     <% @journal_operations.each do |jo| %>
-      <%current += 1 #current is index of current element on @journal_operations array%>
+      <% #current += 1 #current is index of current element on @journal_operations array%>
       <% if account_id != jo["ledgid"]
         account_id = jo["ledgid"]
         period_id = 0
         #calculate diff for each account
-        diff = 0
-        counter = current
-        while @journal_operations[counter] and @journal_operations[counter]["ledgid"] == account_id do
-            diff += @journal_operations[counter]["balance"].to_f
-            counter = counter + 1
-        end
+        #diff = 0
+        #counter = current
+        #while @journal_operations[counter] and @journal_operations[counter]["ledgid"] == account_id do
+            #diff += @journal_operations[counter]["balance"].to_f
+            #counter = counter + 1
+        #end
       %>
         <tr class="section1">
-          <td colspan="9">
+          <td colspan="12">
             <%= Ledger.find(jo["ledgid"]).to_s_with_number %>
           </td>
         </tr>
@@ -87,9 +90,15 @@
           <td style="text-align: right">
             <%= t(:diff , :scope => :reports) %>
           </td>
+          <td style="text-align: right">
+            <%= t(:operation_status, :scope => :reports) %>
+          </td>
+          <td colspan="3">
+            <%= t(:actions, :scope => :reports) %>
+          </td>
         </tr>
       <% end %>
-      <tr>
+      <tr class=" coloredtr <%= "kid"+jo["jkid"]+" " unless jo["jkid"].blank?%><%= "invoice"+jo["jbill"]+" " unless jo["jbill"].blank? %><%= "closed"+jo["status"]+" " unless jo["status"].blank? %>">
         <td><%= jtype(jo["jtype"])%></td>
         <td>
           <%= jo["jdate"] %>
@@ -98,10 +107,10 @@
           <%= link_to jo["jnumber"] , edit_journal_path(jo["jid"]) %>
         </td>
         <td style="text-align: right">
-          <%= jo["balance"] if jo["balance"].to_f >= 0 %>
+          <%= number_with_precision(jo["balance"] , :locale => I18n.locale) if jo["balance"].to_f >= 0%>
         </td>
         <td style="text-align: right">
-          <%= jo["balance"] if jo["balance"].to_f < 0 %>
+          <%= number_with_precision(jo["balance"] , :locale => I18n.locale) if jo["balance"].to_f < 0%>
         </td>
         <td class="balance" style="text-align: right">
           <%= number_with_precision(jo["newb"], :locale =>I18n.locale) %>
@@ -113,8 +122,23 @@
           <%= jo["jbill"] %>
         </td>
         <td class="diff" style="text-align: right">
-          <%= number_with_precision(diff, :locale =>I18n.locale) %>
+          <% if jo["status"].blank?  %>
+          <%= number_with_precision(( (jo["jkid"].blank? and jo["jbill"].blank?) ? jo["balance"] : nil  ), :locale =>I18n.locale) %>
+          <%  end %>
         </td>
+        <% unless jo["status"].blank? %>
+            <td class="status"> 
+              <%= t(:closed_status, :scope => :reports) %>
+            </td>
+            <td> <%=  button_to_function t(:show_closed, :scope => :reports),"highlight('closed','.closed#{jo["status"]}')"  unless jo["status"].blank?%> </td>
+            <td> <%=  button_to(t(:open, :scope => :reports), open_closed_operations_reports_path(:closed_op_id => jo["status"],:redirection => @stored_params))  %> </td>
+        <% else %>
+            <td class="status">  
+              <%= t(:open_status, :scope => :reports) %>
+            </td>
+            <td> <%= button_to_function t(:show_same_kid, :scope => :reports),"highlight('kid','.kid#{jo["jkid"]}');" unless jo["jkid"].blank? %> </td>
+            <td> <%= button_to_function t(:show_same_invoice, :scope => :reports),"highlight('invoice','.invoice#{jo["jbill"]}');" unless jo["jbill"].blank?  %> </td>
+        <% end %>
       </tr>
     <%end%>
   </tbody>
@@ -122,3 +146,25 @@
 
 <div style="height: 60px">
 </div>
+
+<script type="text/javascript" >
+
+  function highlight(type,elem){
+
+  changecss('.coloredtr','background-color','white')
+
+if (type == 'closed' )
+  {
+        changecss(elem,'background-color','green')
+  }
+else if (type == 'kid')
+  {
+        changecss(elem,'background-color','yellow')
+  }
+else if (type == 'invoice')
+  {
+        changecss(elem,'background-color','red')
+  }
+
+  };
+</script>

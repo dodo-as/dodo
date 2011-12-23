@@ -1,6 +1,6 @@
 
 -- create account row type for returning
-    CREATE TYPE ledgjo   AS  (ledgid int, pid int, jdate date, oldb real, balance real, newb real,jtype int, jid int, jnumber int,jkid varchar, jbill varchar);
+    CREATE TYPE ledgjo   AS  (ledgid int, pid int, jdate date, oldb real, balance real, newb real,jtype int, jid int, jnumber int,jkid varchar, jbill varchar, status int);
 
     CREATE OR REPLACE FUNCTION report_subsidiary_ledger_journal(
                                                 car int,
@@ -56,14 +56,15 @@
               IF (balance_periods IS NOT NULL AND LENGTH(balance_periods) > 0) THEN
 
                         FOR temp IN
-                            SELECT  j.period_id AS pid,
+                            SELECT j.period_id AS pid,
                             j.journal_date AS jdate,
                             jo.amount AS balance,
                             j.journal_id AS jid,
                             j.number AS jnumber,
                             j.kid AS jkid,
                             j.bill_number AS jbill,
-                            j.journal_type_id AS jtype
+                            j.journal_type_id AS jtype,
+                            jo.closed_operation_id as status
                             FROM  (journal_operations as jo
                             JOIN journals as j (journal_id) USING (journal_id)
                             JOIN periods as p (period_id) USING (period_id)    )
@@ -87,6 +88,7 @@
                             ledgjo_row.jid := temp.jid;
                             ledgjo_row.jnumber := temp.jnumber;
                             ledgjo_row.jtype := temp.jtype;
+                            ledgjo_row.status := temp.status ;
 
                             ledgjo_row.oldb := old_balance;
                             ledgjo_row.newb := ledgjo_row.oldb + ledgjo_row.balance;

@@ -179,7 +179,7 @@ class JournalsController < ApplicationController
       if a.has_ledger then
         a.ledgers.each do
           |l|
-          @accounts_all << {:name => "#{a.number} #{a.name} - #{l.name}", :value => "#{a.id}.#{l.id}"}
+          @accounts_all << {:name => "#{a.number} #{a.name} - #{l.number}  #{l.name}", :value => "#{a.id}.#{l.id}"}
         end
       else
         @accounts_all << {:name => "#{a.number} #{a.name}", :value => a.id, :vat_account => a.vat_account}
