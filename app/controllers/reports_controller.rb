@@ -158,6 +158,7 @@ class ReportsController < ApplicationController
       @project = ( project == 'null' ? nil : Project.find(project))
       @car = ( car == 'null' ? nil : Car.find(car))
       @journal_type = ( journal_type == 'null' ? nil : JournalType.find(journal_type))
+      puts @journal_operations.count
   end
 
   private

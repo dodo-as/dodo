@@ -476,6 +476,8 @@ en:
     accounting: Accounting
     budget: Budget
     diff: Diff
+    diff_by_kid: KID Diff
+    diff_by_invoice: Invoice Diff
     result: Result
     revenue: Revenue
     expenses: Expenses
@@ -511,6 +513,9 @@ en:
     open_status: Open
     show_same_kid: Show Same KID
     show_same_invoice: Show Same Invoice
+    matched_by: Matched By
+    automatic_matching: Automatic Matching
+    manual_matching: Manual Matching
 
 
   projects:

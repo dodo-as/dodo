@@ -40,24 +40,14 @@
     <% unless @journal_operations.blank?
         account_id = nil
         period_id = nil
-        #current = -1
-        #diff = 0
     end%>
     <% @journal_operations.each do |jo| %>
-      <% #current += 1 #current is index of current element on @journal_operations array%>
       <% if account_id != jo["ledgid"]
         account_id = jo["ledgid"]
         period_id = 0
-        #calculate diff for each account
-        #diff = 0
-        #counter = current
-        #while @journal_operations[counter] and @journal_operations[counter]["ledgid"] == account_id do
-            #diff += @journal_operations[counter]["balance"].to_f
-            #counter = counter + 1
-        #end
       %>
         <tr class="section1">
-          <td colspan="12">
+          <td colspan="13">
             <%= Ledger.find(jo["ledgid"]).to_s_with_number %>
           </td>
         </tr>
@@ -88,7 +78,10 @@
             <%= t(:bill , :scope => :reports) %>
           </td>
           <td style="text-align: right">
-            <%= t(:diff , :scope => :reports) %>
+            <%= t(:diff_by_invoice , :scope => :reports) %>
+          </td>
+          <td style="text-align: right">
+            <%= t(:diff_by_kid, :scope => :reports) %>
           </td>
           <td style="text-align: right">
             <%= t(:operation_status, :scope => :reports) %>
@@ -98,7 +91,7 @@
           </td>
         </tr>
       <% end %>
-      <tr class=" coloredtr <%= "kid"+jo["jkid"]+" " unless jo["jkid"].blank?%><%= "invoice"+jo["jbill"]+" " unless jo["jbill"].blank? %><%= "closed"+jo["status"]+" " unless jo["status"].blank? %>">
+      <tr class=" coloredtr <%= "l"+jo["ledgid"]+"kid"+jo["jkid"]+" " unless jo["jkid"].blank?%><%= "l"+jo["ledgid"]+"invoice"+jo["jbill"]+" " unless jo["jbill"].blank? %><%= "l"+jo["ledgid"]+"closed"+jo["status"]+" " unless jo["status"].blank? %>">
         <td><%= jtype(jo["jtype"])%></td>
         <td>
           <%= jo["jdate"] %>
@@ -121,23 +114,28 @@
         <td class="bill" style="text-align: right">
           <%= jo["jbill"] %>
         </td>
-        <td class="diff" style="text-align: right">
+        <td class="diff_invoice" style="text-align: right">
+          <% if jo["status"].blank?  %>
+          <%= number_with_precision(( (jo["jkid"].blank? and jo["jbill"].blank?) ? jo["balance"] : nil  ), :locale =>I18n.locale) %>
+          <%  end %>
+        </td>
+        <td class="diff_kid" style="text-align: right">
           <% if jo["status"].blank?  %>
           <%= number_with_precision(( (jo["jkid"].blank? and jo["jbill"].blank?) ? jo["balance"] : nil  ), :locale =>I18n.locale) %>
           <%  end %>
         </td>
         <% unless jo["status"].blank? %>
             <td class="status"> 
-              <%= t(:closed_status, :scope => :reports) %>
+              <%= closed_by(jo["status"]) %>
             </td>
-            <td> <%=  button_to_function t(:show_closed, :scope => :reports),"highlight('closed','.closed#{jo["status"]}')"  unless jo["status"].blank?%> </td>
+            <td> <%=  button_to_function t(:show_closed, :scope => :reports),"highlight('closed','.l#{jo["ledgid"]}closed#{jo["status"]}')"  unless jo["status"].blank?%> </td>
             <td> <%=  button_to(t(:open, :scope => :reports), open_closed_operations_reports_path(:closed_op_id => jo["status"],:redirection => @stored_params))  %> </td>
         <% else %>
             <td class="status">  
               <%= t(:open_status, :scope => :reports) %>
             </td>
-            <td> <%= button_to_function t(:show_same_kid, :scope => :reports),"highlight('kid','.kid#{jo["jkid"]}');" unless jo["jkid"].blank? %> </td>
-            <td> <%= button_to_function t(:show_same_invoice, :scope => :reports),"highlight('invoice','.invoice#{jo["jbill"]}');" unless jo["jbill"].blank?  %> </td>
+            <td> <%= button_to_function t(:show_same_kid, :scope => :reports),"highlight('kid','.l#{jo["ledgid"]}kid#{jo["jkid"]}');" unless jo["jkid"].blank? %> </td>
+            <td> <%= button_to_function t(:show_same_invoice, :scope => :reports),"highlight('invoice','.l#{jo["ledgid"]}invoice#{jo["jbill"]}');" unless jo["jbill"].blank?  %> </td>
         <% end %>
       </tr>
     <%end%>

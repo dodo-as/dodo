@@ -1,3 +1,6 @@
+
+<div><h2><%= t(:automatic_matching, :scope => :reports) %></h2></div>
+
 <form method='post' action='/payment_runs/create'>
   <button type='submit'>Lukk alle</button>
   <input type='hidden' name='pay_id' value='<%= @pay_id %>'>
@@ -6,13 +9,11 @@
    @matches.each_with_index do
      |ops, idx|
 %>
-  <input type='hidden' name='mops[<%= idx %>][0]' value='<%=ops[0].id %>'>
-  <input type='hidden' name='mops[<%= idx %>][1]' value='<%=ops[1].id %>'>
+  <input type='hidden' name='mops[<%= idx %>]' value='<%=ops[0].id%>,<%=ops[1].id%>'>
 <%
    end
 %>
 </form>
-
 
 <table class='repport5'>
 
@@ -35,7 +36,7 @@
      ledger = ops[0].ledger
 %>
   <tr>
-    <th colspan='12'>
+    <th colspan='13'>
       <%=ledger.number.to_s + " " + ledger.name.to_s %>
     </th>
   </tr>
@@ -66,7 +67,9 @@
       Tekst
     </th>
     <th>
+      <%= t(:matched_by, :scope => :reports) %>
     </th>
+    <th></th>
   </tr>
 
 <%
@@ -81,7 +84,7 @@
     <%  jrnl =  Journal.find(ops[0].journal_id)%>
 
      <td> <%= jrnl.journal_type.to_s %> </td>
-     <td> <%= jrnl.number %> </td>
+     <td> <%= link_to  jrnl.number, edit_journal_path(jrnl) %> </td>
      <td> <%= jrnl.period.to_s %> </td>
      <td> <%= jrnl.journal_date.to_s %> </td>
 
@@ -109,10 +112,12 @@
     <td>
       <%= ops[0].journal.description %>
     </td>
+    <td>
+      <%= ops[2] %>
+    </td>
     <td rowspan='2'>
       <form method='post' action='/payment_runs/create'>
-	<input type='hidden' name='ops[0]' value='<%=ops[0].id %>'>
-	<input type='hidden' name='ops[1]' value='<%=ops[1].id %>'>
+	<input type='hidden' name='ops' value=<%=ops[0].id%>,<%=ops[1].id%>>
 	<input type='hidden' name='pay_id' value='<%= @pay_id %>'>
 	<button type='submit'>Lukk</button>
       </form>
@@ -123,7 +128,7 @@
         <%  jrnl =  Journal.find(ops[1].journal_id)%>
 
      <td> <%= jrnl.journal_type.to_s %> </td>
-     <td> <%= jrnl.number %> </td>
+     <td> <%= link_to  jrnl.number, edit_journal_path(jrnl)%> </td>
      <td> <%= jrnl.period.to_s %> </td>
      <td> <%= jrnl.journal_date.to_s %> </td>
     <td class='number'>
@@ -150,11 +155,15 @@
     <td>
       <%= ops[1].journal.description %>
     </td>
+    <td></td>
   </tr>
 
 <% end %>
 
 </table>
+
+
+<div><h2><%= t(:manual_matching, :scope => :reports) %></h2></div>
 
 <script>
 paymentRuns.amounts = {
@@ -173,10 +182,10 @@ end
    def footer(diff)
 %>
   <tr>
-    <th><%= t(:diff, :scope => :reports )%></th>
-    <th colspan='9'>
-      <%= diff %>
-    </th>
+    <th colspan="4"><%= t(:diff, :scope => :reports )%></th>
+    <th><%= diff if diff > 0 %></th>
+    <th><%= diff if diff <= 0%></th>
+    <th colspan="4"></th>
     <th>
       <span class='amount'></span>
     </th>
@@ -253,9 +262,10 @@ end
 %>
 
   <tr>
+      <% puts "*","*","*","*",op.id,"*","*" if op.journal_id.blank? %>
      <%  jrnl =  Journal.find(op.journal_id)%>
      <td> <%= jrnl.journal_type.to_s %> </td>
-     <td> <%= jrnl.number %> </td>
+     <td> <%= link_to  jrnl.number, edit_journal_path(jrnl)%> </td>
      <td> <%= jrnl.period.to_s %> </td>
      <td> <%= jrnl.journal_date.to_s %> </td>
     <td class='number'>

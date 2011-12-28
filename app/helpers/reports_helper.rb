@@ -87,4 +87,9 @@ module ReportsHelper
     jo.car.to_s unless jo.car_id.blank?
   end
 
+  def closed_by(closed_op_id)
+    "closed by " + JournalOperation.where(:closed_operation_id => closed_op_id).first.closed_operation.matched_by.to_s
+    #t(:closed_status, :scope => :reports)
+  end
+
 end
