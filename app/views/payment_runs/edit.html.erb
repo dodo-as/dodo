@@ -1,4 +1,5 @@
 
+<% if @matches.count > 0 %>
 <div><h2><%= t(:automatic_matching, :scope => :reports) %></h2></div>
 
 <form method='post' action='/payment_runs/create'>
@@ -14,6 +15,7 @@
    end
 %>
 </form>
+<%  end %>
 
 <table class='repport5'>
 
@@ -262,7 +264,6 @@ end
 %>
 
   <tr>
-      <% puts "*","*","*","*",op.id,"*","*" if op.journal_id.blank? %>
      <%  jrnl =  Journal.find(op.journal_id)%>
      <td> <%= jrnl.journal_type.to_s %> </td>
      <td> <%= link_to  jrnl.number, edit_journal_path(jrnl)%> </td>

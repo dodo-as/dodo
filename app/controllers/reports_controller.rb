@@ -133,6 +133,24 @@ class ReportsController < ApplicationController
     @journal_operations =  Report.report_subsidiary_ledger_journal(periods, @account, from_ledger, to_ledger, @car, @unit, @project, @journal_type)
     @stored_params = params
     @stored_params.delete(:utf8);@stored_params.delete(:commit)
+
+    @diff = Hash.new
+    @journal_operations.each do |op|
+
+        @diff[:"#{op["ledgid"]}"] = Hash.new if @diff[:"#{op["ledgid"]}"].blank?
+        if op["status"].blank?
+          unless op["jkid"].blank?
+            @diff[:"#{op["ledgid"]}"][:"#{"k" + op["jkid"].to_s}"]= 0 if @diff[:"#{op["ledgid"]}"][:"#{"k" + op["jkid"].to_s}"].blank?
+            @diff[:"#{op["ledgid"]}"][:"#{"k" + op["jkid"].to_s}"] += op["balance"].to_f
+          end
+
+          unless op["jbill"].blank?
+            @diff[:"#{op["ledgid"]}"][:"#{"b" + op["jbill"].to_s}"] = 0 if @diff[:"#{op["ledgid"]}"][:"#{"b" + op["jbill"].to_s}"].blank?
+            @diff[:"#{op["ledgid"]}"][:"#{"b" + op["jbill"].to_s}"] += op["balance"].to_f
+          end
+        end
+    end
+
   end
 
   def open_closed_operations
@@ -145,7 +163,7 @@ class ReportsController < ApplicationController
     #removing closed operation entry from database
     co = ClosedOperation.find(params[:closed_op_id])
     co.delete
-
+    
     redirect_to params[:redirection]
 
   end
@@ -158,7 +176,7 @@ class ReportsController < ApplicationController
       @project = ( project == 'null' ? nil : Project.find(project))
       @car = ( car == 'null' ? nil : Car.find(car))
       @journal_type = ( journal_type == 'null' ? nil : JournalType.find(journal_type))
-      puts @journal_operations.count
+      
   end
 
   private

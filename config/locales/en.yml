@@ -507,7 +507,9 @@ en:
     invoice_number: Invoice Number
     operation_status: Status
     actions: Actions
-    closed_status: Closed
+    closed_by_: Closed
+    closed_by_k: Closed(KID)
+    closed_by_b: Closed(Bill)
     show_closed: Show Closed
     open: Open
     open_status: Open

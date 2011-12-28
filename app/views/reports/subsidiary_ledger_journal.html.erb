@@ -78,10 +78,10 @@
             <%= t(:bill , :scope => :reports) %>
           </td>
           <td style="text-align: right">
-            <%= t(:diff_by_invoice , :scope => :reports) %>
+            <%= t(:diff_by_kid, :scope => :reports) %>
           </td>
           <td style="text-align: right">
-            <%= t(:diff_by_kid, :scope => :reports) %>
+            <%= t(:diff_by_invoice , :scope => :reports) %>
           </td>
           <td style="text-align: right">
             <%= t(:operation_status, :scope => :reports) %>
@@ -114,19 +114,27 @@
         <td class="bill" style="text-align: right">
           <%= jo["jbill"] %>
         </td>
-        <td class="diff_invoice" style="text-align: right">
-          <% if jo["status"].blank?  %>
-          <%= number_with_precision(( (jo["jkid"].blank? and jo["jbill"].blank?) ? jo["balance"] : nil  ), :locale =>I18n.locale) %>
-          <%  end %>
-        </td>
         <td class="diff_kid" style="text-align: right">
           <% if jo["status"].blank?  %>
-          <%= number_with_precision(( (jo["jkid"].blank? and jo["jbill"].blank?) ? jo["balance"] : nil  ), :locale =>I18n.locale) %>
-          <%  end %>
+            <% if jo["jkid"].blank? and jo["jbill"].blank? %>
+              <%= number_with_precision(jo["balance"], :locale =>I18n.locale) %>
+            <% elsif !jo["jkid"].blank?%>
+              <%= number_with_precision(@diff[:"#{jo["ledgid"]}"][:"#{"k" + jo["jkid"].to_s}"],:locale => I18n.locale) %>
+            <%end%>
+          <% end %>
+        </td>
+        <td class="diff_invoice" style="text-align: right">
+          <% if jo["status"].blank?  %>
+            <% if jo["jkid"].blank? and jo["jbill"].blank? %>
+              <%= number_with_precision(jo["balance"],:locale => I18n.locale) %>
+            <% elsif !jo["jbill"].blank? %>
+              <%= number_with_precision(@diff[:"#{jo["ledgid"]}"][:"#{"b" + jo["jbill"].to_s}"],:locale => I18n.locale) %>
+            <% end %>
+          <% end%>
         </td>
         <% unless jo["status"].blank? %>
             <td class="status"> 
-              <%= closed_by(jo["status"]) %>
+              <%= t(:"closed_by_#{closed_by(jo["status"])}",:scope => :reports) %>
             </td>
             <td> <%=  button_to_function t(:show_closed, :scope => :reports),"highlight('closed','.l#{jo["ledgid"]}closed#{jo["status"]}')"  unless jo["status"].blank?%> </td>
             <td> <%=  button_to(t(:open, :scope => :reports), open_closed_operations_reports_path(:closed_op_id => jo["status"],:redirection => @stored_params))  %> </td>
