@@ -1,3 +1,4 @@
+
 <p><h1><%= current_user.current_company.to_s %> - <%= current_user.to_s %> (<%= Date.today %>)</h1></p>
 <p><h1><%= t(:ledger_balance_period, :scope=>:reports) %><%= title_to_periods_range({:from_period=>@first_period_to_balance, :to_period=>@last_period_to_balance}) %><%= result_from_date(:period => @result_from) %></h1></p>
 <% unless @unit.blank?%>
@@ -14,6 +15,13 @@
 <% end %>
 
 <%#accid int,  pid int, jdate date, oldb real, balance real, newb real, jid int, jnumber int%>
+
+<%#= will_paginate @journal_operations %>
+
+<div class="digg_pagination">
+  <%= will_paginate @journal_operations, :container => false %>
+</div>
+
 
 <table class="report">
   <thead>
@@ -103,7 +111,7 @@
           <%= number_with_precision(jo["newb"], :locale =>I18n.locale) %>
         </td>
         <td class="diff" style="text-align: right">
-          <%= number_with_precision(diff, :locale =>I18n.locale) %>
+          <%= number_with_precision(@diff[:"#{jo["accid"]}"], :locale =>I18n.locale) %>
         </td>
       </tr>
     <%end%>
