@@ -1,6 +1,30 @@
 
     -- create language plpgsql for all stored procedures
-    CREATE LANGUAGE plpgsql;
+    CREATE OR REPLACE FUNCTION create_language_plpgsql()
+    RETURNS BOOLEAN AS $$
+            CREATE LANGUAGE plpgsql;
+            SELECT TRUE;
+            $$ LANGUAGE SQL;
+
+    SELECT CASE WHEN NOT
+    (
+        SELECT  TRUE AS exists
+        FROM    pg_language
+        WHERE   lanname = 'plpgsql'
+        UNION
+        SELECT  FALSE AS exists
+        ORDER BY exists DESC
+        LIMIT 1
+    )
+    THEN
+        create_language_plpgsql()
+    ELSE
+        FALSE
+    END AS plpgsql_created;
+
+    -- we no longer need this function
+    DROP FUNCTION create_language_plpgsql();
+    -- end of  create language section
 
     -- create account row type for returning
     CREATE TYPE acc AS (acc_name varchar, acc_number int, acc_b real, acc_pb real, acc_nb real, acc_lb real, acc_lpb real, acc_lnb real);
