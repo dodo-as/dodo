@@ -1,12 +1,12 @@
-class ReportsCreateDagbokProc < ActiveRecord::Migration
+class ReportsCreateDailyjournalProc < ActiveRecord::Migration
 
   def self.up
-    procedure_creation = File.read("db/dagbok_report.sql")
+    procedure_creation = File.read("db/sql/dailyjournal_report.sql")
     ActiveRecord::Base.connection.execute("#{procedure_creation}")
   end
 
   def self.down
-          ActiveRecord::Base.connection.execute("DROP FUNCTION report_dagbok(
+          ActiveRecord::Base.connection.execute("DROP FUNCTION report_dailyjournal(
                                               company int,
                                                from_date date,
                                                to_date date,
@@ -33,7 +33,7 @@ class ReportsCreateDagbokProc < ActiveRecord::Migration
                                                invoice_to varchar,
                                                sorted_by varchar  );")
 
-    ActiveRecord::Base.connection.execute("DROP TYPE dagbokop ;")
+    ActiveRecord::Base.connection.execute("DROP TYPE dailyjournalop ;")
   end
 
 end

@@ -366,14 +366,14 @@
 
 
   <div class="title">
-    <%= t(:dagbok, :scope=>:reports) %>
+    <%= t(:dailyjournal, :scope=>:reports) %>
   </div>
  <table>
-    <%= form_tag dagbok_reports_path, :method=>:get do %>
+    <%= form_tag dailyjournal_reports_path, :method=>:get do %>
       <tbody class="even">
          <tr>
           <td class="report_title" rowspan="9">
-            <%= t(:dagbok, :scope=>:reports) %>
+            <%= t(:dailyjournal, :scope=>:reports) %>
           </td>
           <td class="title">
             <%= t(:from_date, :scope=>:reports) %>

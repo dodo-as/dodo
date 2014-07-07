@@ -74,7 +74,7 @@ Dodo::Application.routes.draw do |map|
       get :ledger_journal
       get :subsidiary_ledger_balance
       get :subsidiary_ledger_journal
-      get :dagbok
+      get :dailyjournal
       get :open_closed_operations
     end
   end

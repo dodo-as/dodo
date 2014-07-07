@@ -183,8 +183,8 @@ class ReportsController < ApplicationController
 
   end
 
-  def dagbok
-      @journal_operations,from_period,to_period,unit,project,car,journal_type = Report.report_dagbok(params,current_user.current_company.id)
+  def dailyjournal
+      @journal_operations,from_period,to_period,unit,project,car,journal_type = Report.report_dailyjournal(params,current_user.current_company.id)
       @from_period = (from_period == 'null' ? nil : Period.find(from_period))
       @to_period = (to_period == 'null' ? nil : Period.find(to_period))
       @unit = (unit == 'null' ? nil : Unit.find(unit))

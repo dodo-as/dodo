@@ -2,7 +2,7 @@ class ReportsCreateSubsidiaryLedgerJournalProc < ActiveRecord::Migration
   
   
   def self.up
-    procedure_creation = File.read("db/subsidiary_ledger_journal.sql")
+    procedure_creation = File.read("db/sql/subsidiary_ledger_journal.sql")
     ActiveRecord::Base.connection.execute("#{procedure_creation}")
   end
 

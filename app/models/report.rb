@@ -58,7 +58,7 @@ class Report < ActiveRecord::Base
       return journal_operations
   end
 
-  def self.report_dagbok(options,company)
+  def self.report_dailyjournal(options,company)
 
       from_date = (options[:from_date].blank? or (! options[:from_date] =~ /\d{2}\-\d{2}\-\d{4}/)) ? 'null' : "'#{options[:from_date]}'"
       to_date = (options[:to_date].blank? or (! options[:to_date] =~ /\d{2}\-\d{2}\-\d{4}/)) ? 'null' : "'#{options[:to_date]}'"
@@ -90,7 +90,7 @@ class Report < ActiveRecord::Base
       invoice_number_from = options[:invoice_number_from].blank? ? 'null' : "'#{options[:invoice_number_from]}'" #determine how to do it
       invoice_number_to = options[:invoice_number_to].blank? ? 'null' : "'#{options[:invoice_number_to]}'" #determine how to do it
       sort_by = options[:sort_by].blank? ? "'date'" : "'#{options[:sort_by]}'"
-                  func = "report_dagbok( #{company},"
+                  func = "report_dailyjournal( #{company},"
                   func << "#{from_date},"
                   func << "#{to_date},"
                   func << "#{from_period},"

@@ -1,7 +1,7 @@
-  -- create dagbok journal operations row type for returning
-    CREATE TYPE dagbokop AS (joid int, jtypeid int,jid int, jnumber int, jdate date, jperiod text,accnumber integer, joamount numeric(20,2), jkid varchar(255), invoice_number varchar(255), jdescription varchar(255) );
+  -- create daily journal operations row type for returning
+    CREATE TYPE dailyjournalop AS (joid int, jtypeid int,jid int, jnumber int, jdate date, jperiod text,accnumber integer, joamount numeric(20,2), jkid varchar(255), invoice_number varchar(255), jdescription varchar(255) );
 
-    CREATE OR REPLACE FUNCTION report_dagbok(  
+    CREATE OR REPLACE FUNCTION report_dailyjournal(
                                                company int,  --
                                                from_date date, --
                                                to_date date, --
@@ -28,7 +28,7 @@
                                                invoice_to varchar, --
                                                sorted_by varchar
                                               )
-    RETURNS setof dagbokop AS $$
+    RETURNS setof dailyjournalop AS $$
 
     DECLARE
 
