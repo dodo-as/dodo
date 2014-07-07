@@ -1,6 +1,5 @@
 puts "Seeding db.."
 ActiveRecord::Base.transaction do
-
 Role.create!(:name => "user") if Role.find_by_name("user").nil?
 Role.create!(:name => "accountant") if Role.find_by_name("accountant").nil?
 Role.create!(:name => "employee") if Role.find_by_name("employee").nil?
@@ -11,6 +10,7 @@ Role.create!(:name => "none") if Role.find_by_name("none").nil?
 if TaxRate.find(:first, :conditions => {:year => 2010}).nil?
   puts "importing 2010 tax rates"
   `cp "#{Rails.root}/db/skattetrekk2010.txt" "/tmp/trekk2010.txt"`
+  `sudo chmod a+r "/tmp/trekk2010.txt"`
   TaxRate.connection.execute "create temporary table trekk2010 (val char(16)) on commit drop;"
   TaxRate.connection.execute "copy trekk2010 from '/tmp/trekk2010.txt';"
   TaxRate.connection.execute <<EOS
